@@ -6,4 +6,6 @@ module it.polimi.ingsw.gc42 {
 
     opens it.polimi.ingsw.gc42 to javafx.fxml;
     exports it.polimi.ingsw.gc42;
+    exports it.polimi.ingsw.gc42.classes;
+    opens it.polimi.ingsw.gc42.classes to javafx.fxml;
 }
