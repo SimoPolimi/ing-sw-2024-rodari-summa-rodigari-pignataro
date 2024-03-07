@@ -9,11 +9,15 @@ public class Deck {
     // Attributes
     private List<Card> cards = new ArrayList<>();
     private int counter;
+    private Game game;
+    private CardType cardType;
 
     // Constructor
-    public Deck(List<Card> cards, int counter) {
+    public Deck(List<Card> cards, int counter, Game game, CardType cardType) {
         this.cards = cards;
         this.counter = counter;
+        this.game = game;
+        this.cardType = cardType;
     }
 
     // Getter and Setter
@@ -33,6 +37,22 @@ public class Deck {
         this.counter = counter;
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
+    }
+
     // Methods
     public void shuffle() {
         Collections.shuffle(cards);
@@ -44,20 +64,29 @@ public class Deck {
             cards.removeFirst();
             counter--;
             if(counter == 0) {
-                notifyEndOfDeck();
+                try {
+                    notifyEndOfDeck();
+                } catch(NoSuchDeckTypeException e) {
+                    //TODO: Remove after handling
+                    e.printStackTrace();
+                }
             }
-            return card;
         } catch (NoSuchElementException e) {
             //TODO: Remove after handling
             e.printStackTrace();
         }
+        return null;
     }
 
     public void putDown() {
         //TODO: Implement
     }
 
-    private void notifyEndOfDeck() {
-        //TODO: Implement (needs Game object)
+    private void notifyEndOfDeck() throws NoSuchDeckTypeException{
+        switch (cardType){
+            case RESOURCECARD -> game.setResourceDeckEmpty(true);
+            case GOLDCARD -> game.setGoldDeckEmpty(true);
+            default -> throw new NoSuchDeckTypeException("Tried to notify the end of a non existing deck");
+        }
     }
 }

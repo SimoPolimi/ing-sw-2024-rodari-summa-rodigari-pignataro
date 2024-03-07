@@ -29,4 +29,28 @@ public class Game {
     public boolean kickPlayers(Player player) {
         return false;
     }
+
+    public boolean isResourceDeckEmpty() {
+        return isResourceDeckEmpty;
+    }
+
+    public void setResourceDeckEmpty(boolean resourceDeckEmpty) {
+        isResourceDeckEmpty = resourceDeckEmpty;
+    }
+
+    public boolean isGoldDeckEmpty() {
+        return isGoldDeckEmpty;
+    }
+
+    public void setGoldDeckEmpty(boolean goldDeckEmpty) {
+        isGoldDeckEmpty = goldDeckEmpty;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
 }
