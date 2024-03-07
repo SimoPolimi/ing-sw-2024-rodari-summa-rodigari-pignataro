@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"it.polimi.ingsw.gc42","l":"it.polimi.ingsw.gc42"},{"m":"it.polimi.ingsw.gc42","l":"it.polimi.ingsw.gc42.classes"},{"m":"it.polimi.ingsw.gc42","l":"it.polimi.ingsw.gc42.interfaces"}];updateSearchResults();

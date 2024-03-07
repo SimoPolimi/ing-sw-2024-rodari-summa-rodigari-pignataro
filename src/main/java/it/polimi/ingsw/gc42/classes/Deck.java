@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Implementation of Deck for Model
+ * A Deck is a group of Cards, all belonging the same Type
+ */
 public class Deck {
     // Attributes
     private List<Card> cards = new ArrayList<>();
@@ -13,6 +17,14 @@ public class Deck {
     private CardType cardType;
 
     // Constructor
+
+    /**
+     * Constructor Method
+     * @param cards: ArrayList containing the Card that make up the Deck
+     * @param counter: number of Cards contained inside the Deck
+     * @param game: reference to the Game that is being played
+     * @param cardType: Type of the Cards contained inside the Deck
+     */
     public Deck(List<Card> cards, int counter, Game game, CardType cardType) {
         this.cards = cards;
         this.counter = counter;
@@ -21,6 +33,7 @@ public class Deck {
     }
 
     // Getter and Setter
+
     public List<Card> getCards() {
         return cards;
     }
