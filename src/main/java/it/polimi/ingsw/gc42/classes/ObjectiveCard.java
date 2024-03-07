@@ -1,15 +1,25 @@
 package it.polimi.ingsw.gc42.classes;
 
-public class ObjectiveCard {
+import javafx.geometry.Side;
+
+public class ObjectiveCard extends Card {
     // Attributes
     private int points;
     private Objective objective;
 
     // Constructor Method
+
+    public ObjectiveCard(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y, int points, Objective objective) {
+        super(frontSide, backSide, isFrontFacing, id, x, y);
+        this.points = points;
+        this.objective = objective;
+    }
+
     public ObjectiveCard(int points, Objective objective) {
         this.points = points;
         this.objective = objective;
     }
+
 
     // Getters and Setters
 

@@ -29,6 +29,10 @@ public class Card implements CardObservable {
         this.y = y;
     }
 
+    public Card() {
+
+    }
+
     // Getter and Setter Methods
     public Side getFrontSide() {
         return frontSide;
