@@ -25,6 +25,10 @@ public class Hand {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Getter Method for startingHand
+     * //@return the Cards belonging to the Starting Hand
+     */
     public void getStartingHand() {
 
     }

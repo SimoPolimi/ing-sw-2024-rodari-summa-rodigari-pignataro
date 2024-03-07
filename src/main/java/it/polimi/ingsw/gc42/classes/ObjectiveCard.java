@@ -15,12 +15,6 @@ public class ObjectiveCard extends Card {
         this.objective = objective;
     }
 
-    public ObjectiveCard(int points, Objective objective) {
-        this.points = points;
-        this.objective = objective;
-    }
-
-
     // Getters and Setters
 
     public int getPoints() {

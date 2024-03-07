@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Implementation of Card for Model
+ * Test
  */
 public class Card implements CardObservable {
     // Attributes

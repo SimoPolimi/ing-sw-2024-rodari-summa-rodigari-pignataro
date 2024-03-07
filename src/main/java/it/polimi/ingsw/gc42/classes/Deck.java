@@ -34,43 +34,85 @@ public class Deck {
 
     // Getter and Setter
 
+    /**
+     * Getter Method for cards
+     * @return cards: ArrayList of Cards
+     */
     public List<Card> getCards() {
         return cards;
     }
 
+    /**
+     * Setter Method for cards
+     * @param cards: ArrayList of Cards
+     */
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
 
+    /**
+     * Getter Method for counter
+     * @return counter: number of Cards remaining inside the Deck
+     */
     public int getCounter() {
         return counter;
     }
 
+    /**
+     * Setter Method for counter
+     * @param counter: number of Cards remaining inside the Deck
+     */
     public void setCounter(int counter) {
         this.counter = counter;
     }
 
+    /**
+     * Setter Method for game
+     * @return reference to the currently playing Game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Setter Method for game
+     * @param game: reference to the currently playing Game
+     */
     public void setGame(Game game) {
         this.game = game;
     }
 
+    /**
+     * Getter Method for cardType
+     * @return the type of Cards the Deck is made of
+     */
     public CardType getCardType() {
         return cardType;
     }
 
+    /**
+     * Setter Method for cardType
+     * @param cardType: the type of Cards the Deck is made of
+     */
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
     // Methods
+
+    /**
+     * Shuffles in random order the Cards inside the Deck
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
+    /**
+     * Draws/Extracts a Card from the Deck.
+     * The drawn Card is the one at the TOP of the Deck.
+     * @return Card
+     * @throws NoSuchElementException if there are 0 Cards left inside the Deck
+     */
     public Card draw() throws NoSuchElementException{
         try {
             Card card = cards.getFirst();
@@ -91,10 +133,20 @@ public class Deck {
         return null;
     }
 
+    /**
+     * Draws a Card and places it in one of the Slots in the Visible Stage
+     */
     public void putDown() {
         //TODO: Implement
     }
 
+    /**
+     * Notifies the Game that the deck is empty.
+     * Game uses this info to determine if it needs to move to the endgame section.
+     * Each Deck carries with itself the information of the CardType of the Cards inside of it, so
+     * only the common Decks can effectively notify.
+     * @throws NoSuchDeckTypeException if a non-ResourceCard and non-GoldCard Deck tries to notify of being empty
+     */
     private void notifyEndOfDeck() throws NoSuchDeckTypeException{
         switch (cardType){
             case RESOURCECARD -> game.setResourceDeckEmpty(true);
