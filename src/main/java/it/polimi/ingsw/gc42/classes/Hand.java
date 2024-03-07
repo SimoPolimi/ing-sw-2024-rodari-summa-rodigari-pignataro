@@ -14,6 +14,10 @@ public class Hand {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Class constructor
+     * @param cards cards in player's hand
+     */
     public Hand(ArrayList<Card> cards) {
         this.cards = cards;
     }
