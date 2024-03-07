@@ -20,7 +20,7 @@ public class Card implements CardObservable {
 
     // Constructor Method
 
-    public Card(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y) {
+    protected Card(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
