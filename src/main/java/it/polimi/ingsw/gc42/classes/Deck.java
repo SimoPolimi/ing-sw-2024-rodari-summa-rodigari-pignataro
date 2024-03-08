@@ -87,6 +87,13 @@ public class Deck implements Observable {
 
     // Methods
 
+
+    public static Deck initDeck(CardType type) {
+        //TODO: Fully Implement
+        List<Card> cards = new ArrayList<>();
+        return new Deck(cards, cards.size(), type);
+    }
+
     /**
      * Shuffles in random order the Cards inside the Deck
      */

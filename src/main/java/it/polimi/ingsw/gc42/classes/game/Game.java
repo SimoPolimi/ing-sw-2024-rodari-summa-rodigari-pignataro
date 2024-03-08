@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.classes.game;
 
+import it.polimi.ingsw.gc42.classes.PlayingDecks;
 import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
 import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
@@ -11,12 +12,14 @@ public class Game implements DeckListener, PlayerListener {
 
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
+    private PlayingDecks playingDeck;
 
     private ArrayList<Player> players;
 
     public Game() {
         this.isResourceDeckEmpty = false;
         this.isGoldDeckEmpty = false;
+        this.playingDeck = PlayingDecks.initPlayingDeck();
     }
 
     public void startGame(){
