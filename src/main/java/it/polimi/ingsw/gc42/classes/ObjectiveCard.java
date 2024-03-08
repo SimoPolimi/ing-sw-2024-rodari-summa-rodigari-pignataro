@@ -2,6 +2,9 @@ package it.polimi.ingsw.gc42.classes;
 
 import javafx.geometry.Side;
 
+/**Implementation of an Objective Card for Model
+ *
+ */
 public class ObjectiveCard extends Card {
     // Attributes
     private int points;
