@@ -125,7 +125,7 @@ public class Deck implements Observable {
             counter--;
             if(counter == 0) {
                 try {
-                    notifyEndOfDeck();
+                    eventHappens();
                 } catch(NoSuchDeckTypeException e) {
                     //TODO: Remove after handling
                     e.printStackTrace();
@@ -152,13 +152,6 @@ public class Deck implements Observable {
      * only the common Decks can effectively notify.
      * @throws NoSuchDeckTypeException if a non-ResourceCard and non-GoldCard Deck tries to notify of being empty
      */
-    private void notifyEndOfDeck() throws NoSuchDeckTypeException{
-        switch (cardType){
-            case RESOURCECARD -> game.setResourceDeckEmpty(true);
-            case GOLDCARD -> game.setGoldDeckEmpty(true);
-            default -> throw new NoSuchDeckTypeException("Tried to notify the end of a non existing deck");
-        }
-    }
 
     @Override
     public void register(EventListener listener) {
@@ -166,14 +159,9 @@ public class Deck implements Observable {
     }
 
     @Override
-    public void eventHappens() {
+    public void eventHappens() throws NoSuchDeckTypeException {
         for (DeckListener d: listeners) {
-            try {
-                d.onDeckEmpty(cardType);
-            } catch (NoSuchDeckTypeException e) {
-                e.printStackTrace();
-                //TODO: Handle
-            }
+            d.onDeckEmpty(cardType);
         }
     }
 }
