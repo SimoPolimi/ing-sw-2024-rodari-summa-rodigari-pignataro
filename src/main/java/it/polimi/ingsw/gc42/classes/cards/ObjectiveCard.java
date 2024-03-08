@@ -1,6 +1,4 @@
-package it.polimi.ingsw.gc42.classes;
-
-import javafx.geometry.Side;
+package it.polimi.ingsw.gc42.classes.cards;
 
 /**Implementation of an Objective Card for Model
  *

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.gc42.classes;
 
+import it.polimi.ingsw.gc42.classes.cards.GoldCard;
+import it.polimi.ingsw.gc42.classes.cards.Objective;
+import it.polimi.ingsw.gc42.classes.cards.ResourceCard;
+
 public class PlayingDecks {
     public ResourceCard getResourceCardOne() {
         return resourceCardOne;

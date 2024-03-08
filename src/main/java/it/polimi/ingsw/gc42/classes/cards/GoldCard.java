@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.cards;
 
 /**
  * Implementation of a Gold Card for Model

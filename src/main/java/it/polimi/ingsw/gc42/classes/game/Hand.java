@@ -1,4 +1,6 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.game;
+
+import it.polimi.ingsw.gc42.classes.cards.Card;
 
 import java.util.ArrayList;
 

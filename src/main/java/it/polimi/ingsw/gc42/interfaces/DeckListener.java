@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc42.interfaces;
 
-import it.polimi.ingsw.gc42.classes.CardType;
-import it.polimi.ingsw.gc42.classes.NoSuchDeckTypeException;
+import it.polimi.ingsw.gc42.classes.cards.CardType;
+import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
 
 import java.util.EventListener;
 

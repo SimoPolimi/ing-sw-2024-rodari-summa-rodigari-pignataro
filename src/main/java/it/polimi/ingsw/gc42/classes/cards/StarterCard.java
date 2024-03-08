@@ -1,6 +1,4 @@
-package it.polimi.ingsw.gc42.classes;
-
-import javafx.geometry.Side;
+package it.polimi.ingsw.gc42.classes.cards;
 
 public class StarterCard extends Card{
     // Attributes

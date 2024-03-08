@@ -1,5 +1,7 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.game;
 
+import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
+import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
 
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class Game implements DeckListener {
     }
 
     @Override
-    public void onDeckEmpty(CardType type) throws NoSuchDeckTypeException{
+    public void onDeckEmpty(CardType type) throws NoSuchDeckTypeException {
         switch (type) {
             case RESOURCECARD: setResourceDeckEmpty(true);
                 break;

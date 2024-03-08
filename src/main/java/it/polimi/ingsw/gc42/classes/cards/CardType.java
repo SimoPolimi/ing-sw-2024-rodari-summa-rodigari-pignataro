@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.cards;
 
 /**
  * Enumeration of all possible Types of Cards.

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.cards;
 
 /**
  * Implementation of a Corner containing a Kingdom Type Resource for Model

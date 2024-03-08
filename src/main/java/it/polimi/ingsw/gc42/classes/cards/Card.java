@@ -1,8 +1,7 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.cards;
 
 import it.polimi.ingsw.gc42.interfaces.CardObservable;
 import javafx.beans.InvalidationListener;
-import javafx.geometry.Side;
 
 /**
  * Implementation of Card for Model

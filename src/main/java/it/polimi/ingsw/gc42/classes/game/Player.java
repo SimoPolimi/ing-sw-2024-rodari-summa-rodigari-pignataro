@@ -1,12 +1,12 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.classes.game;
 
+import it.polimi.ingsw.gc42.exceptions.NoSuchPlayerException;
+import it.polimi.ingsw.gc42.classes.cards.Objective;
 import it.polimi.ingsw.gc42.interfaces.PlayerLister;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
 import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Player implements Observable {
     private ArrayList<PlayerLister> listeners = new ArrayList<>();

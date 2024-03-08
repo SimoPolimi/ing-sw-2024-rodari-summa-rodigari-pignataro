@@ -1,5 +1,9 @@
 package it.polimi.ingsw.gc42.classes;
 
+import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
+import it.polimi.ingsw.gc42.classes.cards.Card;
+import it.polimi.ingsw.gc42.classes.cards.CardType;
+import it.polimi.ingsw.gc42.classes.game.Game;
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
