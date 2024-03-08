@@ -3,8 +3,6 @@ package it.polimi.ingsw.gc42;
 import it.polimi.ingsw.gc42.classes.Deck;
 import it.polimi.ingsw.gc42.classes.cards.*;
 import it.polimi.ingsw.gc42.classes.game.Game;
-import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
-import it.polimi.ingsw.gc42.interfaces.DeckListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -37,6 +35,4 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-
 }

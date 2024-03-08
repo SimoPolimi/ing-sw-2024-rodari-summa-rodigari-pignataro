@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.classes.game;
 
+import it.polimi.ingsw.gc42.classes.Deck;
 import it.polimi.ingsw.gc42.classes.PlayingDecks;
 
 import it.polimi.ingsw.gc42.interfaces.Listener;

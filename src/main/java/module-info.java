@@ -8,8 +8,6 @@ module it.polimi.ingsw.gc42 {
     exports it.polimi.ingsw.gc42;
     exports it.polimi.ingsw.gc42.classes;
     opens it.polimi.ingsw.gc42.classes to javafx.fxml;
-    exports it.polimi.ingsw.gc42.exceptions;
-    opens it.polimi.ingsw.gc42.exceptions to javafx.fxml;
     exports it.polimi.ingsw.gc42.classes.cards;
     opens it.polimi.ingsw.gc42.classes.cards to javafx.fxml;
     exports it.polimi.ingsw.gc42.classes.game;
