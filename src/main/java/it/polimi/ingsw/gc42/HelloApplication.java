@@ -39,19 +39,4 @@ public class HelloApplication extends Application {
     }
 
 
-
-
-    // Test Method
-    public static boolean testCard() {
-        ResourceCard c = new ResourceCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null), true, 1,
-                0, 0, Resource.FEATHER, 5);
-        List<Card> a = new ArrayList<Card>();
-        a.add(c);
-        Game g = new Game();
-        Deck d = new Deck(a, 1, CardType.RESOURCECARD);
-        d.register(g);
-        d.draw();
-        return g.isResourceDeckEmpty();
-    }
 }
