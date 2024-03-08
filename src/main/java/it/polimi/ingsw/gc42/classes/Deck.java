@@ -1,5 +1,8 @@
 package it.polimi.ingsw.gc42.classes;
 
+import it.polimi.ingsw.gc42.interfaces.DeckListener;
+import it.polimi.ingsw.gc42.interfaces.DeckObservable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,8 +12,9 @@ import java.util.NoSuchElementException;
  * Implementation of Deck for Model
  * A Deck is a group of Cards, all belonging the same Type
  */
-public class Deck {
+public class Deck implements DeckObservable {
     // Attributes
+    private List<DeckListener> listeners = new ArrayList<>();
     private List<Card> cards = new ArrayList<>();
     private int counter;
     private Game game;
@@ -152,6 +156,23 @@ public class Deck {
             case RESOURCECARD -> game.setResourceDeckEmpty(true);
             case GOLDCARD -> game.setGoldDeckEmpty(true);
             default -> throw new NoSuchDeckTypeException("Tried to notify the end of a non existing deck");
+        }
+    }
+
+    @Override
+    public void register(DeckListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void eventHappens() {
+        for (DeckListener d: listeners) {
+            try {
+                d.onDeckEmpty(cardType);
+            } catch (NoSuchDeckTypeException e) {
+                e.printStackTrace();
+                //TODO: Handle
+            }
         }
     }
 }
