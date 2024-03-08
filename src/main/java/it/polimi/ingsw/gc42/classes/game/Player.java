@@ -1,13 +1,15 @@
 package it.polimi.ingsw.gc42.classes.game;
 
+import it.polimi.ingsw.gc42.classes.cards.GoldCard;
 import it.polimi.ingsw.gc42.classes.cards.Objective;
+import it.polimi.ingsw.gc42.classes.cards.ResourceCard;
 import it.polimi.ingsw.gc42.interfaces.Listener;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
 import java.util.ArrayList;
 
 public class Player implements Observable {
-    private ArrayList<Listener> listeners = new ArrayList<>();
+
     public Token getToken() {
         return token;
     }
@@ -40,7 +42,7 @@ public class Player implements Observable {
         this.objective = objective;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private ArrayList<Listener> listeners = new ArrayList<>();
 
     private boolean isFirst;
     private Token token;
@@ -49,7 +51,6 @@ public class Player implements Observable {
     private Hand hand;
     private PlayField playField;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Player(boolean isFirst, int points, Token token, Objective objective) {
 
         this.isFirst = isFirst;
@@ -59,10 +60,14 @@ public class Player implements Observable {
 
     }
 
+    //TODO javadoc notifyMaxPointsReached
     public void notifyMaxPointsReached() {
         notifyWinner();
     }
 
+    /**
+     * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
+     */
     public void setStartingHand(){
         // TODO: draw
     }
@@ -87,5 +92,23 @@ public class Player implements Observable {
         for (Listener p: listeners) {
             p.onEvent();
         }
+    }
+
+    /**
+     * Draws a ResourceCard from the resource deck
+     * @param number the slot from where the Card is drawn
+     * @return the ResourceCard drawn
+     */
+    public ResourceCard drawResourceCard(int number){
+        return null;
+    }
+
+    /**
+     * Draws a GoldCard from the gold deck
+     * @param number the slot from where the Card is drawn
+     * @return the GoldCard drawn
+     */
+    public GoldCard drawGoldCard(int number){
+        return null;
     }
 }

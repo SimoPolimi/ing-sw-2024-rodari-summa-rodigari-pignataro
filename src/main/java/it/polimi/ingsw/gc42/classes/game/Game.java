@@ -51,6 +51,11 @@ public class Game {
         }
     }
 
+    /**
+     * Add the Player from the game
+     * @param player the player to be added from the game
+     */
+    //TODO make it boolean
     public void addPlayer(Player player) {
         player.setListener(new Listener() {
             @Override
@@ -62,6 +67,11 @@ public class Game {
         players.add(player);
     }
 
+    /**
+     * Remove the Player from the game
+     * @param player the player to be removed from the game
+     * @return true if the Player is removed and false otherwise
+     */
     public boolean kickPlayer(Player player) {
         return false;
     }

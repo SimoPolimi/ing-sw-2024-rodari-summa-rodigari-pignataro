@@ -139,8 +139,5 @@ public class PlayingDecks {
         }
     }
 
-    // TODO add last 2 methods (draw)
-
-
 
 }

@@ -14,7 +14,6 @@ public class Hand {
         this.cards = cards;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Class constructor
@@ -25,8 +24,6 @@ public class Hand {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Getter Method for startingHand
      * //@return the Cards belonging to the Starting Hand
@@ -34,4 +31,15 @@ public class Hand {
     public void getStartingHand() {
 
     }
+
+    /**
+     * Move a Card from the Player's Hand to the Player's Field in position (x,y)
+     * @param card the Card the Player wants to play
+     * @param x coordinate x of the position where the card will be placed
+     * @param y coordinate y of the position where the card will be placed
+     */
+    public void playCard(Card card, int x, int y){
+
+    }
+
 }
