@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc42;
 import it.polimi.ingsw.gc42.classes.Deck;
 import it.polimi.ingsw.gc42.classes.cards.*;
 import it.polimi.ingsw.gc42.classes.game.Game;
+import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
+import it.polimi.ingsw.gc42.interfaces.DeckListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +42,7 @@ public class HelloApplication extends Application {
 
 
     // Test Method
-    public boolean testCard() {
+    public static boolean testCard() {
         ResourceCard c = new ResourceCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true, 1,
                 0, 0, Resource.FEATHER, 5);
@@ -47,6 +50,7 @@ public class HelloApplication extends Application {
         a.add(c);
         Game g = new Game();
         Deck d = new Deck(a, 1, g, CardType.RESOURCECARD);
+        d.register(g);
         d.draw();
         return g.isResourceDeckEmpty();
     }
