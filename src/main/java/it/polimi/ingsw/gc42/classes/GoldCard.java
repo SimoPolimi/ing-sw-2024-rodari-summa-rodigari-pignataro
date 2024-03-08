@@ -31,7 +31,7 @@ public class GoldCard extends Card{
      * @param objective: Objective that defines how the earned points are calculated (null if not present)
      * @param earnedPoints: points the card gives once it's placed (0 if it doesn't give points)
      */
-    public GoldCard(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y, int plantKingdomPoints, int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints) {
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, int plantKingdomPoints, int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints) {
         super(frontSide, backSide, isFrontFacing, id, x, y);
         this.plantKingdomPoints = plantKingdomPoints;
         this.animalKingdomPoints = animalKingdomPoints;
