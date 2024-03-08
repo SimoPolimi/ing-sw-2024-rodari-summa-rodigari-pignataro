@@ -12,7 +12,7 @@ public class ObjectiveCard extends Card {
 
     // Constructor Method
 
-    public ObjectiveCard(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y, int points, Objective objective) {
+    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, int points, Objective objective) {
         super(frontSide, backSide, isFrontFacing, id, x, y);
         this.points = points;
         this.objective = objective;

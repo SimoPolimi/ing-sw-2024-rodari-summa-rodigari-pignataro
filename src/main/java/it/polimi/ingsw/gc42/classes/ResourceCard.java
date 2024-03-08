@@ -8,7 +8,7 @@ public class ResourceCard extends Card{
     private int earnedPoints;
 
     // Constructor Method
-    public ResourceCard(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResource, int earnedPoints) {
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResource, int earnedPoints) {
         super(frontSide, backSide, isFrontFacing, id, x, y);
         this.permanentResource = permanentResource;
         this.earnedPoints = earnedPoints;

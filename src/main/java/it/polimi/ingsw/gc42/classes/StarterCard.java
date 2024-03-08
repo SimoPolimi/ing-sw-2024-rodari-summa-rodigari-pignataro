@@ -8,7 +8,7 @@ public class StarterCard extends Card{
     private Resource permanentResourceTwo;
 
     // Constructor Method
-    public StarterCard(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResourceOne, Resource permanentResourceTwo) {
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResourceOne, Resource permanentResourceTwo) {
         super(frontSide, backSide, isFrontFacing, id, x, y);
         this.permanentResourceOne = permanentResourceOne;
         this.permanentResourceTwo = permanentResourceTwo;
