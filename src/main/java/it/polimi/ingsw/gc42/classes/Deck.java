@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc42.classes;
 
-import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
 import it.polimi.ingsw.gc42.classes.cards.Card;
 import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.classes.game.Game;
-import it.polimi.ingsw.gc42.interfaces.DeckListener;
+import it.polimi.ingsw.gc42.interfaces.Listener;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
 import java.util.*;
@@ -15,7 +14,7 @@ import java.util.*;
  */
 public class Deck implements Observable {
     // Attributes
-    private List<DeckListener> listeners = new ArrayList<>();
+    private List<Listener> listeners = new ArrayList<>();
     private List<Card> cards = new ArrayList<>();
     private int counter;
     private Game game;
@@ -113,14 +112,9 @@ public class Deck implements Observable {
             cards.removeFirst();
             counter--;
             if(counter == 0) {
-                try {
-                    eventHappens();
-                } catch(NoSuchDeckTypeException e) {
-                    //TODO: Remove after handling
-                    e.printStackTrace();
-                }
-                return card;
+                notifyListeners();
             }
+            return card;
         } catch (NoSuchElementException e) {
             //TODO: Remove after handling
             e.printStackTrace();
@@ -136,19 +130,19 @@ public class Deck implements Observable {
     }
 
     @Override
-    public void register(EventListener listener) {
-        listeners.add((DeckListener) listener);
+    public void setListener(Listener listener) {
+        listeners.add(listener);
     }
 
     @Override
-    public void unregister(EventListener listener) {
-        listeners.remove((DeckListener) listener);
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
     }
 
     @Override
-    public void eventHappens() throws NoSuchDeckTypeException {
-        for (DeckListener d: listeners) {
-            d.onEmptyDeck(cardType);
+    public void notifyListeners() {
+        for (Listener d: listeners) {
+            d.onEvent();
         }
     }
 }
