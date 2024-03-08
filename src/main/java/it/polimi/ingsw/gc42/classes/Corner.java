@@ -9,6 +9,29 @@ public class Corner {
     // Attributes
     protected boolean isCovered;
 
+    // Constructor
+
+    /**
+     * Constructor Method with the option to define the isCovered status
+     * USE ONLY if you really need to specify the isCovered status.
+     * OTHERWISE USE the default constructor
+     * @param isCovered: boolean that shows if that Corner is covered or if it's shown.
+     *                 Only shown or un-covered Corners are used to calculate points and determine if a certain
+     *                 objective is met or not. Covered Corners are ignored
+     */
+    public Corner(boolean isCovered) {
+        this.isCovered = isCovered;
+    }
+
+    /**
+     * DEFAULT Constructor Method
+     * USE THIS to create a generic Corner
+     * isCovered is ALWAYS set to false (default value)
+     */
+    public Corner() {
+        this.isCovered = false;
+    }
+
     // Getters and Setters Methods
 
     /**
