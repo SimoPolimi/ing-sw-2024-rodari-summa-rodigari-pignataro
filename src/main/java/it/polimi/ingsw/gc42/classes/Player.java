@@ -1,6 +1,15 @@
 package it.polimi.ingsw.gc42.classes;
 
-public class Player {
+import it.polimi.ingsw.gc42.interfaces.PlayerLister;
+import it.polimi.ingsw.gc42.interfaces.Observable;
+
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+public class Player implements Observable {
+    private ArrayList<PlayerLister> listeners = new ArrayList<>();
     public Token getToken() {
         return token;
     }
@@ -52,17 +61,44 @@ public class Player {
 
     }
 
-    public void notifyMaxPointsReached(){
-
+    public void notifyMaxPointsReached() throws NoSuchPlayerException {
+        try{
+            //TODO: write winning condition
+            notifyWinner();
+        } catch (NoSuchPlayerException e) {
+            //TODO: Remove after handling
+            e.printStackTrace();
+        }
     }
 
     public void setStartingHand(){
         // TODO: draw
     }
 
+    private void notifyWinner() throws NoSuchPlayerException{
+        //TODO write method
+        if(true) {
+        }
+        else {
+            throw new NoSuchPlayerException("Tried to notify the victory of a non existing player");
+
+        }
+    }
+
+    @Override
+    public void register(EventListener listener) {
+        listeners.add((PlayerLister) listener);
+    }
 
 
-
-
-
+    public void eventHappens() {
+        for (PlayerLister p: listeners) {
+            try {
+                p.onWinner();
+            } catch (NoSuchPlayerException e) {
+                e.printStackTrace();
+                //TODO: Handle
+            }
+        }
+    }
 }
