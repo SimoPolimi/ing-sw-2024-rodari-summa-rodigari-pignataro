@@ -6,5 +6,6 @@ import java.util.EventListener;
 
 public interface Observable {
     void register(EventListener listener);
+    void unregister(EventListener listener);
     void eventHappens() throws NoSuchDeckTypeException;
 }

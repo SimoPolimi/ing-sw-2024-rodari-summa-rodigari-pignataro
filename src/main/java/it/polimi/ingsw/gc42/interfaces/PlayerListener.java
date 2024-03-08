@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc42.interfaces;
 
 import java.util.EventListener;
 
-public interface PlayerLister extends EventListener {
+public interface PlayerListener extends EventListener {
     void onWinner();
 
 }

@@ -49,7 +49,7 @@ public class HelloApplication extends Application {
         List<Card> a = new ArrayList<Card>();
         a.add(c);
         Game g = new Game();
-        Deck d = new Deck(a, 1, g, CardType.RESOURCECARD);
+        Deck d = new Deck(a, 1, CardType.RESOURCECARD);
         d.register(g);
         d.draw();
         return g.isResourceDeckEmpty();

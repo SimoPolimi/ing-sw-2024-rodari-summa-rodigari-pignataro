@@ -27,13 +27,11 @@ public class Deck implements Observable {
      * Constructor Method
      * @param cards: ArrayList containing the Card that make up the Deck
      * @param counter: number of Cards contained inside the Deck
-     * @param game: reference to the Game that is being played
      * @param cardType: Type of the Cards contained inside the Deck
      */
-    public Deck(List<Card> cards, int counter, Game game, CardType cardType) {
+    public Deck(List<Card> cards, int counter, CardType cardType) {
         this.cards = cards;
         this.counter = counter;
-        this.game = game;
         this.cardType = cardType;
     }
 
@@ -69,22 +67,6 @@ public class Deck implements Observable {
      */
     public void setCounter(int counter) {
         this.counter = counter;
-    }
-
-    /**
-     * Setter Method for game
-     * @return reference to the currently playing Game
-     */
-    public Game getGame() {
-        return game;
-    }
-
-    /**
-     * Setter Method for game
-     * @param game: reference to the currently playing Game
-     */
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     /**
@@ -130,6 +112,7 @@ public class Deck implements Observable {
                     //TODO: Remove after handling
                     e.printStackTrace();
                 }
+                return card;
             }
         } catch (NoSuchElementException e) {
             //TODO: Remove after handling
@@ -145,23 +128,20 @@ public class Deck implements Observable {
         //TODO: Implement
     }
 
-    /**
-     * Notifies the Game that the deck is empty.
-     * Game uses this info to determine if it needs to move to the endgame section.
-     * Each Deck carries with itself the information of the CardType of the Cards inside of it, so
-     * only the common Decks can effectively notify.
-     * @throws NoSuchDeckTypeException if a non-ResourceCard and non-GoldCard Deck tries to notify of being empty
-     */
-
     @Override
     public void register(EventListener listener) {
         listeners.add((DeckListener) listener);
     }
 
     @Override
+    public void unregister(EventListener listener) {
+        listeners.remove((DeckListener) listener);
+    }
+
+    @Override
     public void eventHappens() throws NoSuchDeckTypeException {
         for (DeckListener d: listeners) {
-            d.onDeckEmpty(cardType);
+            d.onEmptyDeck(cardType);
         }
     }
 }

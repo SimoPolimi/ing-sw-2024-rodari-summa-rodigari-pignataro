@@ -3,11 +3,11 @@ package it.polimi.ingsw.gc42.classes.game;
 import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
 import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
-import it.polimi.ingsw.gc42.interfaces.PlayerLister;
+import it.polimi.ingsw.gc42.interfaces.PlayerListener;
 
 import java.util.ArrayList;
 
-public class Game implements DeckListener, PlayerLister {
+public class Game implements DeckListener, PlayerListener {
 
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
@@ -60,7 +60,7 @@ public class Game implements DeckListener, PlayerLister {
     }
 
     @Override
-    public void onDeckEmpty(CardType type) throws NoSuchDeckTypeException {
+    public void onEmptyDeck(CardType type) throws NoSuchDeckTypeException {
         switch (type) {
             case RESOURCECARD: setResourceDeckEmpty(true);
                 break;

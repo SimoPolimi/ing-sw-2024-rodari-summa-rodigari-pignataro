@@ -1,14 +1,15 @@
 package it.polimi.ingsw.gc42.classes.game;
 
 import it.polimi.ingsw.gc42.classes.cards.Objective;
-import it.polimi.ingsw.gc42.interfaces.PlayerLister;
+import it.polimi.ingsw.gc42.interfaces.DeckListener;
+import it.polimi.ingsw.gc42.interfaces.PlayerListener;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
 import java.util.ArrayList;
 import java.util.EventListener;
 
 public class Player implements Observable {
-    private ArrayList<PlayerLister> listeners = new ArrayList<>();
+    private ArrayList<PlayerListener> listeners = new ArrayList<>();
     public Token getToken() {
         return token;
     }
@@ -75,12 +76,17 @@ public class Player implements Observable {
 
     @Override
     public void register(EventListener listener) {
-        listeners.add((PlayerLister) listener);
+        listeners.add((PlayerListener) listener);
+    }
+
+    @Override
+    public void unregister(EventListener listener) {
+        listeners.remove((PlayerListener) listener);
     }
 
 
     public void eventHappens() {
-        for (PlayerLister p: listeners) {
+        for (PlayerListener p: listeners) {
             p.onWinner();
         }
     }
