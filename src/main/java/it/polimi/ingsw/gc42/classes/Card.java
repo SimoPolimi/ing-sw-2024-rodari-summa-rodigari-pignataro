@@ -4,17 +4,14 @@ import it.polimi.ingsw.gc42.interfaces.CardObservable;
 import javafx.beans.InvalidationListener;
 import javafx.geometry.Side;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Implementation of Card for Model
  * Test
  */
 public class Card implements CardObservable {
     // Attributes
-    private Side frontSide;
-    private Side backSide;
+    private CardSide frontSide;
+    private CardSide backSide;
     private boolean isFrontFacing;
     private int id;
     private int x;
@@ -33,7 +30,7 @@ public class Card implements CardObservable {
      * @param x                 horizontal coordinate for the Card's position on the table (null if not placed)
      * @param y                 vertical coordinate for the Card's position on the table (null if not placed)
      */
-    protected Card(Side frontSide, Side backSide, boolean isFrontFacing, int id, int x, int y) {
+    protected Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
@@ -49,7 +46,7 @@ public class Card implements CardObservable {
      * @param isFrontFacing     true if the Card is showing the front Side, false if it is showing the back Side
      * @param id                unique identifier for the specific Card
      */
-    public Card(Side frontSide, Side backSide, boolean isFrontFacing, int id) {
+    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
@@ -62,7 +59,7 @@ public class Card implements CardObservable {
      * Getter Method for frontSide
      * @return frontSide: Side shown on the front of the Card
      */
-    public Side getFrontSide() {
+    public CardSide getFrontSide() {
         return frontSide;
     }
 
@@ -70,7 +67,7 @@ public class Card implements CardObservable {
      * Setter Method for frontSide
      * @param frontSide: group of Corners that make the front Side of the card
      */
-    public void setFrontSide(Side frontSide) {
+    public void setFrontSide(CardSide frontSide) {
         this.frontSide = frontSide;
     }
 
@@ -78,7 +75,7 @@ public class Card implements CardObservable {
      * Getter Method for backSide
      * @return backSide: Side shown on the back of the Card
      */
-    public Side getBackSide() {
+    public CardSide getBackSide() {
         return backSide;
     }
 
@@ -86,7 +83,7 @@ public class Card implements CardObservable {
      * Setter Method for backSide
      * @param backSide: group of Corners that make the back Side of the card
      */
-    public void setBackSide(Side backSide) {
+    public void setBackSide(CardSide backSide) {
         this.backSide = backSide;
     }
 

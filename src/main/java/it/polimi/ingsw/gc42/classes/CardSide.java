@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.classes;
 
-public class Side {
+public class CardSide {
     // Attributes
     private Corner upperLeftCorner;
     private Corner upperRightCorner;
@@ -9,7 +9,7 @@ public class Side {
 
     // Constructor Method
 
-    public Side(Corner upperLeftCorner, Corner upperRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner) {
+    public CardSide(Corner upperLeftCorner, Corner upperRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner) {
         this.upperLeftCorner = upperLeftCorner;
         this.upperRightCorner = upperRightCorner;
         this.bottomLeftCorner = bottomLeftCorner;
