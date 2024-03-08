@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42.classes.game;
 
-import it.polimi.ingsw.gc42.exceptions.NoSuchPlayerException;
 import it.polimi.ingsw.gc42.classes.cards.Objective;
 import it.polimi.ingsw.gc42.interfaces.PlayerLister;
 import it.polimi.ingsw.gc42.interfaces.Observable;
@@ -61,28 +60,17 @@ public class Player implements Observable {
 
     }
 
-    public void notifyMaxPointsReached() throws NoSuchPlayerException {
-        try{
-            //TODO: write winning condition
-            notifyWinner();
-        } catch (NoSuchPlayerException e) {
-            //TODO: Remove after handling
-            e.printStackTrace();
-        }
+    public void notifyMaxPointsReached() {
+        notifyWinner();
     }
 
     public void setStartingHand(){
         // TODO: draw
     }
 
-    private void notifyWinner() throws NoSuchPlayerException{
+    private void notifyWinner(){
         //TODO write method
-        if(true) {
-        }
-        else {
-            throw new NoSuchPlayerException("Tried to notify the victory of a non existing player");
 
-        }
     }
 
     @Override
@@ -93,12 +81,7 @@ public class Player implements Observable {
 
     public void eventHappens() {
         for (PlayerLister p: listeners) {
-            try {
-                p.onWinner();
-            } catch (NoSuchPlayerException e) {
-                e.printStackTrace();
-                //TODO: Handle
-            }
+            p.onWinner();
         }
     }
 }

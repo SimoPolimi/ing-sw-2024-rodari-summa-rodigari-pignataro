@@ -3,10 +3,11 @@ package it.polimi.ingsw.gc42.classes.game;
 import it.polimi.ingsw.gc42.exceptions.NoSuchDeckTypeException;
 import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
+import it.polimi.ingsw.gc42.interfaces.PlayerLister;
 
 import java.util.ArrayList;
 
-public class Game implements DeckListener {
+public class Game implements DeckListener, PlayerLister {
 
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
@@ -67,5 +68,9 @@ public class Game implements DeckListener {
                 break;
             default: throw new NoSuchDeckTypeException("Incorrect Deck Type");
         }
+    }
+
+    public void onWinner() {
+        endGame();
     }
 }
