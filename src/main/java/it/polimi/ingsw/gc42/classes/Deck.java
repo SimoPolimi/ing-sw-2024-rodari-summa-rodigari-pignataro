@@ -1,18 +1,15 @@
 package it.polimi.ingsw.gc42.classes;
 
 import it.polimi.ingsw.gc42.interfaces.DeckListener;
-import it.polimi.ingsw.gc42.interfaces.DeckObservable;
+import it.polimi.ingsw.gc42.interfaces.Observable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Implementation of Deck for Model
  * A Deck is a group of Cards, all belonging the same Type
  */
-public class Deck implements DeckObservable {
+public class Deck implements Observable {
     // Attributes
     private List<DeckListener> listeners = new ArrayList<>();
     private List<Card> cards = new ArrayList<>();
@@ -160,8 +157,8 @@ public class Deck implements DeckObservable {
     }
 
     @Override
-    public void register(DeckListener listener) {
-        listeners.add(listener);
+    public void register(EventListener listener) {
+        listeners.add((DeckListener) listener);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc42.classes;
 
-import javafx.geometry.Side;
-
 /**
  * Implementation of a Gold Card for Model
  */
