@@ -42,6 +42,22 @@ public class Player implements Observable {
         this.objective = objective;
     }
 
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
+    public PlayField getPlayField() {
+        return playField;
+    }
+
+    public void setPlayField(PlayField playField) {
+        this.playField = playField;
+    }
+
     private ArrayList<Listener> listeners = new ArrayList<>();
 
     private boolean isFirst;
@@ -51,12 +67,13 @@ public class Player implements Observable {
     private Hand hand;
     private PlayField playField;
 
-    public Player(boolean isFirst, int points, Token token, Objective objective) {
+    public Player(boolean isFirst, int points, Token token, Objective objective, Hand hand) {
 
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
         this.objective = objective;
+        this.hand = hand;
 
     }
 
@@ -65,14 +82,7 @@ public class Player implements Observable {
         notifyWinner();
     }
 
-    /**
-     * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
-     */
-    public void setStartingHand(){
-        // TODO: draw
-    }
-
-    private void notifyWinner(){
+    private void notifyWinner() {
         //TODO write method
 
     }
@@ -89,26 +99,8 @@ public class Player implements Observable {
 
 
     public void notifyListeners() {
-        for (Listener p: listeners) {
+        for (Listener p : listeners) {
             p.onEvent();
         }
-    }
-
-    /**
-     * Draws a ResourceCard from the resource deck
-     * @param number the slot from where the Card is drawn
-     * @return the ResourceCard drawn
-     */
-    public ResourceCard drawResourceCard(int number){
-        return null;
-    }
-
-    /**
-     * Draws a GoldCard from the gold deck
-     * @param number the slot from where the Card is drawn
-     * @return the GoldCard drawn
-     */
-    public GoldCard drawGoldCard(int number){
-        return null;
     }
 }

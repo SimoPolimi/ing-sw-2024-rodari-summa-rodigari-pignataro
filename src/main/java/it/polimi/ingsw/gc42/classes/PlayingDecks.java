@@ -103,12 +103,12 @@ public class PlayingDecks {
         Deck starterCardDeck = Deck.initDeck(CardType.STARTERCARD);
         return new PlayingDecks((ResourceCard) resourceCardDeck.draw(), (ResourceCard) resourceCardDeck.draw(),
                 (GoldCard) goldCardDeck.draw(), (GoldCard) goldCardDeck.draw(),
-                ((ObjectiveCard)objectiveCardDeck.draw()).getObjective(), ((ObjectiveCard) objectiveCardDeck.draw()).getObjective(),
+                ((ObjectiveCard) objectiveCardDeck.draw()).getObjective(), ((ObjectiveCard) objectiveCardDeck.draw()).getObjective(),
                 resourceCardDeck, goldCardDeck, starterCardDeck, objectiveCardDeck);
     }
 
     // Constructor Method only used internally
-    private PlayingDecks(ResourceCard resourceCardOne, ResourceCard resourceCardTwo, GoldCard goldCardOne, GoldCard goldCardTwo,
+    public PlayingDecks(ResourceCard resourceCardOne, ResourceCard resourceCardTwo, GoldCard goldCardOne, GoldCard goldCardTwo,
                         Objective commonObjectiveOne, Objective commonObjectiveTwo, Deck resourceCardDeck, Deck goldCardDeck,
                         Deck starterCardDeck, Deck objectiveDeck) {
         this.resourceCardOne = resourceCardOne;
@@ -123,21 +123,40 @@ public class PlayingDecks {
         ObjectiveDeck = objectiveDeck;
     }
 
-    public ResourceCard getResourceCard(int number){
-        if(number==1){
-            return resourceCardOne;
-        }else{
-            return resourceCardTwo;
+    /**
+     * Get the ResourceCard placed in the specified slot
+     *
+     * @param number is the slot of the Card to be picked
+     * @return the chosen ResourceCard
+     */
+    public ResourceCard getResourceCard(int number) {
+        switch (number) {
+            case 1:
+                return resourceCardOne;
+            case 2:
+                return resourceCardTwo;
+            default:
+                //TODO errore
+                return null;
         }
     }
 
-    public GoldCard getGoldCard(int number){
-        if(number==1){
-            return goldCardOne;
-        }else{
-            return goldCardTwo;
+    /**
+     * Get the GoldCard placed in the specified slot
+     *
+     * @param number is the slot of the Card to be picked
+     * @return the chosen GoldCard
+     */
+    public GoldCard getGoldCard(int number) {
+        switch (number) {
+            case 1:
+                return goldCardOne;
+            case 2:
+                return goldCardTwo;
+            default:
+                //TODO errore
+                return null;
         }
     }
-
 
 }
