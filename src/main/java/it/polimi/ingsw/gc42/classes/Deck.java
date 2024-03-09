@@ -90,7 +90,9 @@ public class Deck implements Observable {
     public static Deck initDeck(CardType type) {
         //TODO: Fully Implement
         List<Card> cards = new ArrayList<>();
-        return new Deck(cards, cards.size(), type);
+        Deck deck =  new Deck(cards, cards.size(), type);
+        deck.shuffle();
+        return deck;
     }
 
     /**
