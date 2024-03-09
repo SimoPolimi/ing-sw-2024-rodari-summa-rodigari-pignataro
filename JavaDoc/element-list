@@ -1,4 +1,6 @@
 module:it.polimi.ingsw.gc42
 it.polimi.ingsw.gc42
 it.polimi.ingsw.gc42.classes
+it.polimi.ingsw.gc42.classes.cards
+it.polimi.ingsw.gc42.classes.game
 it.polimi.ingsw.gc42.interfaces
