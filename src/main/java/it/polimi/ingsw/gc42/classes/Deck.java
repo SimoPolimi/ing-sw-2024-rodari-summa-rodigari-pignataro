@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc42.classes;
 
 import it.polimi.ingsw.gc42.classes.cards.Card;
 import it.polimi.ingsw.gc42.classes.cards.CardType;
-import it.polimi.ingsw.gc42.classes.game.Game;
 import it.polimi.ingsw.gc42.interfaces.Listener;
 import it.polimi.ingsw.gc42.interfaces.Observable;
 
@@ -14,8 +13,8 @@ import java.util.*;
  */
 public class Deck implements Observable {
     // Attributes
-    private List<Listener> listeners = new ArrayList<>();
-    private List<Card> cards = new ArrayList<>();
+    private ArrayList<Listener> listeners = new ArrayList<>();
+    private List<Card> cards;
     private int counter;
     private CardType cardType;
 

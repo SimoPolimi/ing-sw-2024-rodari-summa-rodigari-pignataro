@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc42.classes.game;
 
 import it.polimi.ingsw.gc42.classes.Deck;
-import it.polimi.ingsw.gc42.classes.PlayingDecks;
+import it.polimi.ingsw.gc42.classes.PlayingDeck;
 
+import it.polimi.ingsw.gc42.classes.cards.CardType;
 import it.polimi.ingsw.gc42.interfaces.Listener;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ public class Game {
     private Deck starterDeck;
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
-    private PlayingDecks playingDeck;
     private boolean playerHasReachedTwentyPoints;
 
     private ArrayList<Player> players;
@@ -24,15 +24,15 @@ public class Game {
         this.isResourceDeckEmpty = false;
         this.isGoldDeckEmpty = false;
         this.playerHasReachedTwentyPoints = false;
-        this.playingDeck = PlayingDecks.initPlayingDeck();
-        this.playingDeck.getResourceCardDeck().setListener(new Listener() {
+        initPlayingDecks();
+        resourcePlayingDeck.getDeck().setListener(new Listener() {
             @Override
             public void onEvent() {
                 setResourceDeckEmpty(true);
                 checkEndGame();
             }
         });
-        this.playingDeck.getGoldCardDeck().setListener(new Listener() {
+        goldPlayingDeck.getDeck().setListener(new Listener() {
             @Override
             public void onEvent() {
                 setGoldDeckEmpty(true);
@@ -143,19 +143,30 @@ public class Game {
         this.players = players;
     }
 
-    public PlayingDecks getPlayingDeck() {
-        return playingDeck;
-    }
-
-    public void setPlayingDeck(PlayingDecks playingDeck) {
-        this.playingDeck = playingDeck;
-    }
-
     public boolean isPlayerHasReachedTwentyPoints() {
         return playerHasReachedTwentyPoints;
     }
 
     public void setPlayerHasReachedTwentyPoints(boolean playerHasReachedTwentyPoints) {
         this.playerHasReachedTwentyPoints = playerHasReachedTwentyPoints;
+    }
+
+
+    /**
+     * Initializer Method for all PlayingDecks
+     * Creates and fills the 4 Decks, one for each type of Card.
+     * Fills 3 PlayingDecks: one for Resource Cards, one for Gold Cards and one for Objective Cards.
+     * Every PlayingDeck contains a Deck and two cards placed in Slot1 and Slot2, showing their Front Side.
+     * Those 2 Cards are already drawn and positioned into their Slots.
+     * Starter Cards are contained in StarterDeck, they don't have a PlayingDeck.
+     */
+    public void initPlayingDecks() {
+        Deck resourceCardDeck = Deck.initDeck(CardType.RESOURCECARD);
+        Deck goldCardDeck = Deck.initDeck(CardType.GOLDCARD);
+        Deck objectiveCardDeck = Deck.initDeck(CardType.OBJECTIVECARD);
+        this.starterDeck = Deck.initDeck(CardType.STARTERCARD);
+        this.resourcePlayingDeck = new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck);
+        this.goldPlayingDeck = new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck);
+        this.objectivePlayingDeck = new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck);
     }
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc42;
 
 import it.polimi.ingsw.gc42.classes.Deck;
-import it.polimi.ingsw.gc42.classes.PlayingDecks;
+import it.polimi.ingsw.gc42.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.classes.cards.*;
 import it.polimi.ingsw.gc42.classes.game.*;
 
@@ -29,15 +29,15 @@ class DeckTest {
         ArrayList<Card> a = new ArrayList<>();
         a.add(c);
         Deck d = new Deck(a, a.size(), CardType.RESOURCECARD);
-        g.getPlayingDeck().setResourceCardDeck(d);
-        g.getPlayingDeck().getResourceCardDeck().setListener(new Listener() {
+        g.getResourcePlayingDeck().setDeck(d);
+        g.getResourcePlayingDeck().getDeck().setListener(new Listener() {
             @Override
             public void onEvent() {
                 g.setResourceDeckEmpty(true);
             }
         });
         // when
-        Card c2 = g.getPlayingDeck().getResourceCardDeck().draw();
+        Card c2 = g.getResourcePlayingDeck().getDeck().draw();
         // then
         assertTrue(g.isResourceDeckEmpty());
     }
@@ -52,19 +52,20 @@ class DeckTest {
         ArrayList<Card> a = new ArrayList<>();
         a.add(c);
         Deck d = new Deck(a, a.size(), CardType.GOLDCARD);
-        g.getPlayingDeck().setGoldCardDeck(d);
-        g.getPlayingDeck().getGoldCardDeck().setListener(new Listener() {
+        g.getGoldPlayingDeck().setDeck(d);
+        g.getGoldPlayingDeck().getDeck().setListener(new Listener() {
             @Override
             public void onEvent() {
                 g.setGoldDeckEmpty(true);
             }
         });
         // when
-        Card c2 = g.getPlayingDeck().getGoldCardDeck().draw();
+        Card c2 = g.getGoldPlayingDeck().getDeck().draw();
         // then
         assertTrue(g.isGoldDeckEmpty());
     }
 
+    @Test
     void testIsPutDown() {
         //TODO remake with initPlayingDecks
 
@@ -87,9 +88,9 @@ class DeckTest {
         ArrayList<Card> a2 = new ArrayList<>();
         a2.add(goldCardInDeck);
         Deck goldDeck = new Deck(a2, a2.size(), CardType.GOLDCARD);
-        PlayingDecks playingDecks = new PlayingDecks(resourceCard1, resourceCard2, goldCard1, goldCard2, null, null, resourceDeck, goldDeck, null, null);
+        PlayingDeck goldPlayingDeck = new PlayingDeck(goldCard1, goldCard2, goldDeck);
 
-        game.setPlayingDeck(playingDecks);
+        game.setGoldPlayingDeck(goldPlayingDeck);
 
         // Player
         Hand hand = new Hand(null);
@@ -102,9 +103,9 @@ class DeckTest {
 
         // when and then
         // draw Resourcecard1
-        player.getHand().drawGoldCard(1);
-        assertNotNull(playingDecks.getResourceCard(1));
-        assertNotEquals(player.getHand().getCards().get(0), playingDecks.getResourceCard(1));
+        player.getHand().grabCard(goldPlayingDeck, 1);
+        assertNotNull(goldPlayingDeck.getSlot1());
+        assertNotEquals(player.getHand().getCards().get(0), goldPlayingDeck.getSlot1());
 
 
     }
