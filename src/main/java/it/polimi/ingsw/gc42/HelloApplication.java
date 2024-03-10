@@ -15,7 +15,7 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Objects;
 
-import static it.polimi.ingsw.gc42.classes.cards.Kingdom.ANIMAL;
+import static it.polimi.ingsw.gc42.classes.cards.KingdomResource.ANIMAL;
 
 public class HelloApplication extends Application {
 

@@ -25,7 +25,7 @@ class DeckTest {
         Game g = new Game();
         ResourceCard c = new ResourceCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true,
-                1, 0, 0, Resource.FEATHER, 5);
+                1, 0, 0, KingdomResource.ANIMAL, 5);
         ArrayList<Card> a = new ArrayList<>();
         a.add(c);
         Deck d = new Deck(a, a.size(), CardType.RESOURCECARD);

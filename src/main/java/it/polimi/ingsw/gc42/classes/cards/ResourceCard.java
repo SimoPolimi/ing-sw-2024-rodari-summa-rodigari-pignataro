@@ -2,22 +2,22 @@ package it.polimi.ingsw.gc42.classes.cards;
 
 public class ResourceCard extends Card{
     // Attributes
-    private Resource permanentResource;
+    private KingdomResource permanentResource;
     private int earnedPoints;
 
     // Constructor Method
-    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResource, int earnedPoints) {
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResource, int earnedPoints) {
         super(frontSide, backSide, isFrontFacing, id, x, y);
         this.permanentResource = permanentResource;
         this.earnedPoints = earnedPoints;
     }
 
     // Getter and Setter
-    public Resource getPermanentResource() {
+    public KingdomResource getPermanentResource() {
         return permanentResource;
     }
 
-    public void setPermanentResource(Resource permanentResource) {
+    public void setPermanentResource(KingdomResource permanentResource) {
         this.permanentResource = permanentResource;
     }
 

@@ -1,20 +1,20 @@
 package it.polimi.ingsw.gc42.classes.cards;
 
 /**
- * Implementation of a Corner containing a Kingdom Type Resource for Model
+ * Implementation of a Corner containing a KingdomResource Type Resource for Model
  */
 public class KingdomCorner extends Corner{
     // Attributes
-    private Kingdom kingdom;
+    private KingdomResource kingdom;
 
     // Constructor Method
 
     /**
      * Constructor Method
-     * @param kingdom: Kingdom Type to assign to the Resource the Corner contains.
-     *               All Kingdom Corners are covered by default.
+     * @param kingdom: KingdomResource Type to assign to the Resource the Corner contains.
+     *               All KingdomResource Corners are covered by default.
      */
-    public KingdomCorner(Kingdom kingdom) {
+    public KingdomCorner(KingdomResource kingdom) {
         this.kingdom = kingdom;
         this.isCovered = false;
     }
@@ -23,17 +23,17 @@ public class KingdomCorner extends Corner{
 
     /**
      * Getter Method for kingdom
-     * @return the Kingdom Type of the Resource contained inside the Corner
+     * @return the KingdomResource Type of the Resource contained inside the Corner
      */
-    public Kingdom getKingdom() {
+    public KingdomResource getKingdom() {
         return kingdom;
     }
 
     /**
      * Setter Method for kingdom
-     * @param kingdom: the Kingdom Type of the Resource contained inside the Corner
+     * @param kingdom: the KingdomResource Type of the Resource contained inside the Corner
      */
-    public void setKingdom(Kingdom kingdom) {
+    public void setKingdom(KingdomResource kingdom) {
         this.kingdom = kingdom;
     }
 }
