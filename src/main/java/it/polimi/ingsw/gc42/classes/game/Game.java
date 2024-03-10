@@ -8,7 +8,10 @@ import it.polimi.ingsw.gc42.interfaces.Listener;
 import java.util.ArrayList;
 
 public class Game {
-
+    private PlayingDeck resourcePlayingDeck;
+    private PlayingDeck goldPlayingDeck;
+    private PlayingDeck objectivePlayingDeck;
+    private Deck starterDeck;
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
     private PlayingDecks playingDeck;
@@ -38,10 +41,10 @@ public class Game {
         });
     }
 
-    public void startGame(){
+    public void startGame() {
     }
 
-    public void endGame(){
+    public void endGame() {
 
     }
 
@@ -53,6 +56,7 @@ public class Game {
 
     /**
      * Add the Player from the game
+     *
      * @param player the player to be added from the game
      */
     //TODO make it boolean
@@ -69,11 +73,50 @@ public class Game {
 
     /**
      * Remove the Player from the game
+     *
      * @param player the player to be removed from the game
      * @return true if the Player is removed and false otherwise
      */
     public boolean kickPlayer(Player player) {
         return false;
+    }
+
+    /**
+     * Changes player's turn
+     */
+    public void nextTurn() {
+    }
+
+    public PlayingDeck getResourcePlayingDeck() {
+        return resourcePlayingDeck;
+    }
+
+    public void setResourcePlayingDeck(PlayingDeck resourcePlayingDeck) {
+        this.resourcePlayingDeck = resourcePlayingDeck;
+    }
+
+    public PlayingDeck getGoldPlayingDeck() {
+        return goldPlayingDeck;
+    }
+
+    public void setGoldPlayingDeck(PlayingDeck goldPlayingDeck) {
+        this.goldPlayingDeck = goldPlayingDeck;
+    }
+
+    public PlayingDeck getObjectivePlayingDeck() {
+        return objectivePlayingDeck;
+    }
+
+    public void setObjectivePlayingDeck(PlayingDeck objectivePlayingDeck) {
+        this.objectivePlayingDeck = objectivePlayingDeck;
+    }
+
+    public Deck getStarterDeck() {
+        return starterDeck;
+    }
+
+    public void setStarterDeck(Deck starterDeck) {
+        this.starterDeck = starterDeck;
     }
 
     public boolean isResourceDeckEmpty() {

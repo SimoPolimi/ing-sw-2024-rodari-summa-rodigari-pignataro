@@ -77,7 +77,7 @@ class DeckTest {
         GoldCard goldCard2 = new GoldCard(null, null, false, 4, 0, 0, 0, 0, 0, 0, null, 0);
         ResourceCard resourceCardInDeck = new ResourceCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true,
-                1, 0, 0, Resource.FEATHER, 5);
+                1, 0, 0, KingdomResource.PLANT, 5);
         ArrayList<Card> a1 = new ArrayList<>();
         a1.add(resourceCardInDeck);
         Deck resourceDeck = new Deck(a1, a1.size(), CardType.RESOURCECARD);
@@ -98,7 +98,7 @@ class DeckTest {
         // meh
         game.addPlayer(player);
 
-        //TODO check other cases?
+        //TODO condition if the Deck is empty and cannot put down another Card
 
         // when and then
         // draw Resourcecard1

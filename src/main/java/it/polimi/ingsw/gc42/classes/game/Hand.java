@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc42.classes.game;
 
 import it.polimi.ingsw.gc42.classes.cards.Card;
-import it.polimi.ingsw.gc42.classes.cards.GoldCard;
-import it.polimi.ingsw.gc42.classes.cards.ResourceCard;
+import it.polimi.ingsw.gc42.classes.*;
+
 
 import java.util.ArrayList;
 
@@ -30,11 +30,10 @@ public class Hand {
 
 
     /**
-     * Getter Method for startingHand
-     * //@return the Cards belonging to the Starting Hand
+     * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
      */
-    public void getStartingHand() {
-
+    public void drawStartingHand() {
+        // TODO: draw
     }
 
     /**
@@ -49,30 +48,39 @@ public class Hand {
     }
 
     /**
-     * Draws a ResourceCard from the resource deck
+     * Draws a Card from the top of the specified deck
      *
-     * @param number the slot from where the Card is drawn
-     * @return the ResourceCard drawn
+     * @param deck the deck from where the Card is drawn
+     * @return the Card drawn
      */
-    public ResourceCard drawResourceCard(int number) {
+    public Card drawCard(Deck deck) {
         return null;
     }
 
+
+    //TODO redo javadoc (param: deck)
+
     /**
-     * Draws a GoldCard from the gold deck
+     * Grabs a card of the type of the specified Deck from one of its slots
      *
-     * @param number the slot from where the Card is drawn
-     * @return the GoldCard drawn
+     * @param deck the type of the card the Player wants to draw
+     * @param i    the Slot from where the Player wants to grab the Card
+     * @return
      */
-    public GoldCard drawGoldCard(int number) {
+    public Card grabCard(PlayingDeck deck, int i) {
+        // Logic
+        /*
+            if(i==1){
+                hand.add(deck.getSlot1)
+                putDwon(slot1)
+            }
+            else
+            {
+                hand.add(deck.getSlot2)
+                putDwon(slot2)
+            }*/
         return null;
     }
 
-    /**
-     * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
-     */
-    public void drawStartingHand() {
-        // TODO: draw
-    }
 
 }

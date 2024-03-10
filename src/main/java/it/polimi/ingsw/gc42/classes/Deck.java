@@ -17,18 +17,18 @@ public class Deck implements Observable {
     private List<Listener> listeners = new ArrayList<>();
     private List<Card> cards = new ArrayList<>();
     private int counter;
-    private Game game;
     private CardType cardType;
 
     // Constructor
 
     /**
      * Constructor Method
-     * @param cards: ArrayList containing the Card that make up the Deck
-     * @param counter: number of Cards contained inside the Deck
+     *
+     * @param cards:    ArrayList containing the Card that make up the Deck
+     * @param counter:  number of Cards contained inside the Deck
      * @param cardType: Type of the Cards contained inside the Deck
      */
-    public Deck(List<Card> cards, int counter, CardType cardType) {
+    public Deck(ArrayList<Card> cards, int counter, CardType cardType) {
         this.cards = cards;
         this.counter = counter;
         this.cardType = cardType;
@@ -38,6 +38,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for cards
+     *
      * @return cards: ArrayList of Cards
      */
     public List<Card> getCards() {
@@ -46,6 +47,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for cards
+     *
      * @param cards: ArrayList of Cards
      */
     public void setCards(List<Card> cards) {
@@ -54,6 +56,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for counter
+     *
      * @return counter: number of Cards remaining inside the Deck
      */
     public int getCounter() {
@@ -62,6 +65,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for counter
+     *
      * @param counter: number of Cards remaining inside the Deck
      */
     public void setCounter(int counter) {
@@ -70,6 +74,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for cardType
+     *
      * @return the type of Cards the Deck is made of
      */
     public CardType getCardType() {
@@ -78,6 +83,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for cardType
+     *
      * @param cardType: the type of Cards the Deck is made of
      */
     public void setCardType(CardType cardType) {
@@ -89,8 +95,8 @@ public class Deck implements Observable {
 
     public static Deck initDeck(CardType type) {
         //TODO: Fully Implement
-        List<Card> cards = new ArrayList<>();
-        Deck deck =  new Deck(cards, cards.size(), type);
+        ArrayList<Card> cards = new ArrayList<>();
+        Deck deck = new Deck(cards, cards.size(), type);
         deck.shuffle();
         return deck;
     }
@@ -105,15 +111,16 @@ public class Deck implements Observable {
     /**
      * Draws/Extracts a Card from the Deck.
      * The drawn Card is the one at the TOP of the Deck.
+     *
      * @return Card
      * @throws NoSuchElementException if there are 0 Cards left inside the Deck
      */
-    public Card draw() throws NoSuchElementException{
+    public Card draw() throws NoSuchElementException {
         try {
             Card card = cards.getFirst();
             cards.removeFirst();
             counter--;
-            if(counter == 0) {
+            if (counter == 0) {
                 notifyListeners();
             }
             return card;
@@ -122,13 +129,6 @@ public class Deck implements Observable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * Draws a Card and places it in one of the Slots in the Visible Stage
-     */
-    public void putDown() {
-        //TODO: Implement putDown
     }
 
     @Override
@@ -143,7 +143,7 @@ public class Deck implements Observable {
 
     @Override
     public void notifyListeners() {
-        for (Listener d: listeners) {
+        for (Listener d : listeners) {
             d.onEvent();
         }
     }
