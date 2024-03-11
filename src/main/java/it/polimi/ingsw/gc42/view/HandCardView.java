@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.HelloController;
 import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
@@ -186,5 +187,46 @@ public class HandCardView {
             default: break;
         }
         t.play();
+    }
+
+    public void visualFlip(CardController controller) {
+        ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
+        jumpHalf1.setFromX(1.2);
+        jumpHalf1.setFromY(1.2);
+        jumpHalf1.setToX(1.5);
+        jumpHalf1.setToY(1.5);
+        jumpHalf1.setAutoReverse(true);
+        jumpHalf1.setCycleCount(2);
+        controller.canReadKeyboard = false;
+        jumpHalf1.setOnFinished(e -> controller.canReadKeyboard = true);
+        jumpHalf1.play();
+
+        RotateTransition flipCardHalf2 = new RotateTransition(Duration.millis(200), imageView);
+
+        RotateTransition flipCardHalf1 = new RotateTransition(Duration.millis(200), imageView);
+        flipCardHalf1.setAxis(Rotate.Y_AXIS);
+        flipCardHalf1.setOnFinished(event -> {
+            if (!card.isFrontFacing()) {
+                imageView.setImage(card.getBack());
+            } else {
+                imageView.setImage(card.getFront());
+            }
+            flipCardHalf2.play();
+        });
+        flipCardHalf2.setAxis(Rotate.Y_AXIS);
+
+        if (card.isOddRotation()) {
+            flipCardHalf1.setFromAngle(0);
+            flipCardHalf1.setToAngle(90);
+            flipCardHalf2.setFromAngle(90);
+            flipCardHalf2.setToAngle(180);
+        } else {
+            flipCardHalf1.setFromAngle(-180);
+            flipCardHalf1.setToAngle(-90);
+            flipCardHalf2.setFromAngle(-90);
+            flipCardHalf2.setToAngle(0);
+        }
+        card.setOddRotation(!card.isOddRotation());
+        flipCardHalf1.play();
     }
 }

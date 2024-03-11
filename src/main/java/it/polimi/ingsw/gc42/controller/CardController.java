@@ -5,17 +5,9 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
 import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
-import javafx.util.Duration;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class CardController {
 
@@ -55,8 +47,6 @@ public class CardController {
 
     private RotateTransition flipCardHalf1;
     private RotateTransition flipCardHalf2;
-    private boolean oddRotation = true;
-
     private Card card1;
     private Card card2;
     private Card card3;
@@ -86,19 +76,19 @@ public class CardController {
         handCardView1.getModelCard().setListener(new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView1, 1);
+                flipCard(handCardView1);
             }
         });
         handCardView2.getModelCard().setListener(new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView2, 2);
+                flipCard(handCardView2);
             }
         });
         handCardView3.getModelCard().setListener(new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView3, 3);
+                flipCard(handCardView3);
             }
         });
     }
@@ -107,28 +97,6 @@ public class CardController {
         this.card1 = card1;
         this.card2 = card2;
         this.card3 = card3;
-        /*setCardViews(card1, card2, card3);
-
-        card1.setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(cardView1, 1);
-            }
-        });
-
-        card2.setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(cardView2, 2);
-            }
-        });
-
-        card3.setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(cardView3, 3);
-            }
-        });*/
     }
 
     public void setCardViews(Card card1, Card card2, Card card3) {
@@ -152,50 +120,8 @@ public class CardController {
         handCardView3.flip();
     }
 
-    private void flipCard(HandCardView cardView, int num) {
-        initRotateTransition(cardView, num);
-        flipCardHalf1.play();
-    }
-
-    private void doFLip(CardView card, ImageView view) {
-        if (!card.isFrontFacing()) {
-            view.setImage(card.getBack());
-        } else {
-            view.setImage(card.getFront());
-        }
-        flipCardHalf2.play();
-    }
-
-    public void initRotateTransition(HandCardView card, int num) {
-        ImageView imageView = card.getImageView();
-        ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
-        jumpHalf1.setFromX(1.2);
-        jumpHalf1.setFromY(1.2);
-        jumpHalf1.setToX(1.5);
-        jumpHalf1.setToY(1.5);
-        jumpHalf1.setAutoReverse(true);
-        jumpHalf1.setCycleCount(2);
-        canReadKeyboard = false;
-        jumpHalf1.setOnFinished(e -> canReadKeyboard = true);
-        jumpHalf1.play();
-
-        flipCardHalf1 = new RotateTransition(Duration.millis(200), imageView);
-        flipCardHalf1.setAxis(Rotate.Y_AXIS);
-        flipCardHalf1.setOnFinished(event -> doFLip(card.getCard(), imageView));
-        flipCardHalf2 = new RotateTransition(Duration.millis(200), imageView);
-        flipCardHalf2.setAxis(Rotate.Y_AXIS);
-        if (card.getCard().isOddRotation()) {
-            flipCardHalf1.setFromAngle(0);
-            flipCardHalf1.setToAngle(90);
-            flipCardHalf2.setFromAngle(90);
-            flipCardHalf2.setToAngle(180);
-        } else {
-            flipCardHalf1.setFromAngle(-180);
-            flipCardHalf1.setToAngle(-90);
-            flipCardHalf2.setFromAngle(-90);
-            flipCardHalf2.setToAngle(0);
-        }
-        card.getCard().setOddRotation(!card.getCard().isOddRotation());
+    private void flipCard(HandCardView handCardView) {
+        handCardView.visualFlip(this);
     }
 
     public void moveDown() {
