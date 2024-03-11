@@ -16,7 +16,7 @@
                                 <Image url="@../../../../collapseHandHint.png"/>
                             </image>
                         </ImageView>
-                        <Text fx:id="textCollapse" fill="white" text="My Cards">
+                        <Text fx:id="textCollapse" fill="white" text="Collapse">
                             <font>
                                 <Font name="Constantia Italic" size="15.0" />
                             </font>
