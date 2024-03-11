@@ -1,8 +1,8 @@
-package it.polimi.ingsw.gc42.classes.game;
+package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.classes.cards.Objective;
-import it.polimi.ingsw.gc42.interfaces.Listener;
-import it.polimi.ingsw.gc42.interfaces.Observable;
+import it.polimi.ingsw.gc42.model.classes.cards.Objective;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.util.ArrayList;
 

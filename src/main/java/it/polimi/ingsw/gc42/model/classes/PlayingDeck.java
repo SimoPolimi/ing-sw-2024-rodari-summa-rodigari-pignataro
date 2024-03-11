@@ -1,6 +1,6 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.model.classes;
 
-import it.polimi.ingsw.gc42.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 
 /**
  * Implementation of the playing decks

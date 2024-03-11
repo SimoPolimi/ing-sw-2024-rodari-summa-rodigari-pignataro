@@ -6,10 +6,12 @@ module it.polimi.ingsw.gc42 {
 
     opens it.polimi.ingsw.gc42 to javafx.fxml;
     exports it.polimi.ingsw.gc42;
-    exports it.polimi.ingsw.gc42.classes;
-    opens it.polimi.ingsw.gc42.classes to javafx.fxml;
-    exports it.polimi.ingsw.gc42.classes.cards;
-    opens it.polimi.ingsw.gc42.classes.cards to javafx.fxml;
-    exports it.polimi.ingsw.gc42.classes.game;
-    opens it.polimi.ingsw.gc42.classes.game to javafx.fxml;
+    exports it.polimi.ingsw.gc42.model.classes;
+    opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;
+    exports it.polimi.ingsw.gc42.model.classes.cards;
+    opens it.polimi.ingsw.gc42.model.classes.cards to javafx.fxml;
+    exports it.polimi.ingsw.gc42.model.classes.game;
+    opens it.polimi.ingsw.gc42.model.classes.game to javafx.fxml;
+    exports it.polimi.ingsw.gc42.model;
+    opens it.polimi.ingsw.gc42.model to javafx.fxml;
 }

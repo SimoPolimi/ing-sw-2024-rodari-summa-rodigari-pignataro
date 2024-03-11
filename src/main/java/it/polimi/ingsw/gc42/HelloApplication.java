@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gc42;
 
-import it.polimi.ingsw.gc42.classes.Deck;
-import it.polimi.ingsw.gc42.classes.cards.*;
-import it.polimi.ingsw.gc42.classes.game.Game;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,12 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
 import java.util.Objects;
-
-import static it.polimi.ingsw.gc42.classes.cards.KingdomResource.ANIMAL;
 
 public class HelloApplication extends Application {
 

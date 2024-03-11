@@ -1,10 +1,10 @@
-package it.polimi.ingsw.gc42.classes.game;
+package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.classes.Deck;
-import it.polimi.ingsw.gc42.classes.PlayingDeck;
+import it.polimi.ingsw.gc42.model.classes.Deck;
+import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
-import it.polimi.ingsw.gc42.classes.cards.CardType;
-import it.polimi.ingsw.gc42.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
 
 import java.util.ArrayList;
 

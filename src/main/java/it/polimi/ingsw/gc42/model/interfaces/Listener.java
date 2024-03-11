@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.interfaces;
+package it.polimi.ingsw.gc42.model.interfaces;
 
 import java.util.EventListener;
 

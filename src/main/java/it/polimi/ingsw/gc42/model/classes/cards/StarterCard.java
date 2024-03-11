@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.classes.cards;
+package it.polimi.ingsw.gc42.model.classes.cards;
 
 public class StarterCard extends Card{
     // Attributes

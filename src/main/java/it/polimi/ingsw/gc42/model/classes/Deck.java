@@ -1,9 +1,9 @@
-package it.polimi.ingsw.gc42.classes;
+package it.polimi.ingsw.gc42.model.classes;
 
-import it.polimi.ingsw.gc42.classes.cards.Card;
-import it.polimi.ingsw.gc42.classes.cards.CardType;
-import it.polimi.ingsw.gc42.interfaces.Listener;
-import it.polimi.ingsw.gc42.interfaces.Observable;
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.util.*;
 
