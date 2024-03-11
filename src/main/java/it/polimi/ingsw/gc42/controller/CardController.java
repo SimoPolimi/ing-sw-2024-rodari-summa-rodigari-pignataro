@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,15 @@ public class CardController {
     @FXML
     private Text text3;
 
+    @FXML
+    private ImageView KBNavHint;
+    @FXML
+    private Text textNav;
+    @FXML
+    private ImageView KBCollapseHint;
+    @FXML
+    private Text textCollapse ;
+
     private int selectedCard = 0;
     public boolean canReadKeyboard = true;
 
@@ -60,6 +70,7 @@ public class CardController {
     private HandCardView handCardView1;
     private HandCardView handCardView2;
     private HandCardView handCardView3;
+    private boolean isHandVisible = true;
 
 
     public void initializeCards() {
@@ -208,46 +219,48 @@ public class CardController {
     }
 
     protected void selectCard(int selectedCard) {
-        this.selectedCard = selectedCard;
-        switch (selectedCard) {
-            case 1:
-                handCardView1.select();
-                if (2 == lastSelected) {
-                    handCardView2.deselect();
-                }
-                if (3 == lastSelected) {
-                    handCardView3.deselect();
-                }
-                break;
-            case 2:
-                handCardView2.select();
-                if (1 == lastSelected) {
-                    handCardView1.deselect();
-                }
-                if (3 == lastSelected) {
-                    handCardView3.deselect();
-                }
-                break;
-            case 3:
-                handCardView3.select();
-                if (1 == lastSelected) {
-                    handCardView1.deselect();
-                }
-                if (2 == lastSelected) {
-                    handCardView2.deselect();
-                }
-                break;
-            default:
-                if (1 == lastSelected) {
-                    handCardView1.deselect();
-                }
-                if (2 == lastSelected) {
-                    handCardView2.deselect();
-                } else if (3 == lastSelected) {
-                    handCardView3.deselect();
-                }
+        if (isHandVisible) {
+            this.selectedCard = selectedCard;
+            switch (selectedCard) {
+                case 1:
+                    handCardView1.select();
+                    if (2 == lastSelected) {
+                        handCardView2.deselect();
+                    }
+                    if (3 == lastSelected) {
+                        handCardView3.deselect();
+                    }
+                    break;
+                case 2:
+                    handCardView2.select();
+                    if (1 == lastSelected) {
+                        handCardView1.deselect();
+                    }
+                    if (3 == lastSelected) {
+                        handCardView3.deselect();
+                    }
+                    break;
+                case 3:
+                    handCardView3.select();
+                    if (1 == lastSelected) {
+                        handCardView1.deselect();
+                    }
+                    if (2 == lastSelected) {
+                        handCardView2.deselect();
+                    }
+                    break;
+                default:
+                    if (1 == lastSelected) {
+                        handCardView1.deselect();
+                    }
+                    if (2 == lastSelected) {
+                        handCardView2.deselect();
+                    } else if (3 == lastSelected) {
+                        handCardView3.deselect();
+                    }
+            }
+            lastSelected = selectedCard;
         }
-        lastSelected = selectedCard;
     }
 
     public void onFKeyPressed() {
@@ -287,6 +300,39 @@ public class CardController {
     @FXML
     public void deselectCard() {
         selectCard(0);
+    }
+
+    public void toggleHand() {
+        if (isHandVisible) {
+            hideHand();
+            isHandVisible = false;
+        } else {
+            showHand();
+            isHandVisible = true;
+        }
+    }
+
+    private void showHand() {
+        KBNavHint.setVisible(true);
+        textNav.setVisible(true);
+        textCollapse.setText("Collapse");
+        canReadKeyboard = false;
+
+        handCardView1.show(1, this);
+        handCardView2.show(2, this);
+        handCardView3.show(3, this);
+    }
+
+    private void hideHand() {
+        deselectCard();
+        KBNavHint.setVisible(false);
+        textNav.setVisible(false);
+        textCollapse.setText("My Cards");
+        canReadKeyboard = false;
+
+        handCardView1.hide(1, this);
+        handCardView2.hide(2, this);
+        handCardView3.hide(3, this);
     }
 }
 

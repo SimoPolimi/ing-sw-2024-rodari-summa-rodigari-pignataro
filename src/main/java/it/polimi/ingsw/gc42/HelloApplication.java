@@ -41,6 +41,9 @@ public class HelloApplication extends Application {
                     case UP -> {
                         controller.moveUp();
                     }
+                    case E -> {
+                        controller.toggleHand();
+                    }
                 }
             }
         });

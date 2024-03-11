@@ -1,12 +1,17 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.scene.chart.Axis;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.NoSuchElementException;
@@ -123,5 +128,63 @@ public class HandCardView {
         deselect2.setToX(1);
         deselect2.setToY(1);
         deselect2.play();
+    }
+
+    public void hide(int position, CardController controller) {
+        TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
+        t.setByX(-180);
+        t.setOnFinished(e -> controller.canReadKeyboard = true);
+
+        switch (position) {
+            case 1:
+                t.setByY(80);
+                t.play();
+                RotateTransition r1 = new RotateTransition(Duration.millis(350), imageView);
+                r1.setAxis(Rotate.Z_AXIS);
+                imageView.setRotate(0);
+                r1.setByAngle(-45);
+                r1.play();
+                break;
+            case 3:
+                t.setByY(-80);
+                t.play();
+
+                RotateTransition r3 = new RotateTransition(Duration.millis(350), imageView);
+                r3.setAxis(Rotate.Z_AXIS);
+                imageView.setRotate(0);
+                r3.setByAngle(45);
+                r3.play();
+                break;
+            default: break;
+        }
+        t.play();
+    }
+
+    public void show(int position, CardController controller) {
+        TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
+        t.setByX(180);
+        t.setOnFinished(e -> controller.canReadKeyboard = true);
+
+        switch (position) {
+            case 1:
+                t.setByY(-80);
+                t.play();
+                RotateTransition r1 = new RotateTransition(Duration.millis(350), imageView);
+                r1.setAxis(Rotate.Z_AXIS);
+                r1.setByAngle(45);
+                r1.play();
+                break;
+            case 3:
+                t.setByY(80);
+                t.play();
+
+                RotateTransition r3 = new RotateTransition(Duration.millis(350), imageView);
+                r3.setAxis(Rotate.Z_AXIS);
+                r3.setByAngle(-45);
+                r3.play();
+                break;
+            default: break;
+        }
+        t.play();
     }
 }

@@ -9,6 +9,23 @@
     <children>
         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30">
             <children>
+                <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
+                    <children>
+                        <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../collapseHandHint.png"/>
+                            </image>
+                        </ImageView>
+                        <Text fx:id="textCollapse" fill="white" text="My Cards">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <padding>
+                        <Insets left="5"/>
+                    </padding>
+                </HBox >
                 <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
                     <children>
                         <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onFlipCard1ButtonClicked" onMouseEntered="#selectCard1" onMouseExited="#deselectCard" pickOnBounds="true" preserveRatio="true">
