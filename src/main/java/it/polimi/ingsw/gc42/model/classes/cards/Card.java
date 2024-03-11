@@ -34,13 +34,14 @@ public class Card implements Observable {
      * @param x                 horizontal coordinate for the Card's position on the table (null if not placed)
      * @param y                 vertical coordinate for the Card's position on the table (null if not placed)
      */
-    protected Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y) {
+    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
         this.id = id;
         this.x = x;
         this.y = y;
+        listeners = new ArrayList<Listener>();
     }
 
     /**
@@ -165,6 +166,7 @@ public class Card implements Observable {
      */
     public void flip() {
         setFrontFacing(!isFrontFacing());
+        notifyListeners();
     }
 
     //TODO: Add documentation

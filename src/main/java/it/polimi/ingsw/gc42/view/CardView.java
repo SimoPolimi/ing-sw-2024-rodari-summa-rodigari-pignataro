@@ -22,15 +22,6 @@ public class CardView {
         this.back = new Image(Objects.requireNonNull(getClass().getResourceAsStream(backName)));
     }
 
-    public CardView(int id) {
-        isFrontFacing = true;
-        switch (id) {
-            case 1:
-                this.front = new Image(Objects.requireNonNull(getClass().getResourceAsStream("card1Front.png")));
-                this.back = new Image(Objects.requireNonNull(getClass().getResourceAsStream("card1Back.png")));
-        }
-    }
-
     public boolean isOddRotation() {
         return oddRotation;
     }

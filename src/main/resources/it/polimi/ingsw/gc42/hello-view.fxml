@@ -1,14 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="it.polimi.ingsw.gc42.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<VBox id="root" alignment="CENTER" prefHeight="800" prefWidth="1200" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+    <children>
+        <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30">
+            <children>
+                <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
+                    <children>
+                        <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onFlipCard1ButtonClicked" onMouseEntered="#selectCard1" onMouseExited="#deselectCard" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../card1Front.png"/>
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@../../../../flipKeyboardHint.png" />
+                            </image>
+                        </ImageView>
+                        <Text fx:id="text1" fill="white" text="Flip" visible="false">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="-20.0" />
+                            </HBox.margin></Text>
+                    </children>
+                </HBox>
+                <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
+                    <children>
+                        <ImageView fx:id="view2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onFlipCard2ButtonClicked" onMouseEntered="#selectCard2" onMouseExited="#deselectCard" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../card2Front.png" />
+                            </image></ImageView>
+                        <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@../../../../flipKeyboardHint.png" />
+                            </image>
+                        </ImageView>
+                        <Text fx:id="text2" fill="white" text="Flip" visible="false">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="-20.0" />
+                            </HBox.margin></Text>
+                    </children>
+                </HBox>
+                <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
+                    <children>
+                        <ImageView fx:id="view3" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onFlipCard3ButtonClicked" onMouseEntered="#selectCard3" onMouseExited="#deselectCard" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../card3Front.png" />
+                            </image></ImageView>
+                        <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@../../../../flipKeyboardHint.png" />
+                            </image>
+                        </ImageView>
+                        <Text fx:id="text3" fill="white" text="Flip" visible="false">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="-20.0" />
+                            </HBox.margin></Text>
+                    </children>
+                </HBox>
+                <HBox id="bottomHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
+                    <children>
+                        <ImageView fx:id="KBNavHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../navigateKeyboardHint.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </ImageView>
+                        <Text fx:id="textNav" fill="white" text="Navigate">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </HBox>
 
-    <Label fx:id="welcomeText" />
-    <Button onAction="#onClick" text="Hello!" />
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <VBox.margin>
+                <Insets left="40.0" />
+            </VBox.margin>
+        </VBox>
+    </children>
 </VBox>

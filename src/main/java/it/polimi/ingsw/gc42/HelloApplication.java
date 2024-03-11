@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc42;
 
+import it.polimi.ingsw.gc42.controller.CardController;
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,15 +13,41 @@ import java.util.Objects;
 
 public class HelloApplication extends Application {
 
+    public Card card1;
+    public Card card2;
+    public Card card3;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Codex Naturalis");
+        Scene scene = new Scene(fxmlLoader.load());
+        CardController controller = fxmlLoader.getController();
+        controller.initializeCards();
+        stage.setTitle("Prova Titolo Finestra!");
         stage.setScene(scene);
-        Image a = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/logo.png")));
-        stage.getIcons().add(a);
+
+        stage.setTitle("Codex Naturalis");
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
+
+        scene.setOnKeyPressed(e -> {
+            if(controller.canReadKeyboard) {
+                switch (e.getCode()) {
+                    case F -> {
+                        controller.onFKeyPressed();
+                    }
+                    case DOWN -> {
+                        controller.moveDown();
+                    }
+                    case UP -> {
+                        controller.moveUp();
+                    }
+                }
+            }
+        });
+
         stage.show();
+
+        controller.setCards(card1, card2, card3);
     }
 
 
