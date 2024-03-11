@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
-import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -43,10 +42,6 @@ public class CardController {
 
     private int selectedCard = 0;
     public boolean canReadKeyboard = true;
-
-
-    private RotateTransition flipCardHalf1;
-    private RotateTransition flipCardHalf2;
     private Card card1;
     private Card card2;
     private Card card3;
@@ -106,17 +101,17 @@ public class CardController {
     }
 
     @FXML
-    public void onFlipCard1ButtonClicked() {
+    public void onCard1Clicked() {
         handCardView1.flip();
     }
 
     @FXML
-    public void onFlipCard2ButtonClicked() {
+    public void onCard2Clicked() {
         handCardView2.flip();
     }
 
     @FXML
-    public void onFlipCard3ButtonClicked() {
+    public void onCard3Clicked() {
         handCardView3.flip();
     }
 
@@ -224,7 +219,7 @@ public class CardController {
     }
 
     @FXML
-    public void deselectCard() {
+    public void deselectAllCards() {
         selectCard(0);
     }
 
@@ -250,7 +245,7 @@ public class CardController {
     }
 
     private void hideHand() {
-        deselectCard();
+        deselectAllCards();
         KBNavHint.setVisible(false);
         textNav.setVisible(false);
         textCollapse.setText("My Cards");
