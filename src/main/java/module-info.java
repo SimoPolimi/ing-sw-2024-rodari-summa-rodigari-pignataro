@@ -12,6 +12,5 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.model.classes.cards to javafx.fxml;
     exports it.polimi.ingsw.gc42.model.classes.game;
     opens it.polimi.ingsw.gc42.model.classes.game to javafx.fxml;
-    exports it.polimi.ingsw.gc42.model;
     opens it.polimi.ingsw.gc42.model to javafx.fxml;
 }

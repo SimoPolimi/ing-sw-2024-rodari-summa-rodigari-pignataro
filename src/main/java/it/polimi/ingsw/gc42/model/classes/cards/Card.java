@@ -1,14 +1,19 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 import it.polimi.ingsw.gc42.model.interfaces.CardObservable;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import javafx.beans.InvalidationListener;
+
+import java.util.ArrayList;
 
 /**
  * Implementation of Card for Model
  * Test
  */
-public class Card implements CardObservable {
+public class Card implements Observable {
     // Attributes
+    private ArrayList<Listener> listeners;
     private CardSide frontSide;
     private CardSide backSide;
     private boolean isFrontFacing;
@@ -165,13 +170,22 @@ public class Card implements CardObservable {
     //TODO: Add documentation
 
     //TODO: Implement View Card data type
+
     @Override
-    public void addListener(InvalidationListener invalidationListener) {
-        //this.views.add(invalidationListener);
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+
     }
 
     @Override
-    public void removeListener(InvalidationListener invalidationListener) {
-        //this.views.add(invalidationListener);
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners() {
+        for (Listener l: listeners) {
+            l.onEvent();
+        }
     }
 }
