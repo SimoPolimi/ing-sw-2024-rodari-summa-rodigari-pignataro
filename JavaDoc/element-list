@@ -1,6 +1,10 @@
 module:it.polimi.ingsw.gc42
 it.polimi.ingsw.gc42
-it.polimi.ingsw.gc42.classes
-it.polimi.ingsw.gc42.classes.cards
-it.polimi.ingsw.gc42.classes.game
-it.polimi.ingsw.gc42.interfaces
+it.polimi.ingsw.gc42.controller
+it.polimi.ingsw.gc42.model
+it.polimi.ingsw.gc42.model.classes
+it.polimi.ingsw.gc42.model.classes.cards
+it.polimi.ingsw.gc42.model.classes.game
+it.polimi.ingsw.gc42.model.exceptions
+it.polimi.ingsw.gc42.model.interfaces
+it.polimi.ingsw.gc42.view
