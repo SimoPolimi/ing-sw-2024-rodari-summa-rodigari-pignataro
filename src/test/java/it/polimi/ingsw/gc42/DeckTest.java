@@ -96,7 +96,7 @@ class DeckTest {
 
         // Player
         Hand hand = new Hand(null);
-        Player player = new Player(true, 0, null, null, hand);
+        Player player = new Player(true, 0, null, null, hand, game);
 
         // meh
         game.addPlayer(player);

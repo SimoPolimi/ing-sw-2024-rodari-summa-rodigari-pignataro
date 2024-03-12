@@ -85,8 +85,13 @@ public class PlayingDeck {
     /**
      * Move a Card from the top of the Deck to one of the Slots in the Visible Stage
      */
-    public void putDown() {
-        //TODO: Implement putDown
+    public void putDown(int slot) {
+        if (slot == 1){
+            slot1 = deck.draw();
+        }else{
+            slot2 = deck.draw();
+
+        }
     }
 
 }
