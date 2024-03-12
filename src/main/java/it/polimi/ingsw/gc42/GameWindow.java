@@ -17,6 +17,8 @@ public class GameWindow extends Application {
     public Card card2;
     public Card card3;
 
+    private boolean isFullScreen = false;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GameWindow.class.getResource("hello-view.fxml"));
@@ -46,6 +48,14 @@ public class GameWindow extends Application {
                     }
                 }
             }
+            scene.setOnKeyReleased(e1 -> {
+                switch (e.getCode()) {
+                    case F11 -> {
+                        isFullScreen = !isFullScreen;
+                        stage.setFullScreen(isFullScreen);
+                    }
+                }
+            });
         });
 
         stage.show();
