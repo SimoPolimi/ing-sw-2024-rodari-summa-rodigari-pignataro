@@ -42,6 +42,13 @@ public class CardController {
     @FXML
     private Text textCollapse ;
 
+    @FXML
+    private ImageView objectiveView;
+    @FXML
+    private ImageView KBObjectiveHint;
+    @FXML
+    private Text objectiveHint;
+
     private int selectedCard = 0;
     public boolean canReadKeyboard = true;
     private Card card1;
@@ -51,6 +58,9 @@ public class CardController {
     private CardView cardView1;
     private CardView cardView2;
     private CardView cardView3;
+
+    private CardView objectiveCardView;
+    private HandCardView objectiveHandCardView;
 
     private int lastSelected = 0;
 
@@ -88,6 +98,8 @@ public class CardController {
                 flipCard(handCardView3);
             }
         });
+
+        objectiveCardView = new CardView("/cardObjectiveFront.png", "/cardObjectiveBack.png");
     }
 
     public void setCards(Card card1, Card card2, Card card3) {
@@ -272,6 +284,10 @@ public class CardController {
         handCardView1.hide(1, this);
         handCardView2.hide(2, this);
         handCardView3.hide(3, this);
+    }
+
+    public void flipObjective() {
+
     }
 }
 

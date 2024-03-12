@@ -48,6 +48,9 @@ public class GameWindow extends Application {
                     case E -> {
                         controller.toggleHand();
                     }
+                    case O -> {
+                        controller.flipObjective();
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
