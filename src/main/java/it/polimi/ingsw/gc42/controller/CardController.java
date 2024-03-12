@@ -4,9 +4,11 @@ import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class CardController {
 
@@ -239,6 +241,14 @@ public class CardController {
         textCollapse.setText("Collapse");
         canReadKeyboard = false;
 
+        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
+        t1.setByY(-285);
+        t1.play();
+
+        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
+        t2.setByY(-285);
+        t2.play();
+
         handCardView1.show(1, this);
         handCardView2.show(2, this);
         handCardView3.show(3, this);
@@ -250,6 +260,14 @@ public class CardController {
         textNav.setVisible(false);
         textCollapse.setText("My Cards");
         canReadKeyboard = false;
+
+        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
+        t1.setByY(285);
+        t1.play();
+
+        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
+        t2.setByY(285);
+        t2.play();
 
         handCardView1.hide(1, this);
         handCardView2.hide(2, this);
