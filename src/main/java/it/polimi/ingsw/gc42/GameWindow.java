@@ -26,6 +26,8 @@ public class GameWindow extends Application {
         CardController controller = fxmlLoader.getController();
         controller.initializeCards();
         stage.setTitle("Prova Titolo Finestra!");
+        stage.setMinHeight(800);
+        stage.setMinWidth(800);
         stage.setScene(scene);
 
         stage.setTitle("Codex Naturalis");
