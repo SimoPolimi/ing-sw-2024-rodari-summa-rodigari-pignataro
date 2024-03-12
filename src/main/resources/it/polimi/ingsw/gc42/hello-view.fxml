@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="root" alignment="CENTER" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+<HBox id="root" alignment="CENTER" prefWidth="900.0" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30">
             <children>
@@ -116,8 +116,42 @@
                 <Insets left="40.0" />
             </VBox.margin>
         </VBox>
+        <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30">
+            <children>
+                <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" rotate="60.0">
+               <image>
+                  <Image url="@../../../../cardObjectiveFront.png" />
+               </image></ImageView>
+                <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">
+                    <children>
+                        <ImageView fx:id="KBObjectiveHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../../KBObjectiveHint.png" />
+                            </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                        </ImageView>
+                        <Text fx:id="objectiveHint" fill="white" text="Secret Objective">
+                            <font>
+                                <Font name="Constantia Italic" size="15.0" />
+                            </font>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                        </Text>
+                    </children>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
+                </HBox>
+            </children>
+        </VBox>
     </children>
    <padding>
-      <Insets bottom="20.0" top="20.0" />
+      <Insets bottom="20.0" left="20.0" right="80.0" top="20.0" />
    </padding>
-</VBox>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</HBox>
