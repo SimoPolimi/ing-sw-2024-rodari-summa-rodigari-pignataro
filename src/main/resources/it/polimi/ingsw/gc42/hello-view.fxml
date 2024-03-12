@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="root" alignment="CENTER" prefHeight="800" prefWidth="1200" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+<VBox id="root" alignment="CENTER" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30">
             <children>
@@ -13,7 +13,7 @@
                     <children>
                         <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../collapseHandHint.png"/>
+                                <Image url="@../../../../collapseHandHint.png" />
                             </image>
                         </ImageView>
                         <Text fx:id="textCollapse" fill="white" text="Collapse">
@@ -23,14 +23,14 @@
                         </Text>
                     </children>
                     <padding>
-                        <Insets left="5"/>
+                        <Insets left="5" />
                     </padding>
-                </HBox >
+                </HBox>
                 <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
                     <children>
                         <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../card1Front.png"/>
+                                <Image url="@../../../../card1Front.png" />
                             </image>
                         </ImageView>
                         <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
