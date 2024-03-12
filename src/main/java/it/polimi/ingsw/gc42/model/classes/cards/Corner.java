@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 /**
- * Implementation of Corner for Model
+ * Implementation of Corner for Model.
  * A Corner is a part of the Side of a Card.
  * Each Side contains 4 Corners, and each Card contains 8 Corners.
  */
@@ -14,7 +14,7 @@ public class Corner {
     /**
      * Constructor Method with the option to define the isCovered status
      * USE ONLY if you really need to specify the isCovered status.
-     * OTHERWISE USE the default constructor
+     * OTHERWISE USE the default constructor.
      * @param isCovered: boolean that shows if that Corner is covered or if it's shown.
      *                 Only shown or un-covered Corners are used to calculate points and determine if a certain
      *                 objective is met or not. Covered Corners are ignored
@@ -24,9 +24,9 @@ public class Corner {
     }
 
     /**
-     * DEFAULT Constructor Method
-     * USE THIS to create a generic Corner
-     * isCovered is ALWAYS set to false (default value)
+     * DEFAULT Constructor Method.
+     * USE THIS to create a generic Corner.
+     * isCovered is ALWAYS set to false (default value).
      */
     public Corner() {
         this.isCovered = false;

@@ -8,8 +8,8 @@ import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import java.util.*;
 
 /**
- * Implementation of Deck for Model
- * A Deck is a group of Cards, all belonging the same Type
+ * Implementation of Deck for Model.
+ * A Deck is a group of Cards, all belonging the same Type.
  */
 public class Deck implements Observable {
     // Attributes

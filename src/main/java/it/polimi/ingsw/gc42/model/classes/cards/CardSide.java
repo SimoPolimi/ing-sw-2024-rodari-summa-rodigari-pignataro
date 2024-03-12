@@ -1,16 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 /**
- * Implementation of CardSide for Model
+ * Implementation of CardSide for Model.
  * A class containing the four corners displayed on every side of the Card.
  */
 public class CardSide {
     // Attributes
 
     // Should upper be renamed to top for better consistency with bottom?
-    //
-    // When there is no corner (as in you can't place the card on that corner)
-    // is  the attribute null?
     private Corner upperLeftCorner;
     private Corner upperRightCorner;
     private Corner bottomLeftCorner;
@@ -19,7 +16,8 @@ public class CardSide {
     // Constructor Method
 
     /**
-     * CardSide constructor
+     * CardSide constructor.
+     * If there is no corner (cards cannot be placed on top of that corner) pass a null parameter.
      * @param upperLeftCorner        Corner to be placed in the upper left part of the CardSide
      * @param upperRightCorner       Corner to be placed in the upper right part of the CardSide
      * @param bottomLeftCorner       Corner to be placed in the bottom left part of the CardSide
