@@ -19,12 +19,13 @@ public class ObjectiveCardView {
     private Listener listener;
     private Text description;
 
-    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ImageView hintImage, boolean isShowingDetails) {
+    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ImageView hintImage, boolean isShowingDetails, Text description) {
         this.cardView = cardView;
         this.imageView = imageView;
         this.hint = hint;
         this.hintImage = hintImage;
         this.isShowingDetails = isShowingDetails;
+        this.description = description;
     }
 
     public CardView getCardView() {

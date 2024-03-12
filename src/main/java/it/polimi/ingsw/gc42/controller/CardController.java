@@ -289,8 +289,10 @@ public class CardController {
         handCardView3.hide(3, this);
     }
 
+    @FXML
     public void flipObjective() {
-
+        canReadKeyboard = false;
+        objectiveCardView.rotate(this);
     }
 }
 
