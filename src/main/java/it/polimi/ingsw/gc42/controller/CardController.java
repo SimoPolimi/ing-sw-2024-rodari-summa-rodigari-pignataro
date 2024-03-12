@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
+import it.polimi.ingsw.gc42.view.ObjectiveCardView;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -40,7 +41,7 @@ public class CardController {
     @FXML
     private ImageView KBCollapseHint;
     @FXML
-    private Text textCollapse ;
+    private Text textCollapse;
 
     @FXML
     private ImageView objectiveView;
@@ -48,6 +49,8 @@ public class CardController {
     private ImageView KBObjectiveHint;
     @FXML
     private Text objectiveHint;
+    @FXML
+    private Text objectiveDescription;
 
     private int selectedCard = 0;
     public boolean canReadKeyboard = true;
@@ -59,9 +62,8 @@ public class CardController {
     private CardView cardView2;
     private CardView cardView3;
 
-    private CardView objectiveCardView;
-    private HandCardView objectiveHandCardView;
-
+    private CardView cardViewObj;
+    private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
 
     private HandCardView handCardView1;
@@ -99,7 +101,8 @@ public class CardController {
             }
         });
 
-        objectiveCardView = new CardView("/cardObjectiveFront.png", "/cardObjectiveBack.png");
+        cardViewObj = new CardView("/cardObjectiveFront.png", "/cardObjectiveBack.png");
+        objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, KBObjectiveHint, false, objectiveDescription);
     }
 
     public void setCards(Card card1, Card card2, Card card3) {
