@@ -52,6 +52,13 @@ public class CardController {
     @FXML
     private Text objectiveDescription;
 
+    @FXML
+    private ImageView overlay1;
+    @FXML
+    private ImageView overlay2;
+    @FXML
+    private ImageView overlay3;
+
     private int selectedCard = 0;
     public boolean canReadKeyboard = true;
     private Card card1;
@@ -79,9 +86,9 @@ public class CardController {
         cardView1 = new CardView("/card1Front.png", "/card1Back.png");
         cardView2 = new CardView("/card2Front.png", "/card2Back.png");
         cardView3 = new CardView("/card3Front.png", "/card3Back.png");
-        handCardView1 = new HandCardView(cardView1, view1, text1, KBHint1, card1);
-        handCardView2 = new HandCardView(cardView2, view2, text2, KBHint2, card2);
-        handCardView3 = new HandCardView(cardView3, view3, text3, KBHint3, card3);
+        handCardView1 = new HandCardView(cardView1, view1, text1, KBHint1, card1, overlay1);
+        handCardView2 = new HandCardView(cardView2, view2, text2, KBHint2, card2, overlay2);
+        handCardView3 = new HandCardView(cardView3, view3, text3, KBHint3, card3, overlay3);
         handCardView1.getModelCard().setListener(new Listener() {
             @Override
             public void onEvent() {

@@ -22,17 +22,19 @@ public class HandCardView {
     private ImageView imageView;
     private Text hint;
     private ImageView hintIcon;
+    private ImageView overlay;
     private boolean isSelected;
     private Card modelCard;
     private Listener listener;
 
-    public HandCardView(CardView card, ImageView imageView, Text hint, ImageView hintIcon, Card modelCard) {
+    public HandCardView(CardView card, ImageView imageView, Text hint, ImageView hintIcon, Card modelCard, ImageView overlay) {
         this.card = card;
         this.imageView = imageView;
         this.hint = hint;
         this.hintIcon = hintIcon;
         setModelCard(modelCard);
         this.isSelected = false;
+        this.overlay = overlay;
     }
 
     public CardView getCard() {
@@ -111,6 +113,7 @@ public class HandCardView {
         this.isSelected = true;
         hint.setVisible(true);
         hintIcon.setVisible(true);
+        overlay.setVisible(true);
         ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
         select1.setFromX(1);
         select1.setFromY(1);
@@ -123,6 +126,7 @@ public class HandCardView {
         this.isSelected = false;
         hint.setVisible(false);
         hintIcon.setVisible(false);
+        overlay.setVisible(false);
         ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
         deselect2.setFromX(1.2);
         deselect2.setFromY(1.2);
@@ -190,6 +194,7 @@ public class HandCardView {
     }
 
     public void visualFlip(CardController controller) {
+        overlay.setVisible(false);
         ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
         jumpHalf1.setFromX(1.2);
         jumpHalf1.setFromY(1.2);
@@ -214,6 +219,7 @@ public class HandCardView {
             flipCardHalf2.play();
         });
         flipCardHalf2.setAxis(Rotate.Y_AXIS);
+        flipCardHalf2.setOnFinished(e -> overlay.setVisible(true));
 
         if (card.isOddRotation()) {
             flipCardHalf1.setFromAngle(0);
