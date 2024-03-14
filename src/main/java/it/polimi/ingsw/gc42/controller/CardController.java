@@ -298,8 +298,10 @@ public class CardController {
 
     @FXML
     public void flipObjective() {
-        canReadKeyboard = false;
-        objectiveCardView.rotate(this);
+        if (canReadKeyboard) {
+            canReadKeyboard = false;
+            objectiveCardView.rotate(this);
+        }
     }
 }
 
