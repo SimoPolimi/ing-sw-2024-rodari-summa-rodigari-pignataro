@@ -5,188 +5,181 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox id="root" alignment="CENTER" prefWidth="900.0" spacing="20" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+<AnchorPane id="root" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
-        <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30">
-            <children>
-                <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
-                    <children>
-                        <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../../collapseHandHint.png" />
-                            </image>
-                        </ImageView>
-                        <Text fx:id="textCollapse" fill="white" text="Collapse">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                        </Text>
-                    </children>
-                    <padding>
-                        <Insets left="5" />
-                    </padding>
-                </HBox>
-                <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
-                    <children>
-                  <ImageView fx:id="overlay1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <image>
-                        <Image url="@../../../../selectedOverlay.png" />
-                     </image>
-                  </ImageView>
-                        <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
-                            <image>
-                                <Image url="@../../../../card1Front.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
-                            <image>
-                                <Image url="@../../../../flipKeyboardHint.png" />
-                            </image>
-                        </ImageView>
-                        <Text fx:id="text1" fill="white" text="Flip" translateX="-220.0" visible="false">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="-20.0" />
-                            </HBox.margin>
-                        </Text>
-                    </children>
-                </HBox>
-                <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
-                    <children>
-                        <ImageView fx:id="overlay2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                            <image>
-                                <Image url="@../../../../selectedOverlay.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="view2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
-                            <image>
-                                <Image url="@../../../../card2Front.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
-                            <image>
-                                <Image url="@../../../../flipKeyboardHint.png" />
-                            </image>
-                        </ImageView>
-                        <Text fx:id="text2" fill="white" text="Flip" translateX="-220.0" visible="false">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="-20.0" />
-                            </HBox.margin>
-                        </Text>
-                    </children>
-                </HBox>
-                <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
-                    <children>
-                        <ImageView fx:id="overlay3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                            <image>
-                                <Image url="@../../../../selectedOverlay.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="view3" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
-                            <image>
-                                <Image url="@../../../../card3Front.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
-                            <image>
-                                <Image url="@../../../../flipKeyboardHint.png" />
-                            </image>
-                        </ImageView>
-                        <Text fx:id="text3" fill="white" text="Flip" translateX="-220.0" visible="false">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="-20.0" />
-                            </HBox.margin>
-                        </Text>
-                    </children>
-                </HBox>
-                <HBox id="bottomHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
-                    <children>
-                        <ImageView fx:id="KBNavHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../../navigateKeyboardHint.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                        </ImageView>
-                        <Text fx:id="textNav" fill="white" text="Navigate">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                        </Text>
-                    </children>
-                    <padding>
-                        <Insets bottom="5.0" />
-                    </padding>
-                </HBox>
-
-            </children>
-            <opaqueInsets>
-                <Insets />
-            </opaqueInsets>
-            <VBox.margin>
-                <Insets left="40.0" />
-            </VBox.margin>
-        </VBox>
-        <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30">
-            <children>
-                <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0">
-                    <image>
-                        <Image url="@../../../../cardObjectiveFront.png" />
-                    </image>
-                </ImageView>
-                <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">
-                    <children>
-                        <ImageView fx:id="KBObjectiveHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../../KBObjectiveHint.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                        </ImageView>
-                        <Text fx:id="objectiveHint" fill="white" text="Secret Objective">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets top="3.0" />
-                            </HBox.margin>
-                        </Text>
-                    </children>
-                    <padding>
-                        <Insets top="40.0" />
-                    </padding>
-                </HBox>
-                <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER">
-                    <font>
-                        <Font name="Constantia Italic" size="15.0" />
-                    </font>
-                </Text>
-            </children>
-        </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="50">
+                <children>
+                    <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
+                        <children>
+                            <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../../../collapseHandHint.png" />
+                                </image>
+                            </ImageView>
+                            <Text fx:id="textCollapse" fill="white" text="Collapse">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                            </Text>
+                        </children>
+                        <padding>
+                            <Insets left="5" />
+                        </padding>
+                    </HBox>
+                    <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
+                        <children>
+                            <ImageView fx:id="overlay1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                                <image>
+                                    <Image url="@../../../../selectedOverlay.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
+                                <image>
+                                    <Image url="@../../../../card1Front.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
+                                <image>
+                                    <Image url="@../../../../flipKeyboardHint.png" />
+                                </image>
+                            </ImageView>
+                            <Text fx:id="text1" fill="white" text="Flip" translateX="-220.0" visible="false">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="-20.0" />
+                                </HBox.margin>
+                            </Text>
+                        </children>
+                    </HBox>
+                    <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
+                        <children>
+                            <ImageView fx:id="overlay2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                                <image>
+                                    <Image url="@../../../../selectedOverlay.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="view2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
+                                <image>
+                                    <Image url="@../../../../card2Front.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
+                                <image>
+                                    <Image url="@../../../../flipKeyboardHint.png" />
+                                </image>
+                            </ImageView>
+                            <Text fx:id="text2" fill="white" text="Flip" translateX="-220.0" visible="false">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="-20.0" />
+                                </HBox.margin>
+                            </Text>
+                        </children>
+                    </HBox>
+                    <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
+                        <children>
+                            <ImageView fx:id="overlay3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                                <image>
+                                    <Image url="@../../../../selectedOverlay.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="view3" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
+                                <image>
+                                    <Image url="@../../../../card3Front.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
+                                <image>
+                                    <Image url="@../../../../flipKeyboardHint.png" />
+                                </image>
+                            </ImageView>
+                            <Text fx:id="text3" fill="white" text="Flip" translateX="-220.0" visible="false">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="-20.0" />
+                                </HBox.margin>
+                            </Text>
+                        </children>
+                    </HBox>
+                    <HBox id="bottomHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
+                        <children>
+                            <ImageView fx:id="KBNavHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../../../navigateKeyboardHint.png" />
+                                </image>
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                            </ImageView>
+                            <Text fx:id="textNav" fill="white" text="Navigate">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                            </Text>
+                        </children>
+                        <padding>
+                            <Insets bottom="5.0" />
+                        </padding>
+                    </HBox>
+                </children>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets left="40.0" />
+                </VBox.margin>
+            </VBox>
+            <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+                <children>
+                    <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0">
+                        <image>
+                            <Image url="@../../../../cardObjectiveFront.png" />
+                        </image>
+                    </ImageView>
+                    <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">
+                        <children>
+                            <ImageView fx:id="KBObjectiveHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../../../KBObjectiveHint.png" />
+                                </image>
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                            </ImageView>
+                            <Text fx:id="objectiveHint" fill="white" text="Secret Objective">
+                                <font>
+                                    <Font name="Constantia Italic" size="15.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets top="3.0" />
+                                </HBox.margin>
+                            </Text>
+                        </children>
+                        <padding>
+                            <Insets top="40.0" />
+                        </padding>
+                    </HBox>
+                    <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER">
+                        <font>
+                            <Font name="Constantia Italic" size="15.0" />
+                        </font>
+                    </Text>
+                </children>
+            </VBox>
     </children>
-    <padding>
-        <Insets bottom="20.0" left="40.0" right="80.0" top="20.0" />
-    </padding>
-    <opaqueInsets>
-        <Insets />
-    </opaqueInsets>
-</HBox>
+</AnchorPane>
