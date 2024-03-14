@@ -126,17 +126,23 @@ public class CardController {
 
     @FXML
     public void onCard1Clicked() {
-        handCardView1.flip();
+        if (canReadKeyboard) {
+            handCardView1.flip();
+        }
     }
 
     @FXML
     public void onCard2Clicked() {
-        handCardView2.flip();
+        if (canReadKeyboard) {
+            handCardView2.flip();
+        }
     }
 
     @FXML
     public void onCard3Clicked() {
-        handCardView3.flip();
+        if (canReadKeyboard) {
+            handCardView3.flip();
+        }
     }
 
     private void flipCard(HandCardView handCardView) {
