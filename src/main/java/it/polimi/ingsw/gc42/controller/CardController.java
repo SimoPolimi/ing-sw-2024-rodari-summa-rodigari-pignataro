@@ -124,7 +124,7 @@ public class CardController {
         this.cardView3 = new CardView("/card3Front.png", "/card3Back.png");
     }
 
-    public boolean canReadKeyboard() {
+    public boolean canReadInput() {
         return canReadInput;
     }
 
@@ -138,21 +138,21 @@ public class CardController {
 
     @FXML
     public void onCard1Clicked() {
-        if (canReadKeyboard()) {
+        if (canReadInput()) {
             handCardView1.flip();
         }
     }
 
     @FXML
     public void onCard2Clicked() {
-        if (canReadKeyboard()) {
+        if (canReadInput()) {
             handCardView2.flip();
         }
     }
 
     @FXML
     public void onCard3Clicked() {
-        if (canReadKeyboard()) {
+        if (canReadInput()) {
             handCardView3.flip();
         }
     }
@@ -316,7 +316,7 @@ public class CardController {
 
     @FXML
     public void flipObjective() {
-        if (canReadKeyboard()) {
+        if (canReadInput()) {
             blockInput();
             objectiveCardView.rotate(this);
         }

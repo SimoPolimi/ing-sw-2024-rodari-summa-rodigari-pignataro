@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -35,7 +34,7 @@ public class GameWindow extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
 
         scene.setOnKeyPressed(e -> {
-            if (controller.canReadKeyboard()) {
+            if (controller.canReadInput()) {
                 switch (e.getCode()) {
                     case F -> {
                         controller.onFKeyPressed();
