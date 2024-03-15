@@ -138,7 +138,7 @@ public class HandCardView {
     public void hide(int position, CardController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(-180);
-        t.setOnFinished(e -> controller.canReadKeyboard = true);
+        t.setOnFinished(e -> controller.unlockInput());
 
         switch (position) {
             case 1:
@@ -168,7 +168,7 @@ public class HandCardView {
     public void show(int position, CardController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(180);
-        t.setOnFinished(e -> controller.canReadKeyboard = true);
+        t.setOnFinished(e -> controller.unlockInput());
 
         switch (position) {
             case 1:
@@ -202,8 +202,8 @@ public class HandCardView {
         jumpHalf1.setToY(1.5);
         jumpHalf1.setAutoReverse(true);
         jumpHalf1.setCycleCount(2);
-        controller.canReadKeyboard = false;
-        jumpHalf1.setOnFinished(e -> controller.canReadKeyboard = true);
+        controller.blockInput();
+        jumpHalf1.setOnFinished(e -> controller.unlockInput());
         jumpHalf1.play();
 
         RotateTransition flipCardHalf2 = new RotateTransition(Duration.millis(200), imageView);
@@ -233,6 +233,11 @@ public class HandCardView {
             flipCardHalf2.setToAngle(0);
         }
         card.setOddRotation(!card.isOddRotation());
+        flipCardHalf2.setOnFinished(e -> {
+            if (!isSelected) {
+                deselect();
+            }
+        });
         flipCardHalf1.play();
     }
 }

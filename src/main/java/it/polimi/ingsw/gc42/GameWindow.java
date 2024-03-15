@@ -35,7 +35,7 @@ public class GameWindow extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
 
         scene.setOnKeyPressed(e -> {
-            if (controller.canReadKeyboard) {
+            if (controller.canReadKeyboard()) {
                 switch (e.getCode()) {
                     case F -> {
                         controller.onFKeyPressed();

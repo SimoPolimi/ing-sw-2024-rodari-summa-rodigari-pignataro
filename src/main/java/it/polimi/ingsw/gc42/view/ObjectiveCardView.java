@@ -93,7 +93,7 @@ public class ObjectiveCardView {
             rotateTransition.setByAngle(60);
             description.setVisible(false);
         }
-        rotateTransition.setOnFinished(e -> controller.canReadKeyboard = true);
+        rotateTransition.setOnFinished(e -> controller.unlockInput());
         rotateTransition.play();
         isShowingDetails = !isShowingDetails;
     }

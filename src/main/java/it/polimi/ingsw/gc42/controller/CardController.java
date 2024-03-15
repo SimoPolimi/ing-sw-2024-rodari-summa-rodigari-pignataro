@@ -60,7 +60,7 @@ public class CardController {
     private ImageView overlay3;
 
     private int selectedCard = 0;
-    public boolean canReadKeyboard = true;
+    private boolean canReadInput = true;
     private Card card1;
     private Card card2;
     private Card card3;
@@ -124,23 +124,35 @@ public class CardController {
         this.cardView3 = new CardView("/card3Front.png", "/card3Back.png");
     }
 
+    public boolean canReadKeyboard() {
+        return canReadInput;
+    }
+
+    public void blockInput() {
+        canReadInput = false;
+    }
+
+    public void unlockInput() {
+        canReadInput = true;
+    }
+
     @FXML
     public void onCard1Clicked() {
-        if (canReadKeyboard) {
+        if (canReadKeyboard()) {
             handCardView1.flip();
         }
     }
 
     @FXML
     public void onCard2Clicked() {
-        if (canReadKeyboard) {
+        if (canReadKeyboard()) {
             handCardView2.flip();
         }
     }
 
     @FXML
     public void onCard3Clicked() {
-        if (canReadKeyboard) {
+        if (canReadKeyboard()) {
             handCardView3.flip();
         }
     }
@@ -267,7 +279,7 @@ public class CardController {
         KBNavHint.setVisible(true);
         textNav.setVisible(true);
         textCollapse.setText("Collapse");
-        canReadKeyboard = false;
+        blockInput();
 
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
         t1.setByY(-285);
@@ -287,7 +299,7 @@ public class CardController {
         KBNavHint.setVisible(false);
         textNav.setVisible(false);
         textCollapse.setText("My Cards");
-        canReadKeyboard = false;
+        blockInput();
 
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
         t1.setByY(285);
@@ -304,8 +316,8 @@ public class CardController {
 
     @FXML
     public void flipObjective() {
-        if (canReadKeyboard) {
-            canReadKeyboard = false;
+        if (canReadKeyboard()) {
+            blockInput();
             objectiveCardView.rotate(this);
         }
     }
