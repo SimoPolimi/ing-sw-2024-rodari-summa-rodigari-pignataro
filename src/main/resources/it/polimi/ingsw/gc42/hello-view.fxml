@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="root" style="-fx-background-color: SaddleBrown;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+<AnchorPane id="root" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="50">
+            <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="50" AnchorPane.topAnchor="0">
                 <children>
                     <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
                         <children>
@@ -28,7 +28,7 @@
                     </HBox>
                     <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
                         <children>
-                            <ImageView fx:id="overlay1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                            <ImageView fx:id="overlay1" fitHeight="150.0" fitWidth="200.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" visible="false">
                                 <HBox.margin>
                                     <Insets />
                                 </HBox.margin>
@@ -58,7 +58,7 @@
                     </HBox>
                     <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                         <children>
-                            <ImageView fx:id="overlay2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                            <ImageView fx:id="overlay2" fitHeight="150.0" fitWidth="200.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" visible="false">
                                 <HBox.margin>
                                     <Insets />
                                 </HBox.margin>
@@ -88,7 +88,7 @@
                     </HBox>
                     <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                         <children>
-                            <ImageView fx:id="overlay3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" opacity="0.7" visible="false">
+                            <ImageView fx:id="overlay3" fitHeight="150.0" fitWidth="200.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.4" scaleY="1.4" translateX="1.0" visible="false">
                                 <HBox.margin>
                                     <Insets />
                                 </HBox.margin>
@@ -144,7 +144,7 @@
                     <Insets left="40.0" />
                 </VBox.margin>
             </VBox>
-            <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+            <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="0">
                 <children>
                     <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0">
                         <image>
