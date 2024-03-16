@@ -187,6 +187,7 @@ public class Deck implements Observable {
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, res1, res2, res3, frontImage, backImage));
                 }
+                break;
             case OBJECTIVECARD:
                 num = object.get("Game").getAsJsonObject().get("ObjectiveCardsNumber").getAsInt();
                 list = object.get("ObjectiveCards").getAsJsonObject().get("list").getAsJsonArray().asList();
@@ -195,13 +196,87 @@ public class Deck implements Observable {
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
-                    ObjectiveEnum condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
-                            list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString());
+                    String condition = list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString();
+                    String name = list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString();
+                    String primaryType = list.get(i).getAsJsonObject().get("PrimaryKingdom").getAsJsonPrimitive().getAsString();
+                    String direction = list.get(i).getAsJsonObject().get("Direction").getAsJsonPrimitive().getAsString();
+                    boolean isLeftToRight = true;
+                    if (direction.equals("topLeftToBottomRight")) {
+                        isLeftToRight = true;
+                    } else {
+                        isLeftToRight = false;
+                    }
                     //TODO: Implement creation with new Objective sub-classes
+                    Objective objective;
+                    switch (condition) {
+                        case "forEachScroll":
+                            objective = new ItemCountObjective(points, 1, Resource.SCROLL);
+                            break;
+                        case "forEachPotion":
+                            objective = new ItemCountObjective(points, 1, Resource.POTION);
+                            break;
+                        case "forEachFeather":
+                            objective = new ItemCountObjective(points, 1, Resource.FEATHER);
+                            break;
+                        case "forEachCorner":
+                            objective = new CornerCountObjective(points, 1, null);
+                            break;
+                        case "diagonalPlacingRed!":
+                            objective = new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight);
+                            break;
+                        case "diagonalPlacingGreen!":
+                            objective = new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight);
+                            break;
+                        case "diagonalPlacingBlue":
+                            objective = new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight);
+                            break;
+                        case "diagonalPlacingPurple":
+                            objective = new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight);
+                            break;
+                        case "LShapedPlacingRed":
+                            objective = new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT);
+                            break;
+                        case "LShapedPlacingGreen":
+                            objective = new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT);
+                            break;
+                        case "LShapedPlacingBlue":
+                            objective = new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT);
+                            break;
+                        case "LShapedPlacingPurple":
+                            objective = new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT);
+                            break;
+                        case "forEach3KingdomResourcesFungi":
+                            objective = new KingdomCountObjective(points, 3, KingdomResource.FUNGI);
+                            break;
+                        case "forEach3KingdomResourcesPlant":
+                            objective = new KingdomCountObjective(points, 3, KingdomResource.PLANT);
+                            break;
+                        case "forEach3KingdomResourcesAnimal":
+                            objective = new KingdomCountObjective(points, 3, KingdomResource.ANIMAL);
+                            break;
+                        case "forEach3KingdomResourcesInsect":
+                            objective = new KingdomCountObjective(points, 3, KingdomResource.INSECT);
+                            break;
+                        case "forEach3DifferentItems":
+                            objective = new SetItemCountObjective(points, 3);
+                            break;
+                        case "forEach2Scrolls":
+                            objective = new ItemCountObjective(points, 2, Resource.SCROLL);
+                            break;
+                        case "forEach2Potions":
+                            objective = new ItemCountObjective(points, 2, Resource.POTION);
+                            break;
+                        case "forEach2Feathers":
+                            objective = new ItemCountObjective(points, 2, Resource.FEATHER);
+                            break;
+                        default:
+                            objective = null;
+                            break;
+                    }
+                    cards.add(new ObjectiveCard(null, null, true, id, points, objective, frontImage, backImage));
                 }
         }
         Deck deck = new Deck(cards, cards.size(), type);
-        System.out.println(cards.size());
         deck.shuffle();
         return deck;
     }
