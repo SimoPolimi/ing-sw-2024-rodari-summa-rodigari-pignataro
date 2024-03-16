@@ -1,9 +1,9 @@
 {
   "Game": {
     "ResourceCardsNumber": 40,
-    "GoldCardNumber": 40,
-    "StarterCardNumber": 6,
-    "ObjectiveCardNumber": 16,
+    "GoldCardsNumber": 40,
+    "StarterCardsNumber": 6,
+    "ObjectiveCardsNumber": 16,
     "Kingdoms": {
       "enum": ["Animal", "Plant", "Fungi", "Insect"]
     },
@@ -22,7 +22,7 @@
         "UpperLeftCorner": "Fungi",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Fungi",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -40,7 +40,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Fungi",
         "UpperRightCorner": "Fungi",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -58,7 +58,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner":  null,
+        "UpperRightCorner":  "null",
         "BottomLeftCorner": "Fungi",
         "BottomRightCorner": "Fungi"
       },
@@ -76,7 +76,7 @@
       "Kingdom": "Fungi",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Fungi",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Fungi"
@@ -95,7 +95,7 @@
       "Kingdom": "Fungi",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Feather",
         "BottomLeftCorner": "Plant",
         "BottomRightCorner": "Fungi"
@@ -116,7 +116,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Potion",
         "UpperRightCorner": "Fungi",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
@@ -155,7 +155,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Fungi",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -172,7 +172,7 @@
       "Points": 1,
       "FrontSide": {
         "UpperLeftCorner": "Fungi",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -190,7 +190,7 @@
       "Kingdom": "Fungi",
       "Points": 1,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Fungi",
         "BottomRightCorner": "EmptyCorner"
@@ -212,7 +212,7 @@
         "UpperLeftCorner": "Plant",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Plant",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -230,7 +230,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Plant",
         "UpperRightCorner": "Plant",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -248,7 +248,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Plant",
         "BottomRightCorner": "Plant"
       },
@@ -266,7 +266,7 @@
       "Kingdom": "Plant",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Plant",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Plant"
@@ -285,7 +285,7 @@
       "Kingdom": "Plant",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Insect",
         "BottomLeftCorner": "Feather",
         "BottomRightCorner": "Plant"
@@ -306,7 +306,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Fungi",
         "UpperRightCorner": "Plant",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Potion"
       },
       "BackSide": {
@@ -324,7 +324,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "Scroll",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Plant",
         "BottomRightCorner": "Animal"
       },
@@ -345,7 +345,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Plant",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -363,7 +363,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Plant"
       },
       "BackSide": {
@@ -380,7 +380,7 @@
       "Kingdom": "Plant",
       "Points": 1,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Plant",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
@@ -402,7 +402,7 @@
         "UpperLeftCorner": "Animal",
         "UpperRightCorner": "Animal",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -418,7 +418,7 @@
       "Kingdom": "Animal",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Animal",
         "BottomRightCorner": "Animal"
@@ -438,7 +438,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "Animal",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Animal",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -458,7 +458,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Animal",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
@@ -475,7 +475,7 @@
       "Kingdom": "Animal",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Insect",
         "BottomLeftCorner": "Potion",
         "BottomRightCorner": "Animal"
@@ -496,7 +496,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Plant",
         "UpperRightCorner": "Animal",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Scroll"
       },
       "BackSide": {
@@ -514,7 +514,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "Feather",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Animal",
         "BottomRightCorner": "Fungi"
       },
@@ -532,7 +532,7 @@
       "Kingdom": "Animal",
       "Points": 1,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Animal",
         "BottomRightCorner": "EmptyCorner"
@@ -552,7 +552,7 @@
       "Points": 1,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Animal"
       },
@@ -573,7 +573,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Animal",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -592,7 +592,7 @@
         "UpperLeftCorner": "Insect",
         "UpperRightCorner": "Insect",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -608,7 +608,7 @@
       "Kingdom": "Insect",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "Insect",
         "BottomRightCorner": "Insect"
@@ -628,7 +628,7 @@
       "Points": 0,
       "FrontSide": {
         "UpperLeftCorner": "Insect",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Insect",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -648,7 +648,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Insect",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
@@ -665,7 +665,7 @@
       "Kingdom": "Insect",
       "Points": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Feather",
         "BottomLeftCorner": "Animal",
         "BottomRightCorner": "Insect"
@@ -686,7 +686,7 @@
       "FrontSide": {
         "UpperLeftCorner": "Scroll",
         "UpperRightCorner": "Insect",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
@@ -706,7 +706,7 @@
         "UpperLeftCorner": "Insect",
         "UpperRightCorner": "Plant",
         "BottomLeftCorner": "Potion",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -723,7 +723,7 @@
       "Points": 1,
       "FrontSide": {
         "UpperLeftCorner": "Insect",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -743,7 +743,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
@@ -760,7 +760,7 @@
       "Kingdom": "Insect",
       "Points": 1,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Insect",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
@@ -787,7 +787,7 @@
       "AnimalCost": 1,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Feather"
@@ -813,7 +813,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Potion",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -838,7 +838,7 @@
         "UpperLeftCorner": "Scroll",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -861,7 +861,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -886,7 +886,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -908,7 +908,7 @@
       "InsectCost": 1,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -925,16 +925,16 @@
       "BackImage": "fungiGoldBack.png",
       "Kingdom": "Fungi",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 3,
       "PlantCost": 0,
       "AnimalCost": 0,
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Potion",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -949,7 +949,7 @@
       "BackImage": "fungiGoldBack.png",
       "Kingdom": "Fungi",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 3,
       "PlantCost": 0,
       "AnimalCost": 0,
@@ -957,8 +957,8 @@
       "FrontSide": {
         "UpperLeftCorner": "Feather",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -973,15 +973,15 @@
       "BackImage": "fungiGoldBack.png",
       "Kingdom": "Fungi",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 3,
       "PlantCost": 0,
       "AnimalCost": 0,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Scroll",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -997,16 +997,16 @@
       "BackImage": "fungiGoldBack.png",
       "Kingdom": "Fungi",
       "Points": 5,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 5,
       "PlantCost": 0,
       "AnimalCost": 0,
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1030,7 +1030,7 @@
         "UpperLeftCorner": "Feather",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1053,7 +1053,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Scroll",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1076,7 +1076,7 @@
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Potion",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1099,7 +1099,7 @@
       "AnimalCost": 0,
       "InsectCost": 1,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
@@ -1126,7 +1126,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1148,7 +1148,7 @@
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1165,16 +1165,16 @@
       "BackImage": "plantGoldBack.png",
       "Kingdom": "Plant",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 3,
       "AnimalCost": 0,
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Feather",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1189,7 +1189,7 @@
       "BackImage": "plantGoldBack.png",
       "Kingdom": "Plant",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 3,
       "AnimalCost": 0,
@@ -1197,8 +1197,8 @@
       "FrontSide": {
         "UpperLeftCorner": "Scroll",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1213,15 +1213,15 @@
       "BackImage": "plantGoldBack.png",
       "Kingdom": "Plant",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 3,
       "AnimalCost": 0,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "Potion",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1237,7 +1237,7 @@
       "BackImage": "plantGoldBack.png",
       "Kingdom": "Plant",
       "Points": 5,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 5,
       "AnimalCost": 0,
@@ -1245,8 +1245,8 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1270,7 +1270,7 @@
         "UpperLeftCorner": "Potion",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1291,7 +1291,7 @@
       "AnimalCost": 2,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Scroll"
@@ -1316,7 +1316,7 @@
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Feather",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1341,7 +1341,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1364,7 +1364,7 @@
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1387,7 +1387,7 @@
       "AnimalCost": 3,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
@@ -1405,16 +1405,16 @@
       "BackImage": "animalGoldBack.png",
       "Kingdom": "Animal",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 3,
       "InsectCost": 0,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Scroll",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1429,7 +1429,7 @@
       "BackImage": "animalGoldBack.png",
       "Kingdom": "Animal",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 3,
@@ -1437,8 +1437,8 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Potion",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1453,15 +1453,15 @@
       "BackImage": "animalGoldBack.png",
       "Kingdom": "Animal",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 3,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "Feather"
       },
       "BackSide": {
@@ -1483,9 +1483,9 @@
       "AnimalCost": 5,
       "InsectCost": 0,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1509,7 +1509,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Feather",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1532,7 +1532,7 @@
       "InsectCost": 2,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Scroll",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1555,7 +1555,7 @@
       "AnimalCost": 0,
       "InsectCost": 2,
       "FrontSide": {
-        "UpperLeftCorner": null,
+        "UpperLeftCorner": "null",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "Potion"
@@ -1581,7 +1581,7 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
+        "BottomLeftCorner": "null",
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
@@ -1606,7 +1606,7 @@
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1628,7 +1628,7 @@
       "InsectCost": 3,
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1645,16 +1645,16 @@
       "BackImage": "insectGoldBack.png",
       "Kingdom": "Insect",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 0,
       "InsectCost": 3,
       "FrontSide": {
         "UpperLeftCorner": "Potion",
-        "UpperRightCorner": null,
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "EmptyCorner",
-        "BottomRightCorner": null
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1669,7 +1669,7 @@
       "BackImage": "insectGoldBack.png",
       "Kingdom": "Insect",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 0,
@@ -1677,8 +1677,8 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "Scroll",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1693,14 +1693,14 @@
       "BackImage": "insectGoldBack.png",
       "Kingdom": "Insect",
       "Points": 3,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 0,
       "InsectCost": 3,
       "FrontSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
+        "UpperLeftCorner": "null",
+        "UpperRightCorner": "null",
         "BottomLeftCorner": "Feather",
         "BottomRightCorner": "EmptyCorner"
       },
@@ -1717,7 +1717,7 @@
       "BackImage": "insectGoldBack.png",
       "Kingdom": "Insect",
       "Points": 5,
-      "Condition": null,
+      "Condition": "null",
       "FungiCost": 0,
       "PlantCost": 0,
       "AnimalCost": 0,
@@ -1725,8 +1725,8 @@
       "FrontSide": {
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "UpperLeftCorner": "EmptyCorner",
@@ -1737,7 +1737,7 @@
       "PermanentResources": 1
     }]
   },
-  "StarterCard": {
+  "StarterCards": {
     "list": [{
       "Id": 81,
       "FrontImage": "card81Front.png",
@@ -1752,7 +1752,7 @@
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Fungi",
         "UpperRightCorner": "Plant",
         "BottomLeftCorner": "Insect",
@@ -1772,7 +1772,7 @@
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Plant",
         "UpperRightCorner": "Animal",
         "BottomLeftCorner": "Fungi",
@@ -1792,7 +1792,7 @@
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Insect",
         "UpperRightCorner": "Animal",
         "BottomLeftCorner": "Fungi",
@@ -1812,7 +1812,7 @@
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Plant",
         "UpperRightCorner": "Insect",
         "BottomLeftCorner": "Animal",
@@ -1827,12 +1827,12 @@
         "PermanentResource": ["Animal", "Insect", "Plant"],
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Insect",
         "UpperRightCorner": "Fungi",
         "BottomLeftCorner": "Plant",
@@ -1847,12 +1847,12 @@
         "PermanentResource": ["Plant", "Animal", "Fungi"],
         "UpperLeftCorner": "EmptyCorner",
         "UpperRightCorner": "EmptyCorner",
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "BottomLeftCorner": "null",
+        "BottomRightCorner": "null"
       },
       "BackSide": {
         "PermanentResourceNumber": 0,
-        "PermanentResource": null,
+        "PermanentResource": "null",
         "UpperLeftCorner": "Fungi",
         "UpperRightCorner": "Animal",
         "BottomLeftCorner": "Plant",
@@ -1869,8 +1869,8 @@
       "Condition": "diagonalPlacing",
       "Direction": "bottomLeftToTopRight",
       "PrimaryKingdom": "Fungi",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Diagonal Red!",
       "Description": "Get 2 points for each identical pattern in your play area."
     }, {
@@ -1881,8 +1881,8 @@
       "Condition": "diagonalPlacing",
       "Direction": "topLeftToBottomRight",
       "PrimaryKingdom": "Plant",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Diagonal Green!",
       "Description": "Get 2 points for each identical pattern in your play area."
     }, {
@@ -1893,8 +1893,8 @@
       "Condition": "diagonalPlacing",
       "Direction": "bottomLeftToTopRight",
       "PrimaryKingdom": "Animal",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Diagonal Blue!",
       "Description": "Get 2 points for each identical pattern in your play area."
     }, {
@@ -1905,8 +1905,8 @@
       "Condition": "diagonalPlacing",
       "Direction": "topLeftToBottomRight",
       "PrimaryKingdom": "Insect",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Diagonal Purple!",
       "Description": "Get 2 points for each identical pattern in your play area."
     }, {
@@ -1918,7 +1918,7 @@
       "Direction": "bottomRightCorner",
       "PrimaryKingdom": "Fungi",
       "SecondaryKingdom": "Plant",
-      "Resource": null,
+      "Resource": "null",
       "Name": "L-Shaped Red!",
       "Description": "Get 3 points for each identical pattern in your play area."
     }, {
@@ -1930,7 +1930,7 @@
       "Direction": "bottomLeftCorner",
       "PrimaryKingdom": "Plant",
       "SecondaryKingdom": "Insect",
-      "Resource": null,
+      "Resource": "null",
       "Name": "L-Shaped Green!",
       "Description": "Get 3 points for each identical pattern in your play area."
     }, {
@@ -1942,7 +1942,7 @@
       "Direction": "topRightCorner",
       "PrimaryKingdom": "Animal",
       "SecondaryKingdom": "Fungi",
-      "Resource": null,
+      "Resource": "null",
       "Name": "L-Shaped Blue!",
       "Description": "Get 3 points for each identical pattern in your play area."
     }, {
@@ -1954,7 +1954,7 @@
       "Direction": "topLeftCorner",
       "PrimaryKingdom": "Insect",
       "SecondaryKingdom": "Animal",
-      "Resource": null,
+      "Resource": "null",
       "Name": "L-Shaped Purple!",
       "Description": "Get 3 points for each identical pattern in your play area."
     }, {
@@ -1963,10 +1963,10 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach3KingdomResources",
-      "Direction": null,
+      "Direction": "null",
       "PrimaryKingdom": "Fungi",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Fungi Collector!",
       "Description": "Get 2 points for each set of 3 Fungi Resources visible in your play area."
     }, {
@@ -1975,10 +1975,10 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach3KingdomResources",
-      "Direction": null,
+      "Direction": "null",
       "PrimaryKingdom": "Plant",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Plant Collector!",
       "Description": "Get 2 points for each set of 3 Plant Resources visible in your play area."
     }, {
@@ -1987,10 +1987,10 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach3KingdomResources",
-      "Direction": null,
+      "Direction": "null",
       "PrimaryKingdom": "Animal",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Animal Collector!",
       "Description": "Get 2 points for each set of 3 Animal Resources visible in your play area."
     }, {
@@ -1999,10 +1999,10 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach3KingdomResources",
-      "Direction": null,
+      "Direction": "null",
       "PrimaryKingdom": "Insect",
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Insect Collector!",
       "Description": "Get 2 points for each set of 3 Insect Resources visible in your play area."
     }, {
@@ -2011,10 +2011,10 @@
       "BackImage": "objectiveBack.png",
       "Points": 3,
       "Condition": "forEach3DifferentItems",
-      "Direction": null,
-      "PrimaryKingdom": null,
-      "SecondaryKingdom": null,
-      "Resource": null,
+      "Direction": "null",
+      "PrimaryKingdom": "null",
+      "SecondaryKingdom": "null",
+      "Resource": "null",
       "Name": "Item Collector!",
       "Description": "Get 3 points for each set of 3 different Items visible in your play area."
     }, {
@@ -2023,9 +2023,9 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach2Scrolls",
-      "Direction": null,
-      "PrimaryKingdom": null,
-      "SecondaryKingdom": null,
+      "Direction": "null",
+      "PrimaryKingdom": "null",
+      "SecondaryKingdom": "null",
       "Resource": "Scroll",
       "Name": "Scroll Collector!",
       "Description": "Get 2 points for each set of 2 Scrolls visible in your play area."
@@ -2035,9 +2035,9 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach2Potions",
-      "Direction": null,
-      "PrimaryKingdom": null,
-      "SecondaryKingdom": null,
+      "Direction": "null",
+      "PrimaryKingdom": "null",
+      "SecondaryKingdom": "null",
       "Resource": "Potion",
       "Name": "Potion Collector!",
       "Description": "Get 2 points for each set of 2 Potions visible in your play area."
@@ -2047,9 +2047,9 @@
       "BackImage": "objectiveBack.png",
       "Points": 2,
       "Condition": "forEach2Feathers",
-      "Direction": null,
-      "PrimaryKingdom": null,
-      "SecondaryKingdom": null,
+      "Direction": "null",
+      "PrimaryKingdom": "null",
+      "SecondaryKingdom": "null",
       "Resource": "Feather",
       "Name": "Feather Collector!",
       "Description": "Get 2 points for each set of 2 Feathers visible in your play area."

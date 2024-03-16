@@ -1,10 +1,14 @@
 package it.polimi.ingsw.gc42.model.classes;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -92,12 +96,213 @@ public class Deck implements Observable {
     // Methods
 
 
-    public static Deck initDeck(CardType type) {
+    public static Deck initDeck(CardType type) throws FileNotFoundException {
         //TODO: Fully Implement
         ArrayList<Card> cards = new ArrayList<>();
+        int num;
+        List<JsonElement> list;
+        JsonObject object = JsonParser.parseReader(new JsonReader(new FileReader("src/main/resources/data.json"))).getAsJsonObject();
+        switch (type) {
+            case RESOURCECARD:
+                num = object.get("Game").getAsJsonObject().get("ResourceCardsNumber").getAsInt();
+                list = object.get("ResourceCards").getAsJsonObject().get("list").getAsJsonArray().asList();
+                for (int i = 0; i < num; i++) {
+                    int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
+                    String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
+                    String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
+                    KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsString());
+                    int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
+                    String upperLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    String upperLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                            new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
+                            true, id, kingdom, points, frontImage, backImage));
+                }
+                break;
+            case GOLDCARD:
+                num = object.get("Game").getAsJsonObject().get("GoldCardsNumber").getAsInt();
+                list = object.get("GoldCards").getAsJsonObject().get("list").getAsJsonArray().asList();
+                for (int i = 0; i < num; i++) {
+                    int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
+                    String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
+                    String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
+                    KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsJsonPrimitive().getAsString());
+                    Objective condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
+                            null);
+                    int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
+                    int fungiCost = list.get(i).getAsJsonObject().get("FungiCost").getAsInt();
+                    int plantCost = list.get(i).getAsJsonObject().get("PlantCost").getAsInt();
+                    int animalCost = list.get(i).getAsJsonObject().get("AnimalCost").getAsInt();
+                    int insectCost = list.get(i).getAsJsonObject().get("InsectCost").getAsInt();
+                    String upperLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    String upperLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                            new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
+                            true, id,plantCost, animalCost, fungiCost, insectCost, condition, points, frontImage, backImage));
+                }
+                break;
+            case STARTERCARD:
+                num = object.get("Game").getAsJsonObject().get("StarterCardsNumber").getAsInt();
+                list = object.get("StarterCards").getAsJsonObject().get("list").getAsJsonArray().asList();
+                for (int i = 0; i < num; i++) {
+                    int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
+                    String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
+                    String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
+                    int permanentResourceNumber = list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResourceNumber").getAsInt();
+                    KingdomResource res1 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(0).getAsJsonPrimitive().getAsString());
+                    KingdomResource res2;
+                    KingdomResource res3;
+                    //TODO: Remove and make better
+                    if (permanentResourceNumber > 1) {
+                        res2 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(1).getAsJsonPrimitive().getAsString());
+                        if (permanentResourceNumber == 3) {
+                            res3 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(2).getAsJsonPrimitive().getAsString());
+                        } else {
+                            res3 = null;
+                        }
+                    } else {
+                        res2 = null;
+                        res3 = null;
+                    }
+                    String upperLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    String upperLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
+                    String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
+                    String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
+                    String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                            new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
+                            true, id, res1, res2, res3, frontImage, backImage));
+                }
+            case OBJECTIVECARD:
+                num = object.get("Game").getAsJsonObject().get("ObjectiveCardsNumber").getAsInt();
+                list = object.get("ObjectiveCards").getAsJsonObject().get("list").getAsJsonArray().asList();
+                for (int i = 0; i < num; i++) {
+                    int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
+                    String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
+                    String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
+                    int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
+                    Objective condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
+                            list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString());
+                    //TODO: Implement creation with new Objective sub-classes
+                }
+        }
         Deck deck = new Deck(cards, cards.size(), type);
+        System.out.println(cards.size());
         deck.shuffle();
         return deck;
+    }
+
+    private static Corner getCorner(String string) {
+        switch (string) {
+            case "Fungi":
+                return new KingdomCorner(KingdomResource.FUNGI);
+            case "Plant":
+                return new KingdomCorner(KingdomResource.PLANT);
+            case "Animal":
+                return new KingdomCorner(KingdomResource.ANIMAL);
+            case "Insect":
+                return new KingdomCorner(KingdomResource.INSECT);
+            case "Potion":
+                return new ResourceCorner(Resource.POTION);
+            case "Feather":
+                return new ResourceCorner(Resource.FEATHER);
+            case "Scroll":
+                return new ResourceCorner(Resource.SCROLL);
+            case "EmptyCorner":
+                return new EmptyCorner();
+            default:
+                return null;
+        }
+    }
+
+    private static KingdomResource getKingdom(String string) {
+        switch (string) {
+            case "Fungi":
+                return KingdomResource.FUNGI;
+            case "Plant":
+                return KingdomResource.PLANT;
+            case "Animal":
+                return KingdomResource.ANIMAL;
+            case "Insect":
+                return KingdomResource.INSECT;
+            default:
+                return null;
+        }
+    }
+
+    private static Objective getObjective(String condition, String name) {
+        switch (condition) {
+            case "forEachScroll":
+                return Objective.FOR_EACH_SCROLL;
+            case "forEachPotion":
+                return Objective.FOR_EACH_POTION;
+            case "forEachFeather":
+                return Objective.FOR_EACH_FEATHER;
+            case "forEachCorner":
+                return Objective.FOR_EACH_CORNER;
+            case "diagonalPlacing":
+                switch (name) {
+                    case "Diagonal Red!":
+                        return Objective.DIAGONAL_RED;
+                    case "Diagonal Green!":
+                        return Objective.DIAGONAL_GREEN;
+                    case "Diagonal Blue!":
+                        return Objective.DIAGONAL_BLUE;
+                    case "Diagonal Purple!":
+                        return Objective.DIAGONAL_PURPLE;
+                }
+                break;
+            case "LShapedPlacing":
+                switch (name) {
+                    case "L-Shaped Red!":
+                        return Objective.L_SHAPED_RED;
+                    case "L-Shaped Green!":
+                        return Objective.L_SHAPED_GREEN;
+                    case "L-Shaped Blue!":
+                        return Objective.L_SHAPED_PURPLE;
+                    case "L-Shaped Purple!":
+                        return Objective.L_SHAPED_PURPLE;
+                }
+                break;
+            case "forEach3KingdomResources":
+                switch (name) {
+                    case "Fungi Collector!":
+                        return Objective.FUNGI_COLLECTOR;
+                    case "Plant Collector!":
+                        return Objective.PLANT_COLLECTOR;
+                    case "Animal Collector!":
+                        return Objective.ANIMAL_COLLECTOR;
+                    case "Insect Collector!":
+                        return Objective.INSECT_COLLECTOR;
+                }
+                break;
+            case "forEach3DifferentItems":
+                return Objective.ITEM_COLLECTOR;
+            case "forEach2Scrolls":
+                return Objective.SCROLL_COLLECTOR;
+            case "forEach2Potions":
+                return Objective.POTION_COLLECTOR;
+            case "forEach2Feathers":
+                return Objective.FEATHER_COLLECTOR;
+            default:
+                return null;
+        }
+        return null;
     }
 
     /**
@@ -119,7 +324,7 @@ public class Deck implements Observable {
             Card card = cards.getFirst();
             cards.removeFirst();
             counter--;
-            if (counter == 0) {
+            if (cards.size() == 0) {
                 notifyListeners();
             }
             return card;

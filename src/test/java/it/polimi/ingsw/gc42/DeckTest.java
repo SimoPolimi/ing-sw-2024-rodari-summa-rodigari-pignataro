@@ -66,7 +66,6 @@ class DeckTest {
         // then
         assertTrue(g.isGoldDeckEmpty());
     }
-
     @Test
     void testIsPutDown() {
         //TODO remake with initPlayingDecks

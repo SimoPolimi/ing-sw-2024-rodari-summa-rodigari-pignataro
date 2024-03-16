@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Game {
@@ -24,7 +25,11 @@ public class Game {
         this.isResourceDeckEmpty = false;
         this.isGoldDeckEmpty = false;
         this.playerHasReachedTwentyPoints = false;
-        initPlayingDecks();
+        try {
+            initPlayingDecks();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         resourcePlayingDeck.getDeck().setListener(new Listener() {
             @Override
             public void onEvent() {
@@ -160,7 +165,7 @@ public class Game {
      * Those 2 Cards are already drawn and positioned into their Slots.
      * Starter Cards are contained in StarterDeck, they don't have a PlayingDeck.
      */
-    public void initPlayingDecks() {
+    public void initPlayingDecks() throws FileNotFoundException {
         Deck resourceCardDeck = Deck.initDeck(CardType.RESOURCECARD);
         Deck goldCardDeck = Deck.initDeck(CardType.GOLDCARD);
         Deck objectiveCardDeck = Deck.initDeck(CardType.OBJECTIVECARD);
