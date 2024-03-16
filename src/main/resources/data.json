@@ -25,10 +25,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -44,10 +44,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -63,10 +63,10 @@
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -82,10 +82,10 @@
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -101,10 +101,10 @@
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -120,10 +120,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -139,10 +139,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -158,10 +158,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -177,10 +177,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -196,10 +196,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -215,10 +215,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -234,10 +234,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -253,10 +253,10 @@
         "BottomRightCorner": "Plant"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -272,10 +272,10 @@
         "BottomRightCorner": "Plant"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -291,10 +291,10 @@
         "BottomRightCorner": "Plant"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -310,10 +310,10 @@
         "BottomRightCorner": "Potion"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -329,10 +329,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -348,10 +348,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -367,10 +367,10 @@
         "BottomRightCorner": "Plant"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -386,10 +386,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -405,10 +405,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -424,10 +424,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -443,10 +443,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -462,10 +462,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -481,10 +481,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -500,10 +500,10 @@
         "BottomRightCorner": "Scroll"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -519,10 +519,10 @@
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -538,10 +538,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -557,10 +557,10 @@
         "BottomRightCorner": "Animal"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -576,10 +576,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -595,10 +595,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -614,10 +614,10 @@
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -633,10 +633,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -652,10 +652,10 @@
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -671,10 +671,10 @@
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -690,10 +690,10 @@
         "BottomRightCorner": "Fungi"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -709,10 +709,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -728,10 +728,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -747,10 +747,10 @@
         "BottomRightCorner": "Insect"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -766,10 +766,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }]
@@ -793,10 +793,10 @@
         "BottomRightCorner": "Feather"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -817,10 +817,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -841,10 +841,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -865,10 +865,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -889,10 +889,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -913,10 +913,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -937,10 +937,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -961,10 +961,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -985,10 +985,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1009,10 +1009,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1033,10 +1033,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1057,10 +1057,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1081,10 +1081,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1105,10 +1105,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1129,10 +1129,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1153,10 +1153,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1177,10 +1177,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1201,10 +1201,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1225,10 +1225,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1249,10 +1249,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1273,10 +1273,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1297,10 +1297,10 @@
         "BottomRightCorner": "Scroll"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1321,10 +1321,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1345,10 +1345,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1369,10 +1369,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1393,10 +1393,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1417,10 +1417,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1441,10 +1441,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1465,10 +1465,10 @@
         "BottomRightCorner": "Feather"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1489,10 +1489,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1513,10 +1513,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1537,10 +1537,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1561,10 +1561,10 @@
         "BottomRightCorner": "Potion"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1585,10 +1585,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1609,10 +1609,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1633,10 +1633,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1657,10 +1657,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1681,10 +1681,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1705,10 +1705,10 @@
         "BottomRightCorner": "EmptyCorner"
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }, {
@@ -1729,10 +1729,10 @@
         "BottomRightCorner": null
       },
       "BackSide": {
-        "UpperLeftCorner": null,
-        "UpperRightCorner": null,
-        "BottomLeftCorner": null,
-        "BottomRightCorner": null
+        "UpperLeftCorner": "EmptyCorner",
+        "UpperRightCorner": "EmptyCorner",
+        "BottomLeftCorner": "EmptyCorner",
+        "BottomRightCorner": "EmptyCorner"
       },
       "PermanentResources": 1
     }]
