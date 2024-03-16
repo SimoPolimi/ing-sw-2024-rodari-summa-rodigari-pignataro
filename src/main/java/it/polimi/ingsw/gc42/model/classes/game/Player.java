@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Objective;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveEnum;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
@@ -33,12 +33,12 @@ public class Player implements Observable {
         isFirst = first;
     }
 
-    public Objective getObjective() {
-        return secretObjective;
+    public ObjectiveEnum getObjective() {
+        return secretObjectiveEnum;
     }
 
-    public void setObjective(Objective objective) {
-        this.secretObjective = objective;
+    public void setObjective(ObjectiveEnum objectiveEnum) {
+        this.secretObjectiveEnum = objectiveEnum;
     }
 
     public Hand getHand() {
@@ -62,17 +62,17 @@ public class Player implements Observable {
     private boolean isFirst;
     private Token token;
     private int points;
-    private Objective secretObjective;
+    private ObjectiveEnum secretObjectiveEnum;
     private Hand hand;
     private PlayField playField;
     private Game game;
 
-    public Player(boolean isFirst, int points, Token token, Objective objective, Hand hand, Game game) {
+    public Player(boolean isFirst, int points, Token token, ObjectiveEnum objectiveEnum, Hand hand, Game game) {
 
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
-        this.secretObjective = objective;
+        this.secretObjectiveEnum = objectiveEnum;
         this.hand = hand;
         this.game = game;
 

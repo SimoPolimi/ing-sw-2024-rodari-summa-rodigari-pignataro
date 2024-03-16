@@ -6,7 +6,7 @@ package it.polimi.ingsw.gc42.model.classes.cards;
 public class ObjectiveCard extends Card {
     // Attributes
     private int points;
-    private Objective objective;
+    private ObjectiveEnum objectiveEnum;
 
     // Constructor Method
 
@@ -17,12 +17,12 @@ public class ObjectiveCard extends Card {
      * @param isFrontFacing: true if the Card is showing its front side, false otherwise
      * @param id: unique identifier for the specific Objective Card
      * @param points: points the Card gives for each time the Objective is met
-     * @param objective: Objective that is used to calculate the total earned points
+     * @param objectiveEnum: Objective that is used to calculate the total earned points
      */
-    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int points, Objective objective, String frontImage, String backImage) {
+    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int points, ObjectiveEnum objectiveEnum, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.points = points;
-        this.objective = objective;
+        this.objectiveEnum = objectiveEnum;
     }
 
     // Getters and Setters
@@ -47,11 +47,11 @@ public class ObjectiveCard extends Card {
      *
      * @return
      */
-    public Objective getObjective() {
-        return objective;
+    public ObjectiveEnum getObjective() {
+        return objectiveEnum;
     }
 
-    public void setObjective(Objective objective) {
-        this.objective = objective;
+    public void setObjective(ObjectiveEnum objectiveEnum) {
+        this.objectiveEnum = objectiveEnum;
     }
 }

@@ -9,8 +9,9 @@ public class GoldCard extends Card{
     private int animalKingdomPoints;
     private int fungiKingdomPoints;
     private int insectKingdomPoints;
-    private Objective objective;
+    private ObjectiveEnum objectiveEnum;
     private int earnedPoints;
+    private KingdomResource permanentResource;
 
     // Constructor Method
 
@@ -26,32 +27,43 @@ public class GoldCard extends Card{
      * @param animalKingdomPoints: Animal Type points necessary to place the Card on the table (0 if not necessary)
      * @param fungiKingdomPoints: Fungi Type points necessary to place the Card on the table (0 if not necessary)
      * @param insectKingdomPoints: Insect Type points necessary to place the Card on the table (0 if not necessary)
-     * @param objective: Objective that defines how the earned points are calculated (null if not present)
+     * @param objectiveEnum: Objective that defines how the earned points are calculated (null if not present)
      * @param earnedPoints: points the card gives once it's placed (0 if it doesn't give points)
      */
-    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, int plantKingdomPoints, int animalKingdomPoints,
-                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,KingdomResource permanentResource, int plantKingdomPoints,
+                    int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, ObjectiveEnum objectiveEnum, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
         this.plantKingdomPoints = plantKingdomPoints;
         this.animalKingdomPoints = animalKingdomPoints;
         this.fungiKingdomPoints = fungiKingdomPoints;
         this.insectKingdomPoints = insectKingdomPoints;
-        this.objective = objective;
+        this.objectiveEnum = objectiveEnum;
         this.earnedPoints = earnedPoints;
+        this.permanentResource = permanentResource;
     }
 
-    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int plantKingdomPoints, int animalKingdomPoints,
-                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int plantKingdomPoints, int animalKingdomPoints,
+                    int fungiKingdomPoints, int insectKingdomPoints, ObjectiveEnum objectiveEnum, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.plantKingdomPoints = plantKingdomPoints;
         this.animalKingdomPoints = animalKingdomPoints;
         this.fungiKingdomPoints = fungiKingdomPoints;
         this.insectKingdomPoints = insectKingdomPoints;
-        this.objective = objective;
+        this.objectiveEnum = objectiveEnum;
         this.earnedPoints = earnedPoints;
+        this.permanentResource = permanentResource;
     }
 
     // Getter and Setter
+
+
+    public KingdomResource getPermanentResource() {
+        return permanentResource;
+    }
+
+    public void setPermanentResource(KingdomResource permanentResource) {
+        this.permanentResource = permanentResource;
+    }
 
     /**
      * Getter Method for plantKingdomPoints
@@ -121,16 +133,16 @@ public class GoldCard extends Card{
      * Getter Method for objective
      * @return a reference to the Objective used for the earned points calculation (null if none)
      */
-    public Objective getObjective() {
-        return objective;
+    public ObjectiveEnum getObjective() {
+        return objectiveEnum;
     }
 
     /**
      * Setter Method for objective
-     * @param objective: reference to the Objective used for the earned points calculation (null if none)
+     * @param objectiveEnum: reference to the Objective used for the earned points calculation (null if none)
      */
-    public void setObjective(Objective objective) {
-        this.objective = objective;
+    public void setObjective(ObjectiveEnum objectiveEnum) {
+        this.objectiveEnum = objectiveEnum;
     }
 
     /**

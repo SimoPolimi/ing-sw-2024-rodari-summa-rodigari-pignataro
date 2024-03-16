@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
@@ -133,7 +132,7 @@ public class Deck implements Observable {
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
                     KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsJsonPrimitive().getAsString());
-                    Objective condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
+                    ObjectiveEnum condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
                             null);
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
                     int fungiCost = list.get(i).getAsJsonObject().get("FungiCost").getAsInt();
@@ -150,7 +149,7 @@ public class Deck implements Observable {
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
                     cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id,plantCost, animalCost, fungiCost, insectCost, condition, points, frontImage, backImage));
+                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, condition, points, frontImage, backImage));
                 }
                 break;
             case STARTERCARD:
@@ -196,7 +195,7 @@ public class Deck implements Observable {
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
-                    Objective condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
+                    ObjectiveEnum condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
                             list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString());
                     //TODO: Implement creation with new Objective sub-classes
                 }
@@ -245,60 +244,60 @@ public class Deck implements Observable {
         }
     }
 
-    private static Objective getObjective(String condition, String name) {
+    private static ObjectiveEnum getObjective(String condition, String name) {
         switch (condition) {
             case "forEachScroll":
-                return Objective.FOR_EACH_SCROLL;
+                return ObjectiveEnum.FOR_EACH_SCROLL;
             case "forEachPotion":
-                return Objective.FOR_EACH_POTION;
+                return ObjectiveEnum.FOR_EACH_POTION;
             case "forEachFeather":
-                return Objective.FOR_EACH_FEATHER;
+                return ObjectiveEnum.FOR_EACH_FEATHER;
             case "forEachCorner":
-                return Objective.FOR_EACH_CORNER;
+                return ObjectiveEnum.FOR_EACH_CORNER;
             case "diagonalPlacing":
                 switch (name) {
                     case "Diagonal Red!":
-                        return Objective.DIAGONAL_RED;
+                        return ObjectiveEnum.DIAGONAL_RED;
                     case "Diagonal Green!":
-                        return Objective.DIAGONAL_GREEN;
+                        return ObjectiveEnum.DIAGONAL_GREEN;
                     case "Diagonal Blue!":
-                        return Objective.DIAGONAL_BLUE;
+                        return ObjectiveEnum.DIAGONAL_BLUE;
                     case "Diagonal Purple!":
-                        return Objective.DIAGONAL_PURPLE;
+                        return ObjectiveEnum.DIAGONAL_PURPLE;
                 }
                 break;
             case "LShapedPlacing":
                 switch (name) {
                     case "L-Shaped Red!":
-                        return Objective.L_SHAPED_RED;
+                        return ObjectiveEnum.L_SHAPED_RED;
                     case "L-Shaped Green!":
-                        return Objective.L_SHAPED_GREEN;
+                        return ObjectiveEnum.L_SHAPED_GREEN;
                     case "L-Shaped Blue!":
-                        return Objective.L_SHAPED_PURPLE;
+                        return ObjectiveEnum.L_SHAPED_PURPLE;
                     case "L-Shaped Purple!":
-                        return Objective.L_SHAPED_PURPLE;
+                        return ObjectiveEnum.L_SHAPED_PURPLE;
                 }
                 break;
             case "forEach3KingdomResources":
                 switch (name) {
                     case "Fungi Collector!":
-                        return Objective.FUNGI_COLLECTOR;
+                        return ObjectiveEnum.FUNGI_COLLECTOR;
                     case "Plant Collector!":
-                        return Objective.PLANT_COLLECTOR;
+                        return ObjectiveEnum.PLANT_COLLECTOR;
                     case "Animal Collector!":
-                        return Objective.ANIMAL_COLLECTOR;
+                        return ObjectiveEnum.ANIMAL_COLLECTOR;
                     case "Insect Collector!":
-                        return Objective.INSECT_COLLECTOR;
+                        return ObjectiveEnum.INSECT_COLLECTOR;
                 }
                 break;
             case "forEach3DifferentItems":
-                return Objective.ITEM_COLLECTOR;
+                return ObjectiveEnum.ITEM_COLLECTOR;
             case "forEach2Scrolls":
-                return Objective.SCROLL_COLLECTOR;
+                return ObjectiveEnum.SCROLL_COLLECTOR;
             case "forEach2Potions":
-                return Objective.POTION_COLLECTOR;
+                return ObjectiveEnum.POTION_COLLECTOR;
             case "forEach2Feathers":
-                return Objective.FEATHER_COLLECTOR;
+                return ObjectiveEnum.FEATHER_COLLECTOR;
             default:
                 return null;
         }

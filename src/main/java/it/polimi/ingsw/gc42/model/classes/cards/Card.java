@@ -71,6 +71,14 @@ public class Card implements Observable {
 
     // Getter and Setter Methods
 
+    public CardSide getShowingSide() {
+        if (isFrontFacing) {
+            return frontSide;
+        } else {
+            return backSide;
+        }
+    }
+
     /**
      * Getter Method for frontSide
      * @return frontSide: Side shown on the front of the Card

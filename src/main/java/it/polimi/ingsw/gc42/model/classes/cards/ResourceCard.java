@@ -45,7 +45,11 @@ public class ResourceCard extends Card{
      * @return permanentResource: the resource that can't be covered, shown on the Card's back side
      */
     public KingdomResource getPermanentResource() {
-        return permanentResource;
+        if (isFrontFacing()) {
+            return permanentResource;
+        } else {
+            return null;
+        }
     }
 
     /**

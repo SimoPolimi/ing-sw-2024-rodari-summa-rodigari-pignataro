@@ -1,24 +1,29 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
-public enum Objective {
-    FUNGI_COLLECTOR,
-    PLANT_COLLECTOR,
-    ANIMAL_COLLECTOR,
-    INSECT_COLLECTOR,
-    POTION_COLLECTOR,
-    FEATHER_COLLECTOR,
-    SCROLL_COLLECTOR,
-    ITEM_COLLECTOR,
-    DIAGONAL_RED,
-    DIAGONAL_GREEN,
-    DIAGONAL_BLUE,
-    DIAGONAL_PURPLE,
-    L_SHAPED_RED,
-    L_SHAPED_GREEN,
-    L_SHAPED_BLUE,
-    L_SHAPED_PURPLE,
-    FOR_EACH_SCROLL,
-    FOR_EACH_POTION,
-    FOR_EACH_FEATHER,
-    FOR_EACH_CORNER
+import java.util.ArrayList;
+
+public abstract class Objective {
+    // Attributes
+    private int points;
+
+    // Constructor Method
+    public Objective(int points) {
+        this.points = points;
+    }
+
+    // Getters and Setters
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    // Methods
+    protected abstract int check(ArrayList<Card> playArea);
+
+    public int calculatePoints(ArrayList<Card> playArea) {
+        return points * check(playArea);
+    }
 }
