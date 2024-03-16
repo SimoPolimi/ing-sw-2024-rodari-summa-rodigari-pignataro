@@ -219,7 +219,13 @@ public class HandCardView {
             flipCardHalf2.play();
         });
         flipCardHalf2.setAxis(Rotate.Y_AXIS);
-        flipCardHalf2.setOnFinished(e -> overlay.setVisible(true));
+        flipCardHalf2.setOnFinished(e -> {
+            if (!isSelected) {
+                deselect();
+            } else {
+                overlay.setVisible(true);
+            }
+        });
 
         if (card.isOddRotation()) {
             flipCardHalf1.setFromAngle(0);
@@ -233,11 +239,6 @@ public class HandCardView {
             flipCardHalf2.setToAngle(0);
         }
         card.setOddRotation(!card.isOddRotation());
-        flipCardHalf2.setOnFinished(e -> {
-            if (!isSelected) {
-                deselect();
-            }
-        });
         flipCardHalf1.play();
     }
 }
