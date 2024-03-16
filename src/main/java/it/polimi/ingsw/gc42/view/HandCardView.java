@@ -27,14 +27,14 @@ public class HandCardView {
     private Card modelCard;
     private Listener listener;
 
-    public HandCardView(CardView card, ImageView imageView, Text hint, ImageView hintIcon, Card modelCard, ImageView overlay) {
-        this.card = card;
+    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon, Card modelCard, ImageView overlay) {
         this.imageView = imageView;
         this.hint = hint;
         this.hintIcon = hintIcon;
         setModelCard(modelCard);
         this.isSelected = false;
         this.overlay = overlay;
+        this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
     public CardView getCard() {
@@ -97,6 +97,7 @@ public class HandCardView {
             }
         };
         modelCard.setListener(listener);
+        this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
     private void flipCard(int cardId) throws NoSuchCardException {

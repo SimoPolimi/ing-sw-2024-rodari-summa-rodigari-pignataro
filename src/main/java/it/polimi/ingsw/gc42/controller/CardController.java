@@ -80,15 +80,15 @@ public class CardController {
 
 
     public void initializeCards() {
-        card1 = new Card(null, null, true, 1, 0, 0);
-        card2 = new Card(null, null, true, 2, 0, 0);
-        card3 = new Card(null, null, true, 3, 0, 0);
-        cardView1 = new CardView("/cards/card1Front.png", "/cards/fungiResourceBack.png");
+        card1 = new Card(null, null, true, 1, "card1Front.png", "fungiResourceBack.png");
+        card2 = new Card(null, null, true, 2, "card2Front.png", "fungiResourceBack.png");
+        card3 = new Card(null, null, true, 3, "card3Front.png", "fungiResourceBack.png");
+        /*cardView1 = new CardView("/cards/card1Front.png", "/cards/fungiResourceBack.png");
         cardView2 = new CardView("/cards/card2Front.png", "/cards/fungiResourceBack.png");
-        cardView3 = new CardView("/cards/card3Front.png", "/cards/fungiResourceBack.png");
-        handCardView1 = new HandCardView(cardView1, view1, text1, KBHint1, card1, overlay1);
-        handCardView2 = new HandCardView(cardView2, view2, text2, KBHint2, card2, overlay2);
-        handCardView3 = new HandCardView(cardView3, view3, text3, KBHint3, card3, overlay3);
+        cardView3 = new CardView("/cards/card3Front.png", "/cards/fungiResourceBack.png");*/
+        handCardView1 = new HandCardView(view1, text1, KBHint1, card1, overlay1);
+        handCardView2 = new HandCardView(view2, text2, KBHint2, card2, overlay2);
+        handCardView3 = new HandCardView(view3, text3, KBHint3, card3, overlay3);
         handCardView1.getModelCard().setListener(new Listener() {
             @Override
             public void onEvent() {

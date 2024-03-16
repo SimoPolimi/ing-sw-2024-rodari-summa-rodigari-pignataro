@@ -26,8 +26,8 @@ class DeckTest {
         // given
         Game g = new Game();
         ResourceCard c = new ResourceCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null), true,
-                1, 0, 0, KingdomResource.ANIMAL, 5);
+                new CardSide(null, null, null, null),
+                true, 1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
         ArrayList<Card> a = new ArrayList<>();
         a.add(c);
         Deck d = new Deck(a, a.size(), CardType.RESOURCECARD);
@@ -50,7 +50,7 @@ class DeckTest {
         Game g = new Game();
         GoldCard c = new GoldCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true,
-                1, 0, 0, 0, 0, 0, 0, null, 0);
+                1, 0, 0, 0, 0, Objective.FUNGI_COLLECTOR, 0, "card1Front.png", "fungiResourceBack.png");
         ArrayList<Card> a = new ArrayList<>();
         a.add(c);
         Deck d = new Deck(a, a.size(), CardType.GOLDCARD);
@@ -74,19 +74,19 @@ class DeckTest {
         // given
         // decks
         Game game = new Game();
-        ResourceCard resourceCard1 = new ResourceCard(null, null, false, 1, 0, 0, null, 0);
-        ResourceCard resourceCard2 = new ResourceCard(null, null, false, 2, 0, 0, null, 0);
-        GoldCard goldCard1 = new GoldCard(null, null, false, 3, 0, 0, 0, 0, 0, 0, null, 0);
-        GoldCard goldCard2 = new GoldCard(null, null, false, 4, 0, 0, 0, 0, 0, 0, null, 0);
+        ResourceCard resourceCard1 = new ResourceCard(null, null, false, 1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
+        ResourceCard resourceCard2 = new ResourceCard(null, null, false, 2, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
+        GoldCard goldCard1 = new GoldCard(null, null, false, 3, 0, 0, 0, 0, Objective.FUNGI_COLLECTOR, 0, "card1Front.png", "fungiResourceBack.png");
+        GoldCard goldCard2 = new GoldCard(null, null, false, 4, 0, 0, 0, 0, Objective.FUNGI_COLLECTOR, 0, "card1Front.png", "fungiResourceBack.png");
         ResourceCard resourceCardInDeck = new ResourceCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true,
-                1, 0, 0, KingdomResource.PLANT, 5);
+                1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
         ArrayList<Card> a1 = new ArrayList<>();
         a1.add(resourceCardInDeck);
         Deck resourceDeck = new Deck(a1, a1.size(), CardType.RESOURCECARD);
         GoldCard goldCardInDeck = new GoldCard(new CardSide(null, null, null, null),
                 new CardSide(null, null, null, null), true,
-                1, 0, 0, 0, 0, 0, 0, null, 0);
+                1, 0, 0, 0, 0, Objective.FUNGI_COLLECTOR, 0, "card1Front.png", "fungiResourceBack.png");
         ArrayList<Card> a2 = new ArrayList<>();
         a2.add(goldCardInDeck);
         Deck goldDeck = new Deck(a2, a2.size(), CardType.GOLDCARD);

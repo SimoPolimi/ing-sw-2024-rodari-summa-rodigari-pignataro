@@ -19,8 +19,8 @@ public class ObjectiveCard extends Card {
      * @param points: points the Card gives for each time the Objective is met
      * @param objective: Objective that is used to calculate the total earned points
      */
-    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int points, Objective objective) {
-        super(frontSide, backSide, isFrontFacing, id);
+    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int points, Objective objective, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.points = points;
         this.objective = objective;
     }

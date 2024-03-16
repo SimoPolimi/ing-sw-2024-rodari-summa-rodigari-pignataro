@@ -6,8 +6,16 @@ public class StarterCard extends Card{
     private Resource permanentResourceTwo;
 
     // Constructor Method
-    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResourceOne, Resource permanentResourceTwo) {
-        super(frontSide, backSide, isFrontFacing, id, x, y);
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, Resource permanentResourceOne, Resource permanentResourceTwo,
+                       String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
+        this.permanentResourceOne = permanentResourceOne;
+        this.permanentResourceTwo = permanentResourceTwo;
+    }
+
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, Resource permanentResourceOne, Resource permanentResourceTwo,
+                       String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.permanentResourceOne = permanentResourceOne;
         this.permanentResourceTwo = permanentResourceTwo;
     }

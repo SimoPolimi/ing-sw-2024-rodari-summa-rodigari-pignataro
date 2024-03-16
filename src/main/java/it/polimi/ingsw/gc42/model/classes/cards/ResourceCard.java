@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import javafx.scene.image.Image;
+
 /**
  * Implementation of ResourceCard for Model
  * A type of Card that can be placed without conditions.
@@ -25,12 +27,17 @@ public class ResourceCard extends Card{
      * @param permanentResource    KingdomResource shown on the back side of the Card
      * @param earnedPoints         number of points obtained for placing the card
      */
-    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResource, int earnedPoints) {
-        super(frontSide, backSide, isFrontFacing, id, x, y);
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
         this.permanentResource = permanentResource;
         this.earnedPoints = earnedPoints;
     }
 
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
+        this.permanentResource = permanentResource;
+        this.earnedPoints = earnedPoints;
+    }
     // Getter and Setter
 
     /**

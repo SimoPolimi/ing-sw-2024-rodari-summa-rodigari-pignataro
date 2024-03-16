@@ -29,8 +29,20 @@ public class GoldCard extends Card{
      * @param objective: Objective that defines how the earned points are calculated (null if not present)
      * @param earnedPoints: points the card gives once it's placed (0 if it doesn't give points)
      */
-    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, int plantKingdomPoints, int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints) {
-        super(frontSide, backSide, isFrontFacing, id, x, y);
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, int plantKingdomPoints, int animalKingdomPoints,
+                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
+        this.plantKingdomPoints = plantKingdomPoints;
+        this.animalKingdomPoints = animalKingdomPoints;
+        this.fungiKingdomPoints = fungiKingdomPoints;
+        this.insectKingdomPoints = insectKingdomPoints;
+        this.objective = objective;
+        this.earnedPoints = earnedPoints;
+    }
+
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int plantKingdomPoints, int animalKingdomPoints,
+                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.plantKingdomPoints = plantKingdomPoints;
         this.animalKingdomPoints = animalKingdomPoints;
         this.fungiKingdomPoints = fungiKingdomPoints;

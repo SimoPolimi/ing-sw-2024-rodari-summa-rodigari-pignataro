@@ -4,8 +4,10 @@ import it.polimi.ingsw.gc42.model.interfaces.CardObservable;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import javafx.beans.InvalidationListener;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Implementation of Card for Model
@@ -20,6 +22,8 @@ public class Card implements Observable {
     private int id;
     private int x;
     private int y;
+    private Image frontImage;
+    private Image backImage;
     // TODO: Add ViewCard data type
     //private List<> views = new ArrayList<>;
 
@@ -34,13 +38,15 @@ public class Card implements Observable {
      * @param x                 horizontal coordinate for the Card's position on the table (null if not placed)
      * @param y                 vertical coordinate for the Card's position on the table (null if not placed)
      */
-    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y) {
+    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, String frontImage, String backImage) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
         this.id = id;
         this.x = x;
         this.y = y;
+        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + frontImage)));
+        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + backImage)));
         listeners = new ArrayList<Listener>();
     }
 
@@ -51,11 +57,16 @@ public class Card implements Observable {
      * @param isFrontFacing     true if the Card is showing the front Side, false if it is showing the back Side
      * @param id                unique identifier for the specific Card
      */
-    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id) {
+    public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, String frontImage, String backImage) {
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.isFrontFacing = isFrontFacing;
         this.id = id;
+        this.x = 0;
+        this.y = 0;
+        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + frontImage)));
+        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + backImage)));
+        listeners = new ArrayList<Listener>();
     }
 
     // Getter and Setter Methods
@@ -158,7 +169,23 @@ public class Card implements Observable {
         this.y = y;
     }
 
-// Methods
+    public Image getFrontImage() {
+        return frontImage;
+    }
+
+    public void setFrontImage(Image frontImage) {
+        this.frontImage = frontImage;
+    }
+
+    public Image getBackImage() {
+        return backImage;
+    }
+
+    public void setBackImage(Image backImage) {
+        this.backImage = backImage;
+    }
+
+    // Methods
 
     /**
      * Flips the Card, changing which Side it is showing.
