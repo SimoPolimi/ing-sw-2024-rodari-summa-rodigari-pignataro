@@ -68,7 +68,7 @@
                             </ImageView>
                             <ImageView fx:id="view2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
                                 <image>
-                                    <Image url="@../../../../card2Front.png" />
+                                    <Image url="@../../../../cards/card2Front.png" />
                                 </image>
                             </ImageView>
                             <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
@@ -98,7 +98,7 @@
                             </ImageView>
                             <ImageView fx:id="view3" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
                                 <image>
-                                    <Image url="@../../../../card3Front.png" />
+                                    <Image url="@../../../../cards/card3Front.png" />
                                 </image>
                             </ImageView>
                             <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
@@ -148,7 +148,7 @@
                 <children>
                     <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0">
                         <image>
-                            <Image url="@../../../../cardObjectiveFront.png" />
+                            <Image url="@../../../../cards/card100Front.png" />
                         </image>
                     </ImageView>
                     <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">

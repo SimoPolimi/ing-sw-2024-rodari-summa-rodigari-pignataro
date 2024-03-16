@@ -83,9 +83,9 @@ public class CardController {
         card1 = new Card(null, null, true, 1, 0, 0);
         card2 = new Card(null, null, true, 2, 0, 0);
         card3 = new Card(null, null, true, 3, 0, 0);
-        cardView1 = new CardView("/cards/card1Front.png", "/card1Back.png");
-        cardView2 = new CardView("/card2Front.png", "/card2Back.png");
-        cardView3 = new CardView("/card3Front.png", "/card3Back.png");
+        cardView1 = new CardView("/cards/card1Front.png", "/cards/fungiResourceBack.png");
+        cardView2 = new CardView("/cards/card2Front.png", "/cards/fungiResourceBack.png");
+        cardView3 = new CardView("/cards/card3Front.png", "/cards/fungiResourceBack.png");
         handCardView1 = new HandCardView(cardView1, view1, text1, KBHint1, card1, overlay1);
         handCardView2 = new HandCardView(cardView2, view2, text2, KBHint2, card2, overlay2);
         handCardView3 = new HandCardView(cardView3, view3, text3, KBHint3, card3, overlay3);
@@ -108,7 +108,7 @@ public class CardController {
             }
         });
 
-        cardViewObj = new CardView("/cardObjectiveFront.png", "/cardObjectiveBack.png");
+        cardViewObj = new CardView("/cards/card100Front.png", "/cards/objectiveBack.png");
         objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, KBObjectiveHint, false, objectiveDescription);
     }
 
