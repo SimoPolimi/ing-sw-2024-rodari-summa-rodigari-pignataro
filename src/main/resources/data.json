@@ -1870,7 +1870,9 @@
       "Direction": "bottomLeftToTopRight",
       "PrimaryKingdom": "Fungi",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Diagonal Red!",
+      "Description": "Get 2 points for each identical pattern in your play area."
     }, {
       "Id": 88,
       "FrontImage": "card88Front.png",
@@ -1880,7 +1882,9 @@
       "Direction": "topLeftToBottomRight",
       "PrimaryKingdom": "Plant",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Diagonal Green!",
+      "Description": "Get 2 points for each identical pattern in your play area."
     }, {
       "Id": 89,
       "FrontImage": "card89Front.png",
@@ -1890,7 +1894,9 @@
       "Direction": "bottomLeftToTopRight",
       "PrimaryKingdom": "Animal",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Diagonal Blue!",
+      "Description": "Get 2 points for each identical pattern in your play area."
     }, {
       "Id": 90,
       "FrontImage": "card90Front.png",
@@ -1900,7 +1906,9 @@
       "Direction": "topLeftToBottomRight",
       "PrimaryKingdom": "Insect",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Diagonal Purple!",
+      "Description": "Get 2 points for each identical pattern in your play area."
     }, {
       "Id": 91,
       "FrontImage": "card91Front.png",
@@ -1910,7 +1918,9 @@
       "Direction": "bottomRightCorner",
       "PrimaryKingdom": "Fungi",
       "SecondaryKingdom": "Plant",
-      "Resource": null
+      "Resource": null,
+      "Name": "L-Shaped Red!",
+      "Description": "Get 3 points for each identical pattern in your play area."
     }, {
       "Id": 92,
       "FrontImage": "card92Front.png",
@@ -1920,7 +1930,9 @@
       "Direction": "bottomLeftCorner",
       "PrimaryKingdom": "Plant",
       "SecondaryKingdom": "Insect",
-      "Resource": null
+      "Resource": null,
+      "Name": "L-Shaped Green!",
+      "Description": "Get 3 points for each identical pattern in your play area."
     }, {
       "Id": 93,
       "FrontImage": "card93Front.png",
@@ -1930,7 +1942,9 @@
       "Direction": "topRightCorner",
       "PrimaryKingdom": "Animal",
       "SecondaryKingdom": "Fungi",
-      "Resource": null
+      "Resource": null,
+      "Name": "L-Shaped Blue!",
+      "Description": "Get 3 points for each identical pattern in your play area."
     }, {
       "Id": 94,
       "FrontImage": "card94Front.png",
@@ -1940,7 +1954,9 @@
       "Direction": "topLeftCorner",
       "PrimaryKingdom": "Insect",
       "SecondaryKingdom": "Animal",
-      "Resource": null
+      "Resource": null,
+      "Name": "L-Shaped Purple!",
+      "Description": "Get 3 points for each identical pattern in your play area."
     }, {
       "Id": 95,
       "FrontImage": "card95Front.png",
@@ -1950,7 +1966,9 @@
       "Direction": null,
       "PrimaryKingdom": "Fungi",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Fungi Collector!",
+      "Description": "Get 2 points for each set of 3 Fungi Resources visible in your play area."
     }, {
       "Id": 96,
       "FrontImage": "card96Front.png",
@@ -1960,7 +1978,9 @@
       "Direction": null,
       "PrimaryKingdom": "Plant",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Plant Collector!",
+      "Description": "Get 2 points for each set of 3 Plant Resources visible in your play area."
     }, {
       "Id": 97,
       "FrontImage": "card97Front.png",
@@ -1970,7 +1990,9 @@
       "Direction": null,
       "PrimaryKingdom": "Animal",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Animal Collector!",
+      "Description": "Get 2 points for each set of 3 Animal Resources visible in your play area."
     }, {
       "Id": 98,
       "FrontImage": "card98Front.png",
@@ -1980,7 +2002,9 @@
       "Direction": null,
       "PrimaryKingdom": "Insect",
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Insect Collector!",
+      "Description": "Get 2 points for each set of 3 Insect Resources visible in your play area."
     }, {
       "Id": 99,
       "FrontImage": "card99Front.png",
@@ -1990,7 +2014,9 @@
       "Direction": null,
       "PrimaryKingdom": null,
       "SecondaryKingdom": null,
-      "Resource": null
+      "Resource": null,
+      "Name": "Item Collector!",
+      "Description": "Get 3 points for each set of 3 different Items visible in your play area."
     }, {
       "Id": 100,
       "FrontImage": "card100Front.png",
@@ -2000,7 +2026,9 @@
       "Direction": null,
       "PrimaryKingdom": null,
       "SecondaryKingdom": null,
-      "Resource": "Scroll"
+      "Resource": "Scroll",
+      "Name": "Scroll Collector!",
+      "Description": "Get 2 points for each set of 2 Scrolls visible in your play area."
     }, {
       "Id": 101,
       "FrontImage": "card101Front.png",
@@ -2010,7 +2038,9 @@
       "Direction": null,
       "PrimaryKingdom": null,
       "SecondaryKingdom": null,
-      "Resource": "Potion"
+      "Resource": "Potion",
+      "Name": "Potion Collector!",
+      "Description": "Get 2 points for each set of 2 Potions visible in your play area."
     }, {
       "Id": 102,
       "FrontImage": "card102Front.png",
@@ -2020,7 +2050,9 @@
       "Direction": null,
       "PrimaryKingdom": null,
       "SecondaryKingdom": null,
-      "Resource": "Feather"
+      "Resource": "Feather",
+      "Name": "Feather Collector!",
+      "Description": "Get 2 points for each set of 2 Feathers visible in your play area."
     }]
   }
 }
