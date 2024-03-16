@@ -83,7 +83,7 @@ public class CardController {
         card1 = new Card(null, null, true, 1, 0, 0);
         card2 = new Card(null, null, true, 2, 0, 0);
         card3 = new Card(null, null, true, 3, 0, 0);
-        cardView1 = new CardView("/card1Front.png", "/card1Back.png");
+        cardView1 = new CardView("/cards/card1Front.png", "/card1Back.png");
         cardView2 = new CardView("/card2Front.png", "/card2Back.png");
         cardView3 = new CardView("/card3Front.png", "/card3Back.png");
         handCardView1 = new HandCardView(cardView1, view1, text1, KBHint1, card1, overlay1);
@@ -119,7 +119,7 @@ public class CardController {
     }
 
     public void setCardViews(Card card1, Card card2, Card card3) {
-        this.cardView1 = new CardView("/card1Front.png", "/card1Back.png");
+        this.cardView1 = new CardView("/cards/card1Front.png", "/card1Back.png");
         this.cardView2 = new CardView("/card2Front.png", "/card2Back.png");
         this.cardView3 = new CardView("/card3Front.png", "/card3Back.png");
     }

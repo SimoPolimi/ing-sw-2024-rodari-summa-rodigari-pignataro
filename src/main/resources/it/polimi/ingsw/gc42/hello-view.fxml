@@ -38,7 +38,7 @@
                             </ImageView>
                             <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-230.0">
                                 <image>
-                                    <Image url="@../../../../card1Front.png" />
+                                    <Image url="@../../../../cards/card1Front.png" />
                                 </image>
                             </ImageView>
                             <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
