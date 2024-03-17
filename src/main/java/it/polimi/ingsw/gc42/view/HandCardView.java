@@ -10,12 +10,14 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.chart.Axis;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class HandCardView {
     private CardView card;
@@ -29,6 +31,7 @@ public class HandCardView {
 
     public HandCardView(ImageView imageView, Text hint, ImageView hintIcon, Card modelCard, ImageView overlay) {
         this.imageView = imageView;
+        imageView.setImage(modelCard.getFrontImage());
         this.hint = hint;
         this.hintIcon = hintIcon;
         setModelCard(modelCard);

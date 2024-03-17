@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42;
 
 import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.game.Game;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,7 +25,8 @@ public class GameWindow extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(GameWindow.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         CardController controller = fxmlLoader.getController();
-        controller.initializeCards();
+        Game game = new Game();
+        controller.initializeCards(game);
         stage.setTitle("Prova Titolo Finestra!");
         stage.setMinHeight(670);
         stage.setMinWidth(800);

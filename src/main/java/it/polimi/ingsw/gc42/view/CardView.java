@@ -18,8 +18,8 @@ public class CardView {
 
     public CardView(String frontName, String backName) {
         this.isFrontFacing = true;
-        this.front = new Image(Objects.requireNonNull(getClass().getResourceAsStream(frontName)));
-        this.back = new Image(Objects.requireNonNull(getClass().getResourceAsStream(backName)));
+        this.front = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/"+ frontName)));
+        this.back = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/"+ backName)));
     }
 
     public boolean isOddRotation() {

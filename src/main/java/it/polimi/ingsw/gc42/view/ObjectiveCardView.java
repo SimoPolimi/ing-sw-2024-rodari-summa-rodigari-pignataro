@@ -22,6 +22,7 @@ public class ObjectiveCardView {
     public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ImageView hintImage, boolean isShowingDetails, Text description) {
         this.cardView = cardView;
         this.imageView = imageView;
+        imageView.setImage(cardView.getFront());
         this.hint = hint;
         this.hintImage = hintImage;
         this.isShowingDetails = isShowingDetails;

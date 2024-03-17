@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
+import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
@@ -65,10 +67,7 @@ public class CardController {
     private Card card2;
     private Card card3;
 
-    private CardView cardView1;
-    private CardView cardView2;
-    private CardView cardView3;
-
+    private Card objectiveCard;
     private CardView cardViewObj;
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
@@ -79,13 +78,8 @@ public class CardController {
     private boolean isHandVisible = true;
 
 
-    public void initializeCards() {
-        card1 = new Card(null, null, true, 1, "card1Front.png", "fungiResourceBack.png");
-        card2 = new Card(null, null, true, 2, "card2Front.png", "fungiResourceBack.png");
-        card3 = new Card(null, null, true, 3, "card3Front.png", "fungiResourceBack.png");
-        /*cardView1 = new CardView("/cards/card1Front.png", "/cards/fungiResourceBack.png");
-        cardView2 = new CardView("/cards/card2Front.png", "/cards/fungiResourceBack.png");
-        cardView3 = new CardView("/cards/card3Front.png", "/cards/fungiResourceBack.png");*/
+    public void initializeCards(Game game) {
+        setCards(game.getResourcePlayingDeck().getDeck().draw(), game.getResourcePlayingDeck().getDeck().draw(), game.getGoldPlayingDeck().getDeck().draw());
         handCardView1 = new HandCardView(view1, text1, KBHint1, card1, overlay1);
         handCardView2 = new HandCardView(view2, text2, KBHint2, card2, overlay2);
         handCardView3 = new HandCardView(view3, text3, KBHint3, card3, overlay3);
@@ -108,7 +102,8 @@ public class CardController {
             }
         });
 
-        cardViewObj = new CardView("/cards/card100Front.png", "/cards/objectiveBack.png");
+        objectiveCard = game.getObjectivePlayingDeck().getDeck().draw();
+        cardViewObj = new CardView(objectiveCard.getFrontImage(), objectiveCard.getBackImage());
         objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, KBObjectiveHint, false, objectiveDescription);
     }
 
@@ -116,12 +111,6 @@ public class CardController {
         this.card1 = card1;
         this.card2 = card2;
         this.card3 = card3;
-    }
-
-    public void setCardViews(Card card1, Card card2, Card card3) {
-        this.cardView1 = new CardView("/cards/card1Front.png", "/card1Back.png");
-        this.cardView2 = new CardView("/card2Front.png", "/card2Back.png");
-        this.cardView3 = new CardView("/card3Front.png", "/card3Back.png");
     }
 
     public boolean canReadInput() {
