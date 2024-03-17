@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.Objective;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.RotateTransition;
@@ -15,18 +17,20 @@ public class ObjectiveCardView {
     private Text hint;
     private ImageView hintImage;
     private boolean isShowingDetails;
-    private Card modelCard;
+    private ObjectiveCard modelCard;
     private Listener listener;
     private Text description;
 
-    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ImageView hintImage, boolean isShowingDetails, Text description) {
+    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ObjectiveCard modelCard, ImageView hintImage, boolean isShowingDetails, Text description) {
         this.cardView = cardView;
         this.imageView = imageView;
         imageView.setImage(cardView.getFront());
         this.hint = hint;
+        this.modelCard = modelCard;
         this.hintImage = hintImage;
         this.isShowingDetails = isShowingDetails;
         this.description = description;
+        description.setText(modelCard.getObjective().getDescription());
     }
 
     public CardView getCardView() {
@@ -77,7 +81,7 @@ public class ObjectiveCardView {
         this.description = description;
     }
 
-    public void setModelCard(Card modelCard) {
+    public void setModelCard(ObjectiveCard modelCard) {
         if (null != modelCard && null != listener) {
             modelCard.removeListener(listener);
         }

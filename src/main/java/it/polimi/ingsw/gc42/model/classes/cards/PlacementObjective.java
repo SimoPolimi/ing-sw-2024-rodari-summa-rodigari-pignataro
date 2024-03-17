@@ -5,8 +5,8 @@ public abstract class PlacementObjective extends Objective {
     private KingdomResource primaryType;
 
     // Constructor Method
-    public PlacementObjective(int points, KingdomResource primaryType) {
-        super(points);
+    public PlacementObjective(int points, String description, KingdomResource primaryType) {
+        super(points, description);
         this.primaryType = primaryType;
     }
 

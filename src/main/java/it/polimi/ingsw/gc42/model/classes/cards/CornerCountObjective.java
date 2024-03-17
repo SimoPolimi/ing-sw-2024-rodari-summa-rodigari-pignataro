@@ -7,8 +7,8 @@ public class CornerCountObjective extends CountObjective{
     private Card card;
 
     // Constructor Method
-    public CornerCountObjective(int points, int number, Card card) {
-        super(points, number);
+    public CornerCountObjective(int points, int number, Card card, String description) {
+        super(points, number, description);
         this.card = card;
     }
 

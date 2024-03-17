@@ -7,8 +7,8 @@ public class ItemCountObjective extends CountObjective{
     private Resource resource;
 
     // Constructor Method
-    public ItemCountObjective(int points, int number, Resource resource) {
-        super(points, number);
+    public ItemCountObjective(int points, int number, Resource resource, String description) {
+        super(points, number, description);
         this.resource = resource;
     }
 

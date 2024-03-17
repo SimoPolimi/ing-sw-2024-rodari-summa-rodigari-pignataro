@@ -7,8 +7,8 @@ import java.util.HashMap;
 public class SetItemCountObjective extends CountObjective{
 
     // Constructor Method
-    public SetItemCountObjective(int points, int number) {
-        super(points, number);
+    public SetItemCountObjective(int points, int number, String description) {
+        super(points, number, description);
     }
 
     // Methods

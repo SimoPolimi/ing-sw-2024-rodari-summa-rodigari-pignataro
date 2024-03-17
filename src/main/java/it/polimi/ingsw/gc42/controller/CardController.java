@@ -104,7 +104,7 @@ public class CardController {
 
         objectiveCard = game.getObjectivePlayingDeck().getDeck().draw();
         cardViewObj = new CardView(objectiveCard.getFrontImage(), objectiveCard.getBackImage());
-        objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, KBObjectiveHint, false, objectiveDescription);
+        objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, (ObjectiveCard) objectiveCard, KBObjectiveHint, false, objectiveDescription);
     }
 
     public void setCards(Card card1, Card card2, Card card3) {

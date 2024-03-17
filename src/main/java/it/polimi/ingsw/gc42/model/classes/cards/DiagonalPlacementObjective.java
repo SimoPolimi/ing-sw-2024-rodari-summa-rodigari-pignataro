@@ -7,8 +7,8 @@ public class DiagonalPlacementObjective extends PlacementObjective {
     private boolean isLeftToRight;
 
     // Constructor Method
-    public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight) {
-        super(points, primaryType);
+    public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight, String description) {
+        super(points,description, primaryType);
         this.isLeftToRight = isLeftToRight;
     }
 

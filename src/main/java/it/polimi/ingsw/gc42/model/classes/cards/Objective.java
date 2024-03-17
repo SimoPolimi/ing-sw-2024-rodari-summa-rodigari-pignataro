@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public abstract class Objective {
     // Attributes
     private int points;
+    private String description;
 
     // Constructor Method
-    public Objective(int points) {
+    public Objective(int points, String description) {
         this.points = points;
+        this.description = description;
     }
 
     // Getters and Setters
@@ -18,6 +20,14 @@ public abstract class Objective {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // Methods

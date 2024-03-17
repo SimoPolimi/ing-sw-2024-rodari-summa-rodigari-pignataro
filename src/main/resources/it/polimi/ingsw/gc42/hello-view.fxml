@@ -174,7 +174,7 @@
                             <Insets top="40.0" />
                         </padding>
                     </HBox>
-                    <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER">
+                    <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false">
                         <font>
                             <Font name="Constantia Italic" size="15.0" />
                         </font>

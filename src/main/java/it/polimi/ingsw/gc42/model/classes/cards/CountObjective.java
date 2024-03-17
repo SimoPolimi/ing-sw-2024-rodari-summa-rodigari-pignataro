@@ -8,8 +8,8 @@ public abstract class CountObjective extends Objective {
 
     // Constructor Method
 
-    public CountObjective(int points, int number) {
-        super(points);
+    public CountObjective(int points, int number, String description) {
+        super(points, description);
         this.number = number;
     }
 

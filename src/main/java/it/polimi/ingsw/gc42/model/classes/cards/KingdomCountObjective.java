@@ -7,8 +7,8 @@ public class KingdomCountObjective extends CountObjective{
     private KingdomResource kingdom;
 
     // Constructor Method
-    public KingdomCountObjective(int points, int number, KingdomResource kingdom) {
-        super(points, number);
+    public KingdomCountObjective(int points, int number, KingdomResource kingdom, String description) {
+        super(points, number, description);
         this.kingdom = kingdom;
     }
 

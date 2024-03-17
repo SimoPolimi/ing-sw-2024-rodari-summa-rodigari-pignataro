@@ -8,8 +8,8 @@ public class LShapedPlacementObjective extends PlacementObjective {
     private CornerPosition positionCornerCard;
 
     // Constructor Method
-    public LShapedPlacementObjective(int points, KingdomResource primaryType, KingdomResource secondaryType, CornerPosition positionCornerCard) {
-        super(points, primaryType);
+    public LShapedPlacementObjective(int points, KingdomResource primaryType, KingdomResource secondaryType, CornerPosition positionCornerCard, String description) {
+        super(points,description, primaryType);
         this.secondaryType = secondaryType;
         this.positionCornerCard = positionCornerCard;
     }
