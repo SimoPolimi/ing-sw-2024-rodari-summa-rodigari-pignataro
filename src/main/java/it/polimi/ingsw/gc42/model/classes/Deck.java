@@ -132,8 +132,7 @@ public class Deck implements Observable {
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
                     KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsJsonPrimitive().getAsString());
-                    ObjectiveEnum condition = getObjective(list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString(),
-                            null);
+                    String condition = list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString();
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
                     int fungiCost = list.get(i).getAsJsonObject().get("FungiCost").getAsInt();
                     int plantCost = list.get(i).getAsJsonObject().get("PlantCost").getAsInt();
@@ -149,7 +148,8 @@ public class Deck implements Observable {
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
                     cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, condition, points, frontImage, backImage));
+                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null),
+                            points, frontImage, backImage));
                 }
                 break;
             case STARTERCARD:
@@ -207,73 +207,7 @@ public class Deck implements Observable {
                     } else {
                         isLeftToRight = false;
                     }
-                    //TODO: Implement creation with new Objective sub-classes
-                    Objective objective;
-                    switch (condition) {
-                        case "forEachScroll":
-                            objective = new ItemCountObjective(points, 1, Resource.SCROLL, description);
-                            break;
-                        case "forEachPotion":
-                            objective = new ItemCountObjective(points, 1, Resource.POTION, description);
-                            break;
-                        case "forEachFeather":
-                            objective = new ItemCountObjective(points, 1, Resource.FEATHER, description);
-                            break;
-                        case "forEachCorner":
-                            objective = new CornerCountObjective(points, 1, null, description);
-                            break;
-                        case "diagonalPlacingRed!":
-                            objective = new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, description);
-                            break;
-                        case "diagonalPlacingGreen!":
-                            objective = new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight, description);
-                            break;
-                        case "diagonalPlacingBlue":
-                            objective = new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight, description);
-                            break;
-                        case "diagonalPlacingPurple":
-                            objective = new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight, description);
-                            break;
-                        case "LShapedPlacingRed":
-                            objective = new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT, description);
-                            break;
-                        case "LShapedPlacingGreen":
-                            objective = new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT, description);
-                            break;
-                        case "LShapedPlacingBlue":
-                            objective = new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT, description);
-                            break;
-                        case "LShapedPlacingPurple":
-                            objective = new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, description);
-                            break;
-                        case "forEach3KingdomResourcesFungi":
-                            objective = new KingdomCountObjective(points, 3, KingdomResource.FUNGI, description);
-                            break;
-                        case "forEach3KingdomResourcesPlant":
-                            objective = new KingdomCountObjective(points, 3, KingdomResource.PLANT, description);
-                            break;
-                        case "forEach3KingdomResourcesAnimal":
-                            objective = new KingdomCountObjective(points, 3, KingdomResource.ANIMAL, description);
-                            break;
-                        case "forEach3KingdomResourcesInsect":
-                            objective = new KingdomCountObjective(points, 3, KingdomResource.INSECT, description);
-                            break;
-                        case "forEach3DifferentItems":
-                            objective = new SetItemCountObjective(points, 3, description);
-                            break;
-                        case "forEach2Scrolls":
-                            objective = new ItemCountObjective(points, 2, Resource.SCROLL, description);
-                            break;
-                        case "forEach2Potions":
-                            objective = new ItemCountObjective(points, 2, Resource.POTION, description);
-                            break;
-                        case "forEach2Feathers":
-                            objective = new ItemCountObjective(points, 2, Resource.FEATHER, description);
-                            break;
-                        default:
-                            objective = null;
-                            break;
-                    }
+                    Objective objective = getObjective(points, condition, isLeftToRight, description);
                     cards.add(new ObjectiveCard(null, null, true, id, points, objective, frontImage, backImage));
                 }
         }
@@ -320,64 +254,51 @@ public class Deck implements Observable {
         }
     }
 
-    private static ObjectiveEnum getObjective(String condition, String name) {
+    private static Objective getObjective(int points, String condition, boolean isLeftToRight, String description) {
         switch (condition) {
             case "forEachScroll":
-                return ObjectiveEnum.FOR_EACH_SCROLL;
+                return new ItemCountObjective(points, 1, Resource.SCROLL, description);
             case "forEachPotion":
-                return ObjectiveEnum.FOR_EACH_POTION;
+                return new ItemCountObjective(points, 1, Resource.POTION, description);
             case "forEachFeather":
-                return ObjectiveEnum.FOR_EACH_FEATHER;
+                return new ItemCountObjective(points, 1, Resource.FEATHER, description);
             case "forEachCorner":
-                return ObjectiveEnum.FOR_EACH_CORNER;
-            case "diagonalPlacing":
-                switch (name) {
-                    case "Diagonal Red!":
-                        return ObjectiveEnum.DIAGONAL_RED;
-                    case "Diagonal Green!":
-                        return ObjectiveEnum.DIAGONAL_GREEN;
-                    case "Diagonal Blue!":
-                        return ObjectiveEnum.DIAGONAL_BLUE;
-                    case "Diagonal Purple!":
-                        return ObjectiveEnum.DIAGONAL_PURPLE;
-                }
-                break;
-            case "LShapedPlacing":
-                switch (name) {
-                    case "L-Shaped Red!":
-                        return ObjectiveEnum.L_SHAPED_RED;
-                    case "L-Shaped Green!":
-                        return ObjectiveEnum.L_SHAPED_GREEN;
-                    case "L-Shaped Blue!":
-                        return ObjectiveEnum.L_SHAPED_PURPLE;
-                    case "L-Shaped Purple!":
-                        return ObjectiveEnum.L_SHAPED_PURPLE;
-                }
-                break;
-            case "forEach3KingdomResources":
-                switch (name) {
-                    case "Fungi Collector!":
-                        return ObjectiveEnum.FUNGI_COLLECTOR;
-                    case "Plant Collector!":
-                        return ObjectiveEnum.PLANT_COLLECTOR;
-                    case "Animal Collector!":
-                        return ObjectiveEnum.ANIMAL_COLLECTOR;
-                    case "Insect Collector!":
-                        return ObjectiveEnum.INSECT_COLLECTOR;
-                }
-                break;
+                return new CornerCountObjective(points, 1, null, description);
+            case "diagonalPlacingRed!":
+                return new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, description);
+            case "diagonalPlacingGreen!":
+                return new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight, description);
+            case "diagonalPlacingBlue":
+                return new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight, description);
+            case "diagonalPlacingPurple":
+                return new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight, description);
+            case "LShapedPlacingRed":
+                return new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT, description);
+            case "LShapedPlacingGreen":
+                return new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT, description);
+            case "LShapedPlacingBlue":
+                return new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT, description);
+            case "LShapedPlacingPurple":
+                return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, description);
+            case "forEach3KingdomResourcesFungi":
+                return new KingdomCountObjective(points, 3, KingdomResource.FUNGI, description);
+            case "forEach3KingdomResourcesPlant":
+                return new KingdomCountObjective(points, 3, KingdomResource.PLANT, description);
+            case "forEach3KingdomResourcesAnimal":
+                return new KingdomCountObjective(points, 3, KingdomResource.ANIMAL, description);
+            case "forEach3KingdomResourcesInsect":
+                return new KingdomCountObjective(points, 3, KingdomResource.INSECT, description);
             case "forEach3DifferentItems":
-                return ObjectiveEnum.ITEM_COLLECTOR;
+                return new SetItemCountObjective(points, 3, description);
             case "forEach2Scrolls":
-                return ObjectiveEnum.SCROLL_COLLECTOR;
+                return new ItemCountObjective(points, 2, Resource.SCROLL, description);
             case "forEach2Potions":
-                return ObjectiveEnum.POTION_COLLECTOR;
+                return new ItemCountObjective(points, 2, Resource.POTION, description);
             case "forEach2Feathers":
-                return ObjectiveEnum.FEATHER_COLLECTOR;
+                return new ItemCountObjective(points, 2, Resource.FEATHER, description);
             default:
                 return null;
         }
-        return null;
     }
 
     /**
