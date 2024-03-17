@@ -19,13 +19,13 @@ public class SetItemCountObjective extends CountObjective{
         items.put(Resource.POTION, 0);
         items.put(Resource.SCROLL, 0);
         for (Card card : playArea) {
-            if (card.getShowingSide().getUpperLeftCorner() instanceof ResourceCorner) {
-                items.put(((ResourceCorner) card.getShowingSide().getUpperLeftCorner()).getResource(),
-                        items.get(((ResourceCorner) card.getShowingSide().getUpperLeftCorner()).getResource()) + 1);
+            if (card.getShowingSide().getTopLeftCorner() instanceof ResourceCorner) {
+                items.put(((ResourceCorner) card.getShowingSide().getTopLeftCorner()).getResource(),
+                        items.get(((ResourceCorner) card.getShowingSide().getTopLeftCorner()).getResource()) + 1);
             }
-            if (card.getShowingSide().getUpperRightCorner() instanceof ResourceCorner) {
-                items.put(((ResourceCorner) card.getShowingSide().getUpperRightCorner()).getResource(),
-                        items.get(((ResourceCorner) card.getShowingSide().getUpperRightCorner()).getResource()) + 1);
+            if (card.getShowingSide().getTopRightCorner() instanceof ResourceCorner) {
+                items.put(((ResourceCorner) card.getShowingSide().getTopRightCorner()).getResource(),
+                        items.get(((ResourceCorner) card.getShowingSide().getTopRightCorner()).getResource()) + 1);
             }
             if (card.getShowingSide().getBottomLeftCorner() instanceof ResourceCorner) {
                 items.put(((ResourceCorner) card.getShowingSide().getBottomLeftCorner()).getResource(),

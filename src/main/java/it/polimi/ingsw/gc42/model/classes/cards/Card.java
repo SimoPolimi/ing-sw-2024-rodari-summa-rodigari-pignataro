@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Implementation of Card for Model
- * Test
+ * Implementation of Card for Model.
+ * A Card contains all the information necessary to create, represent and operate a Card.
+ * It's an Observable object, meaning that other objects can add a Listener to a Card to be notified
+ * when the Card gets flipped.
  */
 public class Card implements Observable {
     // Attributes
-    private ArrayList<Listener> listeners;
+    private final ArrayList<Listener> listeners;
     private CardSide frontSide;
     private CardSide backSide;
     private boolean isFrontFacing;
@@ -24,19 +26,19 @@ public class Card implements Observable {
     private int y;
     private Image frontImage;
     private Image backImage;
-    // TODO: Add ViewCard data type
-    //private List<> views = new ArrayList<>;
 
     // Constructor Method
 
     /**
-     *Class Constructors
-     * @param frontSide         group of Corners that make the front Side of the card
-     * @param backSide          group of empty Corners that make the back Side of the card, plus other features like permanent resources
-     * @param isFrontFacing     true if the Card is showing the front Side, false if it is showing the back Side
-     * @param id                unique identifier for the specific Card
-     * @param x                 horizontal coordinate for the Card's position on the table (null if not placed)
-     * @param y                 vertical coordinate for the Card's position on the table (null if not placed)
+     * Constructor Method
+     * @param frontSide: group of Corners that make the front Side of the card
+     * @param backSide: group of empty Corners that make the back Side of the card, plus other features like permanent resources
+     * @param isFrontFacing: true if the Card is showing the front Side, false if it is showing the back Side
+     * @param id: unique identifier for the specific Card
+     * @param x: horizontal coordinate for the Card's position on the table (null if not placed)
+     * @param y: vertical coordinate for the Card's position on the table (null if not placed)
+     * @param frontImage: String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param backImage: String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, String frontImage, String backImage) {
         this.frontSide = frontSide;
@@ -47,15 +49,17 @@ public class Card implements Observable {
         this.y = y;
         this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + frontImage)));
         this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + backImage)));
-        listeners = new ArrayList<Listener>();
+        listeners = new ArrayList<>();
     }
 
     /**
      * Class Constructor without the x and y parameters, to generate Cards without having to place them already
-     * @param frontSide         group of Corners that make the front Side of the card
-     * @param backSide          group of empty Corners that make the back Side of the card, plus other features like permanent resources
-     * @param isFrontFacing     true if the Card is showing the front Side, false if it is showing the back Side
-     * @param id                unique identifier for the specific Card
+     * @param frontSide: group of Corners that make the front Side of the card
+     * @param backSide: group of empty Corners that make the back Side of the card, plus other features like permanent resources
+     * @param isFrontFacing: true if the Card is showing the front Side, false if it is showing the back Side
+     * @param id: unique identifier for the specific Card
+     * @param frontImage: String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param backImage: String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public Card(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, String frontImage, String backImage) {
         this.frontSide = frontSide;
@@ -71,6 +75,10 @@ public class Card implements Observable {
 
     // Getter and Setter Methods
 
+    /**
+     * Getter Method for CardSide
+     * @return the appropriate CardSide based on which Side the Card is currently showing
+     */
     public CardSide getShowingSide() {
         if (isFrontFacing) {
             return frontSide;
@@ -177,20 +185,52 @@ public class Card implements Observable {
         this.y = y;
     }
 
+    /**
+     * Getter Method for the FrontImage
+     * @return Image resource to display on the GUI
+     */
     public Image getFrontImage() {
         return frontImage;
     }
 
+    /**
+     * Setter Method for frontImage
+     * @param frontImage: the Image resource to display on the GUI
+     */
     public void setFrontImage(Image frontImage) {
         this.frontImage = frontImage;
     }
 
+    /**
+     * Setter Method for frontImage
+     * @param frontImage: the String containing the name (+ extension) of the Image resource to display on the GUI
+     */
+    public void setFrontImage(String frontImage) {
+        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/"+frontImage)));
+    }
+
+    /**
+     * Getter Method for backImage
+     * @return the Image resource to display on the GUI
+     */
     public Image getBackImage() {
         return backImage;
     }
 
+    /**
+     * Setter Method for backImage
+     * @param backImage: the Image resource to display on the GUI
+     */
     public void setBackImage(Image backImage) {
         this.backImage = backImage;
+    }
+
+    /**
+     * Setter Method for backImage
+     * @param backImage: the String containing the name (+ extension) of the Image resource to display on the GUI
+     */
+    public void setBackImage(String backImage) {
+        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/"+backImage)));
     }
 
     // Methods
@@ -204,21 +244,31 @@ public class Card implements Observable {
         notifyListeners();
     }
 
-    //TODO: Add documentation
-
-    //TODO: Implement View Card data type
-
+    /**
+     * Method from the Observable interface.
+     * Adds listener to the ArrayList of Listener objects who are subscribed to the Card.
+     * @param listener: object containing the lambda function to execute once the Card gets flipped.
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
 
     }
 
+    /**
+     * Method from the Observable interface.
+     * Removes listener from the ArrayList of Listener objects, so that it doesn't get notified of its status anymore.
+     * @param listener: object containing the lambda function to execute once the Card gets flipped.
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Method from the Observable interface.
+     * For each Listener inside the ArrayList, it calls the onEvent() method that runs the lambda contained in them.
+     */
     @Override
     public void notifyListeners() {
         for (Listener l: listeners) {

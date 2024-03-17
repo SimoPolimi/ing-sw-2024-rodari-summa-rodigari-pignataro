@@ -26,10 +26,10 @@ public class ItemCountObjective extends CountObjective{
     protected int check(ArrayList<Card> playArea) {
         int count = 0;
         for (Card card: playArea) {
-            if ((card.getShowingSide().getUpperLeftCorner() instanceof ResourceCorner
-                    && ((ResourceCorner) card.getShowingSide().getUpperLeftCorner()).getResource() == resource) ||
-                    (card.getShowingSide().getUpperRightCorner() instanceof ResourceCorner &&
-                            ((ResourceCorner) card.getShowingSide().getUpperRightCorner()).getResource() == resource) ||
+            if ((card.getShowingSide().getTopLeftCorner() instanceof ResourceCorner
+                    && ((ResourceCorner) card.getShowingSide().getTopLeftCorner()).getResource() == resource) ||
+                    (card.getShowingSide().getTopRightCorner() instanceof ResourceCorner &&
+                            ((ResourceCorner) card.getShowingSide().getTopRightCorner()).getResource() == resource) ||
                     (card.getShowingSide().getBottomLeftCorner() instanceof  ResourceCorner
                             && ((ResourceCorner) card.getShowingSide().getBottomLeftCorner()).getResource() == resource) ||
                     (card.getShowingSide().getBottomRightCorner() instanceof ResourceCorner
