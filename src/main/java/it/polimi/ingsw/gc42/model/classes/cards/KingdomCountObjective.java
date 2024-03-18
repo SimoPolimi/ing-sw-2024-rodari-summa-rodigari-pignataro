@@ -53,19 +53,23 @@ public class KingdomCountObjective extends CountObjective{
         int count = 0;
         for (Card card: playArea) {
             if ((card.getShowingSide().getTopLeftCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getTopLeftCorner().isCovered() &&
                     ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == kingdom)) {
                 count++;
             }
-            if ((card.getShowingSide().getTopRightCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == kingdom)) {
+            if ((card.getShowingSide().getTopRightCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getTopRightCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == kingdom)) {
                 count++;
             }
-            if ((card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == kingdom)) {
+            if ((card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getBottomLeftCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == kingdom)) {
                 count++;
             }
-            if ((card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == kingdom)) {
+            if ((card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getBottomRightCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == kingdom)) {
                 count++;
             }
             if (card instanceof GoldCard && ((GoldCard) card).getPermanentResource() == kingdom) {

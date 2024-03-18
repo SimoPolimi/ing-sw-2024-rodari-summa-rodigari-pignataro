@@ -20,20 +20,24 @@ public class ObjectiveTest {
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
             playArea.add(card);
-            if (card.getShowingSide().getTopLeftCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().getTopLeftCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getTopLeftCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getTopRightCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().getTopRightCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getTopRightCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getBottomLeftCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner
-                    && ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner &&
+                    !card.getShowingSide().getBottomRightCorner().isCovered() &&
+                    ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == KingdomResource.FUNGI) {
                 count++;
             }
             if (card.getPermanentResource() == KingdomResource.FUNGI) {
