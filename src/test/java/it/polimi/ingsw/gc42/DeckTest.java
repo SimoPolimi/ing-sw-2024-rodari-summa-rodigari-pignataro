@@ -16,11 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DeckTest {
 
-    /* To run these tests some parts of PlayingDeck need to be commented.
-    Since the actual Cards are not implemented yet, any attempt to generate them and/or draw from their Deck results in a crash.
-    However, with those parts commented, both tests passed without issues.
-     */
-
     @Test
     void testResourceDeckIsEmpty() {
         // given

@@ -53,15 +53,25 @@ public class KingdomCountObjective extends CountObjective{
         int count = 0;
         for (Card card: playArea) {
             if ((card.getShowingSide().getTopLeftCorner() instanceof KingdomCorner &&
-                    ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == kingdom) ||
-                    (card.getShowingSide().getTopRightCorner() instanceof KingdomCorner
-                            && ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == kingdom) ||
-                    (card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner
-                            && ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == kingdom) ||
-                    (card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner
-                            && ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == kingdom) ||
-                    (card instanceof GoldCard && ((GoldCard) card).getPermanentResource() == kingdom) ||
-                    (card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource() == kingdom)) {
+                    ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == kingdom)) {
+                count++;
+            }
+            if ((card.getShowingSide().getTopRightCorner() instanceof KingdomCorner
+                    && ((KingdomCorner) card.getShowingSide().getTopRightCorner()).getKingdom() == kingdom)) {
+                count++;
+            }
+            if ((card.getShowingSide().getBottomLeftCorner() instanceof KingdomCorner
+                    && ((KingdomCorner) card.getShowingSide().getBottomLeftCorner()).getKingdom() == kingdom)) {
+                count++;
+            }
+            if ((card.getShowingSide().getBottomRightCorner() instanceof KingdomCorner
+                    && ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == kingdom)) {
+                count++;
+            }
+            if (card instanceof GoldCard && ((GoldCard) card).getPermanentResource() == kingdom) {
+                count++;
+            }
+            if (card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource() == kingdom) {
                 count++;
             }
         }
