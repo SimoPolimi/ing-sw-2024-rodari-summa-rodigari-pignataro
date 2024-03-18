@@ -23,6 +23,9 @@ public class Player implements Observable {
 
     public void setPoints(int points) {
         this.points = points;
+        if (points >= 20) {
+            notifyListeners();
+        }
     }
 
     public boolean isFirst() {
@@ -57,7 +60,7 @@ public class Player implements Observable {
         this.playField = playField;
     }
 
-    private ArrayList<Listener> listeners = new ArrayList<>();
+    private final ArrayList<Listener> listeners = new ArrayList<>();
 
     private boolean isFirst;
     private Token token;
@@ -77,16 +80,6 @@ public class Player implements Observable {
         this.playField = playField;
         this.game = game;
 
-    }
-
-    //TODO javadoc notifyMaxPointsReached
-    public void notifyMaxPointsReached() {
-        notifyWinner();
-    }
-
-    private void notifyWinner() {
-        //TODO write method
-        notifyListeners();
     }
 
     @Override
