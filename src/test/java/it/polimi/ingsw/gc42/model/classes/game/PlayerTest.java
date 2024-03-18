@@ -7,25 +7,24 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HandTest {
+class PlayerTest {
 
     @Test
     void drawStartingHand() {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Hand hand = new Hand();
-        Player player = new Player(true, 0, null, null, hand, null, game);
+        Player player = new Player(true, 0, null, null, new ArrayList<Card>(), null, game);
 
         // when
-        player.getHand().drawStartingHand(game);
+        player.drawStartingHand(game);
 
         // then
-        assertEquals(player.getHand().getCards().size(), 3);
+        assertEquals(player.getHand().size(), 3);
 
         int resourceCount = 0;
         int goldCardCount = 0;
-        for (Card card : player.getHand().getCards()) {
+        for (Card card : player.getHand()) {
             if (card instanceof ResourceCard) {
                 resourceCount++;
             } else if (card instanceof GoldCard) {
@@ -41,20 +40,19 @@ class HandTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Hand hand = new Hand();
         PlayField playField = new PlayField((StarterCard) game.getStarterDeck().draw(), new ArrayList<Card>());
-        Player player = new Player(true, 0, null, null, hand, playField, game);
-        player.getHand().drawStartingHand(game);
+        Player player = new Player(true, 0, null, null, new ArrayList<Card>(), playField, game);
+        player.drawStartingHand(game);
 
-        Card playedCard = player.getHand().getCards().get(0);
+        Card playedCard = player.getHand().get(0);
         // when
-        player.getHand().playCard(playedCard, 1, 0, player.getPlayField());
+        player.playCard(playedCard, 1, 0, player.getPlayField());
 
         // then
         assertFalse(player.getPlayField().getPlayedCards().isEmpty());
         assertTrue(player.getPlayField().getPlayedCards().contains(playedCard));
-        assertEquals(player.getHand().getCards().size(), 2);
-        assertFalse(player.getHand().getCards().contains(playedCard));
+        assertEquals(player.getHand().size(), 2);
+        assertFalse(player.getHand().contains(playedCard));
     }
 
     @Test
@@ -62,16 +60,15 @@ class HandTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Hand hand = new Hand();
-        Player player = new Player(true, 0, null, null, hand, null, game);
+        Player player = new Player(true, 0, null, null, new ArrayList<Card>(), null, game);
 
         Card topCard = game.getResourcePlayingDeck().getDeck().getCards().getFirst();
         // when
-        player.getHand().drawCard(game.getResourcePlayingDeck());
+        player.drawCard(game.getResourcePlayingDeck());
 
         // then
-        assertFalse(player.getHand().getCards().isEmpty());
-        assertTrue(player.getHand().getCards().contains(topCard));
+        assertFalse(player.getHand().isEmpty());
+        assertTrue(player.getHand().contains(topCard));
     }
 
     @Test
