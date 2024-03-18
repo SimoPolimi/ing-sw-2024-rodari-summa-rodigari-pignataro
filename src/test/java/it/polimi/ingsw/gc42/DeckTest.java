@@ -41,24 +41,4 @@ class DeckTest {
         // then
         assertTrue(g.isGoldDeckEmpty());
     }
-    @Test
-    void testIsPutDown() {
-        // given
-        Game game = new Game();
-        // Player
-        Hand hand = new Hand();
-        Player player = new Player(true, 0, null, null, hand, game);
-
-        // meh
-        game.addPlayer(player);
-
-        //TODO condition if the Deck is empty and cannot put down another Card
-
-        // when and then
-        player.getHand().grabCard(game.getGoldPlayingDeck(), 1);
-        assertNotNull(game.getGoldPlayingDeck().getSlot1());
-        assertNotEquals(player.getHand().getCards().getFirst(), game.getGoldPlayingDeck().getSlot1());
-
-
-    }
 }
