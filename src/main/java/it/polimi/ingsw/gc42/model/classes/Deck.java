@@ -18,7 +18,6 @@ public class Deck implements Observable {
     // Attributes
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private List<Card> cards;
-    private int counter;
     private CardType cardType;
 
     // Constructor
@@ -26,12 +25,10 @@ public class Deck implements Observable {
     /**
      * Constructor Method
      * @param cards: ArrayList containing the Card that make up the Deck
-     * @param counter: number of Cards contained inside the Deck
      * @param cardType: Type of the Cards contained inside the Deck
      */
-    public Deck(ArrayList<Card> cards, int counter, CardType cardType) {
+    public Deck(ArrayList<Card> cards, CardType cardType) {
         this.cards = cards;
-        this.counter = counter;
         this.cardType = cardType;
     }
 
@@ -57,16 +54,8 @@ public class Deck implements Observable {
      * Getter Method for counter
      * @return the number of Cards remaining inside the Deck
      */
-    public int getCounter() {
-        return counter;
-    }
-
-    /**
-     * Setter Method for counter
-     * @param counter: the number of Cards remaining inside the Deck
-     */
-    public void setCounter(int counter) {
-        this.counter = counter;
+    public int getCardsNummber() {
+        return cards.size();
     }
 
     /**
@@ -212,7 +201,7 @@ public class Deck implements Observable {
                     cards.add(new ObjectiveCard(null, null, true, id, points, objective, frontImage, backImage));
                 }
         }
-        Deck deck = new Deck(cards, cards.size(), type);
+        Deck deck = new Deck(cards, type);
         deck.shuffle();
         return deck;
     }
@@ -339,8 +328,7 @@ public class Deck implements Observable {
         try {
             Card card = cards.getFirst();
             cards.removeFirst();
-            counter--;
-            if (cards.size() == 0) {
+            if (cards.isEmpty()) {
                 notifyListeners();
             }
             return card;
