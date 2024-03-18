@@ -25,21 +25,11 @@ class DeckTest {
     void testResourceDeckIsEmpty() {
         // given
         Game g = new Game();
-        ResourceCard c = new ResourceCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null),
-                true, 1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
-        ArrayList<Card> a = new ArrayList<>();
-        a.add(c);
-        Deck d = new Deck(a, a.size(), CardType.RESOURCECARD);
-        g.getResourcePlayingDeck().setDeck(d);
-        g.getResourcePlayingDeck().getDeck().setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                g.setResourceDeckEmpty(true);
-            }
-        });
         // when
-        Card c2 = g.getResourcePlayingDeck().getDeck().draw();
+        int num = g.getResourcePlayingDeck().getDeck().getCounter();
+        for (int i = 0; i < num; i++) {
+            g.getResourcePlayingDeck().getDeck().draw();
+        }
         // then
         assertTrue(g.isResourceDeckEmpty());
     }
@@ -48,51 +38,18 @@ class DeckTest {
     void testGoldDeckIsEmpty() {
         // given
         Game g = new Game();
-        GoldCard c = new GoldCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null), true,
-                1, KingdomResource.FUNGI, 0, 0, 0, 0, null, 0, "card1Front.png", "fungiResourceBack.png");
-        ArrayList<Card> a = new ArrayList<>();
-        a.add(c);
-        Deck d = new Deck(a, a.size(), CardType.GOLDCARD);
-        g.getGoldPlayingDeck().setDeck(d);
-        g.getGoldPlayingDeck().getDeck().setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                g.setGoldDeckEmpty(true);
-            }
-        });
         // when
-        Card c2 = g.getGoldPlayingDeck().getDeck().draw();
+        int num = g.getGoldPlayingDeck().getDeck().getCounter();
+        for (int i = 0; i < num; i++) {
+            g.getGoldPlayingDeck().getDeck().draw();
+        }
         // then
         assertTrue(g.isGoldDeckEmpty());
     }
     @Test
     void testIsPutDown() {
-        //TODO remake with initPlayingDecks
-
         // given
-        // decks
         Game game = new Game();
-        ResourceCard resourceCard1 = new ResourceCard(null, null, false, 1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
-        ResourceCard resourceCard2 = new ResourceCard(null, null, false, 2, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
-        GoldCard goldCard1 = new GoldCard(null, null, false, 3, KingdomResource.FUNGI, 0, 0, 0, 0, null, 0, "card1Front.png", "fungiResourceBack.png");
-        GoldCard goldCard2 = new GoldCard(null, null, false, 4, KingdomResource.FUNGI, 0, 0, 0, 0, null, 0, "card1Front.png", "fungiResourceBack.png");
-        ResourceCard resourceCardInDeck = new ResourceCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null), true,
-                1, KingdomResource.ANIMAL, 0, "card1Front.png", "fungiResourceBack.png");
-        ArrayList<Card> a1 = new ArrayList<>();
-        a1.add(resourceCardInDeck);
-        Deck resourceDeck = new Deck(a1, a1.size(), CardType.RESOURCECARD);
-        GoldCard goldCardInDeck = new GoldCard(new CardSide(null, null, null, null),
-                new CardSide(null, null, null, null), true,
-                1, KingdomResource.FUNGI, 0, 0, 0, 0, null, 0, "card1Front.png", "fungiResourceBack.png");
-        ArrayList<Card> a2 = new ArrayList<>();
-        a2.add(goldCardInDeck);
-        Deck goldDeck = new Deck(a2, a2.size(), CardType.GOLDCARD);
-        PlayingDeck goldPlayingDeck = new PlayingDeck(goldCard1, goldCard2, goldDeck);
-
-        game.setGoldPlayingDeck(goldPlayingDeck);
-
         // Player
         Hand hand = new Hand();
         Player player = new Player(true, 0, null, null, hand, game);
@@ -103,10 +60,9 @@ class DeckTest {
         //TODO condition if the Deck is empty and cannot put down another Card
 
         // when and then
-        // draw Resourcecard1
-        player.getHand().grabCard(goldPlayingDeck, 1);
-        assertNotNull(goldPlayingDeck.getSlot1());
-        assertNotEquals(player.getHand().getCards().get(0), goldPlayingDeck.getSlot1());
+        player.getHand().grabCard(game.getGoldPlayingDeck(), 1);
+        assertNotNull(game.getGoldPlayingDeck().getSlot1());
+        assertNotEquals(player.getHand().getCards().getFirst(), game.getGoldPlayingDeck().getSlot1());
 
 
     }
