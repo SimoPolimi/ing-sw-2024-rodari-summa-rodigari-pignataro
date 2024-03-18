@@ -51,7 +51,7 @@ class HandTest {
         player.getHand().playCard(playedCard, 1, 0, player.getPlayField());
 
         // then
-        assertTrue(player.getPlayField().getPlayedCards().size() > 0);
+        assertFalse(player.getPlayField().getPlayedCards().isEmpty());
         assertTrue(player.getPlayField().getPlayedCards().contains(playedCard));
         assertEquals(player.getHand().getCards().size(), 2);
         assertFalse(player.getHand().getCards().contains(playedCard));
@@ -59,6 +59,19 @@ class HandTest {
 
     @Test
     void drawCard() {
+        // given
+        // new game because it initializes the decks
+        Game game = new Game();
+        Hand hand = new Hand();
+        Player player = new Player(true, 0, null, null, hand, null, game);
+
+        Card topCard = game.getResourcePlayingDeck().getDeck().getCards().getFirst();
+        // when
+        player.getHand().drawCard(game.getResourcePlayingDeck());
+
+        // then
+        assertFalse(player.getHand().getCards().isEmpty());
+        assertTrue(player.getHand().getCards().contains(topCard));
     }
 
     @Test
