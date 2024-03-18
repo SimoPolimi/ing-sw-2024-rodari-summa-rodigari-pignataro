@@ -17,15 +17,18 @@ public class ResourceCard extends Card{
     // Constructor Method
 
     /**
-     * Constructor Method
-     * @param frontSide            CardSide to be used as the front side of the Card
-     * @param backSide             CardSide to be used as the front side of the Card
-     * @param isFrontFacing        boolean to specify which side of the Card is visible ( True -> front, False -> back )
-     * @param id                   unique identifier for the specific Card
-     * @param x                    horizontal coordinate for the Card's position on the table (null if not placed)
-     * @param y                    vertical coordinate for the Card's position on the table (null if not placed)
-     * @param permanentResource    KingdomResource shown on the back side of the Card
-     * @param earnedPoints         number of points obtained for placing the card
+     * Constructor Method with x and y coordinates.
+     * USE THIS ONLY if you need to specify the Card's coordinates.
+     * @param frontSide: CardSide to be used as the front side of the Card
+     * @param backSide: CardSide to be used as the front side of the Card
+     * @param isFrontFacing: boolean to specify which side of the Card is visible ( True -> front, False -> back )
+     * @param id: unique identifier for the specific Card
+     * @param x: horizontal coordinate for the Card's position on the table (null if not placed)
+     * @param y: vertical coordinate for the Card's position on the table (null if not placed)
+     * @param permanentResource: KingdomResource shown on the back side of the Card
+     * @param earnedPoints: number of points obtained for placing the card
+     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
@@ -33,6 +36,18 @@ public class ResourceCard extends Card{
         this.earnedPoints = earnedPoints;
     }
 
+    /**
+     * Constructor Method without x and y coordinates.
+     * USE THIS.
+     * @param frontSide: CardSide to be used as the front side of the Card
+     * @param backSide: CardSide to be used as the front side of the Card
+     * @param isFrontFacing: boolean to specify which side of the Card is visible ( True -> front, False -> back )
+     * @param id: unique identifier for the specific Card
+     * @param permanentResource: KingdomResource shown on the back side of the Card
+     * @param earnedPoints: number of points obtained for placing the card
+     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
+     */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
         this.permanentResource = permanentResource;
@@ -42,7 +57,7 @@ public class ResourceCard extends Card{
 
     /**
      * Getter Method for permanentResource
-     * @return permanentResource: the resource that can't be covered, shown on the Card's back side
+     * @return the resource that can't be covered, shown on the Card's back side
      */
     public KingdomResource getPermanentResource() {
         if (isFrontFacing()) {
@@ -62,7 +77,7 @@ public class ResourceCard extends Card{
 
     /**
      * Getter method for earnedPoints
-     * @return earnedPoints: number of points earned by the player when placing the Card
+     * @return the number of points earned by the player when placing the Card
      */
     public int getEarnedPoints() {
         return earnedPoints;
@@ -70,7 +85,7 @@ public class ResourceCard extends Card{
 
     /**
      * Setter method for earnedPoints
-     * @param earnedPoints: number of points earned by the player when placing the Card
+     * @param earnedPoints: the number of points earned by the player when placing the Card
      */
     public void setEarnedPoints(int earnedPoints) {
         this.earnedPoints = earnedPoints;

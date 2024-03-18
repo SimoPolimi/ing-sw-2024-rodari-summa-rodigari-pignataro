@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class Deck implements Observable {
     // Attributes
-    private ArrayList<Listener> listeners = new ArrayList<>();
+    private final ArrayList<Listener> listeners = new ArrayList<>();
     private List<Card> cards;
     private int counter;
     private CardType cardType;
@@ -25,9 +25,8 @@ public class Deck implements Observable {
 
     /**
      * Constructor Method
-     *
-     * @param cards:    ArrayList containing the Card that make up the Deck
-     * @param counter:  number of Cards contained inside the Deck
+     * @param cards: ArrayList containing the Card that make up the Deck
+     * @param counter: number of Cards contained inside the Deck
      * @param cardType: Type of the Cards contained inside the Deck
      */
     public Deck(ArrayList<Card> cards, int counter, CardType cardType) {
@@ -40,8 +39,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for cards
-     *
-     * @return cards: ArrayList of Cards
+     * @return the ArrayList of Cards
      */
     public List<Card> getCards() {
         return cards;
@@ -49,8 +47,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for cards
-     *
-     * @param cards: ArrayList of Cards
+     * @param cards: the ArrayList of Cards
      */
     public void setCards(List<Card> cards) {
         this.cards = cards;
@@ -58,8 +55,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for counter
-     *
-     * @return counter: number of Cards remaining inside the Deck
+     * @return the number of Cards remaining inside the Deck
      */
     public int getCounter() {
         return counter;
@@ -67,8 +63,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for counter
-     *
-     * @param counter: number of Cards remaining inside the Deck
+     * @param counter: the number of Cards remaining inside the Deck
      */
     public void setCounter(int counter) {
         this.counter = counter;
@@ -76,7 +71,6 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for cardType
-     *
      * @return the type of Cards the Deck is made of
      */
     public CardType getCardType() {
@@ -85,7 +79,6 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for cardType
-     *
      * @param cardType: the type of Cards the Deck is made of
      */
     public void setCardType(CardType cardType) {
@@ -95,8 +88,16 @@ public class Deck implements Observable {
     // Methods
 
 
+    /**
+     * Initializer Method.
+     * Creates and Initialized a Deck of the CardType specified as a parameter.
+     * The Deck is initialized with all the Cards of that CardType, all already initialized based
+     * on the parameters read from the data.json file.
+     * @param type: the CardType that will be contained inside the Deck.
+     * @return the initialized Deck, already shuffled.
+     * @throws FileNotFoundException if the data.json file is not found.
+     */
     public static Deck initDeck(CardType type) throws FileNotFoundException {
-        //TODO: Fully Implement
         ArrayList<Card> cards = new ArrayList<>();
         int num;
         List<JsonElement> list;
@@ -216,6 +217,11 @@ public class Deck implements Observable {
         return deck;
     }
 
+    /**
+     * Static Method used by initDeck() to initialize the Corners of the Cards.
+     * @param string: the name of the Corner read from the file.
+     * @return the appropriate Corner object, null if there is no Corner.
+     */
     private static Corner getCorner(String string) {
         switch (string) {
             case "Fungi":
@@ -239,6 +245,11 @@ public class Deck implements Observable {
         }
     }
 
+    /**
+     * Static Method used by initDeck() to get the appropriate KingdomResource for the Card.
+     * @param string: the KingdomResource read from the file.
+     * @return the appropriate KingdomResource.
+     */
     private static KingdomResource getKingdom(String string) {
         switch (string) {
             case "Fungi":
@@ -254,6 +265,14 @@ public class Deck implements Observable {
         }
     }
 
+    /**
+     * Static Method used by initDeck() to get the appropriate Objective, already initialized.
+     * @param points: number of points the Objective gives every time its condition is satisfied.
+     * @param condition: the string read from the file, containing the name of the Condition to satisfy.
+     * @param isLeftToRight: a boolean indicating the direction, used for DiagonalPlacingObjectives.
+     * @param description: a String containing the Objective Description, read from the file.
+     * @return the appropriate Objective initialized with the data passed as parameters.
+     */
     private static Objective getObjective(int points, String condition, boolean isLeftToRight, String description) {
         switch (condition) {
             case "forEachScroll":
@@ -311,8 +330,9 @@ public class Deck implements Observable {
     /**
      * Draws/Extracts a Card from the Deck.
      * The drawn Card is the one at the TOP of the Deck.
-     *
-     * @return Card
+     * Once drawn, the Card is also removed from the ArrayList.
+     * If it's the last Card of the Deck, all its Listeners are notified that the Deck is empty.
+     * @return the drawn Card.
      * @throws NoSuchElementException if there are 0 Cards left inside the Deck
      */
     public Card draw() throws NoSuchElementException {
@@ -331,16 +351,30 @@ public class Deck implements Observable {
         return null;
     }
 
+    /**
+     * Method from the Observable interface.
+     * Adds listener to the ArrayList of Listener objects who are subscribed to the Deck.
+     * @param listener: object containing the lambda function to execute once the Deck is emptied..
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Method from the Observable interface.
+     * Removes listener from the ArrayList of Listener objects, so that it doesn't get notified of its status anymore.
+     * @param listener: object containing the lambda function to execute once the Deck is emptied..
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Method from the Observable interface.
+     * For each Listener inside the ArrayList, it calls the onEvent() method that runs the lambda contained in them.
+     */
     @Override
     public void notifyListeners() {
         for (Listener d : listeners) {
