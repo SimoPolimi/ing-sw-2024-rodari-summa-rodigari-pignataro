@@ -1,14 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.util.HashMap;
+
 /**
  * Implementation of a Gold Card for Model
  */
 public class GoldCard extends Card{
     // Attributes
-    private int plantKingdomPoints;
-    private int animalKingdomPoints;
-    private int fungiKingdomPoints;
-    private int insectKingdomPoints;
+    private final HashMap<String, Integer> costs = new HashMap<>();
     private Objective objective;
     private int earnedPoints;
     private KingdomResource permanentResource;
@@ -35,10 +34,11 @@ public class GoldCard extends Card{
     public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,KingdomResource permanentResource, int plantKingdomPoints,
                     int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
-        this.plantKingdomPoints = plantKingdomPoints;
-        this.animalKingdomPoints = animalKingdomPoints;
-        this.fungiKingdomPoints = fungiKingdomPoints;
-        this.insectKingdomPoints = insectKingdomPoints;
+        initMap();
+        setCost(KingdomResource.FUNGI, fungiKingdomPoints);
+        setCost(KingdomResource.PLANT, plantKingdomPoints);
+        setCost(KingdomResource.ANIMAL, animalKingdomPoints);
+        setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
         this.earnedPoints = earnedPoints;
         this.permanentResource = permanentResource;
@@ -63,10 +63,11 @@ public class GoldCard extends Card{
     public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int plantKingdomPoints, int animalKingdomPoints,
                     int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
-        this.plantKingdomPoints = plantKingdomPoints;
-        this.animalKingdomPoints = animalKingdomPoints;
-        this.fungiKingdomPoints = fungiKingdomPoints;
-        this.insectKingdomPoints = insectKingdomPoints;
+        initMap();
+        setCost(KingdomResource.FUNGI, fungiKingdomPoints);
+        setCost(KingdomResource.PLANT, plantKingdomPoints);
+        setCost(KingdomResource.ANIMAL, animalKingdomPoints);
+        setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
         this.earnedPoints = earnedPoints;
         this.permanentResource = permanentResource;
@@ -95,7 +96,7 @@ public class GoldCard extends Card{
      * @return the number of Plant Type Points the Card requires in order to be placed (0 if not needed)
      */
     public int getPlantKingdomPoints() {
-        return plantKingdomPoints;
+        return costs.get(KingdomResource.PLANT.toString());
     }
 
     /**
@@ -103,7 +104,7 @@ public class GoldCard extends Card{
      * @param plantKingdomPoints: number of Plant Type points required in order to be placed (0 if not needed)
      */
     public void setPlantKingdomPoints(int plantKingdomPoints) {
-        this.plantKingdomPoints = plantKingdomPoints;
+        setCost(KingdomResource.PLANT, plantKingdomPoints);
     }
 
     /**
@@ -111,7 +112,7 @@ public class GoldCard extends Card{
      * @return the number of Animal Type Points the Card requires in order to be placed (0 if not needed)
      */
     public int getAnimalKingdomPoints() {
-        return animalKingdomPoints;
+        return costs.get(KingdomResource.ANIMAL.toString());
     }
 
     /**
@@ -119,7 +120,7 @@ public class GoldCard extends Card{
      * @param animalKingdomPoints: number of Animal Type points required in order to be placed (0 if not needed)
      */
     public void setAnimalKingdomPoints(int animalKingdomPoints) {
-        this.animalKingdomPoints = animalKingdomPoints;
+        setCost(KingdomResource.ANIMAL, animalKingdomPoints);
     }
 
     /**
@@ -127,7 +128,7 @@ public class GoldCard extends Card{
      * @return the number of Fungi Type Points the Card requires in order to be placed (0 if not needed)
      */
     public int getFungiKingdomPoints() {
-        return fungiKingdomPoints;
+        return costs.get(KingdomResource.FUNGI.toString());
     }
 
     /**
@@ -135,7 +136,7 @@ public class GoldCard extends Card{
      * @param fungiKingdomPoints: number of FUngi Type Points required in order to be placed (0 if not needed)
      */
     public void setFungiKingdomPoints(int fungiKingdomPoints) {
-        this.fungiKingdomPoints = fungiKingdomPoints;
+        setCost(KingdomResource.FUNGI, fungiKingdomPoints);
     }
 
     /**
@@ -143,7 +144,7 @@ public class GoldCard extends Card{
      * @return the number of Insect Type Points the Card requires in order to be placed (0 if not needed)
      */
     public int getInsectKingdomPoints() {
-        return insectKingdomPoints;
+        return costs.get(KingdomResource.INSECT.toString());
     }
 
     /**
@@ -151,7 +152,7 @@ public class GoldCard extends Card{
      * @param insectKingdomPoints: number of Insect Type points required in order to be placed (0 if not needed)
      */
     public void setInsectKingdomPoints(int insectKingdomPoints) {
-        this.insectKingdomPoints = insectKingdomPoints;
+        setCost(KingdomResource.INSECT, insectKingdomPoints);
     }
 
     /**
@@ -187,4 +188,25 @@ public class GoldCard extends Card{
     public void setEarnedPoints(int earnedPoints) {
         this.earnedPoints = earnedPoints;
     }
+
+    // Methods
+    private void initMap() {
+        costs.put(KingdomResource.FUNGI.toString(), 0);
+        costs.put(KingdomResource.ANIMAL.toString(), 0);
+        costs.put(KingdomResource.PLANT.toString(), 0);
+        costs.put(KingdomResource.INSECT.toString(), 0);
+        costs.put(Resource.FEATHER.toString(), 0);
+        costs.put(Resource.POTION.toString(), 0);
+        costs.put(Resource.SCROLL.toString(), 0);
+    }
+
+    private void setCost(KingdomResource kingdom, int cost) {
+        costs.replace(kingdom.toString(), cost);
+    }
+
+    private void setCost(Resource resource, int cost) {
+        costs.replace(resource.toString(), cost);
+    }
 }
+
+
