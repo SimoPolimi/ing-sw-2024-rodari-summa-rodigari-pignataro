@@ -195,17 +195,10 @@ public class GoldCard extends Card{
         costs.put(KingdomResource.ANIMAL.toString(), 0);
         costs.put(KingdomResource.PLANT.toString(), 0);
         costs.put(KingdomResource.INSECT.toString(), 0);
-        costs.put(Resource.FEATHER.toString(), 0);
-        costs.put(Resource.POTION.toString(), 0);
-        costs.put(Resource.SCROLL.toString(), 0);
     }
 
     private void setCost(KingdomResource kingdom, int cost) {
         costs.replace(kingdom.toString(), cost);
-    }
-
-    private void setCost(Resource resource, int cost) {
-        costs.replace(resource.toString(), cost);
     }
 }
 
