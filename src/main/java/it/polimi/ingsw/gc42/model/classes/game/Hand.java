@@ -37,6 +37,7 @@ public class Hand {
         card.setX(x);
         card.setY(y);
         playField.getPlayedCards().add(card);
+        cards.remove(card);
     }
 
     /**
@@ -61,15 +62,13 @@ public class Hand {
     public Card grabCard(PlayingDeck deck, int i) {
         // Logic
 
-            if(i==1){
-                cards.add(deck.getSlot1());
-                deck.putDown(i);
-            }
-            else
-            {
-                cards.add(deck.getSlot2());
-                deck.putDown(i);
-            }
+        if (i == 1) {
+            cards.add(deck.getSlot1());
+            deck.putDown(i);
+        } else {
+            cards.add(deck.getSlot2());
+            deck.putDown(i);
+        }
         return null;
     }
 

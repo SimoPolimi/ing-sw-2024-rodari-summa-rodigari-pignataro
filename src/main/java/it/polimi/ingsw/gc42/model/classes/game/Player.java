@@ -67,13 +67,14 @@ public class Player implements Observable {
     private PlayField playField;
     private Game game;
 
-    public Player(boolean isFirst, int points, Token token, ObjectiveEnum objectiveEnum, Hand hand, Game game) {
+    public Player(boolean isFirst, int points, Token token, ObjectiveEnum objectiveEnum, Hand hand, PlayField playField, Game game) {
 
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
         this.secretObjectiveEnum = objectiveEnum;
         this.hand = hand;
+        this.playField = playField;
         this.game = game;
 
     }
@@ -105,7 +106,7 @@ public class Player implements Observable {
         }
     }
 
-    public void drawStarterCard(){
+    public void drawStarterCard() {
         playField.setStarterCard((StarterCard) game.getStarterDeck().draw());
     }
 }
