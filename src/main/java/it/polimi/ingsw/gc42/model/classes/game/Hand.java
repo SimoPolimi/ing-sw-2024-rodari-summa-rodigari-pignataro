@@ -11,26 +11,11 @@ import java.util.ArrayList;
 
 public class Hand {
 
-    private ArrayList<Card> cards;
+    private ArrayList<Card> cards = new ArrayList<>();
 
     public ArrayList<Card> getCards() {
         return cards;
     }
-
-    public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
-    }
-
-
-    /**
-     * Class constructor
-     *
-     * @param cards cards in player's hand
-     */
-    public Hand(ArrayList<Card> cards) {
-        this.cards = cards;
-    }
-
 
     /**
      * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand

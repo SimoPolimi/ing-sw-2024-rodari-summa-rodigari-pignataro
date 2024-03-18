@@ -94,7 +94,7 @@ class DeckTest {
         game.setGoldPlayingDeck(goldPlayingDeck);
 
         // Player
-        Hand hand = new Hand(null);
+        Hand hand = new Hand();
         Player player = new Player(true, 0, null, null, hand, game);
 
         // meh

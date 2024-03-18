@@ -18,7 +18,7 @@ public class Game {
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
 
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
 
     // Constructor only used internally
     public Game() {
