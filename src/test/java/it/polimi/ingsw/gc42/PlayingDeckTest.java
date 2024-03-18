@@ -15,7 +15,7 @@ public class PlayingDeckTest {
         // given
         Game game = new Game();
         Hand hand = new Hand();
-        Player player = new Player(true, 0, null, null, hand, game);
+        Player player = new Player(true, 0, null, null, hand, null, game);
 
         //TODO condition if the Deck is empty and cannot put down another Card
 
