@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -91,15 +93,29 @@ public class ObjectiveCardView {
     public void rotate(CardController controller) {
 
         RotateTransition rotateTransition = new RotateTransition(Duration.millis(350), imageView);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(350), imageView);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(350), imageView);
         if (!isShowingDetails) {
             rotateTransition.setByAngle(-60);
+            translateTransition.setByX(-120);
+            scaleTransition.setFromX(1);
+            scaleTransition.setFromY(1);
+            scaleTransition.setToX(1.3);
+            scaleTransition.setToY(1.3);
             description.setVisible(true);
         } else {
             rotateTransition.setByAngle(60);
+            translateTransition.setByX(120);
+            scaleTransition.setFromX(1.3);
+            scaleTransition.setToX(1);
+            scaleTransition.setFromY(1.3);
+            scaleTransition.setToY(1);
             description.setVisible(false);
         }
         rotateTransition.setOnFinished(e -> controller.unlockInput());
         rotateTransition.play();
+        translateTransition.play();
+        scaleTransition.play();
         isShowingDetails = !isShowingDetails;
     }
 }

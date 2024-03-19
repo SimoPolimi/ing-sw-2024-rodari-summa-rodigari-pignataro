@@ -41,12 +41,12 @@
                                 <Image url="@../../../../hand/card1Front.png" />
                             </image>
                         </ImageView>
-                        <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
+                        <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-190.0" visible="false">
                             <image>
                                 <Image url="@../../../../flipKeyboardHint.png" />
                             </image>
                         </ImageView>
-                        <Text fx:id="text1" fill="white" text="Flip" translateX="-220.0" visible="false">
+                        <Text fx:id="text1" fill="white" text="Flip" translateX="-190.0" visible="false">
                             <font>
                                 <Font name="Constantia Italic" size="15.0" />
                             </font>
@@ -79,7 +79,7 @@
                                 <Image url="@../../../../flipKeyboardHint.png" />
                             </image>
                         </ImageView>
-                        <Text fx:id="text2" fill="white" text="Flip" translateX="-220.0" visible="false">
+                        <Text fx:id="text2" fill="white" text="Flip" translateX="-190.0" visible="false">
                             <font>
                                 <Font name="Constantia Italic" size="15.0" />
                             </font>
@@ -104,12 +104,12 @@
                                 <Image url="@../../../../hand/card3Front.png" />
                             </image>
                         </ImageView>
-                        <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-220.0" visible="false">
+                        <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-190.0" visible="false">
                             <image>
                                 <Image url="@../../../../flipKeyboardHint.png" />
                             </image>
                         </ImageView>
-                        <Text fx:id="text3" fill="white" text="Flip" translateX="-220.0" visible="false">
+                        <Text fx:id="text3" fill="white" text="Flip" translateX="-190.0" visible="false">
                             <font>
                                 <Font name="Constantia Italic" size="15.0" />
                             </font>
@@ -147,13 +147,8 @@
                 <Insets left="40.0" />
             </VBox.margin>
         </VBox>
-        <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="0">
+        <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
-                <ImageView fx:id="objectiveView" fitHeight="150.0" fitWidth="200" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0">
-                    <image>
-                        <Image url="@../../../../hand/card100Front.png" />
-                    </image>
-                </ImageView>
                 <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">
                     <children>
                         <ImageView fx:id="KBObjectiveHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
@@ -173,14 +168,22 @@
                             </HBox.margin>
                         </Text>
                     </children>
-                    <padding>
-                        <Insets top="40.0" />
-                    </padding>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
                 </HBox>
-                <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false">
+                <ImageView fx:id="objectiveView" fitHeight="120.0" fitWidth="160" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0" translateX="70.0">
+                    <image>
+                        <Image url="@../../../../hand/card100Front.png" />
+                    </image>
+                </ImageView>
+                <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                     <font>
                         <Font name="Constantia Italic" size="15.0" />
                     </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
                 </Text>
             </children>
         </VBox>
