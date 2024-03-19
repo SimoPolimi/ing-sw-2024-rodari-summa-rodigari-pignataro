@@ -47,6 +47,7 @@ public class Game {
     }
 
     public void startGame() {
+
     }
 
     public void endGame() {
@@ -65,7 +66,7 @@ public class Game {
      * @param player the player to be added from the game
      */
     //TODO make it boolean
-    public void addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         player.setListener(new Listener() {
             @Override
             public void onEvent() {
@@ -73,7 +74,12 @@ public class Game {
                 checkEndGame();
             }
         });
-        players.add(player);
+        if(players.add(player)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -83,7 +89,12 @@ public class Game {
      * @return true if the Player is removed and false otherwise
      */
     public boolean kickPlayer(Player player) {
-        return false;
+        if(players.remove(player)) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
