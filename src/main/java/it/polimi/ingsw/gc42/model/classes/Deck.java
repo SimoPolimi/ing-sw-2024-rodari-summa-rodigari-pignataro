@@ -54,7 +54,7 @@ public class Deck implements Observable {
      * Getter Method for counter
      * @return the number of Cards remaining inside the Deck
      */
-    public int getCardsNummber() {
+    public int getCardsNumber() {
         return cards.size();
     }
 
