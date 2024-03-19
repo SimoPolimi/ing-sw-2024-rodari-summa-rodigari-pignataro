@@ -15,7 +15,7 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
         KingdomCountObjective objective = new KingdomCountObjective(2, 1, KingdomResource.FUNGI, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCounter();
+        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
         int count = 0;
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
@@ -53,7 +53,7 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
         ItemCountObjective objective = new ItemCountObjective(2, 1, Resource.FEATHER, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCounter();
+        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
         int count = 0;
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
@@ -86,7 +86,7 @@ public class ObjectiveTest {
         int feathers = 0;
         int potions = 0;
         int scrolls = 0;
-        int num = game.getResourcePlayingDeck().getDeck().getCounter();
+        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
         ArrayList<Card> playArea = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
