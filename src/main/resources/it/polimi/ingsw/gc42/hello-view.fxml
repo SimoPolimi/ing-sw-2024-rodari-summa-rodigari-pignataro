@@ -44,7 +44,7 @@
                                 <Image url="@../../../../selectedOverlay.png"/>
                             </image>
                         </ImageView>
-                        <ImageView fx:id="view1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCard1Clicked"
+                        <ImageView fx:id="view1" fitHeight="150" fitWidth="200.0" onMouseClicked="#onCard1Clicked"
                                    onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true"
                                    preserveRatio="true" translateX="-230.0">
                             <image>

@@ -113,7 +113,8 @@ public class HandCardView {
         modelCard.flip();
     }
 
-    public void select() {
+    public void select(CardController controller) {
+        controller.blockInput();
         this.isSelected = true;
         hint.setVisible(true);
         hintIcon.setVisible(true);
@@ -123,10 +124,12 @@ public class HandCardView {
         select1.setFromY(1);
         select1.setToX(1.2);
         select1.setToY(1.2);
+        select1.setOnFinished(e -> controller.unlockInput());
         select1.play();
     }
 
-    public void deselect(){
+    public void deselect(CardController controller){
+        controller.blockInput();
         this.isSelected = false;
         hint.setVisible(false);
         hintIcon.setVisible(false);
@@ -136,6 +139,7 @@ public class HandCardView {
         deselect2.setFromY(1.2);
         deselect2.setToX(1);
         deselect2.setToY(1);
+        deselect2.setOnFinished(e -> controller.unlockInput());
         deselect2.play();
     }
 
@@ -225,7 +229,7 @@ public class HandCardView {
         flipCardHalf2.setAxis(Rotate.Y_AXIS);
         flipCardHalf2.setOnFinished(e -> {
             if (!isSelected) {
-                deselect();
+                deselect(controller);
             } else {
                 overlay.setVisible(true);
             }

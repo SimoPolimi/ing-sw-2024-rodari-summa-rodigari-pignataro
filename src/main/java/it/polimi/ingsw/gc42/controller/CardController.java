@@ -175,40 +175,40 @@ public class CardController {
             this.selectedCard = selectedCard;
             switch (selectedCard) {
                 case 1:
-                    handCardView1.select();
+                    handCardView1.select(this);
                     if (2 == lastSelected) {
-                        handCardView2.deselect();
+                        handCardView2.deselect(this);
                     }
                     if (3 == lastSelected) {
-                        handCardView3.deselect();
+                        handCardView3.deselect(this);
                     }
                     break;
                 case 2:
-                    handCardView2.select();
+                    handCardView2.select(this);
                     if (1 == lastSelected) {
-                        handCardView1.deselect();
+                        handCardView1.deselect(this);
                     }
                     if (3 == lastSelected) {
-                        handCardView3.deselect();
+                        handCardView3.deselect(this);
                     }
                     break;
                 case 3:
-                    handCardView3.select();
+                    handCardView3.select(this);
                     if (1 == lastSelected) {
-                        handCardView1.deselect();
+                        handCardView1.deselect(this);
                     }
                     if (2 == lastSelected) {
-                        handCardView2.deselect();
+                        handCardView2.deselect(this);
                     }
                     break;
                 default:
                     if (1 == lastSelected) {
-                        handCardView1.deselect();
+                        handCardView1.deselect(this);
                     }
                     if (2 == lastSelected) {
-                        handCardView2.deselect();
+                        handCardView2.deselect(this);
                     } else if (3 == lastSelected) {
-                        handCardView3.deselect();
+                        handCardView3.deselect(this);
                     }
             }
             lastSelected = selectedCard;
