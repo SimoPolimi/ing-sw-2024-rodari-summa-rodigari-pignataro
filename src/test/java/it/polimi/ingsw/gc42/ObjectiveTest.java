@@ -49,6 +49,93 @@ public class ObjectiveTest {
     }
 
     @Test
+    void kingdomCountObjectiveAllFronts() {
+        Game game = new Game();
+        ArrayList<Card> test = new ArrayList<>();
+        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
+        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+
+        // Extracting the Cards with ID 1, 4, 16, 27 and 36.
+        // Those Cards contain exactly 7 Fungi Resources on their Front Sides.
+        switch (game.getResourcePlayingDeck().getSlot1().getId()) {
+            case 1, 4, 16, 27, 36:
+                test.add(game.getResourcePlayingDeck().getSlot1());
+                break;
+            default:
+                break;
+        }
+        switch (game.getResourcePlayingDeck().getSlot2().getId()) {
+            case 1, 4, 16, 27, 36:
+                test.add(game.getResourcePlayingDeck().getSlot2());
+                break;
+            default:
+                break;
+        }
+        for (int i=0; i<num; i++) {
+            Card card = game.getResourcePlayingDeck().getDeck().draw();
+            switch (card.getId()) {
+                case 1, 4, 16, 27, 36:
+                    test.add(card);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        assertEquals(7, objective.calculatePoints(test));
+    }
+
+    @Test
+    void kingdomCountObjectiveFrontAndBack() {
+        Game game = new Game();
+        ArrayList<Card> test = new ArrayList<>();
+        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
+        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+
+        // Extracting the Cards with ID 1, 4, 16, 27 and 36.
+        // 1 and 16 will be flipped, so their Corners are Empty, but their Permanent Resource is visible.
+        // 1 has a Fungi Permanent Resource, 16 a Plant one.
+        // Those Cards contain exactly 5 Fungi Resources.
+        switch (game.getResourcePlayingDeck().getSlot1().getId()) {
+            case 4, 27, 36:
+                test.add(game.getResourcePlayingDeck().getSlot1());
+                break;
+            case 1, 16:
+                game.getResourcePlayingDeck().getSlot1().flip();
+                test.add(game.getResourcePlayingDeck().getSlot1());
+                break;
+            default:
+                break;
+        }
+        switch (game.getResourcePlayingDeck().getSlot2().getId()) {
+            case 4, 27, 36:
+                test.add(game.getResourcePlayingDeck().getSlot2());
+                break;
+            case 1, 16:
+                game.getResourcePlayingDeck().getSlot2().flip();
+                test.add(game.getResourcePlayingDeck().getSlot2());
+                break;
+            default:
+                break;
+        }
+        for (int i=0; i<num; i++) {
+            Card card = game.getResourcePlayingDeck().getDeck().draw();
+            switch (card.getId()) {
+                case 4, 27, 36:
+                    test.add(card);
+                    break;
+                case 1, 16:
+                    card.flip();
+                    test.add(card);
+                default:
+                    break;
+            }
+        }
+
+        assertEquals(5, objective.calculatePoints(test));
+    }
+
+    @Test
     void resourceCountObjective() {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();

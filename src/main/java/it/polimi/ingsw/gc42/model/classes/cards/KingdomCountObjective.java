@@ -72,10 +72,10 @@ public class KingdomCountObjective extends CountObjective{
                     ((KingdomCorner) card.getShowingSide().getBottomRightCorner()).getKingdom() == kingdom)) {
                 count++;
             }
-            if (card instanceof GoldCard && ((GoldCard) card).getPermanentResource() == kingdom) {
+            if (!card.isFrontFacing() && card instanceof GoldCard && ((GoldCard) card).getPermanentResource().equals(kingdom)) {
                 count++;
             }
-            if (card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource() == kingdom) {
+            if (!card.isFrontFacing() && card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource().equals(kingdom)) {
                 count++;
             }
         }
