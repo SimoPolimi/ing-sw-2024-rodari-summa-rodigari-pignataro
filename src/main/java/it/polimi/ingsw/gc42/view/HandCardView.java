@@ -122,8 +122,8 @@ public class HandCardView {
         ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
         select1.setFromX(1);
         select1.setFromY(1);
-        select1.setToX(1.2);
-        select1.setToY(1.2);
+        select1.setToX(1.3);
+        select1.setToY(1.3);
         select1.setOnFinished(e -> controller.unlockInput());
         select1.play();
     }
@@ -135,8 +135,8 @@ public class HandCardView {
         hintIcon.setVisible(false);
         overlay.setVisible(false);
         ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
-        deselect2.setFromX(1.2);
-        deselect2.setFromY(1.2);
+        deselect2.setFromX(1.3);
+        deselect2.setFromY(1.3);
         deselect2.setToX(1);
         deselect2.setToY(1);
         deselect2.setOnFinished(e -> controller.unlockInput());
