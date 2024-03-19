@@ -12,7 +12,7 @@ class DeckTest {
         // given
         Game g = new Game();
         // when
-        int num = g.getResourcePlayingDeck().getDeck().getCounter();
+        int num = g.getResourcePlayingDeck().getDeck().getCardsNumber();
         for (int i = 0; i < num; i++) {
             g.getResourcePlayingDeck().getDeck().draw();
         }
@@ -25,7 +25,7 @@ class DeckTest {
         // given
         Game g = new Game();
         // when
-        int num = g.getGoldPlayingDeck().getDeck().getCounter();
+        int num = g.getGoldPlayingDeck().getDeck().getCardsNumber();
         for (int i = 0; i < num; i++) {
             g.getGoldPlayingDeck().getDeck().draw();
         }
