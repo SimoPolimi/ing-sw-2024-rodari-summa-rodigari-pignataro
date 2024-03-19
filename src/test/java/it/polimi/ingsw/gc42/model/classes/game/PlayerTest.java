@@ -73,5 +73,19 @@ class PlayerTest {
 
     @Test
     void grabCard() {
+        // given
+        Game game = new Game();
+        Player player = new Player(true,0,null, null, new ArrayList<>(),null, game);
+
+        Card slotCard = game.getResourcePlayingDeck().getSlot1();
+        Card topCard = game.getResourcePlayingDeck().getDeck().getCards().getFirst();
+        // when
+        player.grabCard(game.getResourcePlayingDeck(), 1);
+
+        // then
+        assertEquals(player.getHand().getFirst(), slotCard);
+        assertTrue(player.getHand().contains(slotCard));
+        assertNotEquals(game.getResourcePlayingDeck().getSlot1(), null);
+        assertEquals(game.getResourcePlayingDeck().getSlot1(), topCard);
     }
 }
