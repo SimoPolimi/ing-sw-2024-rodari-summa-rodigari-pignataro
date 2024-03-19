@@ -145,7 +145,7 @@ public class HandCardView {
 
     public void hide(int position, CardController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
-        t.setByX(-180);
+        t.setByX(-155);
         t.setOnFinished(e -> controller.unlockInput());
 
         switch (position) {
@@ -175,7 +175,7 @@ public class HandCardView {
 
     public void show(int position, CardController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
-        t.setByX(180);
+        t.setByX(155);
         t.setOnFinished(e -> controller.unlockInput());
 
         switch (position) {
