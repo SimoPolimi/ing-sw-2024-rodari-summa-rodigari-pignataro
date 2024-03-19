@@ -89,8 +89,7 @@ public class Game {
     /**
      * Changes player's turn
      */
-    public void nextTurn() {
-    }
+    public void nextTurn() {}
 
     public PlayingDeck getResourcePlayingDeck() {
         return resourcePlayingDeck;
