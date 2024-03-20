@@ -9,9 +9,13 @@ import it.polimi.ingsw.gc42.view.HandCardView;
 import it.polimi.ingsw.gc42.view.ObjectiveCardView;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import java.util.Objects;
 
 public class CardController {
 
@@ -60,6 +64,9 @@ public class CardController {
     private ImageView overlay2;
     @FXML
     private ImageView overlay3;
+
+    @FXML
+    private StackPane playArea;
 
     private int selectedCard = 0;
     private boolean canReadInput = true;
@@ -309,6 +316,24 @@ public class CardController {
             blockInput();
             objectiveCardView.rotate(this);
         }
+    }
+
+    public void addToPlayArea(Card card, int x, int y) {
+        playArea.getChildren().add(initImageView(card.getFrontImage(), x, y));
+    }
+
+    private ImageView initImageView(Image image, int x, int y) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(160);
+        imageView.setFitHeight(120);
+        imageView.setPreserveRatio(true);
+        imageView.setTranslateX(x * 125);
+        imageView.setTranslateY(y * -60);
+        if (x > 3 || y > 3) {
+            playArea.setScaleX(0.7);
+            playArea.setScaleY(0.7);
+        }
+        return imageView;
     }
 }
 
