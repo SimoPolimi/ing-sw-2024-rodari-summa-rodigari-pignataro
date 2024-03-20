@@ -161,10 +161,10 @@ public class Game {
     }
 
     public void setPlayerTurn(int i) throws IllegalArgumentException{
-        if (i == 4) {
+        if (i == players.size()) {
             i = 1;
         }
-        if (i >= 1 && i < 4) {
+        if (i >= 1 && i < players.size()) {
             this.playerTurn = i - 1;
         } else throw new IllegalArgumentException("This player doesn't exist");
     }
