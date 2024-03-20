@@ -80,7 +80,11 @@ public class GoldCard extends Card{
      * @return the KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
      */
     public KingdomResource getPermanentResource() {
-        return permanentResource;
+        if (!isFrontFacing()) {
+            return permanentResource;
+        } else {
+            return null;
+        }
     }
 
     /**

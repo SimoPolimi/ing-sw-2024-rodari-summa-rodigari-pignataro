@@ -124,13 +124,13 @@ public class PlayField {
      */
     private void initMap() {
         //TODO: Make dynamic after implementing reading from JSON
-        counter.put("FEATHER", 0);
-        counter.put("SCROLLS", 0);
-        counter.put("POTION", 0);
-        counter.put("PLANT", 0);
-        counter.put("ANIMAL", 0);
-        counter.put("FUNGI", 0);
-        counter.put("INSECT", 0);
+        counter.put(Resource.FEATHER.toString(), 0);
+        counter.put(Resource.SCROLL.toString(), 0);
+        counter.put(Resource.POTION.toString(), 0);
+        counter.put(KingdomResource.ANIMAL.toString(), 0);
+        counter.put(KingdomResource.PLANT.toString(), 0);
+        counter.put(KingdomResource.FUNGI.toString(), 0);
+        counter.put(KingdomResource.INSECT.toString(), 0);
     }
 
     /**

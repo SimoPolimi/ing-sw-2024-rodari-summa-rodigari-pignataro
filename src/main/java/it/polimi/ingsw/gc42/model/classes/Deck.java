@@ -272,9 +272,9 @@ public class Deck implements Observable {
                 return new ItemCountObjective(points, 1, Resource.FEATHER, description);
             case "forEachCorner":
                 return new CornerCountObjective(points, 1, null, description);
-            case "diagonalPlacingRed!":
+            case "diagonalPlacingRed":
                 return new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, description);
-            case "diagonalPlacingGreen!":
+            case "diagonalPlacingGreen":
                 return new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight, description);
             case "diagonalPlacingBlue":
                 return new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight, description);
