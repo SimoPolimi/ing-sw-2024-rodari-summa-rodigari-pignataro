@@ -319,7 +319,7 @@ public class CardController {
     }
 
     public void addToPlayArea(Card card, int x, int y) {
-        playArea.getChildren().add(initImageView(card.getFrontImage(), x, y));
+        playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }
 
     private ImageView initImageView(Image image, int x, int y) {

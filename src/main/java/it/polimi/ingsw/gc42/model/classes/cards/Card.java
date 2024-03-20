@@ -252,6 +252,18 @@ public class Card implements Observable {
         this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/hand/" + backImage)));
     }
 
+    /**
+     * Getter Method for frontImage and backImage.
+     * @return the appropriate Image resource to display on the GUI, based on which Side is shown.
+     */
+    public Image getShowingImage() {
+        if (isFrontFacing()) {
+            return frontImage;
+        } else {
+            return backImage;
+        }
+    }
+
     // Methods
 
     /**
