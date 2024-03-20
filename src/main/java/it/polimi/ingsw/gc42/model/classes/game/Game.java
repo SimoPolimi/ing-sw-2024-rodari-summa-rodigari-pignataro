@@ -17,8 +17,9 @@ public class Game {
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
+    private int playerTurn;
 
-    private ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Player> players = new ArrayList<>();
 
     // Constructor only used internally
     public Game() {
@@ -89,18 +90,12 @@ public class Game {
      * @return true if the Player is removed and false otherwise
      */
     public boolean kickPlayer(Player player) {
-        if(players.remove(player)) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return players.remove(player);
     }
 
     /**
      * Changes player's turn
      */
-    public void nextTurn() {}
 
     public PlayingDeck getResourcePlayingDeck() {
         return resourcePlayingDeck;
@@ -150,14 +145,9 @@ public class Game {
         isGoldDeckEmpty = goldDeckEmpty;
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
+    public Player getPlayer(int index) {
+        return players.get(index - 1);
     }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public boolean isPlayerHasReachedTwentyPoints() {
         return playerHasReachedTwentyPoints;
     }
@@ -166,6 +156,22 @@ public class Game {
         this.playerHasReachedTwentyPoints = playerHasReachedTwentyPoints;
     }
 
+    public int getPlayerTurn() {
+        return playerTurn;
+    }
+
+    public void setPlayerTurn(int i) throws IllegalArgumentException{
+        if (i == 4) {
+            i = 1;
+        }
+        if (i >= 1 && i < 4) {
+            this.playerTurn = i - 1;
+        } else throw new IllegalArgumentException("This player doesn't exist");
+    }
+
+    public Player getCurrentPlayer() {
+        return players.get(getPlayerTurn() - 1);
+    }
 
     /**
      * Initializer Method for all PlayingDecks
