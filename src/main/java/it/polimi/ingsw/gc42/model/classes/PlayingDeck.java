@@ -29,39 +29,31 @@ public class PlayingDeck {
     // Getters and Setters
 
     /**
-     * Getter Method for Slot n.1
-     *
-     * @return the Card contained in Slot n.1
+     * Getter Method for slot1 and slot2.
+     * @param slot: int value to identify the slot to get.
+     * @return the Card contained in the corresponding slot.
+     * @throws IllegalArgumentException if any number different from 1 or 2 is passed.
      */
-    public Card getSlot1() {
-        return this.slot1;
+    public Card getCard(int slot) throws IllegalArgumentException {
+        if (slot == 1) {
+            return slot1;
+        } else if (slot == 2) {
+            return slot2;
+        } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
     }
 
     /**
-     * Setter Method for Slot n.1
-     *
-     * @param card: the Card that goes in Slot n.1
+     * Setter Method for slot1 and slot2.
+     * @param card: the Card to set inside one of the slots.
+     * @param slot: an int value to identify the slot to set the Card into.
+     * @throws IllegalArgumentException if any number different from 1 or 2 is passed.
      */
-    public void setSlot1(Card card) {
-        this.slot1 = card;
-    }
-
-    /**
-     * Getter Method for Slot n.2
-     *
-     * @return the Card contained in Slot n.1
-     */
-    public Card getSlot2() {
-        return this.slot2;
-    }
-
-    /**
-     * Setter Method for Slot n.2
-     *
-     * @param card: the Card that goes in Slot n.1
-     */
-    public void setSlot2(Card card) {
-        this.slot2 = card;
+    public void setSlot(Card card, int slot) throws IllegalArgumentException {
+        if (slot == 1) {
+            this.slot1 = card;
+        } else if (slot == 2) {
+            this.slot2 = card;
+        } else throw new IllegalArgumentException("There is no such slot in this PLayingDeck");
     }
 
     /**
@@ -82,16 +74,22 @@ public class PlayingDeck {
         this.deck = deck;
     }
 
+    // Methods
+
     /**
-     * Move a Card from the top of the Deck to one of the Slots in the Visible Stage
+     * Returns the Card from one of the Slots AND removes it from there, drawing another Card to put on its place.
+     * @param slot: an int value to identify the slot to grab the Card from.
+     * @return the Card contained in that Slot.
      */
-    public void putDown(int slot) {
-        if (slot == 1){
+    public Card grabCard(int slot) {
+        Card card;
+        if (slot == 1) {
+            card = slot1;
             slot1 = deck.draw();
-        }else{
+        } else if (slot == 2) {
+            card = slot2;
             slot2 = deck.draw();
-
-        }
+        } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
+        return card;
     }
-
 }

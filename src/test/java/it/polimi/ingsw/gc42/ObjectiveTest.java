@@ -15,7 +15,7 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
         KingdomCountObjective objective = new KingdomCountObjective(2, 1, KingdomResource.FUNGI, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+        int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         int count = 0;
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
@@ -53,20 +53,20 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> test = new ArrayList<>();
         KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+        int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
 
         // Extracting the Cards with ID 1, 4, 16, 27 and 36.
         // Those Cards contain exactly 7 Fungi Resources on their Front Sides.
-        switch (game.getResourcePlayingDeck().getSlot1().getId()) {
+        switch (game.getResourcePlayingDeck().getCard(1).getId()) {
             case 1, 4, 16, 27, 36:
-                test.add(game.getResourcePlayingDeck().getSlot1());
+                test.add(game.getResourcePlayingDeck().getCard(1));
                 break;
             default:
                 break;
         }
-        switch (game.getResourcePlayingDeck().getSlot2().getId()) {
+        switch (game.getResourcePlayingDeck().getCard(2).getId()) {
             case 1, 4, 16, 27, 36:
-                test.add(game.getResourcePlayingDeck().getSlot2());
+                test.add(game.getResourcePlayingDeck().getCard(2));
                 break;
             default:
                 break;
@@ -90,30 +90,30 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> test = new ArrayList<>();
         KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+        int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
 
         // Extracting the Cards with ID 1, 4, 16, 27 and 36.
         // 1 and 16 will be flipped, so their Corners are Empty, but their Permanent Resource is visible.
         // 1 has a Fungi Permanent Resource, 16 a Plant one.
         // Those Cards contain exactly 5 Fungi Resources.
-        switch (game.getResourcePlayingDeck().getSlot1().getId()) {
+        switch (game.getResourcePlayingDeck().getCard(1).getId()) {
             case 4, 27, 36:
-                test.add(game.getResourcePlayingDeck().getSlot1());
+                test.add(game.getResourcePlayingDeck().getCard(1));
                 break;
             case 1, 16:
-                game.getResourcePlayingDeck().getSlot1().flip();
-                test.add(game.getResourcePlayingDeck().getSlot1());
+                game.getResourcePlayingDeck().getCard(1).flip();
+                test.add(game.getResourcePlayingDeck().getCard(1));
                 break;
             default:
                 break;
         }
-        switch (game.getResourcePlayingDeck().getSlot2().getId()) {
+        switch (game.getResourcePlayingDeck().getCard(2).getId()) {
             case 4, 27, 36:
-                test.add(game.getResourcePlayingDeck().getSlot2());
+                test.add(game.getResourcePlayingDeck().getCard(2));
                 break;
             case 1, 16:
-                game.getResourcePlayingDeck().getSlot2().flip();
-                test.add(game.getResourcePlayingDeck().getSlot2());
+                game.getResourcePlayingDeck().getCard(2).flip();
+                test.add(game.getResourcePlayingDeck().getCard(2));
                 break;
             default:
                 break;
@@ -140,7 +140,7 @@ public class ObjectiveTest {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
         ItemCountObjective objective = new ItemCountObjective(2, 1, Resource.FEATHER, null);
-        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+        int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         int count = 0;
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
@@ -173,7 +173,7 @@ public class ObjectiveTest {
         int feathers = 0;
         int potions = 0;
         int scrolls = 0;
-        int num = game.getResourcePlayingDeck().getDeck().getCardsNumber();
+        int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         ArrayList<Card> playArea = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();

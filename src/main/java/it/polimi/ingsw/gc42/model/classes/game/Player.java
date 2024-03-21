@@ -60,7 +60,6 @@ public class Player implements Observable {
     private Objective secretObjective;
     private final ArrayList<Card> hand = new ArrayList<>();
     private final PlayField playField = new PlayField();
-    private Game game;
 
     public Player(boolean isFirst, int points, Token token, Objective objective, Game game) {
 
@@ -68,7 +67,6 @@ public class Player implements Observable {
         this.points = points;
         this.token = token;
         this.secretObjective = objective;
-        this.game = game;
 
     }
 
@@ -98,7 +96,7 @@ public class Player implements Observable {
         }
     }
 
-    public void drawStarterCard() {
+    public void drawStarterCard(Game game) {
         playField.setStarterCard((StarterCard) game.getStarterDeck().draw());
     }
 
@@ -144,16 +142,7 @@ public class Player implements Observable {
      * @param i    the Slot from where the Player wants to grab the Card
      * @return
      */
-    public Card grabCard(PlayingDeck deck, int i) {
-        // Logic
-
-        if (i == 1) {
-            hand.add(deck.getSlot1());
-            deck.putDown(i);
-        } else {
-            hand.add(deck.getSlot2());
-            deck.putDown(i);
-        }
-        return null;
+    public void grabCard(PlayingDeck deck, int i) {
+        hand.add(deck.grabCard(i));
     }
 }
