@@ -45,6 +45,7 @@ public class Game {
                 checkEndGame();
             }
         });
+        this.playerTurn = 1;
     }
 
     public void startGame() {
@@ -75,12 +76,7 @@ public class Game {
                 checkEndGame();
             }
         });
-        if(players.add(player)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return players.add(player);
     }
 
     /**
@@ -170,7 +166,7 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return players.get(getPlayerTurn() - 1);
+        return getPlayer(getPlayerTurn());
     }
 
     /**
@@ -189,5 +185,6 @@ public class Game {
         this.resourcePlayingDeck = new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck);
         this.goldPlayingDeck = new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck);
         this.objectivePlayingDeck = new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck);
+        this.playerTurn = 1;
     }
 }

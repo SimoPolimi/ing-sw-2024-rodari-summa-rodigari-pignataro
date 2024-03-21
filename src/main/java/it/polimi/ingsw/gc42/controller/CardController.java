@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.controller;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
@@ -118,6 +119,16 @@ public class CardController {
         this.card1 = card1;
         this.card2 = card2;
         this.card3 = card3;
+    }
+
+    public void setPlayer(Player player) {
+        player.getPlayField().setListener(new Listener() {
+            @Override
+            public void onEvent() {
+                Card card = player.getPlayField().getLastPlayedCard();
+                addToPlayArea(card, card.getX(), card.getY());
+            }
+        });
     }
 
     public boolean canReadInput() {
@@ -318,6 +329,7 @@ public class CardController {
         }
     }
 
+    //TODO: make private once not needed
     public void addToPlayArea(Card card, int x, int y) {
         playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }

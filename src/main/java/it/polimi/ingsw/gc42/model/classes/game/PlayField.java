@@ -5,6 +5,8 @@ import it.polimi.ingsw.gc42.model.classes.cards.KingdomResource;
 import it.polimi.ingsw.gc42.model.classes.cards.Resource;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.exceptions.RemovingFromZeroException;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +15,12 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Implement PlayField
  */
-public class PlayField {
+public class PlayField implements Observable {
     // Attributes
     private StarterCard starterCard;
-    private ArrayList<Card> playedCards;
-
-    private final HashMap<String, Integer> counter;
+    private final ArrayList<Card> playedCards = new ArrayList<>();
+    private final HashMap<String, Integer> counter = HashMap.newHashMap(7);
+    private final ArrayList<Listener> listeners = new ArrayList<>();
 
     // Constructor Method
 
@@ -27,13 +29,14 @@ public class PlayField {
      * The HashMap to store the player's Resources/Items is initialized in here (all 0s).
      * It doesn't need to be passed as argument!
      * @param starterCard: the player's initial Card from the StarterDeck
-     * @param playedCards: ArrayList that stores the player's played Cards
      */
-    public PlayField(StarterCard starterCard, ArrayList<Card> playedCards) {
+    public PlayField(StarterCard starterCard) {
         this.starterCard = starterCard;
-        this.playedCards = playedCards;
-        //TODO: Make numMappings dynamic after implementing reading from JSON
-        counter = HashMap.newHashMap(7);
+        initMap();
+    }
+
+    public PlayField() {
+        this.starterCard = null;
         initMap();
     }
 
@@ -61,14 +64,6 @@ public class PlayField {
      */
     public ArrayList<Card> getPlayedCards() {
         return playedCards;
-    }
-
-    /**
-     * Setter Method for plauedCards
-     * @param playedCards: the ArrayList that stores the player's played Cards
-     */
-    public void setPlayedCards(ArrayList<Card> playedCards) {
-        this.playedCards = playedCards;
     }
 
     /**
@@ -171,5 +166,33 @@ public class PlayField {
         if (num > 0) {
             setNumberOf(resource, num - 1);
         } else throw new RemovingFromZeroException();
+    }
+
+    public void addCard(Card card, int x, int y) {
+        card.setX(x);
+        card.setY(y);
+        playedCards.add(card);
+        notifyListeners();
+    }
+
+    public Card getLastPlayedCard() {
+        return playedCards.getLast();
+    }
+
+    @Override
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners() {
+        for (Listener l : listeners) {
+            l.onEvent();
+        }
     }
 }

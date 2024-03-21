@@ -1,10 +1,15 @@
 package it.polimi.ingsw.gc42.controller;
 
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 public class GameController {
     private final Game game;
+
+    public Game getGame() {
+        return game;
+    }
 
     public GameController() {
         this.game = new Game();
@@ -24,5 +29,10 @@ public class GameController {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    public void playCard(Card card, int x, int y) {
+        Player player = game.getCurrentPlayer();
+        player.playCard(card, x, y);
     }
 }

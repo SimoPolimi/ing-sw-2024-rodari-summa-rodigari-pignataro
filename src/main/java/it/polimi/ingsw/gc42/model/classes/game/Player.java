@@ -36,28 +36,20 @@ public class Player implements Observable {
         isFirst = first;
     }
 
-    public ObjectiveEnum getObjective() {
-        return secretObjectiveEnum;
+    public Objective getObjective() {
+        return secretObjective;
     }
 
-    public void setObjective(ObjectiveEnum objectiveEnum) {
-        this.secretObjectiveEnum = objectiveEnum;
+    public void setObjective(Objective objective) {
+        this.secretObjective = objective;
     }
 
     public ArrayList<Card> getHand() {
         return hand;
     }
 
-    public void setHand(ArrayList<Card> hand) {
-        this.hand = hand;
-    }
-
     public PlayField getPlayField() {
         return playField;
-    }
-
-    public void setPlayField(PlayField playField) {
-        this.playField = playField;
     }
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
@@ -65,20 +57,27 @@ public class Player implements Observable {
     private boolean isFirst;
     private Token token;
     private int points;
-    private ObjectiveEnum secretObjectiveEnum;
-    private ArrayList<Card> hand;
-    private PlayField playField;
+    private Objective secretObjective;
+    private final ArrayList<Card> hand = new ArrayList<>();
+    private final PlayField playField = new PlayField();
     private Game game;
 
-    public Player(boolean isFirst, int points, Token token, ObjectiveEnum objectiveEnum, ArrayList<Card> hand, PlayField playField, Game game) {
+    public Player(boolean isFirst, int points, Token token, Objective objective, Game game) {
 
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
-        this.secretObjectiveEnum = objectiveEnum;
-        this.hand = hand;
-        this.playField = playField;
+        this.secretObjective = objective;
         this.game = game;
+
+    }
+
+    public Player(Token token) {
+        this.isFirst = false;
+        this.points = 0;
+        this.token = token;
+        this.secretObjective = null;
+
 
     }
 
@@ -119,10 +118,10 @@ public class Player implements Observable {
      * @param x    coordinate x of the position where the card will be placed
      * @param y    coordinate y of the position where the card will be placed
      */
-    public void playCard(Card card, int x, int y, PlayField playField) {
+    public void playCard(Card card, int x, int y) {
         card.setX(x);
         card.setY(y);
-        playField.getPlayedCards().add(card);
+        playField.addCard(card, x, y);
         hand.remove(card);
     }
 
