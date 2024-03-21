@@ -172,7 +172,22 @@ public class PlayField implements Observable {
         card.setX(x);
         card.setY(y);
         playedCards.add(card);
+        coverNearbyCorners(x, y);
         notifyListeners();
+    }
+
+    private void coverNearbyCorners(int x, int y) {
+        for (Card card : playedCards) {
+            if (card.getX() == x + 1 && card.getY() == y && null != card.getShowingSide().getBottomLeftCorner()) {
+                card.getShowingSide().getBottomLeftCorner().setCovered(true);
+            } else if (card.getX() == x && card.getY() == y + 1 && null != card.getShowingSide().getBottomRightCorner()) {
+                card.getShowingSide().getBottomRightCorner().setCovered(true);
+            } else if (card.getX() == x - 1 && card.getY() == y && null != card.getShowingSide().getTopRightCorner()) {
+                card.getShowingSide().getTopRightCorner().setCovered(true);
+            } else if (card.getX() == x && card.getY() == y - 1 && null != card.getShowingSide().getTopLeftCorner()) {
+                card.getShowingSide().getTopLeftCorner().setCovered(true);
+            }
+        }
     }
 
     public Card getLastPlayedCard() {
