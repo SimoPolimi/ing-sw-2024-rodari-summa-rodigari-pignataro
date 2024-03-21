@@ -327,8 +327,14 @@ public class CardController {
         imageView.setFitWidth(160);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
+        // 45 degrees version
+        imageView.setTranslateX((x * 125) + (y * -125));
+        imageView.setTranslateY((x * -60) + (y * -60));
+        // 0 degrees version
+        /*
         imageView.setTranslateX(x * 125);
         imageView.setTranslateY(y * -60);
+        */
         if (x > 3 || y > 3) {
             playArea.setScaleX(0.7);
             playArea.setScaleY(0.7);

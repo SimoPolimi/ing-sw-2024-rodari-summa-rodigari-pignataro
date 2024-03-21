@@ -70,14 +70,14 @@ public class GameWindow extends Application {
         controller.setCards(card1, card2, card3);
 
         controller.addToPlayArea(game.getStarterDeck().draw(), 0, 0);
-        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), 1, 1);
-        controller.addToPlayArea(game.getGoldPlayingDeck().getDeck().draw(), -1, 1);
-        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), -1, -1);
+        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
+        controller.addToPlayArea(game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
+        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), -1, 0);
         Card card = game.getGoldPlayingDeck().getDeck().draw();
         card.flip();
-        controller.addToPlayArea(card, 1, -1);
-        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), 0, 2);
-        controller.addToPlayArea(game.getGoldPlayingDeck().getDeck().draw(), 2, 0);
+        controller.addToPlayArea(card, 0, -1);
+        controller.addToPlayArea(game.getResourcePlayingDeck().getDeck().draw(), 1, 1);
+        controller.addToPlayArea(game.getGoldPlayingDeck().getDeck().draw(), 1, -1);
     }
 
 

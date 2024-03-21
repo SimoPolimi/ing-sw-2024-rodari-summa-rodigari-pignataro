@@ -7,6 +7,7 @@
 
 <AnchorPane id="root" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
+        <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40"/>
         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
             <children>
                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
@@ -147,9 +148,6 @@
                 <Insets left="40.0" />
             </VBox.margin>
         </VBox>
-      <StackPane fx:id="playArea" prefHeight="150.0" prefWidth="200.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-
-      </StackPane>
         <VBox fx:id="objectiveCardContainer" alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
                 <HBox fx:id="objectiveHintContainer" alignment="CENTER" spacing="10.0">
