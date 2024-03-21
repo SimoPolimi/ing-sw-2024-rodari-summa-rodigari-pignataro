@@ -11,17 +11,14 @@ public class ObjectiveCard extends Card {
     // Constructor Method
     /**
      * Constructor Method
-     * @param frontSide: Side shown on the front of the Card
-     * @param backSide: Side shown on the back of the Card
-     * @param isFrontFacing: true if the Card is showing its front side, false otherwise
      * @param id: unique identifier for the specific Objective Card
      * @param points: points the Card gives for each time the Objective is met
      * @param objective: the Objective that is used to calculate the total earned points
      * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public ObjectiveCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int points, Objective objective, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
+    public ObjectiveCard(int id, int points, Objective objective, String frontImage, String backImage) {
+        super(null, null, true, id, frontImage, backImage);
         this.points = points;
         this.objective = objective;
     }

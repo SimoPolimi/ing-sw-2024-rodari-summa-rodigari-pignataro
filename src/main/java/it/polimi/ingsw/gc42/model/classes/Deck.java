@@ -17,38 +17,20 @@ import java.util.*;
 public class Deck implements Observable {
     // Attributes
     private final ArrayList<Listener> listeners = new ArrayList<>();
-    private List<Card> cards;
+    private final ArrayList<Card> cards = new ArrayList<>();
     private CardType cardType;
 
     // Constructor
 
     /**
      * Constructor Method
-     * @param cards: ArrayList containing the Card that make up the Deck
      * @param cardType: Type of the Cards contained inside the Deck
      */
-    public Deck(ArrayList<Card> cards, CardType cardType) {
-        this.cards = cards;
+    public Deck(CardType cardType) {
         this.cardType = cardType;
     }
 
     // Getter and Setter
-
-    /**
-     * Getter Method for cards
-     * @return the ArrayList of Cards
-     */
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    /**
-     * Setter Method for cards
-     * @param cards: the ArrayList of Cards
-     */
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
 
     /**
      * Getter Method for counter
@@ -87,7 +69,7 @@ public class Deck implements Observable {
      * @throws FileNotFoundException if the data.json file is not found.
      */
     public static Deck initDeck(CardType type) throws FileNotFoundException {
-        ArrayList<Card> cards = new ArrayList<>();
+        Deck deck = new Deck(type);
         int num;
         List<JsonElement> list;
         JsonObject object = JsonParser.parseReader(new JsonReader(new FileReader("src/main/resources/data.json"))).getAsJsonObject();
@@ -109,7 +91,7 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
-                    cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                    deck.cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, kingdom, points, frontImage, backImage));
                 }
@@ -136,7 +118,7 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
-                    cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                    deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null),
                             points, frontImage, backImage));
@@ -173,7 +155,7 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
-                    cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                    deck.cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, res1, res2, res3, frontImage, backImage));
                 }
@@ -198,10 +180,9 @@ public class Deck implements Observable {
                         isLeftToRight = false;
                     }
                     Objective objective = getObjective(points, condition, isLeftToRight, description);
-                    cards.add(new ObjectiveCard(null, null, true, id, points, objective, frontImage, backImage));
+                    deck.cards.add(new ObjectiveCard(id, points, objective, frontImage, backImage));
                 }
         }
-        Deck deck = new Deck(cards, type);
         deck.shuffle();
         return deck;
     }

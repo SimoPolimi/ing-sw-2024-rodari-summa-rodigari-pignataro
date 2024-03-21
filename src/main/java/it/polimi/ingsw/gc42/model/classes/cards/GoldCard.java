@@ -76,6 +76,24 @@ public class GoldCard extends Card{
     // Getter and Setter
 
     /**
+     * Setter Method for costs.
+     * @param kingdom: the KingdomResource to change the cost of.
+     * @param cost: the int value to set as cost.
+     */
+    public void setCost(KingdomResource kingdom, int cost) {
+        costs.replace(kingdom.toString(), cost);
+    }
+
+    /**
+     * Getter Method for costs.
+     * @param kingdom: the KingdomResource to get the cost of.
+     * @return the cost of that KingdomResource as and int value.
+     */
+    public int getCost(KingdomResource kingdom) {
+        return costs.get(kingdom.toString());
+    }
+
+    /**
      * Getter Method for permanentResource
      * @return the KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
      */
@@ -95,69 +113,6 @@ public class GoldCard extends Card{
         this.permanentResource = permanentResource;
     }
 
-    /**
-     * Getter Method for plantKingdomPoints
-     * @return the number of Plant Type Points the Card requires in order to be placed (0 if not needed)
-     */
-    public int getPlantKingdomPoints() {
-        return costs.get(KingdomResource.PLANT.toString());
-    }
-
-    /**
-     * Setter Method for plantKingdomPoints
-     * @param plantKingdomPoints: number of Plant Type points required in order to be placed (0 if not needed)
-     */
-    public void setPlantKingdomPoints(int plantKingdomPoints) {
-        setCost(KingdomResource.PLANT, plantKingdomPoints);
-    }
-
-    /**
-     * Getter Method for animalKingdomPoints
-     * @return the number of Animal Type Points the Card requires in order to be placed (0 if not needed)
-     */
-    public int getAnimalKingdomPoints() {
-        return costs.get(KingdomResource.ANIMAL.toString());
-    }
-
-    /**
-     * Setter Method for animalKingdomPoints
-     * @param animalKingdomPoints: number of Animal Type points required in order to be placed (0 if not needed)
-     */
-    public void setAnimalKingdomPoints(int animalKingdomPoints) {
-        setCost(KingdomResource.ANIMAL, animalKingdomPoints);
-    }
-
-    /**
-     * Getter Method for fungiKingdomPoints
-     * @return the number of Fungi Type Points the Card requires in order to be placed (0 if not needed)
-     */
-    public int getFungiKingdomPoints() {
-        return costs.get(KingdomResource.FUNGI.toString());
-    }
-
-    /**
-     * Setter Method for fungiKingdomPoints
-     * @param fungiKingdomPoints: number of FUngi Type Points required in order to be placed (0 if not needed)
-     */
-    public void setFungiKingdomPoints(int fungiKingdomPoints) {
-        setCost(KingdomResource.FUNGI, fungiKingdomPoints);
-    }
-
-    /**
-     * Getter Method for insectKingdomPoints
-     * @return the number of Insect Type Points the Card requires in order to be placed (0 if not needed)
-     */
-    public int getInsectKingdomPoints() {
-        return costs.get(KingdomResource.INSECT.toString());
-    }
-
-    /**
-     * Setter Method for insectKingdomPoints
-     * @param insectKingdomPoints: number of Insect Type points required in order to be placed (0 if not needed)
-     */
-    public void setInsectKingdomPoints(int insectKingdomPoints) {
-        setCost(KingdomResource.INSECT, insectKingdomPoints);
-    }
 
     /**
      * Getter Method for objective
@@ -201,9 +156,6 @@ public class GoldCard extends Card{
         costs.put(KingdomResource.INSECT.toString(), 0);
     }
 
-    private void setCost(KingdomResource kingdom, int cost) {
-        costs.replace(kingdom.toString(), cost);
-    }
 }
 
 

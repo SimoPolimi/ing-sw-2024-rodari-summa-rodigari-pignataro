@@ -12,7 +12,7 @@ public class KingdomCorner extends Corner{
     /**
      * Constructor Method
      * @param kingdom: KingdomResource Type to assign to the Resource the Corner contains.
-     *               All KingdomResourceCorners are uncovered by default.
+     *               All KingdomResourcCorners are uncovered by default.
      */
     public KingdomCorner(KingdomResource kingdom) {
         this.kingdom = kingdom;

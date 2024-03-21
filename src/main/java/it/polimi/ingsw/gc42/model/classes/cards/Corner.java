@@ -5,7 +5,7 @@ package it.polimi.ingsw.gc42.model.classes.cards;
  * A Corner is a part of the CardSide of a Card.
  * Each CardSide contains 4 Corners, so each Card contains 8 Corners.
  */
-public class Corner {
+public abstract class Corner {
     // Attributes
     protected boolean isCovered;
 
