@@ -35,12 +35,12 @@ public class Player implements Observable {
         isFirst = first;
     }
 
-    public Objective getObjective() {
+    public ObjectiveCard getSecretObjective() {
         return secretObjective;
     }
 
-    public void setObjective(Objective objective) {
-        this.secretObjective = objective;
+    public void setSecretObjective(ObjectiveCard objectiveCard) {
+        this.secretObjective = objectiveCard;
     }
     public PlayField getPlayField() {
         return playField;
@@ -49,16 +49,16 @@ public class Player implements Observable {
     private boolean isFirst;
     private Token token;
     private int points;
-    private Objective secretObjective;
+    private ObjectiveCard secretObjective;
     private final ArrayList<Card> hand = new ArrayList<>();
     private final PlayField playField = new PlayField();
 
-    public Player(boolean isFirst, int points, Token token, Objective objective, Game game) {
+    public Player(boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
 
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
-        this.secretObjective = objective;
+        this.secretObjective = objectiveCard;
 
     }
 
@@ -98,12 +98,27 @@ public class Player implements Observable {
                         l.onEvent();
                     }
                 }
+                break;
             }
+            case "Secret Objective Selected":
+                for (Listener l: listeners) {
+                    if (l instanceof SecretObjectiveListener) {
+                        l.onEvent();
+                    }
+                }
         }
     }
 
     public void drawStarterCard(Game game) {
         playField.setStarterCard((StarterCard) game.getStarterDeck().draw());
+    }
+
+    public void drawSecretObjectives(Game game) {
+        //TODO: Make the player choose which one to keep
+        Card objective1 = game.getObjectivePlayingDeck().getDeck().draw();
+        Card objective2 = game.getObjectivePlayingDeck().getDeck().draw();
+        setSecretObjective((ObjectiveCard) objective1);
+        notifyListeners("Secret Objective Selected");
     }
 
     /**

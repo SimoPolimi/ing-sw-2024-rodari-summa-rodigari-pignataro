@@ -77,6 +77,7 @@ public class GameWindow extends Application {
         game.addPlayer(player);
         controller.setPlayer(player);
         gameController.drawStartingHand();
+        gameController.drawSecretObjectives();
         gameController.playCard(game.getStarterDeck().draw(), 0, 0);
         gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
         gameController.playCard(game.getGoldPlayingDeck().getDeck().draw(), 0, 1);

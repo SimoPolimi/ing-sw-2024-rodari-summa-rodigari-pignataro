@@ -53,6 +53,7 @@ public class GameController {
     public void drawSecretObjectives() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
             //TODO: draw 2 Cards and let the Player choose which one to keep.
+            game.getPlayer(i).drawSecretObjectives(game);
         }
     }
 }
