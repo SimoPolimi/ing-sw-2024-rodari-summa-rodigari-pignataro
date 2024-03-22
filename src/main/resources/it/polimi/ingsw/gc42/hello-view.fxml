@@ -40,7 +40,7 @@
                         </ImageView>
                         <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-190.0">
                             <image>
-                                <Image url="@../../../../hand/card1Front.png" />
+                                <Image url="@../../../../cards/card1Front.png" />
                             </image>
                      <effect>
                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -76,7 +76,7 @@
                         </ImageView>
                         <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-190.0">
                             <image>
-                                <Image url="@../../../../hand/card2Front.png" />
+                                <Image url="@../../../../cards/card2Front.png" />
                             </image>
                      <effect>
                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -109,7 +109,7 @@
                         </ImageView>
                         <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true" translateX="-190.0">
                             <image>
-                                <Image url="@../../../../hand/card3Front.png" />
+                                <Image url="@../../../../cards/card3Front.png" />
                             </image>
                      <effect>
                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -185,7 +185,7 @@
                 </HBox>
                 <ImageView fx:id="objectiveView" fitHeight="120.0" fitWidth="160" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0" translateX="70.0">
                     <image>
-                        <Image url="@../../../../hand/card100Front.png" />
+                        <Image url="@../../../../cards/card100Front.png" />
                     </image>
                <effect>
                   <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />

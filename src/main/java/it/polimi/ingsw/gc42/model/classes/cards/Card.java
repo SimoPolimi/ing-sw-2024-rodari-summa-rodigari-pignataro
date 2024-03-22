@@ -68,8 +68,8 @@ public class Card implements Observable {
         this.id = id;
         this.x = 0;
         this.y = 0;
-        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/hand/" + frontImage)));
-        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/hand/" + backImage)));
+        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + frontImage)));
+        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + backImage)));
         listeners = new ArrayList<Listener>();
     }
 

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.HandListener;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.PlayAreaListener;
+import it.polimi.ingsw.gc42.model.interfaces.SecretObjectiveListener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
 import it.polimi.ingsw.gc42.view.ObjectiveCardView;
@@ -149,6 +149,14 @@ public class CardController {
                         });
                     }
                 }
+            }
+        });
+        player.setListener(new SecretObjectiveListener() {
+            @Override
+            public void onEvent() {
+                objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
+                        player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
+                        KBObjectiveHint, false, objectiveDescription);
             }
         });
     }
