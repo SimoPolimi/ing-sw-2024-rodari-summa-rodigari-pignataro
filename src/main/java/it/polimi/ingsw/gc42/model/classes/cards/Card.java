@@ -272,7 +272,7 @@ public class Card implements Observable {
      */
     public void flip() {
         setFrontFacing(!isFrontFacing());
-        notifyListeners();
+        notifyListeners("Card Flipped");
     }
 
     /**
@@ -303,7 +303,7 @@ public class Card implements Observable {
      * For each Listener inside the ArrayList, it calls the onEvent() method that runs the lambda contained in them.
      */
     @Override
-    public void notifyListeners() {
+    public void notifyListeners(String context) {
         for (Listener l : listeners) {
             l.onEvent();
         }

@@ -19,6 +19,9 @@ public class GameController {
 
     }
 
+    public void addPlayer(Player player) {
+        game.addPlayer(player);
+    }
     public boolean kickPlayer(Player player) {
         return game.kickPlayer(player);
     }
@@ -34,5 +37,15 @@ public class GameController {
     public void playCard(Card card, int x, int y) {
         Player player = game.getCurrentPlayer();
         player.playCard(card, x, y);
+    }
+
+    public void flipCard(Card card) {
+        card.flip();
+    }
+
+    public void drawStartingHand() {
+        for (int i = 0; i < game.getNumberOfPlayers(); i++) {
+            game.getCurrentPlayer().drawStartingHand(game);
+        }
     }
 }

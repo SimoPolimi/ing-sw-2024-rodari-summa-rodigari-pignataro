@@ -2,8 +2,7 @@ package it.polimi.ingsw.gc42.model.classes.game;
 
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public class Player implements Observable {
     public void setPoints(int points) {
         this.points = points;
         if (points >= 20) {
-            notifyListeners();
+                notifyListeners("Player reached 20 points");
         }
     }
 
@@ -43,17 +42,10 @@ public class Player implements Observable {
     public void setObjective(Objective objective) {
         this.secretObjective = objective;
     }
-
-    public ArrayList<Card> getHand() {
-        return hand;
-    }
-
     public PlayField getPlayField() {
         return playField;
     }
-
     private final ArrayList<Listener> listeners = new ArrayList<>();
-
     private boolean isFirst;
     private Token token;
     private int points;
@@ -89,10 +81,24 @@ public class Player implements Observable {
         listeners.remove(listener);
     }
 
-
-    public void notifyListeners() {
-        for (Listener p : listeners) {
-            p.onEvent();
+    @Override
+    public void notifyListeners(String context) {
+        switch (context) {
+            case "Player reached 20 points": {
+                for (Listener l: listeners) {
+                    if (l instanceof PlayerListener) {
+                        l.onEvent();
+                    }
+                }
+                break;
+            }
+            case "Hand Updated": {
+                for (Listener l: listeners) {
+                    if (l instanceof HandListener) {
+                        l.onEvent();
+                    }
+                }
+            }
         }
     }
 
@@ -130,6 +136,7 @@ public class Player implements Observable {
      */
     public void drawCard(PlayingDeck playingDeck) {
         hand.add(playingDeck.getDeck().draw());
+        notifyListeners("Hand Updated");
     }
 
 
@@ -144,5 +151,14 @@ public class Player implements Observable {
      */
     public void grabCard(PlayingDeck deck, int i) {
         hand.add(deck.grabCard(i));
+        notifyListeners("PlayArea Updated");
+    }
+
+    public Card getHandCard(int slot) {
+        if (slot > 0 && slot <= hand.size()) {
+            return hand.get(slot - 1);
+        } else if (slot > hand.size() && slot <= 3) {
+            return null;
+        } else throw new IllegalArgumentException("No such Card in Hand");
     }
 }

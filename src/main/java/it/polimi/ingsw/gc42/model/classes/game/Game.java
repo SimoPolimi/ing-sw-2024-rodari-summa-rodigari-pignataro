@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.PlayerListener;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class Game {
      */
     //TODO make it boolean
     public boolean addPlayer(Player player) {
-        player.setListener(new Listener() {
+        player.setListener(new PlayerListener() {
             @Override
             public void onEvent() {
                 setPlayerHasReachedTwentyPoints(true);
@@ -167,6 +168,10 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return getPlayer(getPlayerTurn());
+    }
+
+    public int getNumberOfPlayers() {
+        return players.size();
     }
 
     /**

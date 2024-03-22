@@ -173,7 +173,7 @@ public class PlayField implements Observable {
         card.setY(y);
         playedCards.add(card);
         coverNearbyCorners(x, y);
-        notifyListeners();
+        notifyListeners("PlayArea Updated");
     }
 
     private void coverNearbyCorners(int x, int y) {
@@ -205,7 +205,7 @@ public class PlayField implements Observable {
     }
 
     @Override
-    public void notifyListeners() {
+    public void notifyListeners(String context) {
         for (Listener l : listeners) {
             l.onEvent();
         }

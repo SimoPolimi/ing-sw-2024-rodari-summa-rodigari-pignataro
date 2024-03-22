@@ -29,10 +29,12 @@ public class GameWindow extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         CardController controller = fxmlLoader.getController();
         GameController gameController = new GameController();
-        controller.initializeCards(gameController.getGame());
+        controller.initializeCards();
         stage.setMinHeight(670);
         stage.setMinWidth(800);
         stage.setScene(scene);
+
+        controller.setGameController(gameController);
 
         stage.setTitle("Codex Naturalis");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
@@ -69,12 +71,12 @@ public class GameWindow extends Application {
 
         stage.show();
 
-        controller.setCards(card1, card2, card3);
 
         Player player = new Player(Token.BLUE);
         Game game = gameController.getGame();
         game.addPlayer(player);
         controller.setPlayer(player);
+        gameController.drawStartingHand();
         gameController.playCard(game.getStarterDeck().draw(), 0, 0);
         gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
         gameController.playCard(game.getGoldPlayingDeck().getDeck().draw(), 0, 1);

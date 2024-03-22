@@ -4,5 +4,5 @@ public interface Observable {
 
     void setListener(Listener listener);
     void removeListener(Listener listener);
-    void notifyListeners();
+    void notifyListeners(String context);
 }

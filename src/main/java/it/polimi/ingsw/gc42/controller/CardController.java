@@ -2,9 +2,10 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.interfaces.HandListener;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.PlayAreaListener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
 import it.polimi.ingsw.gc42.view.ObjectiveCardView;
@@ -16,10 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.util.Objects;
-
 public class CardController {
-
+    // Imports from the GUI
     @FXML
     private ImageView view1;
     @FXML
@@ -69,14 +68,10 @@ public class CardController {
     @FXML
     private StackPane playArea;
 
+    // Attributes
+    private GameController gameController;
     private int selectedCard = 0;
     private boolean canReadInput = true;
-    private Card card1;
-    private Card card2;
-    private Card card3;
-
-    private Card objectiveCard;
-    private CardView cardViewObj;
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
 
@@ -86,47 +81,72 @@ public class CardController {
     private boolean isHandVisible = true;
 
 
-    public void initializeCards(Game game) {
-        setCards(game.getResourcePlayingDeck().getDeck().draw(), game.getResourcePlayingDeck().getDeck().draw(), game.getGoldPlayingDeck().getDeck().draw());
-        handCardView1 = new HandCardView(view1, text1, KBHint1, card1, overlay1);
-        handCardView2 = new HandCardView(view2, text2, KBHint2, card2, overlay2);
-        handCardView3 = new HandCardView(view3, text3, KBHint3, card3, overlay3);
-        handCardView1.getModelCard().setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(handCardView1);
-            }
-        });
-        handCardView2.getModelCard().setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(handCardView2);
-            }
-        });
-        handCardView3.getModelCard().setListener(new Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(handCardView3);
-            }
-        });
+    public void initializeCards() {
+        handCardView1 = new HandCardView(view1, text1, KBHint1, overlay1);
+        handCardView2 = new HandCardView(view2, text2, KBHint2, overlay2);
+        handCardView3 = new HandCardView(view3, text3, KBHint3, overlay3);
 
-        objectiveCard = game.getObjectivePlayingDeck().getDeck().draw();
-        cardViewObj = new CardView(objectiveCard.getFrontImage(), objectiveCard.getBackImage());
-        objectiveCardView = new ObjectiveCardView(cardViewObj, objectiveView, objectiveHint, (ObjectiveCard) objectiveCard, KBObjectiveHint, false, objectiveDescription);
+        /*objectiveCardView = new ObjectiveCardView(new CardView(secretObjective.getFrontImage(),
+                secretObjective.getBackImage()), objectiveView, objectiveHint, secretObjective,
+                KBObjectiveHint, false, objectiveDescription);*/
     }
 
-    public void setCards(Card card1, Card card2, Card card3) {
-        this.card1 = card1;
-        this.card2 = card2;
-        this.card3 = card3;
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 
     public void setPlayer(Player player) {
-        player.getPlayField().setListener(new Listener() {
+        player.getPlayField().setListener(new PlayAreaListener() {
             @Override
             public void onEvent() {
                 Card card = player.getPlayField().getLastPlayedCard();
                 addToPlayArea(card, card.getX(), card.getY());
+            }
+        });
+        player.setListener(new HandListener() {
+            @Override
+            public void onEvent() {
+                Card card;
+                if (handCardView1.getModelCard() == null) {
+                    card = player.getHandCard(1);
+                    handCardView1.setModelCard(card);
+                    if (null != card) {
+                        handCardView1.getModelCard().setListener(new Listener() {
+                            @Override
+                            public void onEvent() {
+                                flipCard(handCardView1);
+                            }
+                        });
+                    }
+                }
+                if (handCardView2.getModelCard() == null) {
+                    card = player.getHandCard(2);
+                    handCardView2.setModelCard(card);
+                    if (null != card) {
+                        handCardView2.getModelCard().setListener(new Listener() {
+                            @Override
+                            public void onEvent() {
+                                flipCard(handCardView2);
+                            }
+                        });
+                    }
+                }
+                if (handCardView3.getModelCard() == null) {
+                    card = player.getHandCard(3);
+                    handCardView3.setModelCard(card);
+                    if (null != card) {
+                        handCardView3.getModelCard().setListener(new Listener() {
+                            @Override
+                            public void onEvent() {
+                                flipCard(handCardView3);
+                            }
+                        });
+                    }
+                }
             }
         });
     }
@@ -146,21 +166,21 @@ public class CardController {
     @FXML
     public void onCard1Clicked() {
         if (canReadInput()) {
-            handCardView1.flip();
+            gameController.flipCard(handCardView1.getModelCard());
         }
     }
 
     @FXML
     public void onCard2Clicked() {
         if (canReadInput()) {
-            handCardView2.flip();
+            gameController.flipCard(handCardView2.getModelCard());
         }
     }
 
     @FXML
     public void onCard3Clicked() {
         if (canReadInput()) {
-            handCardView3.flip();
+            gameController.flipCard(handCardView3.getModelCard());
         }
     }
 
@@ -236,13 +256,13 @@ public class CardController {
     public void onFKeyPressed() {
         switch (selectedCard) {
             case 1:
-                handCardView1.flip();
+                onCard1Clicked();
                 break;
             case 2:
-                handCardView2.flip();
+                onCard2Clicked();
                 break;
             case 3:
-                handCardView3.flip();
+                onCard3Clicked();
             default:
                 break;
         }
@@ -329,8 +349,7 @@ public class CardController {
         }
     }
 
-    //TODO: make private once not needed
-    public void addToPlayArea(Card card, int x, int y) {
+    private void addToPlayArea(Card card, int x, int y) {
         playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }
 

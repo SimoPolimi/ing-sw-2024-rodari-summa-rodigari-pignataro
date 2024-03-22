@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.fxml.FXML;
 import javafx.scene.chart.Axis;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -38,6 +39,14 @@ public class HandCardView {
         this.isSelected = false;
         this.overlay = overlay;
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
+    }
+
+    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon, ImageView overlay) {
+        this.imageView = imageView;
+        this.hint = hint;
+        this.hintIcon = hintIcon;
+        this.isSelected = false;
+        this.overlay = overlay;
     }
 
     public CardView getCard() {
@@ -85,22 +94,28 @@ public class HandCardView {
     }
 
     public void setModelCard(Card modelCard) {
-        if (null != modelCard && null != listener) {
-            modelCard.removeListener(listener);
-        }
-        this.modelCard = modelCard;
-        listener = new Listener() {
-            @Override
-            public void onEvent() {
-                try {
-                    flipCard(modelCard.getId());
-                } catch (NoSuchCardException e) {
-                    e.printStackTrace();
-                }
+        if (null != modelCard) {
+            if (null != listener) {
+                modelCard.removeListener(listener);
             }
-        };
-        modelCard.setListener(listener);
-        this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
+            this.modelCard = modelCard;
+            listener = new Listener() {
+                @Override
+                public void onEvent() {
+                    try {
+                        flipCard(modelCard.getId());
+                    } catch (NoSuchCardException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            modelCard.setListener(listener);
+            this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
+            this.imageView.setImage(modelCard.getShowingImage());
+            if (card.isFrontFacing()) {
+                card.setOddRotation(true);
+            }
+        }
     }
 
     private void flipCard(int cardId) throws NoSuchCardException {
@@ -219,11 +234,7 @@ public class HandCardView {
         RotateTransition flipCardHalf1 = new RotateTransition(Duration.millis(200), imageView);
         flipCardHalf1.setAxis(Rotate.Y_AXIS);
         flipCardHalf1.setOnFinished(event -> {
-            if (!card.isFrontFacing()) {
-                imageView.setImage(card.getBack());
-            } else {
-                imageView.setImage(card.getFront());
-            }
+           imageView.setImage(modelCard.getShowingImage());
             flipCardHalf2.play();
         });
         flipCardHalf2.setAxis(Rotate.Y_AXIS);

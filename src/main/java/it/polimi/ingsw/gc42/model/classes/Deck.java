@@ -310,7 +310,7 @@ public class Deck implements Observable {
             Card card = cards.getFirst();
             cards.removeFirst();
             if (cards.isEmpty()) {
-                notifyListeners();
+                notifyListeners("Empty Deck");
             }
             return card;
         } catch (NoSuchElementException e) {
@@ -345,7 +345,7 @@ public class Deck implements Observable {
      * For each Listener inside the ArrayList, it calls the onEvent() method that runs the lambda contained in them.
      */
     @Override
-    public void notifyListeners() {
+    public void notifyListeners(String context) {
         for (Listener d : listeners) {
             d.onEvent();
         }
