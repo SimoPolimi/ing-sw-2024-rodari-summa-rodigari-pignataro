@@ -11,6 +11,8 @@ import it.polimi.ingsw.gc42.view.HandCardView;
 import it.polimi.ingsw.gc42.view.ObjectiveCardView;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -361,6 +363,11 @@ public class CardController {
         // 45 degrees version
         imageView.setTranslateX((x * 125) + (y * -125));
         imageView.setTranslateY((x * -60) + (y * -60));
+        DropShadow shadow = new DropShadow();
+        shadow.setWidth(50);
+        shadow.setHeight(50);
+        shadow.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(shadow);
         // 0 degrees version
         /*
         imageView.setTranslateX(x * 125);

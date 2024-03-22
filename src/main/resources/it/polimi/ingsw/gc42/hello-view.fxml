@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane id="root" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
     <children>
-        <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40"/>
+        <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="0" />
         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
             <children>
                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
@@ -29,7 +30,7 @@
                 </HBox>
                 <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="134.0" prefWidth="340.0" spacing="30">
                     <children>
-                        <ImageView fx:id="overlay1" fitHeight="120.0" fitWidth="160.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
+                        <ImageView fx:id="overlay1" fitHeight="120.0" fitWidth="160.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
                             <HBox.margin>
                                 <Insets />
                             </HBox.margin>
@@ -41,6 +42,9 @@
                             <image>
                                 <Image url="@../../../../hand/card1Front.png" />
                             </image>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
                         </ImageView>
                         <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-190.0" visible="false">
                             <image>
@@ -62,7 +66,7 @@
                 </HBox>
                 <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                     <children>
-                        <ImageView fx:id="overlay2" fitHeight="120.0" fitWidth="160.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
+                        <ImageView fx:id="overlay2" fitHeight="120.0" fitWidth="160.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
                             <HBox.margin>
                                 <Insets />
                             </HBox.margin>
@@ -74,6 +78,9 @@
                             <image>
                                 <Image url="@../../../../hand/card2Front.png" />
                             </image>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
                         </ImageView>
                         <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-190.0" visible="false">
                             <image>
@@ -92,7 +99,7 @@
                 </HBox>
                 <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                     <children>
-                        <ImageView fx:id="overlay3" fitHeight="120.0" fitWidth="160.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
+                        <ImageView fx:id="overlay3" fitHeight="120.0" fitWidth="160.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" translateX="1.0" visible="false">
                             <HBox.margin>
                                 <Insets />
                             </HBox.margin>
@@ -104,6 +111,9 @@
                             <image>
                                 <Image url="@../../../../hand/card3Front.png" />
                             </image>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
                         </ImageView>
                         <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" translateX="-190.0" visible="false">
                             <image>
@@ -177,6 +187,9 @@
                     <image>
                         <Image url="@../../../../hand/card100Front.png" />
                     </image>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+               </effect>
                 </ImageView>
                 <Text fx:id="objectiveDescription" fill="white" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                     <font>
