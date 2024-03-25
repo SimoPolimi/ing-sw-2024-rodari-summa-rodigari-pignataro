@@ -46,7 +46,7 @@ public class GameController {
 
     public void drawStartingHand() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
-            game.getPlayer(i).drawStartingHand(game);
+            game.getPlayer(i).drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
         }
     }
 

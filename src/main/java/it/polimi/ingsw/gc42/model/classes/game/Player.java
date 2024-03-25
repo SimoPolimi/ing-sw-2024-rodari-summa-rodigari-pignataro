@@ -124,10 +124,10 @@ public class Player implements Observable {
     /**
      * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
      */
-    public void drawStartingHand(Game game) {
-        drawCard(game.getResourcePlayingDeck());
-        drawCard(game.getResourcePlayingDeck());
-        drawCard(game.getGoldPlayingDeck());
+    public void drawStartingHand(PlayingDeck resource, PlayingDeck gold) {
+        drawCard(resource);
+        drawCard(resource);
+        drawCard(gold);
     }
 
     /**
