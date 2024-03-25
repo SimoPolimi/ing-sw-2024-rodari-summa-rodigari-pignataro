@@ -59,6 +59,8 @@ public class CardController {
     private Text objectiveHint;
     @FXML
     private Text objectiveDescription;
+    @FXML
+    private StackPane objDescriptionBox;
 
     @FXML
     private ImageView overlay1;
@@ -156,7 +158,7 @@ public class CardController {
             public void onEvent() {
                 objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
                         player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
-                        KBObjectiveHint, false, objectiveDescription);
+                        KBObjectiveHint, false, objectiveDescription, objDescriptionBox);
             }
         });
     }

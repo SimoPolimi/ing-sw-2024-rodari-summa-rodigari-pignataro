@@ -10,6 +10,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -22,8 +23,10 @@ public class ObjectiveCardView {
     private ObjectiveCard modelCard;
     private Listener listener;
     private Text description;
+    private StackPane objDescriptionBox;
 
-    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ObjectiveCard modelCard, ImageView hintImage, boolean isShowingDetails, Text description) {
+    public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ObjectiveCard modelCard, ImageView hintImage,
+                             boolean isShowingDetails, Text description, StackPane objDescriptionBox) {
         this.cardView = cardView;
         this.imageView = imageView;
         imageView.setImage(cardView.getFront());
@@ -33,6 +36,7 @@ public class ObjectiveCardView {
         this.isShowingDetails = isShowingDetails;
         this.description = description;
         description.setText(modelCard.getObjective().getDescription());
+        this.objDescriptionBox = objDescriptionBox;
     }
 
     public CardView getCardView() {
@@ -103,6 +107,7 @@ public class ObjectiveCardView {
             scaleTransition.setToX(1.3);
             scaleTransition.setToY(1.3);
             description.setVisible(true);
+            objDescriptionBox.setVisible(true);
         } else {
             rotateTransition.setByAngle(60);
             translateTransition.setByX(120);
@@ -111,6 +116,7 @@ public class ObjectiveCardView {
             scaleTransition.setFromY(1.3);
             scaleTransition.setToY(1);
             description.setVisible(false);
+            objDescriptionBox.setVisible(false);
         }
         rotateTransition.setOnFinished(e -> controller.unlockInput());
         rotateTransition.play();

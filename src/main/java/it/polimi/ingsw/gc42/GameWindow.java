@@ -87,6 +87,8 @@ public class GameWindow extends Application {
         gameController.playCard(card, 0, -1);
         gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 1, 1);
         gameController.playCard(game.getGoldPlayingDeck().getDeck().draw(), 1, -1);
+        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), -1, -1);
+        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 2, 0);
     }
 
 
