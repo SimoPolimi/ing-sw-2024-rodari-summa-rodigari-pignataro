@@ -19,8 +19,8 @@ public class CornerCountObjective extends CountObjective{
      * @param card: the Card that contains this Condition, used to determine who are the nearby Cards to check.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public CornerCountObjective(int points, int number, Card card, String description) {
-        super(points, number, description);
+    public CornerCountObjective(int points, int number, Card card, String name,  String description) {
+        super(points, number, name, description);
         this.card = card;
     }
 

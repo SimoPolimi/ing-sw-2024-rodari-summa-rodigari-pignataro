@@ -120,7 +120,7 @@ public class Deck implements Observable {
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
                     deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null),
+                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null, null),
                             points, frontImage, backImage));
                 }
                 break;
@@ -171,6 +171,7 @@ public class Deck implements Observable {
                     String condition = list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString();
                     String name = list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString();
                     String primaryType = list.get(i).getAsJsonObject().get("PrimaryKingdom").getAsJsonPrimitive().getAsString();
+                    String title = list.get(i).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString();
                     String direction = list.get(i).getAsJsonObject().get("Direction").getAsJsonPrimitive().getAsString();
                     String description = list.get(i).getAsJsonObject().get("Description").getAsJsonPrimitive().getAsString();
                     boolean isLeftToRight = true;
@@ -179,7 +180,7 @@ public class Deck implements Observable {
                     } else {
                         isLeftToRight = false;
                     }
-                    Objective objective = getObjective(points, condition, isLeftToRight, description);
+                    Objective objective = getObjective(points, condition, isLeftToRight, name, description);
                     deck.cards.add(new ObjectiveCard(id, points, objective, frontImage, backImage));
                 }
         }
@@ -243,48 +244,48 @@ public class Deck implements Observable {
      * @param description: a String containing the Objective Description, read from the file.
      * @return the appropriate Objective initialized with the data passed as parameters.
      */
-    private static Objective getObjective(int points, String condition, boolean isLeftToRight, String description) {
+    private static Objective getObjective(int points, String condition, boolean isLeftToRight, String name, String description) {
         switch (condition) {
             case "forEachScroll":
-                return new ItemCountObjective(points, 1, Resource.SCROLL, description);
+                return new ItemCountObjective(points, 1, Resource.SCROLL, name, description);
             case "forEachPotion":
-                return new ItemCountObjective(points, 1, Resource.POTION, description);
+                return new ItemCountObjective(points, 1, Resource.POTION, name, description);
             case "forEachFeather":
-                return new ItemCountObjective(points, 1, Resource.FEATHER, description);
+                return new ItemCountObjective(points, 1, Resource.FEATHER, name, description);
             case "forEachCorner":
-                return new CornerCountObjective(points, 1, null, description);
+                return new CornerCountObjective(points, 1, null, name, description);
             case "diagonalPlacingRed":
-                return new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, description);
+                return new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, name, description);
             case "diagonalPlacingGreen":
-                return new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight, description);
+                return new DiagonalPlacementObjective(points, KingdomResource.PLANT, isLeftToRight, name, description);
             case "diagonalPlacingBlue":
-                return new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight, description);
+                return new DiagonalPlacementObjective(points, KingdomResource.ANIMAL, isLeftToRight, name, description);
             case "diagonalPlacingPurple":
-                return new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight, description);
+                return new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight, name, description);
             case "LShapedPlacingRed":
-                return new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT, description);
+                return new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT, name, description);
             case "LShapedPlacingGreen":
-                return new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT, description);
+                return new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT, name, description);
             case "LShapedPlacingBlue":
-                return new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT, description);
+                return new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT, name, description);
             case "LShapedPlacingPurple":
-                return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, description);
+                return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, name, description);
             case "forEach3KingdomResourcesFungi":
-                return new KingdomCountObjective(points, 3, KingdomResource.FUNGI, description);
+                return new KingdomCountObjective(points, 3, KingdomResource.FUNGI, name, description);
             case "forEach3KingdomResourcesPlant":
-                return new KingdomCountObjective(points, 3, KingdomResource.PLANT, description);
+                return new KingdomCountObjective(points, 3, KingdomResource.PLANT, name, description);
             case "forEach3KingdomResourcesAnimal":
-                return new KingdomCountObjective(points, 3, KingdomResource.ANIMAL, description);
+                return new KingdomCountObjective(points, 3, KingdomResource.ANIMAL, name, description);
             case "forEach3KingdomResourcesInsect":
-                return new KingdomCountObjective(points, 3, KingdomResource.INSECT, description);
+                return new KingdomCountObjective(points, 3, KingdomResource.INSECT, name, description);
             case "forEach3DifferentItems":
-                return new SetItemCountObjective(points, 3, description);
+                return new SetItemCountObjective(points, 3, name, description);
             case "forEach2Scrolls":
-                return new ItemCountObjective(points, 2, Resource.SCROLL, description);
+                return new ItemCountObjective(points, 2, Resource.SCROLL, name, description);
             case "forEach2Potions":
-                return new ItemCountObjective(points, 2, Resource.POTION, description);
+                return new ItemCountObjective(points, 2, Resource.POTION, name, description);
             case "forEach2Feathers":
-                return new ItemCountObjective(points, 2, Resource.FEATHER, description);
+                return new ItemCountObjective(points, 2, Resource.FEATHER, name, description);
             default:
                 return null;
         }

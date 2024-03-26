@@ -17,8 +17,8 @@ public abstract class PlacementObjective extends Objective {
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
      * @param primaryType: the KingdomResource indicating the color of the Cards required for the Objective.
      */
-    public PlacementObjective(int points, String description, KingdomResource primaryType) {
-        super(points, description);
+    public PlacementObjective(int points, String name, String description, KingdomResource primaryType) {
+        super(points, name, description);
         this.primaryType = primaryType;
     }
 

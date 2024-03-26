@@ -17,8 +17,8 @@ public class SetItemCountObjective extends CountObjective{
      * @param number: the number of Corners that need to be counted to satisfy the Condition once.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public SetItemCountObjective(int points, int number, String description) {
-        super(points, number, description);
+    public SetItemCountObjective(int points, int number, String name, String description) {
+        super(points, number, name, description);
     }
 
     // Methods

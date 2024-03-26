@@ -17,8 +17,8 @@ public abstract class CountObjective extends Objective {
      * @param number: the number of times the thing has to be counted fot the Condition to be satisfied once.
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
      */
-    public CountObjective(int points, int number, String description) {
-        super(points, description);
+    public CountObjective(int points, int number, String name, String description) {
+        super(points, name, description);
         this.number = number;
     }
 

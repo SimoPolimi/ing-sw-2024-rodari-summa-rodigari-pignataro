@@ -193,14 +193,20 @@
                 </ImageView>
                 <StackPane fx:id="objDescriptionBox" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10; " visible="false">
                     <children>
-                        <Text fx:id="objectiveDescription" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
-                            <font>
-                                <Font name="Constantia Italic" size="15.0" />
-                            </font>
-                     <StackPane.margin>
-                        <Insets />
-                     </StackPane.margin>
-                        </Text>
+                       <VBox spacing="10.0">
+                           <children>
+                               <Text fx:id="objectiveTitle" strokeType="OUTSIDE" strokeWidth="25.0" text="Text" textAlignment="CENTER" underline="true" visible="false" wrappingWidth="150.0">
+                                   <font>
+                                       <Font name="Constantia Italic" size="15.0" />
+                                   </font>
+                               </Text>
+                               <Text fx:id="objectiveDescription" strokeType="OUTSIDE" strokeWidth="20.0" text="Text" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
+                                    <font>
+                                   <Font name="Constantia Italic" size="15.0" />
+                                    </font>
+                               </Text>
+                           </children>
+                       </VBox>
                     </children>
                     <VBox.margin>
                         <Insets right="30.0" top="20.0" />

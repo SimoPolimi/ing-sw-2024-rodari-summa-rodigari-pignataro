@@ -18,8 +18,8 @@ public class KingdomCountObjective extends CountObjective{
      * @param kingdom: the KingdomResource that needs to be counted.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public KingdomCountObjective(int points, int number, KingdomResource kingdom, String description) {
-        super(points, number, description);
+    public KingdomCountObjective(int points, int number, KingdomResource kingdom, String name, String description) {
+        super(points, number, name, description);
         this.kingdom = kingdom;
     }
 

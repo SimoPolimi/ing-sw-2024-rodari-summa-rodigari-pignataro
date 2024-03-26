@@ -22,11 +22,12 @@ public class ObjectiveCardView {
     private boolean isShowingDetails;
     private ObjectiveCard modelCard;
     private Listener listener;
+    private Text title;
     private Text description;
     private StackPane objDescriptionBox;
 
     public ObjectiveCardView(CardView cardView, ImageView imageView, Text hint, ObjectiveCard modelCard, ImageView hintImage,
-                             boolean isShowingDetails, Text description, StackPane objDescriptionBox) {
+                             boolean isShowingDetails, Text title, Text description, StackPane objDescriptionBox) {
         this.cardView = cardView;
         this.imageView = imageView;
         imageView.setImage(cardView.getFront());
@@ -34,6 +35,8 @@ public class ObjectiveCardView {
         this.modelCard = modelCard;
         this.hintImage = hintImage;
         this.isShowingDetails = isShowingDetails;
+        this.title = title;
+        title.setText(modelCard.getObjective().getName());
         this.description = description;
         description.setText(modelCard.getObjective().getDescription());
         this.objDescriptionBox = objDescriptionBox;
@@ -79,6 +82,14 @@ public class ObjectiveCardView {
         isShowingDetails = showingDetails;
     }
 
+    public Text getTitle() {
+        return title;
+    }
+
+    public void setTitle(Text title) {
+        this.title = title;
+    }
+
     public Text getDescription() {
         return this.description;
     }
@@ -106,6 +117,7 @@ public class ObjectiveCardView {
             scaleTransition.setFromY(1);
             scaleTransition.setToX(1.3);
             scaleTransition.setToY(1.3);
+            title.setVisible(true);
             description.setVisible(true);
             objDescriptionBox.setVisible(true);
         } else {
@@ -115,6 +127,7 @@ public class ObjectiveCardView {
             scaleTransition.setToX(1);
             scaleTransition.setFromY(1.3);
             scaleTransition.setToY(1);
+            title.setVisible(false);
             description.setVisible(false);
             objDescriptionBox.setVisible(false);
         }

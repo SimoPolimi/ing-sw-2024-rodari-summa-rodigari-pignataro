@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public abstract class Objective {
     // Attributes
     private int points;
+    private String name;
     private String description;
 
     // Constructor Method
@@ -17,8 +18,9 @@ public abstract class Objective {
      * @param points: the number of points the Objective gives every time the Condition is met.
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
      */
-    public Objective(int points, String description) {
+    public Objective(int points,String name, String description) {
         this.points = points;
+        this.name = name;
         this.description = description;
     }
 
@@ -38,6 +40,22 @@ public abstract class Objective {
      */
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    /**
+     * Getter Method for name.
+     * @return a String containing the name of the Objective, used to display it in the GUI.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setter Method for name.
+     * @param name: a String containing the name of the Objective, used to display it in the GUI.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

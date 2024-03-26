@@ -19,8 +19,8 @@ public class ItemCountObjective extends CountObjective{
      * @param resource: the Resource that needs to be counted.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public ItemCountObjective(int points, int number, Resource resource, String description) {
-        super(points, number, description);
+    public ItemCountObjective(int points, int number, Resource resource, String name, String description) {
+        super(points, number, name, description);
         this.resource = resource;
     }
 

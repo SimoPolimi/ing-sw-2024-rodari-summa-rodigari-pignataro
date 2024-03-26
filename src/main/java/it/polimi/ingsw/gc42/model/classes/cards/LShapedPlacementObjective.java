@@ -21,8 +21,9 @@ public class LShapedPlacementObjective extends PlacementObjective {
      * @param positionCornerCard: the CornerPosition indicating where the third Card is positioned.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public LShapedPlacementObjective(int points, KingdomResource primaryType, KingdomResource secondaryType, CornerPosition positionCornerCard, String description) {
-        super(points,description, primaryType);
+    public LShapedPlacementObjective(int points, KingdomResource primaryType, KingdomResource secondaryType,
+                                     CornerPosition positionCornerCard, String name,  String description) {
+        super(points,name, description, primaryType);
         this.secondaryType = secondaryType;
         this.positionCornerCard = positionCornerCard;
     }

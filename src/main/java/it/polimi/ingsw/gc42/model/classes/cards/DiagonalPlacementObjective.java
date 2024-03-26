@@ -20,8 +20,8 @@ public class DiagonalPlacementObjective extends PlacementObjective {
      *                     Top Right to Bottom Left (/) if false.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight, String description) {
-        super(points,description, primaryType);
+    public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight, String name, String description) {
+        super(points,name, description, primaryType);
         this.isLeftToRight = isLeftToRight;
     }
 
