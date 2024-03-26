@@ -383,7 +383,7 @@ public class CardController {
         imageView.setTranslateX(x * 125);
         imageView.setTranslateY(y * -60);
         */
-        if (x > 3 || y > 3) {
+        if (x >= 3 || y >= 3) {
             playArea.setScaleX(0.7);
             playArea.setScaleY(0.7);
         }

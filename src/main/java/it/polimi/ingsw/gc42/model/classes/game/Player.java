@@ -113,10 +113,10 @@ public class Player implements Observable {
         playField.setStarterCard((StarterCard) game.getStarterDeck().draw());
     }
 
-    public void drawSecretObjectives(Game game) {
+    public void drawSecretObjectives(PlayingDeck playingDeck) {
         //TODO: Make the player choose which one to keep
-        Card objective1 = game.getObjectivePlayingDeck().getDeck().draw();
-        Card objective2 = game.getObjectivePlayingDeck().getDeck().draw();
+        Card objective1 = playingDeck.getDeck().draw();
+        Card objective2 = playingDeck.getDeck().draw();
         setSecretObjective((ObjectiveCard) objective1);
         notifyListeners("Secret Objective Selected");
     }
@@ -162,7 +162,6 @@ public class Player implements Observable {
      *
      * @param deck the type of the card the Player wants to draw
      * @param i    the Slot from where the Player wants to grab the Card
-     * @return
      */
     public void grabCard(PlayingDeck deck, int i) {
         hand.add(deck.grabCard(i));
