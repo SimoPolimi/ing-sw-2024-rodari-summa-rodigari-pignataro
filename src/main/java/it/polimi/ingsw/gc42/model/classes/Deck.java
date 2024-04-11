@@ -202,21 +202,21 @@ public class Deck implements Observable {
     private static Corner getCorner(String string) {
         switch (string) {
             case "Fungi":
-                return new KingdomCorner(KingdomResource.FUNGI);
+                return new Corner(KingdomResource.FUNGI);
             case "Plant":
-                return new KingdomCorner(KingdomResource.PLANT);
+                return new Corner(KingdomResource.PLANT);
             case "Animal":
-                return new KingdomCorner(KingdomResource.ANIMAL);
+                return new Corner(KingdomResource.ANIMAL);
             case "Insect":
-                return new KingdomCorner(KingdomResource.INSECT);
+                return new Corner(KingdomResource.INSECT);
             case "Potion":
-                return new ResourceCorner(Resource.POTION);
+                return new Corner(Resource.POTION);
             case "Feather":
-                return new ResourceCorner(Resource.FEATHER);
+                return new Corner(Resource.FEATHER);
             case "Scroll":
-                return new ResourceCorner(Resource.SCROLL);
+                return new Corner(Resource.SCROLL);
             case "EmptyCorner":
-                return new EmptyCorner();
+                return new Corner();
             default:
                 return null;
         }
