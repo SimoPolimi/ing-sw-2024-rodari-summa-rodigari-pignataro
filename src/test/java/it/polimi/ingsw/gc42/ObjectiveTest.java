@@ -15,7 +15,7 @@ public class ObjectiveTest {
     void kingdomCountObjective() {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
-        KingdomCountObjective objective = new KingdomCountObjective(2, 1, KingdomResource.FUNGI, null);
+        KingdomCountObjective objective = new KingdomCountObjective(2, 1, KingdomResource.FUNGI, null, null);
         int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         int count = 0;
         for (int i = 0; i < num; i++) {
@@ -53,7 +53,7 @@ public class ObjectiveTest {
     void kingdomCountObjectiveAllFronts() {
         Game game = new Game();
         ArrayList<Card> test = new ArrayList<>();
-        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
+        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null, null);
         int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
 
         // Extracting the Cards with ID 1, 4, 16, 27 and 36.
@@ -90,7 +90,7 @@ public class ObjectiveTest {
     void kingdomCountObjectiveFrontAndBack() {
         Game game = new Game();
         ArrayList<Card> test = new ArrayList<>();
-        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null);
+        KingdomCountObjective objective = new KingdomCountObjective(1, 1, KingdomResource.FUNGI, null, null);
         int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
 
         // Extracting the Cards with ID 1, 4, 16, 27 and 36.
@@ -140,7 +140,7 @@ public class ObjectiveTest {
     void resourceCountObjective() {
         Game game = new Game();
         ArrayList<Card> playArea = new ArrayList<>();
-        ItemCountObjective objective = new ItemCountObjective(2, 1, Resource.FEATHER, null);
+        ItemCountObjective objective = new ItemCountObjective(2, 1, Resource.FEATHER, null, null);
         int num = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         int count = 0;
         for (int i = 0; i < num; i++) {
@@ -170,7 +170,7 @@ public class ObjectiveTest {
     @Test
     void setItemCountObjective() {
         Game game = new Game();
-        SetItemCountObjective objective = new SetItemCountObjective(1, 1, null);
+        SetItemCountObjective objective = new SetItemCountObjective(1, 1, null, null);
         int feathers = 0;
         int potions = 0;
         int scrolls = 0;

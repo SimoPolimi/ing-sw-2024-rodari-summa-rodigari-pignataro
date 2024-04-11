@@ -316,18 +316,31 @@ public class Deck implements Observable {
      * @throws NoSuchElementException if there are 0 Cards left inside the Deck
      */
     public Card draw() throws NoSuchElementException {
-        try {
-            Card card = cards.getFirst();
-            cards.removeFirst();
-            if (cards.isEmpty()) {
-                notifyListeners("Empty Deck");
-            }
-            return card;
+        /*try {
+
         } catch (NoSuchElementException e) {
             //TODO: Remove after handling
             e.printStackTrace();
         }
         return null;
+    }*/
+        Card card = cards.getFirst();
+        cards.removeFirst();
+        if (cards.isEmpty()) {
+            notifyListeners("Empty Deck");
+        }
+        return card;
+    }
+
+    /**
+     * Getter Method for the first Card inside the Deck.
+     * IT DOES NOT REMOVE THE CARD FROM THE DECK.
+     * Use draw() to get the Card AND remove it.
+     *
+     * @return the first Card inside the Deck.
+     */
+    public Card getTopCard() {
+        return cards.getFirst();
     }
 
     /**

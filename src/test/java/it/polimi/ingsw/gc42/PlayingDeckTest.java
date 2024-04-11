@@ -23,7 +23,7 @@ public class PlayingDeckTest {
         // when and then
         player.grabCard(game.getGoldPlayingDeck(), 1);
         assertNotNull(game.getGoldPlayingDeck().getCard(1));
-        assertNotEquals(player.getHand().getFirst(), game.getGoldPlayingDeck().getCard(1));
+        assertNotEquals(player.getHandCard(0), game.getGoldPlayingDeck().getCard(1));
 
 
     }

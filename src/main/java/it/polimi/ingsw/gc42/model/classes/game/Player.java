@@ -184,4 +184,8 @@ public class Player implements Observable {
             return null;
         } else throw new IllegalArgumentException("No such Card in Hand");
     }
+
+    public int getHandSize() {
+        return hand.size();
+    }
 }

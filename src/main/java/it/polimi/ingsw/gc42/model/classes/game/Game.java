@@ -90,9 +90,6 @@ public class Game {
         return players.remove(player);
     }
 
-    /**
-     * Changes player's turn
-     */
 
     public PlayingDeck getResourcePlayingDeck() {
         return resourcePlayingDeck;
