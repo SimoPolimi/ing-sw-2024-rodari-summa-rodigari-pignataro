@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.Launcher">
+    <children>
+        <ImageView fx:id="logo" fitWidth="200" preserveRatio="true" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+         <image>
+            <Image url="@../../../../logo.png" />
+         </image></ImageView>
+        <Button fx:id="guiModeButton" onMouseClicked="#launchGUIWindow" text="GUI" />
+        <Button fx:id="tuiModeButton" onMouseClicked="#launchTUIWindow" text="TUI" />
+        <Button fx:id="exitButton" onMouseClicked="#exit" text="Exit" />
+    </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+
+</VBox>
