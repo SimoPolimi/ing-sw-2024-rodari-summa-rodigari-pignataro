@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class ItemCountObjective extends CountObjective{
     // Attributes
-    private Resource resource;
+    private Item item;
 
     // Constructor Method
 
@@ -16,30 +16,30 @@ public class ItemCountObjective extends CountObjective{
      * Constructor Method.
      * @param points: the number of points the Condition gives every time it's satisfied.
      * @param number: the number of Corners that need to be counted to satisfy the Condition once.
-     * @param resource: the Resource that needs to be counted.
+     * @param item: the Resource or Kingdom that needs to be counted.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public ItemCountObjective(int points, int number, Resource resource, String name, String description) {
+    public ItemCountObjective(int points, int number, Item item, String name, String description) {
         super(points, number, name, description);
-        this.resource = resource;
+        this.item = item;
     }
 
     // Getters and Setters
 
     /**
-     * Getter Method for resource.
-     * @return the Resource that the Objective is counting.
+     * Getter Method for item.
+     * @return the item, Resource or Kingdom that the Objective is counting.
      */
-    public Resource getResource() {
-        return resource;
+    public Item getItem() {
+        return item;
     }
 
     /**
-     * Setter Method for resource.
-     * @param resource: the Resource that the Objective is counting.
+     * Setter Method for item.
+     * @param item: the item that the Objective is counting.
      */
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setResource(Item item) {
+        this.item = item;
     }
 
     // Methods
@@ -53,18 +53,30 @@ public class ItemCountObjective extends CountObjective{
     protected int check(ArrayList<PlayableCard> playArea) {
         int count = 0;
         for (PlayableCard card: playArea) {
-            if ((card.getShowingSide().getTopLeftCorner() instanceof ResourceCorner
-                    && ((ResourceCorner) card.getShowingSide().getTopLeftCorner()).getResource() == resource
-                    && !card.getShowingSide().getTopLeftCorner().isCovered()) ||
-                    (card.getShowingSide().getTopRightCorner() instanceof ResourceCorner &&
-                            ((ResourceCorner) card.getShowingSide().getTopRightCorner()).getResource() == resource
-                            && !card.getShowingSide().getTopRightCorner().isCovered()) ||
-                    (card.getShowingSide().getBottomLeftCorner() instanceof  ResourceCorner
-                            && ((ResourceCorner) card.getShowingSide().getBottomLeftCorner()).getResource() == resource
-                            && !card.getShowingSide().getBottomLeftCorner().isCovered()) ||
-                    (card.getShowingSide().getBottomRightCorner() instanceof ResourceCorner
-                            && ((ResourceCorner) card.getShowingSide().getBottomRightCorner()).getResource() == resource
-                            && !card.getShowingSide().getBottomRightCorner().isCovered())) {
+            if ((card.getShowingSide().getTopLeftCorner() != null &&
+                    (card.getShowingSide().getTopLeftCorner()).getItem() == item
+                    && !card.getShowingSide().getTopLeftCorner().isCovered())) {
+                count++;
+            }
+            if (card.getShowingSide().getTopRightCorner() != null &&
+                    (card.getShowingSide().getTopRightCorner()).getItem() == item
+                    && !card.getShowingSide().getTopRightCorner().isCovered()) {
+                count++;
+            }
+            if (card.getShowingSide().getBottomLeftCorner() != null
+                    && (card.getShowingSide().getBottomLeftCorner()).getItem() == item
+                    && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
+                count++;
+            }
+            if (card.getShowingSide().getBottomRightCorner() != null
+                    && (card.getShowingSide().getBottomRightCorner()).getItem() == item
+                    && !card.getShowingSide().getBottomRightCorner().isCovered()) {
+                count++;
+            }
+            if (!card.isFrontFacing() && card instanceof GoldCard && ((GoldCard) card).getPermanentResource().equals(item)) {
+                count++;
+            }
+            if (!card.isFrontFacing() && card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource().equals(item)) {
                 count++;
             }
         }

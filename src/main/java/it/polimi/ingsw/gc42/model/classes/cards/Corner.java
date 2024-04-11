@@ -31,7 +31,8 @@ public class Corner {
      *                   Only shown or un-covered Corners are used to calculate points and determine if a certain
      *                   objective is met or not. Covered Corners are ignored
      */
-    public Corner(boolean isCovered) {
+    public Corner(Item item, boolean isCovered) {
+        this.item = item;
         this.isCovered = isCovered;
     }
 
@@ -47,6 +48,23 @@ public class Corner {
     }
 
     // Getters and Setters Methods
+
+
+    /**
+     * Getter Method for item
+     * @return the item, Resource or Kingdom contained inside the Corner
+     */
+    public Item getItem() {
+        return item;
+    }
+
+    /**
+     * Setter Method for item
+     * @param item, the Resource or Kingdom to put inside the Corner
+     */
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
     /**
      * Getter Method for isCovered

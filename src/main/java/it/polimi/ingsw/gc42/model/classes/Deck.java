@@ -279,13 +279,13 @@ public class Deck implements Observable {
             case "LShapedPlacingPurple":
                 return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, name, description);
             case "forEach3KingdomResourcesFungi":
-                return new KingdomCountObjective(points, 3, KingdomResource.FUNGI, name, description);
+                return new ItemCountObjective(points, 3, KingdomResource.FUNGI, name, description);
             case "forEach3KingdomResourcesPlant":
-                return new KingdomCountObjective(points, 3, KingdomResource.PLANT, name, description);
+                return new ItemCountObjective(points, 3, KingdomResource.PLANT, name, description);
             case "forEach3KingdomResourcesAnimal":
-                return new KingdomCountObjective(points, 3, KingdomResource.ANIMAL, name, description);
+                return new ItemCountObjective(points, 3, KingdomResource.ANIMAL, name, description);
             case "forEach3KingdomResourcesInsect":
-                return new KingdomCountObjective(points, 3, KingdomResource.INSECT, name, description);
+                return new ItemCountObjective(points, 3, KingdomResource.INSECT, name, description);
             case "forEach3DifferentItems":
                 return new SetItemCountObjective(points, 3, name, description);
             case "forEach2Scrolls":
