@@ -145,6 +145,7 @@ public class Game {
     public Player getPlayer(int index) {
         return players.get(index - 1);
     }
+
     public boolean isPlayerHasReachedTwentyPoints() {
         return playerHasReachedTwentyPoints;
     }
@@ -157,7 +158,7 @@ public class Game {
         return playerTurn;
     }
 
-    public void setPlayerTurn(int i) throws IllegalArgumentException{
+    public void setPlayerTurn(int i) throws IllegalArgumentException {
         if (i == players.size()) {
             i = 1;
         }

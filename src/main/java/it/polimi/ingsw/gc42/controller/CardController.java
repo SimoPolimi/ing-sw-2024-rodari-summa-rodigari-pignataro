@@ -118,7 +118,7 @@ public class CardController {
             public void onEvent() {
                 Card card;
                 if (handCardView1.getModelCard() == null) {
-                    card = player.getHandCard(1);
+                    card = player.getHandCard(0);
                     handCardView1.setModelCard(card);
                     if (null != card) {
                         handCardView1.getModelCard().setListener(new Listener() {
@@ -130,7 +130,7 @@ public class CardController {
                     }
                 }
                 if (handCardView2.getModelCard() == null) {
-                    card = player.getHandCard(2);
+                    card = player.getHandCard(1);
                     handCardView2.setModelCard(card);
                     if (null != card) {
                         handCardView2.getModelCard().setListener(new Listener() {
@@ -142,7 +142,7 @@ public class CardController {
                     }
                 }
                 if (handCardView3.getModelCard() == null) {
-                    card = player.getHandCard(3);
+                    card = player.getHandCard(2);
                     handCardView3.setModelCard(card);
                     if (null != card) {
                         handCardView3.getModelCard().setListener(new Listener() {

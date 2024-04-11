@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class ObjectiveTest {
             default:
                 break;
         }
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             Card card = game.getResourcePlayingDeck().getDeck().draw();
             switch (card.getId()) {
                 case 1, 4, 16, 27, 36:
@@ -118,7 +119,7 @@ public class ObjectiveTest {
             default:
                 break;
         }
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             Card card = game.getResourcePlayingDeck().getDeck().draw();
             switch (card.getId()) {
                 case 4, 27, 36:
@@ -219,7 +220,7 @@ public class ObjectiveTest {
         container.add(potions);
         container.add(feathers);
         container.add(scrolls);
-        int result = (int) Math.floor((Collections.min( container).doubleValue() / container.size()));
+        int result = (int) Math.floor((Collections.min(container).doubleValue() / container.size()));
 
         assertEquals(result * objective.getPoints(), objective.calculatePoints(playArea));
     }

@@ -7,6 +7,13 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 import java.util.ArrayList;
 
 public class Player implements Observable {
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Token getToken() {
         return token;
@@ -23,7 +30,7 @@ public class Player implements Observable {
     public void setPoints(int points) {
         this.points = points;
         if (points >= 20) {
-                notifyListeners("Player reached 20 points");
+            notifyListeners("Player reached 20 points");
         }
     }
 
@@ -42,10 +49,13 @@ public class Player implements Observable {
     public void setSecretObjective(ObjectiveCard objectiveCard) {
         this.secretObjective = objectiveCard;
     }
+
     public PlayField getPlayField() {
         return playField;
     }
+
     private final ArrayList<Listener> listeners = new ArrayList<>();
+    private String nickname;
     private boolean isFirst;
     private Token token;
     private int points;
@@ -53,8 +63,8 @@ public class Player implements Observable {
     private final ArrayList<Card> hand = new ArrayList<>();
     private final PlayField playField = new PlayField();
 
-    public Player(boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
-
+    public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
+        this.nickname = nickname;
         this.isFirst = isFirst;
         this.points = points;
         this.token = token;
@@ -63,12 +73,11 @@ public class Player implements Observable {
     }
 
     public Player(Token token) {
+        this.nickname = "Bot";
         this.isFirst = false;
         this.points = 0;
         this.token = token;
         this.secretObjective = null;
-
-
     }
 
     @Override
@@ -85,7 +94,7 @@ public class Player implements Observable {
     public void notifyListeners(String context) {
         switch (context) {
             case "Player reached 20 points": {
-                for (Listener l: listeners) {
+                for (Listener l : listeners) {
                     if (l instanceof PlayerListener) {
                         l.onEvent();
                     }
@@ -93,7 +102,7 @@ public class Player implements Observable {
                 break;
             }
             case "Hand Updated": {
-                for (Listener l: listeners) {
+                for (Listener l : listeners) {
                     if (l instanceof HandListener) {
                         l.onEvent();
                     }
@@ -101,7 +110,7 @@ public class Player implements Observable {
                 break;
             }
             case "Secret Objective Selected":
-                for (Listener l: listeners) {
+                for (Listener l : listeners) {
                     if (l instanceof SecretObjectiveListener) {
                         l.onEvent();
                     }
@@ -169,9 +178,9 @@ public class Player implements Observable {
     }
 
     public Card getHandCard(int slot) {
-        if (slot > 0 && slot <= hand.size()) {
-            return hand.get(slot - 1);
-        } else if (slot > hand.size() && slot <= 3) {
+        if (slot >= 0 && slot < hand.size()) {
+            return hand.get(slot);
+        } else if (slot > hand.size() - 1 && slot < 3) {
             return null;
         } else throw new IllegalArgumentException("No such Card in Hand");
     }

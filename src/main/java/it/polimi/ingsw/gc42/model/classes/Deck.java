@@ -24,6 +24,7 @@ public class Deck implements Observable {
 
     /**
      * Constructor Method
+     *
      * @param cardType: Type of the Cards contained inside the Deck
      */
     public Deck(CardType cardType) {
@@ -34,6 +35,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for counter
+     *
      * @return the number of Cards remaining inside the Deck
      */
     public int getNumberOfCards() {
@@ -42,6 +44,7 @@ public class Deck implements Observable {
 
     /**
      * Getter Method for cardType
+     *
      * @return the type of Cards the Deck is made of
      */
     public CardType getCardType() {
@@ -50,6 +53,7 @@ public class Deck implements Observable {
 
     /**
      * Setter Method for cardType
+     *
      * @param cardType: the type of Cards the Deck is made of
      */
     public void setCardType(CardType cardType) {
@@ -64,6 +68,7 @@ public class Deck implements Observable {
      * Creates and Initialized a Deck of the CardType specified as a parameter.
      * The Deck is initialized with all the Cards of that CardType, all already initialized based
      * on the parameters read from the data.json file.
+     *
      * @param type: the CardType that will be contained inside the Deck.
      * @return the initialized Deck, already shuffled.
      * @throws FileNotFoundException if the data.json file is not found.
@@ -190,6 +195,7 @@ public class Deck implements Observable {
 
     /**
      * Static Method used by initDeck() to initialize the Corners of the Cards.
+     *
      * @param string: the name of the Corner read from the file.
      * @return the appropriate Corner object, null if there is no Corner.
      */
@@ -218,6 +224,7 @@ public class Deck implements Observable {
 
     /**
      * Static Method used by initDeck() to get the appropriate KingdomResource for the Card.
+     *
      * @param string: the KingdomResource read from the file.
      * @return the appropriate KingdomResource.
      */
@@ -238,10 +245,11 @@ public class Deck implements Observable {
 
     /**
      * Static Method used by initDeck() to get the appropriate Objective, already initialized.
-     * @param points: number of points the Objective gives every time its condition is satisfied.
-     * @param condition: the string read from the file, containing the name of the Condition to satisfy.
+     *
+     * @param points:        number of points the Objective gives every time its condition is satisfied.
+     * @param condition:     the string read from the file, containing the name of the Condition to satisfy.
      * @param isLeftToRight: a boolean indicating the direction, used for DiagonalPlacingObjectives.
-     * @param description: a String containing the Objective Description, read from the file.
+     * @param description:   a String containing the Objective Description, read from the file.
      * @return the appropriate Objective initialized with the data passed as parameters.
      */
     private static Objective getObjective(int points, String condition, boolean isLeftToRight, String name, String description) {
@@ -303,6 +311,7 @@ public class Deck implements Observable {
      * The drawn Card is the one at the TOP of the Deck.
      * Once drawn, the Card is also removed from the ArrayList.
      * If it's the last Card of the Deck, all its Listeners are notified that the Deck is empty.
+     *
      * @return the drawn Card.
      * @throws NoSuchElementException if there are 0 Cards left inside the Deck
      */
@@ -324,6 +333,7 @@ public class Deck implements Observable {
     /**
      * Method from the Observable interface.
      * Adds listener to the ArrayList of Listener objects who are subscribed to the Deck.
+     *
      * @param listener: object containing the lambda function to execute once the Deck is emptied..
      */
     @Override
@@ -334,7 +344,8 @@ public class Deck implements Observable {
     /**
      * Method from the Observable interface.
      * Removes listener from the ArrayList of Listener objects, so that it doesn't get notified of its status anymore.
-     * @param listener: object containing the lambda function to execute once the Deck is emptied..
+     *
+     * @param listener: object containing the lambda function to execute once the Deck is emptied
      */
     @Override
     public void removeListener(Listener listener) {
