@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.KingdomResource;
-import it.polimi.ingsw.gc42.model.classes.cards.Resource;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.exceptions.RemovingFromZeroException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
@@ -18,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 public class PlayField implements Observable {
     // Attributes
     private StarterCard starterCard;
-    private final ArrayList<Card> playedCards = new ArrayList<>();
+    private final ArrayList<PlayableCard> playedCards = new ArrayList<>();
     private final HashMap<String, Integer> counter = HashMap.newHashMap(7);
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
@@ -62,7 +59,7 @@ public class PlayField implements Observable {
      * Getter method for playedCards
      * @return the ArrayList that stores the plauer's played Cards
      */
-    public ArrayList<Card> getPlayedCards() {
+    public ArrayList<PlayableCard> getPlayedCards() {
         return playedCards;
     }
 
@@ -168,7 +165,7 @@ public class PlayField implements Observable {
         } else throw new RemovingFromZeroException();
     }
 
-    public void addCard(Card card, int x, int y) {
+    public void addCard(PlayableCard card, int x, int y) {
         card.setX(x);
         card.setY(y);
         playedCards.add(card);
@@ -177,7 +174,7 @@ public class PlayField implements Observable {
     }
 
     private void coverNearbyCorners(int x, int y) {
-        for (Card card : playedCards) {
+        for (PlayableCard card : playedCards) {
             if (card.getX() == x + 1 && card.getY() == y && null != card.getShowingSide().getBottomLeftCorner()) {
                 card.getShowingSide().getBottomLeftCorner().setCovered(true);
             } else if (card.getX() == x && card.getY() == y + 1 && null != card.getShowingSide().getBottomRightCorner()) {
@@ -190,7 +187,7 @@ public class PlayField implements Observable {
         }
     }
 
-    public Card getLastPlayedCard() {
+    public PlayableCard getLastPlayedCard() {
         return playedCards.getLast();
     }
 

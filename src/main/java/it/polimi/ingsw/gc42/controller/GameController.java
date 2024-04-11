@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
@@ -35,7 +36,7 @@ public class GameController {
         }
     }
 
-    public void playCard(Card card, int x, int y) {
+    public void playCard(PlayableCard card, int x, int y) {
         Player player = game.getCurrentPlayer();
         player.playCard(card, x, y);
     }

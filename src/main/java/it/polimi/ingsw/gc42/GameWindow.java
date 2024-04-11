@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42;
 import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -78,18 +79,18 @@ public class GameWindow extends Application {
         controller.setPlayer(player);
         gameController.drawStartingHand();
         gameController.drawSecretObjectives();
-        gameController.playCard(game.getStarterDeck().draw(), 0, 0);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
-        gameController.playCard(game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), -1, 0);
-        Card card = game.getGoldPlayingDeck().getDeck().draw();
+        gameController.playCard((PlayableCard) game.getStarterDeck().draw(), 0, 0);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
+        gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), -1, 0);
+        PlayableCard card = (PlayableCard) game.getGoldPlayingDeck().getDeck().draw();
         card.flip();
         gameController.playCard(card, 0, -1);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 1, 1);
-        gameController.playCard(game.getGoldPlayingDeck().getDeck().draw(), 1, -1);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), -1, -1);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 2, 0);
-        gameController.playCard(game.getResourcePlayingDeck().getDeck().draw(), 3, 0);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 1);
+        gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 1, -1);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), -1, -1);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 2, 0);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 3, 0);
     }
 
 

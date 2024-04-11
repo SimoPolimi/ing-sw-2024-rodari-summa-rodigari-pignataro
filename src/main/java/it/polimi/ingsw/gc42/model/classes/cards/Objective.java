@@ -81,14 +81,14 @@ public abstract class Objective {
      * @param playArea: the ArrayList of Cards containing all the Cards the Player has played.
      * @return the number of times the Condition has been satisfied (0 if it hasn't been).
      */
-    protected abstract int check(ArrayList<Card> playArea);
+    protected abstract int check(ArrayList<PlayableCard> playArea);
 
     /**
      * Calculates the number of points the Player has earned, based on the Cards he has played.
      * @param playArea: the ArrayList of Cards containing all the Cards the Player has played.
      * @return the total number of points the Player has earned.
      */
-    public int calculatePoints(ArrayList<Card> playArea) {
+    public int calculatePoints(ArrayList<PlayableCard> playArea) {
         return points * check(playArea);
     }
 }

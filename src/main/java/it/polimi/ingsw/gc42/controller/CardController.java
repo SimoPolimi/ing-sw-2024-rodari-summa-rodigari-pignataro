@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.HandListener;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -109,7 +110,7 @@ public class CardController {
         player.getPlayField().setListener(new PlayAreaListener() {
             @Override
             public void onEvent() {
-                Card card = player.getPlayField().getLastPlayedCard();
+                PlayableCard card = player.getPlayField().getLastPlayedCard();
                 addToPlayArea(card, card.getX(), card.getY());
             }
         });

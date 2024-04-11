@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Implementation of a Gold Card for Model
  */
-public class GoldCard extends Card{
+public class GoldCard extends PlayableCard{
     // Attributes
     private final HashMap<String, Integer> costs = new HashMap<>();
     private Objective objective;

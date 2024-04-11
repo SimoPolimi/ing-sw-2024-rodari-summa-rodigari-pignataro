@@ -51,7 +51,7 @@ public class CornerCountObjective extends CountObjective{
      * @return the number of times the Condition has been satisfied (0 if it hasn't been).
      */
     @Override
-    protected int check(ArrayList<Card> playArea) {
+    protected int check(ArrayList<PlayableCard> playArea) {
         //TODO: Implement (check if Corners of nearby Cards are covered)
         return 0;
     }

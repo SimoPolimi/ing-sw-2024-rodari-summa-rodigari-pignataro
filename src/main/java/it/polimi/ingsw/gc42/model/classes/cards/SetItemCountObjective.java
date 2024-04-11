@@ -29,12 +29,12 @@ public class SetItemCountObjective extends CountObjective{
      * @return the number of times the Condition has been satisfied (0 if it hasn't been).
      */
     @Override
-    protected int check(ArrayList<Card> playArea) {
+    protected int check(ArrayList<PlayableCard> playArea) {
         HashMap<Resource, Integer> items = new HashMap<>();
         items.put(Resource.FEATHER, 0);
         items.put(Resource.POTION, 0);
         items.put(Resource.SCROLL, 0);
-        for (Card card : playArea) {
+        for (PlayableCard card : playArea) {
             if (card.getShowingSide().getTopLeftCorner() instanceof ResourceCorner
                     && !card.getShowingSide().getTopLeftCorner().isCovered()) {
                 items.put(((ResourceCorner) card.getShowingSide().getTopLeftCorner()).getResource(),

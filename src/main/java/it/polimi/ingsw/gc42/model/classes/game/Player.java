@@ -60,7 +60,7 @@ public class Player implements Observable {
     private Token token;
     private int points;
     private ObjectiveCard secretObjective;
-    private final ArrayList<Card> hand = new ArrayList<>();
+    private final ArrayList<PlayableCard> hand = new ArrayList<>();
     private final PlayField playField = new PlayField();
 
     public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
@@ -146,7 +146,7 @@ public class Player implements Observable {
      * @param x    coordinate x of the position where the card will be placed
      * @param y    coordinate y of the position where the card will be placed
      */
-    public void playCard(Card card, int x, int y) {
+    public void playCard(PlayableCard card, int x, int y) {
         card.setX(x);
         card.setY(y);
         playField.addCard(card, x, y);
@@ -159,7 +159,7 @@ public class Player implements Observable {
      * @param playingDeck the deck from where the Card is drawn
      */
     public void drawCard(PlayingDeck playingDeck) {
-        hand.add(playingDeck.getDeck().draw());
+        hand.add((PlayableCard) playingDeck.getDeck().draw());
         notifyListeners("Hand Updated");
     }
 
@@ -173,11 +173,11 @@ public class Player implements Observable {
      * @param i    the Slot from where the Player wants to grab the Card
      */
     public void grabCard(PlayingDeck deck, int i) {
-        hand.add(deck.grabCard(i));
+        hand.add((PlayableCard) deck.grabCard(i));
         notifyListeners("PlayArea Updated");
     }
 
-    public Card getHandCard(int slot) {
+    public PlayableCard getHandCard(int slot) {
         if (slot >= 0 && slot < hand.size()) {
             return hand.get(slot);
         } else if (slot > hand.size() - 1 && slot < 3) {

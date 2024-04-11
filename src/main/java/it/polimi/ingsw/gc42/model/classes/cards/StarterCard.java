@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
-public class StarterCard extends Card{
+public class StarterCard extends PlayableCard{
     // Attributes
     private KingdomResource permanentResourceOne;
     private KingdomResource permanentResourceTwo;

@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
  * On the backSide there is always a KingdomResource in the center, making it impossible to cover.
  * Placing a ResourceCard can earn the player up to 1 point.
  */
-public class ResourceCard extends Card{
+public class ResourceCard extends PlayableCard{
     // Attributes
     private KingdomResource permanentResource;
     private int earnedPoints;

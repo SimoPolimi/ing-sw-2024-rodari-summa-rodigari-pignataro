@@ -18,7 +18,7 @@ public class ObjectiveCard extends Card {
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
     public ObjectiveCard(int id, int points, Objective objective, String frontImage, String backImage) {
-        super(null, null, true, id, frontImage, backImage);
+        super(true, id, frontImage, backImage);
         this.points = points;
         this.objective = objective;
     }

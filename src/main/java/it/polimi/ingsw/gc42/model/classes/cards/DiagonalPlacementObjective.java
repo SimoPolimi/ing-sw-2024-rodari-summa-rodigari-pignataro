@@ -54,7 +54,7 @@ public class DiagonalPlacementObjective extends PlacementObjective {
      * @return the number of times the Condition has been satisfied (0 if it hasn't been).
      */
     @Override
-    protected int check(ArrayList<Card> playArea) {
+    protected int check(ArrayList<PlayableCard> playArea) {
         //TODO: Implement
         return 0;
     }

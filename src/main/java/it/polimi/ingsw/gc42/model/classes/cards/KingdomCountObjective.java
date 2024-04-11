@@ -49,9 +49,9 @@ public class KingdomCountObjective extends CountObjective{
      * @return the number of times the Condition has been satisfied (0 if it hasn't been).
      */
     @Override
-    protected int check(ArrayList<Card> playArea) {
+    protected int check(ArrayList<PlayableCard> playArea) {
         int count = 0;
-        for (Card card: playArea) {
+        for (PlayableCard card: playArea) {
             if ((card.getShowingSide().getTopLeftCorner() instanceof KingdomCorner &&
                     !card.getShowingSide().getTopLeftCorner().isCovered() &&
                     ((KingdomCorner) card.getShowingSide().getTopLeftCorner()).getKingdom() == kingdom)) {

@@ -59,7 +59,7 @@ class PlayerTest {
         Player player = new Player(null, true, 0, null, null, game);
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
 
-        Card playedCard = player.getHandCard(0);
+        PlayableCard playedCard = player.getHandCard(0);
         // when
         player.playCard(playedCard, 1, 0);
 
