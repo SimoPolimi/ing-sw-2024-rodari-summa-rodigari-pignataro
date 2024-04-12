@@ -63,6 +63,9 @@ public class Player implements Observable {
     private final ArrayList<PlayableCard> hand = new ArrayList<>();
     private final PlayField playField = new PlayField();
 
+    private ObjectiveCard tempObjective1;
+    private ObjectiveCard tempObjective2;
+
     public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
         this.nickname = nickname;
         this.isFirst = isFirst;
@@ -109,6 +112,13 @@ public class Player implements Observable {
                 }
                 break;
             }
+            case "Ready to choose a Secret Objective":
+                for (Listener l : listeners) {
+                    if (l instanceof ReadyToChooseSecretObjectiveListener) {
+                        l.onEvent();
+                    }
+                }
+                break;
             case "Secret Objective Selected":
                 for (Listener l : listeners) {
                     if (l instanceof SecretObjectiveListener) {
@@ -124,10 +134,16 @@ public class Player implements Observable {
 
     public void drawSecretObjectives(PlayingDeck playingDeck) {
         //TODO: Make the player choose which one to keep
-        Card objective1 = playingDeck.getDeck().draw();
-        Card objective2 = playingDeck.getDeck().draw();
-        setSecretObjective((ObjectiveCard) objective1);
-        notifyListeners("Secret Objective Selected");
+        tempObjective1 = (ObjectiveCard) playingDeck.getDeck().draw();
+        tempObjective2 = (ObjectiveCard) playingDeck.getDeck().draw();
+        notifyListeners("Ready to choose a Secret Objective");
+    }
+
+    public ArrayList<ObjectiveCard> getTemporaryObjectiveCards() {
+        ArrayList<ObjectiveCard> cards = new ArrayList<>();
+        cards.add(tempObjective1);
+        cards.add(tempObjective2);
+        return cards;
     }
 
     /**

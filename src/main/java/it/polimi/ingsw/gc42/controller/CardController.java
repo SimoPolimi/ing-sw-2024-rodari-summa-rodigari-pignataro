@@ -1,19 +1,16 @@
 package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.interfaces.HandListener;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.model.interfaces.PlayAreaListener;
-import it.polimi.ingsw.gc42.model.interfaces.SecretObjectiveListener;
-import it.polimi.ingsw.gc42.view.CardView;
-import it.polimi.ingsw.gc42.view.HandCardView;
-import it.polimi.ingsw.gc42.view.ObjectiveCardView;
+import it.polimi.ingsw.gc42.model.interfaces.*;
+import it.polimi.ingsw.gc42.view.*;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -25,6 +22,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 
 public class CardController {
     // Imports from the GUI
@@ -41,6 +42,12 @@ public class CardController {
     private ImageView KBHint2;
     @FXML
     private ImageView KBHint3;
+    @FXML
+    private ImageView MouseHint1;
+    @FXML
+    private ImageView MouseHint2;
+    @FXML
+    private ImageView MouseHint3;
 
     @FXML
     private Text text1;
@@ -72,18 +79,12 @@ public class CardController {
     private StackPane objDescriptionBox;
 
     @FXML
-    private ImageView overlay1;
-    @FXML
-    private ImageView overlay2;
-    @FXML
-    private ImageView overlay3;
-
-    @FXML
     private StackPane playArea;
     @FXML
     private AnchorPane mainArea;
     @FXML
     private VBox dialog;
+    private Dialog showingDialog;
 
     // Attributes
     private GameController gameController;
@@ -100,13 +101,10 @@ public class CardController {
 
 
     public void initializeCards() {
-        handCardView1 = new HandCardView(view1, text1, KBHint1, overlay1);
-        handCardView2 = new HandCardView(view2, text2, KBHint2, overlay2);
-        handCardView3 = new HandCardView(view3, text3, KBHint3, overlay3);
-
-        /*objectiveCardView = new ObjectiveCardView(new CardView(secretObjective.getFrontImage(),
-                secretObjective.getBackImage()), objectiveView, objectiveHint, secretObjective,
-                KBObjectiveHint, false, objectiveDescription);*/
+        handCardView1 = new HandCardView(view1, text1, KBHint1, MouseHint1);
+        handCardView2 = new HandCardView(view2, text2, KBHint2, MouseHint2);
+        handCardView3 = new HandCardView(view3, text3, KBHint3, MouseHint3);
+        objectiveView.setVisible(false);
     }
 
     public void setGameController(GameController gameController) {
@@ -167,14 +165,38 @@ public class CardController {
                 }
             }
         });
-        player.setListener(new SecretObjectiveListener() {
+        player.setListener(new ReadyToChooseSecretObjectiveListener() {
             @Override
             public void onEvent() {
-                objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
-                        player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
-                        KBObjectiveHint, false, objectiveTitle, objectiveDescription, objDescriptionBox);
+                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, true, CardController.this);
+                ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
+                for (ObjectiveCard card: cards) {
+                    dialog.addCard(card);
+                }
+                dialog.setListener(new SecretObjectiveListener() {
+                    @Override
+                    public void onEvent() {
+                        player.setSecretObjective((ObjectiveCard) dialog.getPickedCard());
+                        objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
+                                player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
+                                KBObjectiveHint, false, objectiveTitle, objectiveDescription, objDescriptionBox);
+                        objectiveCardView.getImageView().setVisible(true);
+                        hideDialog();
+                    }
+                });
+                showingDialog = dialog;
+                try {
+                    showDialog(dialog);
+                } catch (AlreadyShowingADialogException e) {
+                    //TODO: Handle exception
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    public boolean isShowingDialog() {
+        return isShowingDialog;
     }
 
     public boolean canReadInput() {
@@ -405,39 +427,40 @@ public class CardController {
         return imageView;
     }
 
-    public void triggerDialog() {
-            if (!isShowingDialog) {
-                showDialog();
-            } else {
-                hideDialog();
+    public void showDialog(Dialog content) throws AlreadyShowingADialogException {
+        if (!isShowingDialog) {
+            dialog.getChildren().add(content.build());
+
+            blockInput();
+            ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
+            transition.setFromX(0);
+            transition.setToX(1.1);
+            transition.setFromY(0);
+            transition.setToY(1.1);
+            transition.setInterpolator(Interpolator.TANGENT(Duration.millis(150), 1));
+            ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
+            bounceBack.setFromX(1.1);
+            bounceBack.setToX(1);
+            bounceBack.setFromY(1.1);
+            bounceBack.setToY(1);
+
+            transition.setOnFinished(e -> bounceBack.play());
+            bounceBack.setOnFinished(e -> unlockInput());
+
+            deselectAllCards();
+            isShowingDialog = true;
+            mainArea.setEffect(new GaussianBlur(10));
+            if (content.isDismissable()) {
+                mainArea.setOnMouseClicked((e) -> {
+                    hideDialog();
+                });
             }
+            dialog.setVisible(true);
+            transition.play();
+        } else throw new AlreadyShowingADialogException();
     }
 
-    private void showDialog() {
-        blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
-        transition.setFromX(0);
-        transition.setToX(1.1);
-        transition.setFromY(0);
-        transition.setToY(1.1);
-        transition.setInterpolator(Interpolator.TANGENT(Duration.millis(150), 1));
-        ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
-        bounceBack.setFromX(1.1);
-        bounceBack.setToX(1);
-        bounceBack.setFromY(1.1);
-        bounceBack.setToY(1);
-
-        transition.setOnFinished(e -> bounceBack.play());
-        bounceBack.setOnFinished(e -> unlockInput());
-
-        deselectAllCards();
-        isShowingDialog = true;
-        mainArea.setEffect(new GaussianBlur(10));
-        dialog.setVisible(true);
-        transition.play();
-    }
-
-    private void hideDialog() {
+    public void hideDialog() {
         blockInput();
         ScaleTransition bounce = new ScaleTransition(Duration.millis(80), dialog);
         bounce.setFromX(1);
@@ -453,13 +476,17 @@ public class CardController {
         bounce.setOnFinished(e -> transition.play());
         transition.setOnFinished(e -> {
             dialog.setVisible(false);
+            dialog.getChildren().clear();
             unlockInput();
         });
         isShowingDialog = false;
         mainArea.setEffect(null);
-        dialog.getChildren().removeAll();
+        mainArea.setOnMouseClicked(null);
         bounce.play();
     }
+
+    public void onDialogKeyboardPressed(String key) {
+        showingDialog.onKeyPressed(key);
+    }
+
 }
-
-

@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.view.AlreadyShowingADialogException;
+import it.polimi.ingsw.gc42.view.CardPickerDialog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -44,6 +46,9 @@ public class GameWindow extends Application {
             if (controller.canReadInput()) {
                 switch (e.getCode()) {
                     case F -> {
+                        if (controller.isShowingDialog()) {
+                            controller.onDialogKeyboardPressed("F");
+                        }
                         controller.onFKeyPressed();
                     }
                     case DOWN -> {
@@ -58,8 +63,20 @@ public class GameWindow extends Application {
                     case O -> {
                         controller.flipObjective();
                     }
-                    case L -> {
-                        controller.triggerDialog();
+                    case LEFT -> {
+                        if (controller.isShowingDialog()) {
+                            controller.onDialogKeyboardPressed("LEFT");
+                        }
+                    }
+                    case RIGHT -> {
+                        if (controller.isShowingDialog()) {
+                            controller.onDialogKeyboardPressed("RIGHT");
+                        }
+                    }
+                    case ENTER -> {
+                        if (controller.isShowingDialog()) {
+                            controller.onDialogKeyboardPressed("ENTER");
+                        }
                     }
                 }
             }

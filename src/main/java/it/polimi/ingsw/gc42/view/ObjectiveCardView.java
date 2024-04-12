@@ -9,8 +9,11 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -31,6 +34,16 @@ public class ObjectiveCardView {
         this.cardView = cardView;
         this.imageView = imageView;
         imageView.setImage(cardView.getFront());
+        imageView.setOnMouseEntered((e) -> {
+                if (!isShowingDetails()) {
+                select();
+            }
+        });
+        imageView.setOnMouseExited((e) -> {
+            if (!isShowingDetails()) {
+                deselect();
+            }
+        });
         this.hint = hint;
         this.modelCard = modelCard;
         this.hintImage = hintImage;
@@ -120,6 +133,8 @@ public class ObjectiveCardView {
             title.setVisible(true);
             description.setVisible(true);
             objDescriptionBox.setVisible(true);
+            select();
+
         } else {
             rotateTransition.setByAngle(60);
             translateTransition.setByX(120);
@@ -130,11 +145,29 @@ public class ObjectiveCardView {
             title.setVisible(false);
             description.setVisible(false);
             objDescriptionBox.setVisible(false);
+            deselect();
         }
         rotateTransition.setOnFinished(e -> controller.unlockInput());
         rotateTransition.play();
         translateTransition.play();
         scaleTransition.play();
         isShowingDetails = !isShowingDetails;
+    }
+
+    private void select() {
+        DropShadow glowEffect = new DropShadow();
+        glowEffect.setWidth(100);
+        glowEffect.setHeight(100);
+        glowEffect.setColor(Color.YELLOW);
+        glowEffect.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(glowEffect);
+    }
+
+    private void deselect() {
+        DropShadow shadow = new DropShadow();
+        shadow.setWidth(50);
+        shadow.setHeight(50);
+        shadow.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(shadow);
     }
 }

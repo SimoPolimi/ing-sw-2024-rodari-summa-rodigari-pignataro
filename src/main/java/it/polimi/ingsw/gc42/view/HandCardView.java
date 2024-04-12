@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.HelloController;
 import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
@@ -8,45 +7,41 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.fxml.FXML;
-import javafx.scene.chart.Axis;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
-import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class HandCardView {
     private CardView card;
     private ImageView imageView;
     private Text hint;
-    private ImageView hintIcon;
-    private ImageView overlay;
+    private ImageView hintIcon1;
+    private ImageView hintIcon2;
     private boolean isSelected;
     private Card modelCard;
     private Listener listener;
 
-    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon, Card modelCard, ImageView overlay) {
+    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon1, ImageView hintIcon2, Card modelCard) {
         this.imageView = imageView;
         imageView.setImage(modelCard.getFrontImage());
         this.hint = hint;
-        this.hintIcon = hintIcon;
+        this.hintIcon1 = hintIcon1;
+        this.hintIcon2 = hintIcon2;
         setModelCard(modelCard);
         this.isSelected = false;
-        this.overlay = overlay;
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
-    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon, ImageView overlay) {
+    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon1, ImageView hintIcon2) {
         this.imageView = imageView;
         this.hint = hint;
-        this.hintIcon = hintIcon;
+        this.hintIcon1 = hintIcon1;
+        this.hintIcon2 = hintIcon2;
         this.isSelected = false;
-        this.overlay = overlay;
     }
 
     public CardView getCard() {
@@ -73,12 +68,12 @@ public class HandCardView {
         this.hint = hint;
     }
 
-    public ImageView getHintIcon() {
-        return hintIcon;
+    public ImageView getHintIcon1() {
+        return hintIcon1;
     }
 
-    public void setHintIcon(ImageView hintIcon) {
-        this.hintIcon = hintIcon;
+    public void setHintIcon1(ImageView hintIcon1) {
+        this.hintIcon1 = hintIcon1;
     }
 
     public boolean isSelected() {
@@ -132,8 +127,14 @@ public class HandCardView {
         controller.blockInput();
         this.isSelected = true;
         hint.setVisible(true);
-        hintIcon.setVisible(true);
-        overlay.setVisible(true);
+        hintIcon1.setVisible(true);
+        hintIcon2.setVisible(true);
+        DropShadow glowEffect = new DropShadow();
+        glowEffect.setWidth(100);
+        glowEffect.setHeight(100);
+        glowEffect.setColor(Color.YELLOW);
+        glowEffect.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(glowEffect);
         ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
         select1.setFromX(1);
         select1.setFromY(1);
@@ -147,8 +148,13 @@ public class HandCardView {
         controller.blockInput();
         this.isSelected = false;
         hint.setVisible(false);
-        hintIcon.setVisible(false);
-        overlay.setVisible(false);
+        hintIcon1.setVisible(false);
+        hintIcon2.setVisible(false);
+        DropShadow shadow = new DropShadow();
+        shadow.setWidth(50);
+        shadow.setHeight(50);
+        shadow.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(shadow);
         ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
         deselect2.setFromX(1.3);
         deselect2.setFromY(1.3);
@@ -217,7 +223,6 @@ public class HandCardView {
     }
 
     public void visualFlip(CardController controller) {
-        overlay.setVisible(false);
         ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
         jumpHalf1.setFromX(1.2);
         jumpHalf1.setFromY(1.2);
@@ -241,8 +246,6 @@ public class HandCardView {
         flipCardHalf2.setOnFinished(e -> {
             if (!isSelected) {
                 deselect(controller);
-            } else {
-                overlay.setVisible(true);
             }
         });
 
