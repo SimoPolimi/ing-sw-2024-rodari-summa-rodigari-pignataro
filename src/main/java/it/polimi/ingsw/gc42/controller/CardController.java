@@ -10,13 +10,19 @@ import it.polimi.ingsw.gc42.model.interfaces.SecretObjectiveListener;
 import it.polimi.ingsw.gc42.view.CardView;
 import it.polimi.ingsw.gc42.view.HandCardView;
 import it.polimi.ingsw.gc42.view.ObjectiveCardView;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -74,6 +80,10 @@ public class CardController {
 
     @FXML
     private StackPane playArea;
+    @FXML
+    private AnchorPane mainArea;
+    @FXML
+    private VBox dialog;
 
     // Attributes
     private GameController gameController;
@@ -86,6 +96,7 @@ public class CardController {
     private HandCardView handCardView2;
     private HandCardView handCardView3;
     private boolean isHandVisible = true;
+    private boolean isShowingDialog = false;
 
 
     public void initializeCards() {
@@ -180,21 +191,21 @@ public class CardController {
 
     @FXML
     public void onCard1Clicked() {
-        if (canReadInput()) {
+        if (canReadInput() && !isShowingDialog) {
             gameController.flipCard(handCardView1.getModelCard());
         }
     }
 
     @FXML
     public void onCard2Clicked() {
-        if (canReadInput()) {
+        if (canReadInput() && !isShowingDialog) {
             gameController.flipCard(handCardView2.getModelCard());
         }
     }
 
     @FXML
     public void onCard3Clicked() {
-        if (canReadInput()) {
+        if (canReadInput() && !isShowingDialog) {
             gameController.flipCard(handCardView3.getModelCard());
         }
     }
@@ -204,27 +215,31 @@ public class CardController {
     }
 
     public void moveDown() {
-        lastSelected = selectedCard;
-        if (selectedCard == 3) {
-            selectedCard = 1;
-        } else {
-            selectedCard++;
+        if (!isShowingDialog) {
+            lastSelected = selectedCard;
+            if (selectedCard == 3) {
+                selectedCard = 1;
+            } else {
+                selectedCard++;
+            }
+            selectCard(selectedCard);
         }
-        selectCard(selectedCard);
     }
 
     public void moveUp() {
-        lastSelected = selectedCard;
-        if (selectedCard == 1) {
-            selectedCard = 3;
-        } else {
-            selectedCard--;
+        if (!isShowingDialog) {
+            lastSelected = selectedCard;
+            if (selectedCard == 1) {
+                selectedCard = 3;
+            } else {
+                selectedCard--;
+            }
+            selectCard(selectedCard);
         }
-        selectCard(selectedCard);
     }
 
     protected void selectCard(int selectedCard) {
-        if (isHandVisible) {
+        if (isHandVisible && !isShowingDialog) {
             this.selectedCard = selectedCard;
             switch (selectedCard) {
                 case 1:
@@ -308,12 +323,14 @@ public class CardController {
     }
 
     public void toggleHand() {
-        if (isHandVisible) {
-            hideHand();
-            isHandVisible = false;
-        } else {
-            showHand();
-            isHandVisible = true;
+        if (!isShowingDialog) {
+            if (isHandVisible) {
+                hideHand();
+                isHandVisible = false;
+            } else {
+                showHand();
+                isHandVisible = true;
+            }
         }
     }
 
@@ -358,7 +375,7 @@ public class CardController {
 
     @FXML
     public void flipObjective() {
-        if (canReadInput()) {
+        if (canReadInput() && !isShowingDialog) {
             blockInput();
             objectiveCardView.rotate(this);
         }
@@ -381,16 +398,67 @@ public class CardController {
         shadow.setHeight(50);
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
-        // 0 degrees version
-        /*
-        imageView.setTranslateX(x * 125);
-        imageView.setTranslateY(y * -60);
-        */
         if (x >= 3 || y >= 3) {
             playArea.setScaleX(0.7);
             playArea.setScaleY(0.7);
         }
         return imageView;
+    }
+
+    public void triggerDialog() {
+            if (!isShowingDialog) {
+                showDialog();
+            } else {
+                hideDialog();
+            }
+    }
+
+    private void showDialog() {
+        blockInput();
+        ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
+        transition.setFromX(0);
+        transition.setToX(1.1);
+        transition.setFromY(0);
+        transition.setToY(1.1);
+        transition.setInterpolator(Interpolator.TANGENT(Duration.millis(150), 1));
+        ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
+        bounceBack.setFromX(1.1);
+        bounceBack.setToX(1);
+        bounceBack.setFromY(1.1);
+        bounceBack.setToY(1);
+
+        transition.setOnFinished(e -> bounceBack.play());
+        bounceBack.setOnFinished(e -> unlockInput());
+
+        deselectAllCards();
+        isShowingDialog = true;
+        mainArea.setEffect(new GaussianBlur(10));
+        dialog.setVisible(true);
+        transition.play();
+    }
+
+    private void hideDialog() {
+        blockInput();
+        ScaleTransition bounce = new ScaleTransition(Duration.millis(80), dialog);
+        bounce.setFromX(1);
+        bounce.setToX(1.1);
+        bounce.setFromY(1);
+        bounce.setToY(1.1);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
+        transition.setFromX(1.1);
+        transition.setToX(0);
+        transition.setFromY(1.1);
+        transition.setToY(0);
+
+        bounce.setOnFinished(e -> transition.play());
+        transition.setOnFinished(e -> {
+            dialog.setVisible(false);
+            unlockInput();
+        });
+        isShowingDialog = false;
+        mainArea.setEffect(null);
+        dialog.getChildren().removeAll();
+        bounce.play();
     }
 }
 

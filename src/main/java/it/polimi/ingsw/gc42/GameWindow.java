@@ -58,6 +58,9 @@ public class GameWindow extends Application {
                     case O -> {
                         controller.flipObjective();
                     }
+                    case L -> {
+                        controller.triggerDialog();
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
