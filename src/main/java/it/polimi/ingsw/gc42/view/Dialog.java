@@ -22,7 +22,7 @@ public abstract class Dialog {
         this.title = title;
         this.isDismissable = isDismissable;
         container.setAlignment(Pos.CENTER);
-        container.setSpacing(5);
+        container.setSpacing(20);
         Text text = new Text(title);
         text.setFont(Font.font("Constantia Italic", 20));
         text.setUnderline(true);

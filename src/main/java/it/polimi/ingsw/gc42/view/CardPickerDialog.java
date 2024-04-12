@@ -138,6 +138,7 @@ public class CardPickerDialog extends Dialog implements Observable {
             mouseFlip.setFitWidth(20);
             kbFlip.setPreserveRatio(true);
             kbFlip.setFitWidth(20);
+            flipHints.setAlignment(Pos.CENTER);
             flipHints.getChildren().addAll(mouseFlip, kbFlip);
             VBox flipHintWithText = new VBox();
             flipHintWithText.setSpacing(10);
@@ -155,6 +156,7 @@ public class CardPickerDialog extends Dialog implements Observable {
         mouseSelect.setFitWidth(20);
         kbSelect.setPreserveRatio(true);
         kbSelect.setFitWidth(20);
+        selectHints.setAlignment(Pos.CENTER);
         selectHints.getChildren().addAll(mouseSelect, kbSelect);
         VBox selectHintWithText = new VBox();
         selectHintWithText.setSpacing(10);
