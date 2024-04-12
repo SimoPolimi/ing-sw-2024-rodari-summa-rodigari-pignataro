@@ -1,8 +1,11 @@
 package it.polimi.ingsw.gc42.controller;
 
+import it.polimi.ingsw.gc42.GameStatus;
+import it.polimi.ingsw.gc42.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.*;
@@ -26,8 +29,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Queue;
 
-public class CardController {
+public class CardController implements ViewController {
     // Imports from the GUI
     @FXML
     private ImageView view1;
@@ -84,9 +88,10 @@ public class CardController {
     private AnchorPane mainArea;
     @FXML
     private VBox dialog;
-    private Dialog showingDialog;
 
     // Attributes
+    private Player player;
+    private Dialog showingDialog;
     private GameController gameController;
     private int selectedCard = 0;
     private boolean canReadInput = true;
@@ -98,12 +103,16 @@ public class CardController {
     private HandCardView handCardView3;
     private boolean isHandVisible = true;
     private boolean isShowingDialog = false;
+    private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
 
 
     public void initializeCards() {
         handCardView1 = new HandCardView(view1, text1, KBHint1, MouseHint1);
         handCardView2 = new HandCardView(view2, text2, KBHint2, MouseHint2);
         handCardView3 = new HandCardView(view3, text3, KBHint3, MouseHint3);
+        handCardView1.getImageView().setVisible(false);
+        handCardView2.getImageView().setVisible(false);
+        handCardView3.getImageView().setVisible(false);
         objectiveView.setVisible(false);
     }
 
@@ -116,6 +125,7 @@ public class CardController {
     }
 
     public void setPlayer(Player player) {
+        this.player = player;
         player.getPlayField().setListener(new PlayAreaListener() {
             @Override
             public void onEvent() {
@@ -173,7 +183,7 @@ public class CardController {
                 for (ObjectiveCard card: cards) {
                     dialog.addCard(card);
                 }
-                dialog.setListener(new SecretObjectiveListener() {
+                dialog.setListener(new CardPickerListener() {
                     @Override
                     public void onEvent() {
                         player.setSecretObjective((ObjectiveCard) dialog.getPickedCard());
@@ -181,15 +191,24 @@ public class CardController {
                                 player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
                                 KBObjectiveHint, false, objectiveTitle, objectiveDescription, objDescriptionBox);
                         objectiveCardView.getImageView().setVisible(true);
+                        objectiveView.setOnMouseEntered((e) -> {
+                            if (!objectiveCardView.isShowingDetails() && !isShowingDialog) {
+                                objectiveCardView.select();
+                            }
+                        });
+                        objectiveView.setOnMouseExited((e) -> {
+                            if (!objectiveCardView.isShowingDetails() && !isShowingDialog) {
+                                objectiveCardView.deselect();
+                            }
+                        });
                         hideDialog();
+                        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
                     }
                 });
-                showingDialog = dialog;
                 try {
                     showDialog(dialog);
                 } catch (AlreadyShowingADialogException e) {
-                    //TODO: Handle exception
-                    e.printStackTrace();
+                    dialogQueue.add(dialog);
                 }
             }
         });
@@ -197,6 +216,16 @@ public class CardController {
 
     public boolean isShowingDialog() {
         return isShowingDialog;
+    }
+    public void setShowingDialog(boolean status) {
+        isShowingDialog = status;
+        if (!status && !dialogQueue.isEmpty()) {
+            try {
+                showDialog(dialogQueue.removeFirst());
+            } catch (AlreadyShowingADialogException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean canReadInput() {
@@ -429,6 +458,8 @@ public class CardController {
 
     public void showDialog(Dialog content) throws AlreadyShowingADialogException {
         if (!isShowingDialog) {
+            showingDialog = content;
+            dialog.getChildren().clear();
             dialog.getChildren().add(content.build());
 
             blockInput();
@@ -448,7 +479,7 @@ public class CardController {
             bounceBack.setOnFinished(e -> unlockInput());
 
             deselectAllCards();
-            isShowingDialog = true;
+            setShowingDialog(true);
             mainArea.setEffect(new GaussianBlur(10));
             if (content.isDismissable()) {
                 mainArea.setOnMouseClicked((e) -> {
@@ -478,8 +509,8 @@ public class CardController {
             dialog.setVisible(false);
             dialog.getChildren().clear();
             unlockInput();
+            setShowingDialog(false);
         });
-        isShowingDialog = false;
         mainArea.setEffect(null);
         mainArea.setOnMouseClicked(null);
         bounce.play();
@@ -489,4 +520,30 @@ public class CardController {
         showingDialog.onKeyPressed(key);
     }
 
+    @Override
+    public void showSecretObjectivesSelectionDialog() {
+        player.drawSecretObjectives(gameController.getGame().getObjectivePlayingDeck());
+    }
+
+    @Override
+    public void showStarterCardSelectionDialog() {
+        ArrayList<Card> starterCards = gameController.getGame().getStarterDeck().getCopy();
+        SharedCardPickerDialog dialog = new SharedCardPickerDialog("Choose a Starter Card!", false, true, this);
+        for (Card card: starterCards) {
+            dialog.addCard(card);
+        }
+        dialog.setListener(new CardPickerListener() {
+            @Override
+            public void onEvent() {
+                player.setStarterCard((StarterCard) dialog.getPickedCard());
+                hideDialog();
+                player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+            }
+        });
+        try {
+            showDialog(dialog);
+        } catch (AlreadyShowingADialogException e) {
+            dialogQueue.add(dialog);
+        }
+    }
 }

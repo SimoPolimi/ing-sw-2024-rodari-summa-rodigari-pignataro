@@ -14,7 +14,6 @@ import java.util.concurrent.CountDownLatch;
  */
 public class PlayField implements Observable {
     // Attributes
-    private StarterCard starterCard;
     private final ArrayList<PlayableCard> playedCards = new ArrayList<>();
     private final HashMap<String, Integer> counter = HashMap.newHashMap(7);
     private final ArrayList<Listener> listeners = new ArrayList<>();
@@ -28,32 +27,15 @@ public class PlayField implements Observable {
      * @param starterCard: the player's initial Card from the StarterDeck
      */
     public PlayField(StarterCard starterCard) {
-        this.starterCard = starterCard;
+        addCard(starterCard, 0, 0);
         initMap();
     }
 
     public PlayField() {
-        this.starterCard = null;
         initMap();
     }
 
     // Getters and Setters
-
-    /**
-     * Getter Method for StarterCard
-     * @return the Starter Card
-     */
-    public StarterCard getStarterCard() {
-        return starterCard;
-    }
-
-    /**
-     * Setter Method for StarterCard
-     * @param starterCard: the player's initial Card
-     */
-    public void setStarterCard(StarterCard starterCard) {
-        this.starterCard = starterCard;
-    }
 
     /**
      * Getter method for playedCards

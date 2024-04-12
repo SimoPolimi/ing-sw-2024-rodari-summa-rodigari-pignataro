@@ -92,14 +92,16 @@ public class GameWindow extends Application {
 
         stage.show();
 
+        gameController.addView(controller);
+
 
         Player player = new Player(Token.BLUE);
         Game game = gameController.getGame();
-        game.addPlayer(player);
         controller.setPlayer(player);
-        gameController.drawStartingHand();
-        gameController.drawSecretObjectives();
-        gameController.playCard((PlayableCard) game.getStarterDeck().draw(), 0, 0);
+        gameController.addPlayer(player);
+        gameController.setCurrentStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        /*
         gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
         gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
         gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), -1, 0);
@@ -110,7 +112,7 @@ public class GameWindow extends Application {
         gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 1, -1);
         gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), -1, -1);
         gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 2, 0);
-        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 3, 0);
+        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 3, 0);*/
     }
 
 

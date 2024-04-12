@@ -30,15 +30,15 @@ public class CardPickerDialog extends Dialog implements Observable {
     private CardController controller;
     private int numberOfCards;
     private boolean cardsCanBeFlipped;
-    private final ArrayList<HandCardView> cards = new ArrayList<>();
+    protected final ArrayList<HandCardView> cards = new ArrayList<>();
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private Card pickedCard;
     private int lastSelected = -1;
     private int selectedCard = -1;
 
     // Constructor Methods
-    public CardPickerDialog(String title, boolean isDismissable, boolean cardsCanBeFlipped, CardController controller) {
-        super(title, isDismissable);
+    public CardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, CardController controller) {
+        super(title, isDismissible);
         this.cardsCanBeFlipped = cardsCanBeFlipped;
         this.controller = controller;
         numberOfCards = 0;

@@ -34,16 +34,6 @@ public class ObjectiveCardView {
         this.cardView = cardView;
         this.imageView = imageView;
         imageView.setImage(cardView.getFront());
-        imageView.setOnMouseEntered((e) -> {
-                if (!isShowingDetails()) {
-                select();
-            }
-        });
-        imageView.setOnMouseExited((e) -> {
-            if (!isShowingDetails()) {
-                deselect();
-            }
-        });
         this.hint = hint;
         this.modelCard = modelCard;
         this.hintImage = hintImage;
@@ -154,7 +144,7 @@ public class ObjectiveCardView {
         isShowingDetails = !isShowingDetails;
     }
 
-    private void select() {
+    public void select() {
         DropShadow glowEffect = new DropShadow();
         glowEffect.setWidth(100);
         glowEffect.setHeight(100);
@@ -163,7 +153,7 @@ public class ObjectiveCardView {
         imageView.setEffect(glowEffect);
     }
 
-    private void deselect() {
+    public void deselect() {
         DropShadow shadow = new DropShadow();
         shadow.setWidth(50);
         shadow.setHeight(50);

@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class GameTerminal extends Application {
+public class GameTerminal extends Application implements ViewController{
     private boolean exit = false;
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,5 +24,15 @@ public class GameTerminal extends Application {
                     break;
             }
         }
+    }
+
+    @Override
+    public void showSecretObjectivesSelectionDialog() {
+        //TODO: Implement
+    }
+
+    @Override
+    public void showStarterCardSelectionDialog() {
+        //TODO: Implement
     }
 }

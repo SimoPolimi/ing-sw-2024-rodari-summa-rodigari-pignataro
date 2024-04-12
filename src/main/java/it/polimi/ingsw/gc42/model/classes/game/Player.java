@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
+import it.polimi.ingsw.gc42.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.interfaces.*;
@@ -50,6 +51,15 @@ public class Player implements Observable {
         this.secretObjective = objectiveCard;
     }
 
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
+        notifyListeners("My Status has changed");
+    }
+
     public PlayField getPlayField() {
         return playField;
     }
@@ -65,6 +75,7 @@ public class Player implements Observable {
 
     private ObjectiveCard tempObjective1;
     private ObjectiveCard tempObjective2;
+    private GameStatus status;
 
     public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
         this.nickname = nickname;
@@ -72,6 +83,7 @@ public class Player implements Observable {
         this.points = points;
         this.token = token;
         this.secretObjective = objectiveCard;
+        setStatus(GameStatus.NOT_IN_GAME);
 
     }
 
@@ -81,6 +93,7 @@ public class Player implements Observable {
         this.points = 0;
         this.token = token;
         this.secretObjective = null;
+        setStatus(GameStatus.NOT_IN_GAME);
     }
 
     @Override
@@ -125,15 +138,21 @@ public class Player implements Observable {
                         l.onEvent();
                     }
                 }
+                break;
+            case "My Status has changed":
+                for (Listener l: listeners) {
+                    if (l instanceof StatusListener) {
+                        l.onEvent();
+                    }
+                }
         }
     }
 
-    public void drawStarterCard(Game game) {
-        playField.setStarterCard((StarterCard) game.getStarterDeck().draw());
+    public void setStarterCard(StarterCard card) {
+        playCard(card, 0, 0);
     }
 
     public void drawSecretObjectives(PlayingDeck playingDeck) {
-        //TODO: Make the player choose which one to keep
         tempObjective1 = (ObjectiveCard) playingDeck.getDeck().draw();
         tempObjective2 = (ObjectiveCard) playingDeck.getDeck().draw();
         notifyListeners("Ready to choose a Secret Objective");

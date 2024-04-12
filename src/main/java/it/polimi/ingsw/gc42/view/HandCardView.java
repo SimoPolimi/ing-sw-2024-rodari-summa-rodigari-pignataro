@@ -107,6 +107,7 @@ public class HandCardView {
             modelCard.setListener(listener);
             this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
             this.imageView.setImage(modelCard.getShowingImage());
+            imageView.setVisible(true);
             if (card.isFrontFacing()) {
                 card.setOddRotation(true);
             }

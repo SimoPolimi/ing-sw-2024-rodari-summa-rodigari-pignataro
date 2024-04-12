@@ -343,6 +343,10 @@ public class Deck implements Observable {
         return cards.getFirst();
     }
 
+    public ArrayList<Card> getCopy() {
+        return new ArrayList<>(cards);
+    }
+
     /**
      * Method from the Observable interface.
      * Adds listener to the ArrayList of Listener objects who are subscribed to the Deck.

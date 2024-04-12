@@ -1,0 +1,16 @@
+package it.polimi.ingsw.gc42;
+
+public enum GameStatus {
+    NOT_IN_GAME,
+    CONNECTING,
+    WAITING_FOR_SERVER,
+    READY,
+    READY_TO_CHOOSE_SECRET_OBJECTIVE,
+    READY_TO_CHOOSE_STARTER_CARD,
+    READY_TO_DRAW_STARTING_HAND,
+    PLAYING,
+    MY_TURN,
+    NOT_MY_TURN,
+    COUNTING_POINTS,
+    END_GAME
+}
