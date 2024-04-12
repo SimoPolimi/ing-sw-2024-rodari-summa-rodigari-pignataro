@@ -168,7 +168,7 @@ public class CardController {
         player.setListener(new ReadyToChooseSecretObjectiveListener() {
             @Override
             public void onEvent() {
-                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, true, CardController.this);
+                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, CardController.this);
                 ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
                 for (ObjectiveCard card: cards) {
                     dialog.addCard(card);
