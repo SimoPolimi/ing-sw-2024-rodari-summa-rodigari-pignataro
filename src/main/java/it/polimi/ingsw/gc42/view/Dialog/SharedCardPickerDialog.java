@@ -1,7 +1,8 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Dialog;
 
-import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.view.GUIController;
+import it.polimi.ingsw.gc42.view.Classes.HandCardView;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -13,7 +14,7 @@ public class SharedCardPickerDialog extends CardPickerDialog implements Observab
     private final ArrayList<HandCardView> availableCards = new ArrayList<>();
 
     // Constructor Method
-    public SharedCardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, CardController controller) {
+    public SharedCardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, GUIController controller) {
         super(title, isDismissible, cardsCanBeFlipped, controller);
         availableCards.addAll(cards);
     }

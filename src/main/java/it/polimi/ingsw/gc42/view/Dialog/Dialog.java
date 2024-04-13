@@ -1,6 +1,5 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Dialog;
 
-import it.polimi.ingsw.gc42.controller.CardController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -8,8 +7,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
-import java.util.Optional;
 
 public abstract class Dialog {
     // Attributes

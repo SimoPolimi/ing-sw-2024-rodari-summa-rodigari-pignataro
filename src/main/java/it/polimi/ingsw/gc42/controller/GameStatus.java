@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.controller;
 
 public enum GameStatus {
     NOT_IN_GAME,

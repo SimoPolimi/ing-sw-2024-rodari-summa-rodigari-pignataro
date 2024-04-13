@@ -1,14 +1,10 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.controller.CardController;
+import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.view.AlreadyShowingADialogException;
-import it.polimi.ingsw.gc42.view.CardPickerDialog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,17 +16,13 @@ import java.util.Objects;
 
 public class GameWindow extends Application {
 
-    public Card card1;
-    public Card card2;
-    public Card card3;
-
     private boolean isFullScreen = false;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GameWindow.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        CardController controller = fxmlLoader.getController();
+        GUIController controller = fxmlLoader.getController();
         GameController gameController = new GameController();
         controller.initializeCards();
         stage.setMinHeight(670);

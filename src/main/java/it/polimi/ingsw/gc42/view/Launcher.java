@@ -1,5 +1,7 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.view.GameTerminal;
+import it.polimi.ingsw.gc42.view.GameWindow;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Objects;
 
 public class Launcher extends Application {
@@ -28,7 +27,7 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GameWindow.class.getResource("launcher-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/launcher-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setTitle("Launcher");

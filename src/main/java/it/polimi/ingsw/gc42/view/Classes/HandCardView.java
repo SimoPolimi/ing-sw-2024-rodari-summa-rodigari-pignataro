@@ -1,9 +1,9 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -124,7 +124,7 @@ public class HandCardView {
         modelCard.flip();
     }
 
-    public void select(CardController controller) {
+    public void select(GUIController controller) {
         controller.blockInput();
         this.isSelected = true;
         hint.setVisible(true);
@@ -145,7 +145,7 @@ public class HandCardView {
         select1.play();
     }
 
-    public void deselect(CardController controller){
+    public void deselect(GUIController controller){
         controller.blockInput();
         this.isSelected = false;
         hint.setVisible(false);
@@ -165,7 +165,7 @@ public class HandCardView {
         deselect2.play();
     }
 
-    public void hide(int position, CardController controller) {
+    public void hide(int position, GUIController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(-155);
         t.setOnFinished(e -> controller.unlockInput());
@@ -195,7 +195,7 @@ public class HandCardView {
         t.play();
     }
 
-    public void show(int position, CardController controller) {
+    public void show(int position, GUIController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(155);
         t.setOnFinished(e -> controller.unlockInput());
@@ -223,7 +223,7 @@ public class HandCardView {
         t.play();
     }
 
-    public void visualFlip(CardController controller) {
+    public void visualFlip(GUIController controller) {
         ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
         jumpHalf1.setFromX(1.2);
         jumpHalf1.setFromY(1.2);

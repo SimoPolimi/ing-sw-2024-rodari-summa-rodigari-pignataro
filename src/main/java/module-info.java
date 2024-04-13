@@ -5,8 +5,6 @@ module it.polimi.ingsw.gc42 {
     requires org.controlsfx.controls;
     requires com.google.gson;
 
-    opens it.polimi.ingsw.gc42 to javafx.fxml;
-    exports it.polimi.ingsw.gc42;
     exports it.polimi.ingsw.gc42.model.classes;
     opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;
     exports it.polimi.ingsw.gc42.model.classes.cards;
@@ -23,4 +21,12 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.view to javafx.fxml;
     exports it.polimi.ingsw.gc42.controller;
     opens it.polimi.ingsw.gc42.controller to javafx.fxml;
+    exports it.polimi.ingsw.gc42.view.Dialog;
+    opens it.polimi.ingsw.gc42.view.Dialog to javafx.fxml;
+    exports it.polimi.ingsw.gc42.view.Exceptions;
+    opens it.polimi.ingsw.gc42.view.Exceptions to javafx.fxml;
+    exports it.polimi.ingsw.gc42.view.Classes;
+    opens it.polimi.ingsw.gc42.view.Classes to javafx.fxml;
+    exports it.polimi.ingsw.gc42.view.Interfaces;
+    opens it.polimi.ingsw.gc42.view.Interfaces to javafx.fxml;
 }

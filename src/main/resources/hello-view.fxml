@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="root" alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.controller.CardController">
+<StackPane fx:id="root" alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.GUIController">
     <children>
         <AnchorPane fx:id="mainArea" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
             <children>
@@ -17,7 +17,7 @@
                             <children>
                                 <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../collapseHandHint.png" />
+                                        <Image url="@collapseHandHint.png" />
                                     </image>
                                 </ImageView>
                                 <Text fx:id="textCollapse" fill="white" text="Collapse">
@@ -34,7 +34,7 @@
                             <children>
                                 <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../cards/card1Front.png" />
+                                        <Image url="@cards/card1Front.png" />
                                     </image>
                                     <effect>
                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -44,12 +44,12 @@
                                     <children>
                                         <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../flipKeyboardHint.png" />
+                                                <Image url="@flipKeyboardHint.png" />
                                             </image>
                                         </ImageView>
                                         <ImageView fx:id="MouseHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../LeftMouseButton.png" />
+                                                <Image url="@LeftMouseButton.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -71,7 +71,7 @@
                             <children>
                                 <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../cards/card2Front.png" />
+                                        <Image url="@cards/card2Front.png" />
                                     </image>
                                     <effect>
                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -81,12 +81,12 @@
                                     <children>
                                         <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../flipKeyboardHint.png" />
+                                                <Image url="@flipKeyboardHint.png" />
                                             </image>
                                         </ImageView>
                                         <ImageView fx:id="MouseHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../LeftMouseButton.png" />
+                                                <Image url="@LeftMouseButton.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -105,7 +105,7 @@
                             <children>
                                 <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../cards/card3Front.png" />
+                                        <Image url="@cards/card3Front.png" />
                                     </image>
                                     <effect>
                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
@@ -115,12 +115,12 @@
                                     <children>
                                         <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../flipKeyboardHint.png" />
+                                                <Image url="@flipKeyboardHint.png" />
                                             </image>
                                         </ImageView>
                                         <ImageView fx:id="MouseHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
-                                                <Image url="@../../../../LeftMouseButton.png" />
+                                                <Image url="@LeftMouseButton.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -139,7 +139,7 @@
                             <children>
                                 <ImageView fx:id="KBNavHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../navigateKeyboardHintVertical.png" />
+                                        <Image url="@navigateKeyboardHintVertical.png" />
                                     </image>
                                     <HBox.margin>
                                         <Insets />
@@ -169,7 +169,7 @@
                             <children>
                                 <ImageView fx:id="KBObjectiveHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../KBObjectiveHint.png" />
+                                        <Image url="@KBObjectiveHint.png" />
                                     </image>
                                     <HBox.margin>
                                         <Insets />
@@ -190,7 +190,7 @@
                         </HBox>
                         <ImageView fx:id="objectiveView" fitHeight="120.0" fitWidth="160" onMouseClicked="#flipObjective" pickOnBounds="true" preserveRatio="true" rotate="60.0" translateX="70.0">
                             <image>
-                                <Image url="@../../../../cards/card100Front.png" />
+                                <Image url="@cards/card100Front.png" />
                             </image>
                             <effect>
                                 <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />

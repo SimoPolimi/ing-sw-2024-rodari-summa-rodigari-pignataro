@@ -1,9 +1,10 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Dialog;
 
-import it.polimi.ingsw.gc42.controller.CardController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.view.GUIController;
+import it.polimi.ingsw.gc42.view.Classes.HandCardView;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +17,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class CardPickerDialog extends Dialog implements Observable {
     // Attributes
-    private CardController controller;
+    private GUIController controller;
     private int numberOfCards;
     private boolean cardsCanBeFlipped;
     protected final ArrayList<HandCardView> cards = new ArrayList<>();
@@ -37,7 +37,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     private int selectedCard = -1;
 
     // Constructor Methods
-    public CardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, CardController controller) {
+    public CardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, GUIController controller) {
         super(title, isDismissible);
         this.cardsCanBeFlipped = cardsCanBeFlipped;
         this.controller = controller;

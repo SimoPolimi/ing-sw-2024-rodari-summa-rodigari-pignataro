@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Classes;
 
 import javafx.scene.image.Image;
 

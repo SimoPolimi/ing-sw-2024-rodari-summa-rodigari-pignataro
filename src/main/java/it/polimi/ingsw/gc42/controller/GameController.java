@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.controller;
 
-import it.polimi.ingsw.gc42.GameStatus;
-import it.polimi.ingsw.gc42.ViewController;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;

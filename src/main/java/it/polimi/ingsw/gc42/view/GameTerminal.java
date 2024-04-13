@@ -1,12 +1,13 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.Locale;
 import java.util.Scanner;
 
-public class GameTerminal extends Application implements ViewController{
+public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;
     @Override
     public void start(Stage stage) throws Exception {

@@ -1,22 +1,27 @@
-package it.polimi.ingsw.gc42.controller;
+package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.GameStatus;
-import it.polimi.ingsw.gc42.ViewController;
+import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
+import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.*;
+import it.polimi.ingsw.gc42.view.Classes.CardView;
+import it.polimi.ingsw.gc42.view.Classes.HandCardView;
+import it.polimi.ingsw.gc42.view.Classes.ObjectiveCardView;
+import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
+import it.polimi.ingsw.gc42.view.Dialog.Dialog;
+import it.polimi.ingsw.gc42.view.Dialog.SharedCardPickerDialog;
+import it.polimi.ingsw.gc42.view.Exceptions.AlreadyShowingADialogException;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,11 +32,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Queue;
 
-public class CardController implements ViewController {
+public class GUIController implements ViewController {
     // Imports from the GUI
     @FXML
     private ImageView view1;
@@ -178,7 +180,7 @@ public class CardController implements ViewController {
         player.setListener(new ReadyToChooseSecretObjectiveListener() {
             @Override
             public void onEvent() {
-                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, CardController.this);
+                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, GUIController.this);
                 ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
                 for (ObjectiveCard card: cards) {
                     dialog.addCard(card);
@@ -432,7 +434,7 @@ public class CardController implements ViewController {
         }
     }
 
-    private void addToPlayArea(Card card, int x, int y) {
+    private void addToPlayArea(PlayableCard card, int x, int y) {
         playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }
 

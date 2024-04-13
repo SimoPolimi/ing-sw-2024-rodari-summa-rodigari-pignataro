@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.GameStatus;
+import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.interfaces.*;
