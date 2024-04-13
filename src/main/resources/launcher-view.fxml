@@ -1,19 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.Launcher">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.LauncherController">
     <children>
-        <ImageView fx:id="logo" fitWidth="200" preserveRatio="true" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
-         <image>
-            <Image url="@logo.png" />
-         </image></ImageView>
-        <Button fx:id="guiModeButton" onAction="#launchGUIWindow" text="GUI" />
-        <Button fx:id="tuiModeButton" onAction="#launchTUIWindow" text="TUI" />
-        <Button fx:id="exitButton" onAction="#exit" text="Exit" />
+        <HBox fx:id="titleContainer" alignment="CENTER" spacing="20.0">
+            <children>
+                <ImageView fx:id="logo" fitWidth="100" preserveRatio="true" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+                    <image>
+                        <Image url="@logo.png" />
+                    </image></ImageView>
+                <VBox fx:id="textContainer" alignment="CENTER" spacing="20.0">
+                    <Text fx:id="title" text="Welcome to Codex Naturalis!">
+                        <font>
+                            <Font name="Tahoma Bold" size="18.0" />
+                        </font>
+                    </Text>
+                    <Text fx:id="subtitle" text="Please choose the way you would like to play">
+                        <font>
+                            <Font name="Tahoma" size="11.0" />
+                        </font>
+                    </Text>
+                </VBox>
+
+            </children>
+        </HBox>
+        <HBox fx:id="modeSelectorContainer" alignment="CENTER" spacing="30">
+            <children>
+                <VBox fx:id="guiMode" alignment="CENTER" spacing="10.0">
+                    <children>
+                        <ImageView fx:id="guiIcon" fitWidth="150" onMouseClicked="#launchGUIWindow" onMouseEntered="#hoverOnGuiMode" onMouseExited="#deselectAllModes" preserveRatio="true">
+                            <image>
+                                <Image url="@GUI_Icon.png" />
+                            </image>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                        </ImageView>
+                        <Text fx:id="guiTitle" text="Graphical Mode">
+                            <font>
+                                <Font name="Tahoma Bold" size="15.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="guiDescription" text="The standard way of playing, it let's you see the Cards in all of their colorful glory, with stunning animations and eye-catching effects! Plus you get to grab the Cards!" textAlignment="CENTER" wrappingWidth="100">
+                            <font>
+                                <Font name="Tahoma Regular" size="11.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </VBox>
+                <VBox fx:id="tuiMode" alignment="CENTER" spacing="10.0">
+                    <children>
+                        <ImageView fx:id="tuiIcon" fitWidth="150" onMouseClicked="#launchTUIWindow" onMouseEntered="#hoverOnTuiMode" onMouseExited="#deselectAllModes" preserveRatio="true">
+                            <image>
+                                <Image url="@TUI_Icon.png" />
+                            </image>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                        </ImageView>
+                        <Text fx:id="tuiTitle" text="Graphical Mode">
+                            <font>
+                                <Font name="Tahoma Bold" size="15.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="tuiDescription" text="An advanced way of playing, only for the brave of heart! Instead of seeing the Cards with your eyes you can read them, and use your imagination instead of a boring screen!" textAlignment="CENTER" wrappingWidth="100">
+                            <font>
+                                <Font name="Tahoma Regular" size="11.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox fx:id="hintContainer" alignment="CENTER" spacing="40">
+            <children>
+                <VBox fx:id="navHintContainer" alignment="CENTER" spacing="10">
+                    <children>
+                        <ImageView fx:id="navigateHint" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="@navigateKeyboardHintHorizontal.png" />
+                            </image>
+                     <effect>
+                        <Blend mode="DIFFERENCE" />
+                     </effect>
+                        </ImageView>
+                        <Text fx:id="navigateText" fill="black" text="Navigate">
+                            <font>
+                                <Font name="Constantia Italic" size="12.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </VBox>
+                <VBox fx:id="selectHintContainer" alignment="CENTER" spacing="10">
+                    <children>
+                        <HBox fx:id="selHints" alignment="CENTER" spacing="5">
+                            <children>
+                                <ImageView fx:id="selectHintMouse" fitHeight="20" preserveRatio="true">
+                                    <image>
+                                        <Image url="@LeftMouseButton.png" />
+                                    </image>
+                           <effect>
+                              <Blend mode="DIFFERENCE" />
+                           </effect>
+                                </ImageView>
+                                <ImageView fx:id="selectHintKB" fitHeight="20" preserveRatio="true">
+                                    <image>
+                                        <Image url="@EnterHint.png" />
+                                    </image>
+                           <effect>
+                              <Blend mode="DIFFERENCE" />
+                           </effect>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                        <Text fx:id="selectHint" fill="black" text="Select">
+                            <font>
+                                <Font name="Constantia Italic" size="12.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
     </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
