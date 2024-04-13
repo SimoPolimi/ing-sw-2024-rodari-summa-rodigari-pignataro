@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -41,6 +42,9 @@
                                             <effect>
                                                 <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                             </effect>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                                         </ImageView>
                                         <VBox alignment="CENTER" spacing="10">
                                             <children>
@@ -78,6 +82,9 @@
                                             <effect>
                                                 <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                             </effect>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                                         </ImageView>
                                         <VBox alignment="CENTER" spacing="10">
                                             <children>
@@ -112,6 +119,9 @@
                                             <effect>
                                                 <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                             </effect>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                                         </ImageView>
                                         <VBox alignment="CENTER" spacing="10">
                                             <children>
@@ -197,6 +207,9 @@
                                     <effect>
                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                     </effect>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                                 </ImageView>
                                 <StackPane fx:id="objDescriptionBox" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10; " visible="false">
                                     <children>
@@ -257,6 +270,9 @@
                             <effect>
                                 <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                             </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                         </ImageView>
                     </children>
                 </StackPane>

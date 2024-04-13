@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc42.view.Classes.HandCardView;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -70,6 +71,7 @@ public class CardPickerDialog extends Dialog implements Observable {
         HandCardView handCardView = new HandCardView(new ImageView(), new Text(), new ImageView(), new ImageView(), card);
         handCardView.getImageView().setPreserveRatio(true);
         handCardView.getImageView().setFitWidth(140);
+        handCardView.getImageView().setCursor(Cursor.HAND);
         cards.add(handCardView);
     }
 
