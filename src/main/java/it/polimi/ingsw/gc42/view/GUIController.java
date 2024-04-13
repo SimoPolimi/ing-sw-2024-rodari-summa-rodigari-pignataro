@@ -228,11 +228,7 @@ public class GUIController implements ViewController {
                         player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
                     }
                 });
-                try {
-                    showDialog(dialog);
-                } catch (AlreadyShowingADialogException e) {
-                    dialogQueue.add(dialog);
-                }
+                showDialog(dialog);
             }
         });
     }
@@ -243,11 +239,7 @@ public class GUIController implements ViewController {
     public void setShowingDialog(boolean status) {
         isShowingDialog = status;
         if (!status && !dialogQueue.isEmpty()) {
-            try {
-                showDialog(dialogQueue.removeFirst());
-            } catch (AlreadyShowingADialogException e) {
-                e.printStackTrace();
-            }
+            showDialog(dialogQueue.removeFirst());
         }
     }
 
@@ -479,7 +471,7 @@ public class GUIController implements ViewController {
         return imageView;
     }
 
-    public void showDialog(Dialog content) throws AlreadyShowingADialogException {
+    public void showDialog(Dialog content) {
         if (!isShowingDialog) {
             showingDialog = content;
             dialog.getChildren().clear();
@@ -511,7 +503,9 @@ public class GUIController implements ViewController {
             }
             dialog.setVisible(true);
             transition.play();
-        } else throw new AlreadyShowingADialogException();
+        } else {
+            dialogQueue.add(content);
+        }
     }
 
     public void hideDialog() {
@@ -550,6 +544,8 @@ public class GUIController implements ViewController {
 
     @Override
     public void showStarterCardSelectionDialog() {
+        /*
+        // Old implementation just in case
         ArrayList<Card> starterCards = gameController.getGame().getStarterDeck().getCopy();
         SharedCardPickerDialog dialog = new SharedCardPickerDialog("Choose a Starter Card!", false, true, this);
         for (Card card: starterCards) {
@@ -567,7 +563,20 @@ public class GUIController implements ViewController {
             showDialog(dialog);
         } catch (AlreadyShowingADialogException e) {
             dialogQueue.add(dialog);
-        }
+        }*/
+        Card card = gameController.getGame().getStarterDeck().draw();
+        CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
+        , true, this);
+        dialog.addCard(card);
+        dialog.setListener(new CardPickerListener() {
+            @Override
+            public void onEvent() {
+                player.setStarterCard((StarterCard) dialog.getPickedCard());
+                hideDialog();
+                player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+            }
+        });
+        showDialog(dialog);
     }
 
     private void setToken(Token playerToken) {

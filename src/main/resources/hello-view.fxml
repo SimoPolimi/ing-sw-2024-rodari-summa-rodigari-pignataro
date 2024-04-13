@@ -13,7 +13,7 @@
             <children>
                 <AnchorPane style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
                     <children>
-                        <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="0" />
+                        <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="0"/>
                         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
                             <children>
                                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">

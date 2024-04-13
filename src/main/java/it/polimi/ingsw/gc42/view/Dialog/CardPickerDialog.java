@@ -121,15 +121,34 @@ public class CardPickerDialog extends Dialog implements Observable {
         hintContainer.setSpacing(20);
         hintContainer.setAlignment(Pos.CENTER);
 
-        VBox navigateHint = new VBox();
-        navigateHint.setSpacing(10);
-        navigateHint.setAlignment(Pos.TOP_CENTER);
-        ImageView kbHint = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/navigateKeyboardHintHorizontal.png"))));
-        kbHint.setPreserveRatio(true);
-        kbHint.setFitHeight(20);
-        Text navigateHintText = initText("Navigate");
-        navigateHint.getChildren().addAll(kbHint, navigateHintText);
-        hintContainer.getChildren().add(navigateHint);
+        if (numberOfCards > 1) {
+            VBox navigateHint = new VBox();
+            navigateHint.setSpacing(10);
+            navigateHint.setAlignment(Pos.TOP_CENTER);
+            ImageView kbHint = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/navigateKeyboardHintHorizontal.png"))));
+            kbHint.setPreserveRatio(true);
+            kbHint.setFitHeight(20);
+            Text navigateHintText = initText("Navigate");
+            navigateHint.getChildren().addAll(kbHint, navigateHintText);
+            hintContainer.getChildren().add(navigateHint);
+        }
+
+        HBox selectHints = new HBox();
+        selectHints.setSpacing(10);
+        ImageView mouseSelect = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/LeftMouseButton.png"))));
+        ImageView kbSelect = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/EnterHint.png"))));
+        mouseSelect.setPreserveRatio(true);
+        mouseSelect.setFitWidth(20);
+        kbSelect.setPreserveRatio(true);
+        kbSelect.setFitWidth(20);
+        selectHints.setAlignment(Pos.CENTER);
+        selectHints.getChildren().addAll(mouseSelect, kbSelect);
+        VBox selectHintWithText = new VBox();
+        selectHintWithText.setSpacing(10);
+        selectHintWithText.setAlignment(Pos.TOP_CENTER);
+        Text selectText = initText("Select Card");
+        selectHintWithText.getChildren().addAll(selectHints, selectText);
+        hintContainer.getChildren().add(selectHintWithText);
 
         if (cardsCanBeFlipped) {
             HBox flipHints = new HBox();
@@ -149,23 +168,6 @@ public class CardPickerDialog extends Dialog implements Observable {
             flipHintWithText.getChildren().addAll(flipHints, flipText);
             hintContainer.getChildren().add(flipHintWithText);
         }
-
-        HBox selectHints = new HBox();
-        selectHints.setSpacing(10);
-        ImageView mouseSelect = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/LeftMouseButton.png"))));
-        ImageView kbSelect = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/EnterHint.png"))));
-        mouseSelect.setPreserveRatio(true);
-        mouseSelect.setFitWidth(20);
-        kbSelect.setPreserveRatio(true);
-        kbSelect.setFitWidth(20);
-        selectHints.setAlignment(Pos.CENTER);
-        selectHints.getChildren().addAll(mouseSelect, kbSelect);
-        VBox selectHintWithText = new VBox();
-        selectHintWithText.setSpacing(10);
-        selectHintWithText.setAlignment(Pos.TOP_CENTER);
-        Text selectText = initText("Select Card");
-        selectHintWithText.getChildren().addAll(selectHints, selectText);
-        hintContainer.getChildren().add(selectHintWithText);
 
         return hintContainer;
     }
