@@ -2,14 +2,21 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -70,6 +77,9 @@ public class GameWindow extends Application {
                             controller.onDialogKeyboardPressed("ENTER");
                         }
                     }
+                    case L -> {
+
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
@@ -87,7 +97,8 @@ public class GameWindow extends Application {
         gameController.addView(controller);
 
 
-        Player player = new Player(Token.BLUE);
+        Player player = new Player(Token.RED);
+        player.setFirst(true);
         Game game = gameController.getGame();
         controller.setPlayer(player);
         gameController.addPlayer(player);

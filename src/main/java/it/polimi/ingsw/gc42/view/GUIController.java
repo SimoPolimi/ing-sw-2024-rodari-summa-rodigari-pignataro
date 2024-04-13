@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
@@ -20,6 +21,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
@@ -32,6 +34,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GUIController implements ViewController {
     // Imports from the GUI
@@ -85,11 +88,17 @@ public class GUIController implements ViewController {
     private StackPane objDescriptionBox;
 
     @FXML
+    private StackPane root;
+    @FXML
     private StackPane playArea;
     @FXML
-    private AnchorPane mainArea;
+    private StackPane mainArea;
     @FXML
     private VBox dialog;
+    @FXML
+    private ImageView token;
+    @FXML
+    private ImageView blackToken;
 
     // Attributes
     private Player player;
@@ -126,8 +135,20 @@ public class GUIController implements ViewController {
         return gameController;
     }
 
+    public StackPane getRoot() {
+        return root;
+    }
+
+    public StackPane getMainArea() {
+        return mainArea;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
+        setToken(player.getToken());
+        if (player.isFirst()) {
+            blackToken.setVisible(true);
+        }
         player.getPlayField().setListener(new PlayAreaListener() {
             @Override
             public void onEvent() {
@@ -546,6 +567,16 @@ public class GUIController implements ViewController {
             showDialog(dialog);
         } catch (AlreadyShowingADialogException e) {
             dialogQueue.add(dialog);
+        }
+    }
+
+    private void setToken(Token playerToken) {
+        switch (playerToken) {
+            case BLUE -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+            case RED -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
+            case YELLOW -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
+            case GREEN -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+            default -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
         }
     }
 }
