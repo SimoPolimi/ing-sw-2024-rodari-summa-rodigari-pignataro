@@ -186,7 +186,7 @@ public class Deck implements Observable {
                         isLeftToRight = false;
                     }
                     Objective objective = getObjective(points, condition, isLeftToRight, name, description);
-                    deck.cards.add(new ObjectiveCard(id, points, objective, frontImage, backImage));
+                    deck.cards.add(new ObjectiveCard(id, objective, frontImage, backImage));
                 }
         }
         deck.shuffle();

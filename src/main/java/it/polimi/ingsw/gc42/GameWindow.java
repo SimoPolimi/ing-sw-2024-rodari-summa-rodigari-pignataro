@@ -101,8 +101,8 @@ public class GameWindow extends Application {
         gameController.addPlayer(player);
         gameController.setCurrentStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
         player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
-        /*
-        gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
+
+        /*gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
         gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
         gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), -1, 0);
         PlayableCard card = (PlayableCard) game.getGoldPlayingDeck().getDeck().draw();
