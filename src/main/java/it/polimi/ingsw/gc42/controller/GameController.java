@@ -59,6 +59,8 @@ public class GameController {
     public void playCard(PlayableCard card, int x, int y) {
         Player player = game.getCurrentPlayer();
         player.playCard(card, x, y);
+        //TODO: Make the player choose what to draw from
+        player.drawCard(game.getResourcePlayingDeck());
     }
 
     public void flipCard(Card card) {

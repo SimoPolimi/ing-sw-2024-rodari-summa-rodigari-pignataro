@@ -107,6 +107,7 @@ public class GUIController implements ViewController {
     private Dialog showingDialog;
     private GameController gameController;
     private int selectedCard = 0;
+    private int cardBeingPlayed = 0;
     private boolean canReadInput = true;
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
@@ -186,45 +187,53 @@ public class GUIController implements ViewController {
                 addToPlayArea(card, card.getX(), card.getY());
             }
         });
+        Listener listener1 = new Listener() {
+            @Override
+            public void onEvent() {
+                flipCard(handCardView1);
+            }
+        };
+        Listener listener2 = new Listener() {
+            @Override
+            public void onEvent() {
+                flipCard(handCardView2);
+            }
+        };
+        Listener listener3 = new Listener() {
+            @Override
+            public void onEvent() {
+                flipCard(handCardView3);
+            }
+        };
         player.setListener(new HandListener() {
             @Override
             public void onEvent() {
                 Card card;
-                if (handCardView1.getModelCard() == null) {
-                    card = player.getHandCard(0);
-                    handCardView1.setModelCard(card);
-                    if (null != card) {
-                        handCardView1.getModelCard().setListener(new Listener() {
-                            @Override
-                            public void onEvent() {
-                                flipCard(handCardView1);
-                            }
-                        });
-                    }
+                card = player.getHandCard(0);
+                if (null != handCardView1.getModelCard()) {
+                    handCardView1.getModelCard().removeListener(listener1);
                 }
-                if (handCardView2.getModelCard() == null) {
-                    card = player.getHandCard(1);
-                    handCardView2.setModelCard(card);
-                    if (null != card) {
-                        handCardView2.getModelCard().setListener(new Listener() {
-                            @Override
-                            public void onEvent() {
-                                flipCard(handCardView2);
-                            }
-                        });
-                    }
+                handCardView1.setModelCard(card);
+                if (null != card) {
+                    handCardView1.getModelCard().setListener(listener1);
                 }
-                if (handCardView3.getModelCard() == null) {
-                    card = player.getHandCard(2);
-                    handCardView3.setModelCard(card);
-                    if (null != card) {
-                        handCardView3.getModelCard().setListener(new Listener() {
-                            @Override
-                            public void onEvent() {
-                                flipCard(handCardView3);
-                            }
-                        });
-                    }
+
+                card = player.getHandCard(1);
+                if (null != handCardView2.getModelCard()) {
+                    handCardView2.getModelCard().removeListener(listener2);
+                }
+                handCardView2.setModelCard(card);
+                if (null != card) {
+                    handCardView2.getModelCard().setListener(listener2);
+                }
+
+                card = player.getHandCard(2);
+                if (null != handCardView3.getModelCard()) {
+                    handCardView3.getModelCard().removeListener(listener3);
+                }
+                handCardView3.setModelCard(card);
+                if (null != card) {
+                    handCardView3.getModelCard().setListener(listener3);
                 }
             }
         });
@@ -484,9 +493,14 @@ public class GUIController implements ViewController {
     public void showAvailablePlacements() {
         ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
         for (Coordinates placement : placements) {
-            phantomPlayArea.getChildren().add(initImageView(new Image(
-                    Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
-                    placement.getX(), placement.getY()));
+            ImageView spotView = initImageView(new Image(
+                            Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
+                    placement.getX(), placement.getY());
+            spotView.setOnMouseClicked((e) -> {
+                placeCard(placement);
+                hideAvailablePlacements();
+            });
+            phantomPlayArea.getChildren().add(spotView);
         }
     }
 
@@ -495,7 +509,12 @@ public class GUIController implements ViewController {
     }
 
     public void playCard(int number) {
+        cardBeingPlayed = number;
         showAvailablePlacements();
+    }
+
+    public void placeCard(Coordinates coordinates) {
+        gameController.playCard(player.getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
     }
 
     private ImageView initImageView(Image image, int x, int y) {
@@ -513,6 +532,8 @@ public class GUIController implements ViewController {
         if (x >= 3 || y >= 3) {
             playArea.setScaleX(0.7);
             playArea.setScaleY(0.7);
+            phantomPlayArea.setScaleX(0.7);
+            phantomPlayArea.setScaleY(0.7);
         }
         return imageView;
     }

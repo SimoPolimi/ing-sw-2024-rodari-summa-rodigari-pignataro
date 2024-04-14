@@ -89,22 +89,8 @@ public class HandCardView {
     }
 
     public void setModelCard(Card modelCard) {
+        this.modelCard = modelCard;
         if (null != modelCard) {
-            if (null != listener) {
-                modelCard.removeListener(listener);
-            }
-            this.modelCard = modelCard;
-            listener = new Listener() {
-                @Override
-                public void onEvent() {
-                    try {
-                        flipCard(modelCard.getId());
-                    } catch (NoSuchCardException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            modelCard.setListener(listener);
             this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
             this.imageView.setImage(modelCard.getShowingImage());
             imageView.setVisible(true);

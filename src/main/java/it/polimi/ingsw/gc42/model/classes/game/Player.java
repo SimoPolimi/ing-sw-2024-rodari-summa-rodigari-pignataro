@@ -186,6 +186,7 @@ public class Player implements Observable {
         card.setY(y);
         playField.addCard(card, x, y);
         hand.remove(card);
+        notifyListeners("Hand Updated");
     }
 
     /**
