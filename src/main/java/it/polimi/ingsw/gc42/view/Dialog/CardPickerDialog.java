@@ -29,7 +29,6 @@ import java.util.Objects;
 public class CardPickerDialog extends Dialog implements Observable {
     // Attributes
     private GUIController controller;
-    private int numberOfCards;
     private boolean cardsCanBeFlipped;
     protected final ArrayList<HandCardView> cards = new ArrayList<>();
     private final ArrayList<Listener> listeners = new ArrayList<>();
@@ -42,7 +41,6 @@ public class CardPickerDialog extends Dialog implements Observable {
         super(title, isDismissible);
         this.cardsCanBeFlipped = cardsCanBeFlipped;
         this.controller = controller;
-        numberOfCards = 0;
     }
 
     // Getters and Setters
@@ -52,11 +50,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     }
 
     public int getNumberOfCards() {
-        return numberOfCards;
-    }
-
-    public void setNumberOfCards(int numberOfCards) {
-        this.numberOfCards = numberOfCards;
+        return cards.size();
     }
 
     public boolean isCardsCanBeFlipped() {
@@ -79,6 +73,9 @@ public class CardPickerDialog extends Dialog implements Observable {
     public Node build() {
         container.getChildren().add(initCardContainer());
         container.getChildren().add(initHintContainer());
+        if (getNumberOfCards() == 1) {
+            selectCardNumber(0);
+        }
         return container;
     }
 
@@ -121,7 +118,7 @@ public class CardPickerDialog extends Dialog implements Observable {
         hintContainer.setSpacing(20);
         hintContainer.setAlignment(Pos.CENTER);
 
-        if (numberOfCards > 1) {
+        if (getNumberOfCards() > 1) {
             VBox navigateHint = new VBox();
             navigateHint.setSpacing(10);
             navigateHint.setAlignment(Pos.TOP_CENTER);
