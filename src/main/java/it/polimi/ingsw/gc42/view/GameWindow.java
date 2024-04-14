@@ -77,9 +77,6 @@ public class GameWindow extends Application {
                             controller.onDialogKeyboardPressed("ENTER");
                         }
                     }
-                    case L -> {
-
-                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {

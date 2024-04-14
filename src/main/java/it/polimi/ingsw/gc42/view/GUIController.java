@@ -1,13 +1,10 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.Classes.CardView;
@@ -20,6 +17,7 @@ import it.polimi.ingsw.gc42.view.Exceptions.AlreadyShowingADialogException;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
@@ -27,6 +25,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -92,6 +92,8 @@ public class GUIController implements ViewController {
     @FXML
     private StackPane playArea;
     @FXML
+    private StackPane phantomPlayArea;
+    @FXML
     private StackPane mainArea;
     @FXML
     private VBox dialog;
@@ -125,6 +127,34 @@ public class GUIController implements ViewController {
         handCardView2.getImageView().setVisible(false);
         handCardView3.getImageView().setVisible(false);
         objectiveView.setVisible(false);
+
+        view1.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> playCard(1);
+                    case SECONDARY -> onCard1Clicked();
+                }
+            }
+        });
+        view2.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> playCard(2);
+                    case SECONDARY -> onCard2Clicked();
+                }
+            }
+        });
+        view3.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> playCard(3);
+                    case SECONDARY -> onCard3Clicked();
+                }
+            }
+        });
     }
 
     public void setGameController(GameController gameController) {
@@ -451,12 +481,28 @@ public class GUIController implements ViewController {
         playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }
 
+    public void showAvailablePlacements() {
+        ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
+        for (Coordinates placement : placements) {
+            phantomPlayArea.getChildren().add(initImageView(new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
+                    placement.getX(), placement.getY()));
+        }
+    }
+
+    private void hideAvailablePlacements() {
+        phantomPlayArea.getChildren().clear();
+    }
+
+    public void playCard(int number) {
+        showAvailablePlacements();
+    }
+
     private ImageView initImageView(Image image, int x, int y) {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(160);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
-        // 45 degrees version
         imageView.setTranslateX((x * 125) + (y * -125));
         imageView.setTranslateY((x * -60) + (y * -60));
         DropShadow shadow = new DropShadow();

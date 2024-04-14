@@ -14,6 +14,7 @@
                 <AnchorPane style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
                     <children>
                         <StackPane fx:id="playArea" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="0"/>
+                        <StackPane fx:id="phantomPlayArea" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="0"/>
                         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
                             <children>
                                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
@@ -35,7 +36,7 @@
                                 </HBox>
                                 <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="340.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseClicked="#onCard1Clicked" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card1Front.png" />
                                             </image>
@@ -55,7 +56,7 @@
                                                 </ImageView>
                                                 <ImageView fx:id="MouseHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                                     <image>
-                                                        <Image url="@LeftMouseButton.png" />
+                                                        <Image url="@RightMouseButton.png" />
                                                     </image>
                                                 </ImageView>
                                             </children>
@@ -75,7 +76,7 @@
                                 </HBox>
                                 <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard2Clicked" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card2Front.png" />
                                             </image>
@@ -95,7 +96,7 @@
                                                 </ImageView>
                                                 <ImageView fx:id="MouseHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                                     <image>
-                                                        <Image url="@LeftMouseButton.png" />
+                                                        <Image url="@RightMouseButton.png" />
                                                     </image>
                                                 </ImageView>
                                             </children>
@@ -112,7 +113,7 @@
                                 </HBox>
                                 <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseClicked="#onCard3Clicked" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card3Front.png" />
                                             </image>
@@ -132,7 +133,7 @@
                                                 </ImageView>
                                                 <ImageView fx:id="MouseHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
                                                     <image>
-                                                        <Image url="@LeftMouseButton.png" />
+                                                        <Image url="@RightMouseButton.png" />
                                                     </image>
                                                 </ImageView>
                                             </children>
