@@ -160,5 +160,21 @@ class PlayerTest {
 
     @Test
     void getHandCard() {
+        // given
+        Game game = new Game();
+        Player player = new Player(null);
+        // when
+        Card card1 = game.getResourcePlayingDeck().getDeck().getTopCard();
+        player.drawCard(game.getResourcePlayingDeck());
+        boolean caught = false;
+        try {
+            player.getHandCard(9);
+        } catch (IllegalArgumentException e) {
+            caught = true;
+        }
+        // then
+        assertTrue(caught);
+        assertNull(player.getHandCard(1));
+        assertEquals(card1, player.getHandCard(0));
     }
 }
