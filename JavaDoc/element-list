@@ -1,5 +1,4 @@
 module:it.polimi.ingsw.gc42
-it.polimi.ingsw.gc42
 it.polimi.ingsw.gc42.controller
 it.polimi.ingsw.gc42.model
 it.polimi.ingsw.gc42.model.classes
@@ -8,3 +7,7 @@ it.polimi.ingsw.gc42.model.classes.game
 it.polimi.ingsw.gc42.model.exceptions
 it.polimi.ingsw.gc42.model.interfaces
 it.polimi.ingsw.gc42.view
+it.polimi.ingsw.gc42.view.Classes
+it.polimi.ingsw.gc42.view.Dialog
+it.polimi.ingsw.gc42.view.Exceptions
+it.polimi.ingsw.gc42.view.Interfaces

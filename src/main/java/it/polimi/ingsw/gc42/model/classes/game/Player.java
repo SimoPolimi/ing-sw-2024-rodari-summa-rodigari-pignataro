@@ -198,20 +198,24 @@ public class Player implements Observable {
         notifyListeners("Hand Updated");
     }
 
-
-    //TODO redo javadoc (param: deck)
-
     /**
-     * Grabs a card of the type of the specified Deck from one of its slots
+     * Grabs a card of the specified PlayingDeck from one of its slots. To pick a card directly from the deck use drawCard()
      *
-     * @param deck the type of the card the Player wants to draw
-     * @param i    the Slot from where the Player wants to grab the Card
+     * @param playingDeck the PlayingDeck from which the player wants to grab a card
+     * @param slot    the selected PlayingDeck's slot from where the Player wants to grab the Card
      */
-    public void grabCard(PlayingDeck deck, int i) {
-        hand.add((PlayableCard) deck.grabCard(i));
+    public void grabCard(PlayingDeck playingDeck, int slot) {
+        hand.add((PlayableCard) playingDeck.grabCard(slot));
         notifyListeners("PlayArea Updated");
     }
 
+    /**
+     * Returns the card in the selected slot provided that a card is present
+     *
+     * @param slot the slot of the player's hand that contains the card that is returned
+     * @return the PlayingCard in position slot of hand or null when there is no card in said position.
+     *         If the argument is not valid, IllegalArgumentException is thrown
+     */
     public PlayableCard getHandCard(int slot) {
         if (slot >= 0 && slot < hand.size()) {
             return hand.get(slot);
