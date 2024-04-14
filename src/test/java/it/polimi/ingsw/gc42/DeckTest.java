@@ -36,6 +36,7 @@ class DeckTest {
         // then
         assertTrue(g.isGoldDeckEmpty());
     }
+
     @Test
     void testCardDraw() {
         // given
