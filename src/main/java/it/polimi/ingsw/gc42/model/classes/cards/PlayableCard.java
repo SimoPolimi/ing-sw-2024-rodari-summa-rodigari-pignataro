@@ -4,8 +4,7 @@ public class PlayableCard extends Card {
     // Attributes
     private CardSide frontSide;
     private CardSide backSide;
-    private int x;
-    private int y;
+    private final Coordinates coordinates = new Coordinates();
 
     // Constructor Methods
     /**
@@ -15,8 +14,8 @@ public class PlayableCard extends Card {
      * @param backSide:      group of empty Corners that make the back Side of the card, plus other features like permanent resources
      * @param isFrontFacing: true if the Card is showing the front Side, false if it is showing the back Side
      * @param id:            unique identifier for the specific Card
-     * @param x:             horizontal coordinate for the Card's position on the table (null if not placed)
-     * @param y:             vertical coordinate for the Card's position on the table (null if not placed)
+     * @param x:             horizontal coordinate for the Card's position on the table (0 if not placed)
+     * @param y:             vertical coordinate for the Card's position on the table (0 if not placed)
      * @param frontImage:    String containing the name (+ extension) of the Image resource to display on the GUI
      * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
      */
@@ -25,8 +24,8 @@ public class PlayableCard extends Card {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
-        this.x = x;
-        this.y = y;
+        coordinates.setX(x);
+        coordinates.setY(y);
     }
 
     /**
@@ -44,8 +43,6 @@ public class PlayableCard extends Card {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
-        this.x = 0;
-        this.y = 0;
     }
 
     // Getters and Setters
@@ -104,7 +101,7 @@ public class PlayableCard extends Card {
      * @return x: horizontal coordinate for the Card's position on the table (null if not placed)
      */
     public int getX() {
-        return x;
+        return coordinates.getX();
     }
 
     /**
@@ -113,7 +110,7 @@ public class PlayableCard extends Card {
      * @param x: horizontal coordinate for the Card's position on the table (null if not placed)
      */
     public void setX(int x) {
-        this.x = x;
+        coordinates.setX(x);
     }
 
     /**
@@ -122,7 +119,7 @@ public class PlayableCard extends Card {
      * @return y: vertical coordinate for the Card's position on the table (null if not placed)
      */
     public int getY() {
-        return y;
+        return coordinates.getY();
     }
 
     /**
@@ -131,6 +128,6 @@ public class PlayableCard extends Card {
      * @param y: vertical coordinate for the Card's position on the table (null if not placed)
      */
     public void setY(int y) {
-        this.y = y;
+        coordinates.setY(y);
     }
 }

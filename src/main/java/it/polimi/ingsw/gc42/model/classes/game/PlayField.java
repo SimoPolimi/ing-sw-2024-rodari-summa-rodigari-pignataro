@@ -169,6 +169,52 @@ public class PlayField implements Observable {
         }
     }
 
+    public ArrayList<Coordinates> getAvailablePlacements() {
+        ArrayList<Coordinates> placements = new ArrayList<>();
+        for (PlayableCard card : playedCards) {
+            if (null != card.getShowingSide().getTopLeftCorner()
+                    && !isThereACardIn(card.getX(), card.getY()+1)) {
+                placements.add(new Coordinates(card.getX(), card.getY() + 1));
+            }
+            if (null != card.getShowingSide().getTopRightCorner()
+                    && !isThereACardIn(card.getX()+1, card.getY())) {
+                placements.add(new Coordinates(card.getX()+1, card.getY()));
+            }
+            if (null != card.getShowingSide().getBottomLeftCorner()
+                    && !isThereACardIn(card.getX()-1, card.getY())) {
+                placements.add(new Coordinates(card.getX()-1, card.getY()));
+            }
+            if (null != card.getShowingSide().getBottomRightCorner()
+                    && !isThereACardIn(card.getX(), card.getY()-1)) {
+                placements.add(new Coordinates(card.getX(), card.getY()-1));
+            }
+        }
+        return removeDuplicatePlacements(placements);
+    }
+
+    private ArrayList<Coordinates> removeDuplicatePlacements(ArrayList<Coordinates> placements) {
+        for (int i = 0; i < placements.size(); i++) {
+            for (int j = i+1; j < placements.size(); j++) {
+                if (placements.get(j).getX() == placements.get(i).getX()
+                        && placements.get(j).getY() == placements.get(i).getY()) {
+                    placements.remove(j);
+                    i = 0;
+                    j = 1;
+                }
+            }
+        }
+        return placements;
+    }
+
+    private boolean isThereACardIn(int x, int y) {
+        for (PlayableCard card : playedCards) {
+            if (card.getX() == x && card.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public PlayableCard getLastPlayedCard() {
         return playedCards.getLast();
     }
