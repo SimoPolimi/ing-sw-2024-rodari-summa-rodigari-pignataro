@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc42.view;
 
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -18,17 +20,45 @@ public class LauncherController {
 
 
     @FXML
-    private void launchGUIWindow() throws IOException {
-        GameWindow guiWindow = new GameWindow();
-        guiIcon.getScene().getWindow().hide();
-        guiWindow.start(new Stage());
+    private void launchGUIWindow() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(60), guiIcon);
+        transition.setFromX(guiIcon.getScaleX());
+        transition.setToX(1);
+        transition.setFromY(guiIcon.getScaleY());
+        transition.setToY(1);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.setOnFinished((e) -> {
+            GameWindow guiWindow = new GameWindow();
+            guiIcon.getScene().getWindow().hide();
+            try {
+                guiWindow.start(new Stage());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        transition.play();
     }
 
     @FXML
-    private void launchTUIWindow() throws Exception {
-        GameTerminal tui = new GameTerminal();
-        guiIcon.getScene().getWindow().hide();
-        tui.start(new Stage());
+    private void launchTUIWindow() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(60), tuiIcon);
+        transition.setFromX(tuiIcon.getScaleX());
+        transition.setToX(1);
+        transition.setFromY(tuiIcon.getScaleY());
+        transition.setToY(1);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.setOnFinished((e) -> {
+            GameTerminal tui = new GameTerminal();
+            guiIcon.getScene().getWindow().hide();
+            try {
+                tui.start(new Stage());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        transition.play();
     }
 
     @FXML
@@ -83,7 +113,7 @@ public class LauncherController {
         updateView();
     }
 
-    public void selectMode() throws Exception {
+    public void selectMode() {
         switch (selectedMode) {
             case 1:
                 launchGUIWindow();
@@ -119,13 +149,25 @@ public class LauncherController {
         glowEffect.setColor(Color.YELLOW);
         glowEffect.setBlurType(BlurType.GAUSSIAN);
         view.setEffect(glowEffect);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), view);
+        transition.setFromX(1);
+        transition.setToX(1.1);
+        transition.setFromY(1);
+        transition.setToY(1.1);
+        transition.play();
     }
 
     private void deselectView(ImageView view) {
         DropShadow shadow = new DropShadow();
-        shadow.setWidth(50);
-        shadow.setHeight(50);
+        shadow.setWidth(20);
+        shadow.setHeight(20);
         shadow.setBlurType(BlurType.GAUSSIAN);
         view.setEffect(shadow);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), view);
+        transition.setFromX(view.getScaleX());
+        transition.setToX(1);
+        transition.setFromY(view.getScaleY());
+        transition.setToY(1);
+        transition.play();
     }
 }

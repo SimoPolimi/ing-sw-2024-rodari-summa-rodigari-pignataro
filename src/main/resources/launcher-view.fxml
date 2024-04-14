@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -38,8 +39,11 @@
                                 <Image url="@GUI_Icon.png" />
                             </image>
                      <effect>
-                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                        <DropShadow blurType="GAUSSIAN" height="20.0" radius="9.5" width="20.0" />
                      </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                         </ImageView>
                         <Text fx:id="guiTitle" text="Graphical Mode">
                             <font>
@@ -60,10 +64,13 @@
                                 <Image url="@TUI_Icon.png" />
                             </image>
                      <effect>
-                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                        <DropShadow blurType="GAUSSIAN" height="20.0" radius="9.5" width="20.0" />
                      </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                         </ImageView>
-                        <Text fx:id="tuiTitle" text="Graphical Mode">
+                        <Text fx:id="tuiTitle" text="Textual Mode">
                             <font>
                                 <Font name="Tahoma Bold" size="15.0" />
                             </font>
