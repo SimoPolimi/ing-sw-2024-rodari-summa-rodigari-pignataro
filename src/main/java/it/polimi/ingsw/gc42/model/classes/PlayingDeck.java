@@ -30,6 +30,7 @@ public class PlayingDeck {
 
     /**
      * Getter Method for slot1 and slot2.
+     *
      * @param slot: int value to identify the slot to get.
      * @return the Card contained in the corresponding slot.
      * @throws IllegalArgumentException if any number different from 1 or 2 is passed.
@@ -44,6 +45,7 @@ public class PlayingDeck {
 
     /**
      * Setter Method for slot1 and slot2.
+     *
      * @param card: the Card to set inside one of the slots.
      * @param slot: an int value to identify the slot to set the Card into.
      * @throws IllegalArgumentException if any number different from 1 or 2 is passed.
@@ -78,6 +80,7 @@ public class PlayingDeck {
 
     /**
      * Returns the Card from one of the Slots AND removes it from there, drawing another Card to put on its place.
+     *
      * @param slot: an int value to identify the slot to grab the Card from.
      * @return the Card contained in that Slot.
      */
@@ -85,10 +88,19 @@ public class PlayingDeck {
         Card card;
         if (slot == 1) {
             card = slot1;
-            slot1 = deck.draw();
+            if (deck.getNumberOfCards() > 0) {
+                slot1 = deck.draw();
+            } else {
+                // TODO: Slot is empty!!!!!!!!!!!!!!! view
+                slot1 = null;
+            }
         } else if (slot == 2) {
             card = slot2;
-            slot2 = deck.draw();
+            if (deck.getNumberOfCards() > 0) {
+                slot2 = deck.draw();
+            } else {
+                slot2 = null;
+            }
         } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
         return card;
     }

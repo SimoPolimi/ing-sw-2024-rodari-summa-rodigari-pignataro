@@ -122,6 +122,7 @@ class PlayerTest {
             game.getResourcePlayingDeck().getDeck().draw();
         }
         // when
+        // TODO: Redo using assertThrows
         boolean deckWasEmpty = false;
         try {
             game.getResourcePlayingDeck().getDeck().draw();
@@ -129,7 +130,7 @@ class PlayerTest {
             deckWasEmpty = true;
         }
         // then
-      
+
         // Deck is empty
         assertEquals(game.getResourcePlayingDeck().getDeck().getNumberOfCards(), 0);
         //assertThrowsExactly(NoSuchElementException.class, () -> game.getResourcePlayingDeck().getDeck().draw());
