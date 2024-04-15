@@ -8,27 +8,55 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.util.ArrayList;
 
+/**
+ * Player class. It implement the Observable class
+ */
 public class Player implements Observable {
+    /**
+     * Implement method getter for nickname
+     * @return nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Implement method setter for nickname
+     * @param nickname: player's name
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Implement method getter for token
+     * @return token
+     */
     public Token getToken() {
         return token;
     }
 
+    /**
+     * Implement method setter for token
+     * @param token: player's token
+     */
     public void setToken(Token token) {
         this.token = token;
     }
 
+    /**
+     * Implement method getter for points
+     * @return points
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * Implement method setter for points.
+     * If points > 20 notify that player reached the amount to win
+     * @param points: player's points
+     */
     public void setPoints(int points) {
         this.points = points;
         if (points >= 20) {
@@ -36,14 +64,26 @@ public class Player implements Observable {
         }
     }
 
+    /**
+     * Implement method getter for isFirst
+     * @return isFirst
+     */
     public boolean isFirst() {
         return isFirst;
     }
 
+    /**
+     * Implement method setter for isFirst
+     * @param first: boolean for knowing if you are the first to play
+     */
     public void setFirst(boolean first) {
         isFirst = first;
     }
 
+    /**
+     * Implement method getter for secretObjective
+     * @return secretObjective
+     */
     public ObjectiveCard getSecretObjective() {
         return secretObjective;
     }
