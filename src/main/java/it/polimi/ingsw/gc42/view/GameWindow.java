@@ -94,7 +94,7 @@ public class GameWindow extends Application {
         gameController.addView(controller);
 
 
-        Player player = new Player(Token.RED);
+        Player player = new Player(Token.YELLOW);
         player.setFirst(true);
         Game game = gameController.getGame();
         controller.setPlayer(player);

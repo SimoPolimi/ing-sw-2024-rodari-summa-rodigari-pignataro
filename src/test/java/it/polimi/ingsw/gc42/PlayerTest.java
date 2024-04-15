@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42;
 
+import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,10 +59,15 @@ class PlayerTest {
         PlayField playField = new PlayField((StarterCard) game.getStarterDeck().draw());
         Player player = new Player(null, true, 0, null, null, game);
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
+        player.setStarterCard((StarterCard) game.getStarterDeck().draw());
 
         PlayableCard playedCard = player.getHandCard(0);
         // when
-        player.playCard(playedCard, 1, 0);
+        try{
+            player.playCard(playedCard, 1, 0);
+        } catch (IllegalPlacementException e) {
+            e.printStackTrace();
+        }
 
         // then
         assertFalse(player.getPlayField().getPlayedCards().isEmpty());

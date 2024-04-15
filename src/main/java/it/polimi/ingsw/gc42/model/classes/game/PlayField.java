@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.RemovingFromZeroException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
@@ -27,7 +28,11 @@ public class PlayField implements Observable {
      * @param starterCard: the player's initial Card from the StarterDeck
      */
     public PlayField(StarterCard starterCard) {
-        addCard(starterCard, 0, 0);
+        try {
+            addCard(starterCard, 0, 0);
+        } catch (IllegalPlacementException e) {
+            e.printStackTrace();
+        }
         initMap();
     }
 
@@ -147,12 +152,20 @@ public class PlayField implements Observable {
         } else throw new RemovingFromZeroException();
     }
 
-    public void addCard(PlayableCard card, int x, int y) {
-        card.setX(x);
-        card.setY(y);
-        playedCards.add(card);
-        coverNearbyCorners(x, y);
-        notifyListeners("PlayArea Updated");
+    public void addCard(PlayableCard card, int x, int y) throws IllegalPlacementException {
+        boolean isValid = false;
+        for (Coordinates coordinates : getAvailablePlacements()) {
+            if (coordinates.getX() == x && coordinates.getY() == y) {
+                isValid = true;
+            }
+        }
+        if (isValid) {
+            card.setX(x);
+            card.setY(y);
+            playedCards.add(card);
+            coverNearbyCorners(x, y);
+            notifyListeners("PlayArea Updated");
+        } else throw new IllegalPlacementException();
     }
 
     private void coverNearbyCorners(int x, int y) {
@@ -197,6 +210,9 @@ public class PlayField implements Observable {
             } else {
                 illegalPlacementes.add(new Coordinates(card.getX(), card.getY()-1));
             }
+        }
+        if (placements.isEmpty()) {
+            placements.add(new Coordinates(0, 0));
         }
         return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacementes);
     }

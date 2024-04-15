@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.game;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.util.ArrayList;
@@ -149,7 +150,11 @@ public class Player implements Observable {
     }
 
     public void setStarterCard(StarterCard card) {
-        playCard(card, 0, 0);
+        try {
+            playCard(card, 0, 0);
+        } catch (IllegalPlacementException e) {
+            e.printStackTrace();
+        }
     }
 
     public void drawSecretObjectives(PlayingDeck playingDeck) {
@@ -181,10 +186,17 @@ public class Player implements Observable {
      * @param x    coordinate x of the position where the card will be placed
      * @param y    coordinate y of the position where the card will be placed
      */
-    public void playCard(PlayableCard card, int x, int y) {
-        card.setX(x);
-        card.setY(y);
-        playField.addCard(card, x, y);
+    public void playCard(PlayableCard card, int x, int y) throws IllegalPlacementException {
+        try {
+            card.setX(x);
+            card.setY(y);
+            playField.addCard(card, x, y);
+        } catch (IllegalPlacementException e) {
+            card.setX(0);
+            card.setY(0);
+            // Handle exception
+            throw new IllegalPlacementException();
+        }
         hand.remove(card);
         notifyListeners("Hand Updated");
     }

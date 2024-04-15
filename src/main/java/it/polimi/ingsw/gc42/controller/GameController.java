@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.controller;
 
+import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
@@ -58,7 +59,12 @@ public class GameController {
 
     public void playCard(PlayableCard card, int x, int y) {
         Player player = game.getCurrentPlayer();
-        player.playCard(card, x, y);
+        try {
+            player.playCard(card, x, y);
+        } catch (IllegalPlacementException e) {
+            // Handle exception
+            e.printStackTrace();
+        }
         //TODO: Make the player choose what to draw from
         player.drawCard(game.getResourcePlayingDeck());
     }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.game;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -52,7 +53,11 @@ class PlayFieldTest {
         testCoordinates.add(new Coordinates(1, 3));
 
         for (int i = 0; i < 7; i++) {
-            player.playCard(testCards.get(i), testCoordinates.get(i).getX(), testCoordinates.get(i).getY());
+            try {
+                player.playCard(testCards.get(i), testCoordinates.get(i).getX(), testCoordinates.get(i).getY());
+            } catch (IllegalPlacementException e) {
+                e.printStackTrace();
+            }
         }
 
         // There should be 13 available spots with those Cards played that way

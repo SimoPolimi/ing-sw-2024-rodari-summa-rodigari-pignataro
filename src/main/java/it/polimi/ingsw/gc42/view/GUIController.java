@@ -107,7 +107,7 @@ public class GUIController implements ViewController {
     private boolean canReadInput = true;
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
-
+    private double playAreaScale = 1;
     private HandView hand;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
@@ -500,11 +500,12 @@ public class GUIController implements ViewController {
         shadow.setHeight(50);
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
-        if (x >= 3 || y >= 3) {
-            playArea.setScaleX(0.7);
-            playArea.setScaleY(0.7);
-            phantomPlayArea.setScaleX(0.7);
-            phantomPlayArea.setScaleY(0.7);
+        if (Math.abs(x) >= 8 || Math.abs(y) >= 8) {
+            scalePlayArea(0.3);
+        } else if (Math.abs(x) >= 5 || Math.abs(y) >= 5) {
+            scalePlayArea(0.5);
+        } else if (Math.abs(x) >= 3 || Math.abs(y) >= 3) {
+            scalePlayArea(0.7);
         }
         return imageView;
     }
@@ -674,5 +675,21 @@ public class GUIController implements ViewController {
                 }
             }
         }
+    }
+
+    private void scalePlayArea(double scale) {
+        ScaleTransition t1 = new ScaleTransition(Duration.millis(250), playArea);
+        ScaleTransition t2 = new ScaleTransition(Duration.millis(250), phantomPlayArea);
+        t1.setFromX(playAreaScale);
+        t2.setFromX(playAreaScale);
+        t1.setToX(scale);
+        t2.setFromX(scale);
+        t1.setFromY(playAreaScale);
+        t2.setFromY(playAreaScale);
+        t1.setToY(scale);
+        t2.setToY(scale);
+        t1.play();
+        t2.play();
+        playAreaScale = scale;
     }
 }
