@@ -22,6 +22,7 @@ public class HandCardView {
     private ImageView hintIcon1;
     private ImageView hintIcon2;
     private boolean isSelected;
+    private boolean isBeingPlayed;
     private Card modelCard;
     private Listener listener;
 
@@ -33,6 +34,7 @@ public class HandCardView {
         this.hintIcon2 = hintIcon2;
         setModelCard(modelCard);
         this.isSelected = false;
+        this.isBeingPlayed = false;
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
@@ -84,6 +86,14 @@ public class HandCardView {
         isSelected = selected;
     }
 
+    public boolean isBeingPlayed() {
+        return isBeingPlayed;
+    }
+
+    public void setBeingPlayed(boolean beingPlayed) {
+        this.isBeingPlayed = beingPlayed;
+    }
+
     public Card getModelCard() {
         return modelCard;
     }
@@ -107,48 +117,53 @@ public class HandCardView {
     }
 
     public void flip() {
+        if (!isBeingPlayed)
         modelCard.flip();
     }
 
     public void select(GUIController controller) {
-        controller.blockInput();
-        this.isSelected = true;
-        hint.setVisible(true);
-        hintIcon1.setVisible(true);
-        hintIcon2.setVisible(true);
-        DropShadow glowEffect = new DropShadow();
-        glowEffect.setWidth(100);
-        glowEffect.setHeight(100);
-        glowEffect.setColor(Color.YELLOW);
-        glowEffect.setBlurType(BlurType.GAUSSIAN);
-        imageView.setEffect(glowEffect);
-        ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
-        select1.setFromX(1);
-        select1.setFromY(1);
-        select1.setToX(1.3);
-        select1.setToY(1.3);
-        select1.setOnFinished(e -> controller.unlockInput());
-        select1.play();
+        if (!isBeingPlayed) {
+            controller.blockInput();
+            this.isSelected = true;
+            hint.setVisible(true);
+            hintIcon1.setVisible(true);
+            hintIcon2.setVisible(true);
+            DropShadow glowEffect = new DropShadow();
+            glowEffect.setWidth(100);
+            glowEffect.setHeight(100);
+            glowEffect.setColor(Color.YELLOW);
+            glowEffect.setBlurType(BlurType.GAUSSIAN);
+            imageView.setEffect(glowEffect);
+            ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
+            select1.setFromX(1);
+            select1.setFromY(1);
+            select1.setToX(1.3);
+            select1.setToY(1.3);
+            select1.setOnFinished(e -> controller.unlockInput());
+            select1.play();
+        }
     }
 
     public void deselect(GUIController controller){
-        controller.blockInput();
-        this.isSelected = false;
-        hint.setVisible(false);
-        hintIcon1.setVisible(false);
-        hintIcon2.setVisible(false);
-        DropShadow shadow = new DropShadow();
-        shadow.setWidth(50);
-        shadow.setHeight(50);
-        shadow.setBlurType(BlurType.GAUSSIAN);
-        imageView.setEffect(shadow);
-        ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
-        deselect2.setFromX(1.3);
-        deselect2.setFromY(1.3);
-        deselect2.setToX(1);
-        deselect2.setToY(1);
-        deselect2.setOnFinished(e -> controller.unlockInput());
-        deselect2.play();
+        if (!isBeingPlayed) {
+            controller.blockInput();
+            this.isSelected = false;
+            hint.setVisible(false);
+            hintIcon1.setVisible(false);
+            hintIcon2.setVisible(false);
+            DropShadow shadow = new DropShadow();
+            shadow.setWidth(50);
+            shadow.setHeight(50);
+            shadow.setBlurType(BlurType.GAUSSIAN);
+            imageView.setEffect(shadow);
+            ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
+            deselect2.setFromX(1.3);
+            deselect2.setFromY(1.3);
+            deselect2.setToX(1);
+            deselect2.setToY(1);
+            deselect2.setOnFinished(e -> controller.unlockInput());
+            deselect2.play();
+        }
     }
 
     public void hide(int position, GUIController controller) {
@@ -249,5 +264,38 @@ public class HandCardView {
         }
         card.setOddRotation(!card.isOddRotation());
         flipCardHalf1.play();
+    }
+
+    public void setPlayingSelection(GUIController controller) {
+        isBeingPlayed = true;
+        DropShadow glowEffect = new DropShadow();
+        glowEffect.setWidth(100);
+        glowEffect.setHeight(100);
+        glowEffect.setColor(Color.ORANGERED);
+        glowEffect.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(glowEffect);
+        ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
+        select1.setFromX(1);
+        select1.setFromY(1);
+        select1.setToX(1.3);
+        select1.setToY(1.3);
+        select1.setOnFinished(e -> controller.unlockInput());
+        select1.play();
+    }
+
+    public void removePlayingSelection(GUIController controller) {
+        isBeingPlayed = false;
+        DropShadow shadow = new DropShadow();
+        shadow.setWidth(50);
+        shadow.setHeight(50);
+        shadow.setBlurType(BlurType.GAUSSIAN);
+        imageView.setEffect(shadow);
+        ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
+        deselect2.setFromX(1.3);
+        deselect2.setFromY(1.3);
+        deselect2.setToX(1);
+        deselect2.setToY(1);
+        deselect2.setOnFinished(e -> controller.unlockInput());
+        deselect2.play();
     }
 }

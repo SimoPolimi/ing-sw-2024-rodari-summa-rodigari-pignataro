@@ -171,25 +171,34 @@ public class PlayField implements Observable {
 
     public ArrayList<Coordinates> getAvailablePlacements() {
         ArrayList<Coordinates> placements = new ArrayList<>();
+        ArrayList<Coordinates> illegalPlacementes = new ArrayList<>();
         for (PlayableCard card : playedCards) {
             if (null != card.getShowingSide().getTopLeftCorner()
                     && !isThereACardIn(card.getX(), card.getY()+1)) {
                 placements.add(new Coordinates(card.getX(), card.getY() + 1));
+            } else {
+                illegalPlacementes.add(new Coordinates(card.getX(), card.getY()+1));
             }
             if (null != card.getShowingSide().getTopRightCorner()
                     && !isThereACardIn(card.getX()+1, card.getY())) {
                 placements.add(new Coordinates(card.getX()+1, card.getY()));
+            } else {
+                illegalPlacementes.add(new Coordinates(card.getX()+1, card.getY()));
             }
             if (null != card.getShowingSide().getBottomLeftCorner()
                     && !isThereACardIn(card.getX()-1, card.getY())) {
                 placements.add(new Coordinates(card.getX()-1, card.getY()));
+            } else {
+                illegalPlacementes.add(new Coordinates(card.getX()-1, card.getY()));
             }
             if (null != card.getShowingSide().getBottomRightCorner()
                     && !isThereACardIn(card.getX(), card.getY()-1)) {
                 placements.add(new Coordinates(card.getX(), card.getY()-1));
+            } else {
+                illegalPlacementes.add(new Coordinates(card.getX(), card.getY()-1));
             }
         }
-        return removeDuplicatePlacements(placements);
+        return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacementes);
     }
 
     private ArrayList<Coordinates> removeDuplicatePlacements(ArrayList<Coordinates> placements) {
@@ -198,6 +207,19 @@ public class PlayField implements Observable {
                 if (placements.get(j).getX() == placements.get(i).getX()
                         && placements.get(j).getY() == placements.get(i).getY()) {
                     placements.remove(j);
+                    i = 0;
+                    j = 1;
+                }
+            }
+        }
+        return placements;
+    }
+
+    private ArrayList<Coordinates> removeIllegalPlacements(ArrayList<Coordinates> placements, ArrayList<Coordinates> illegalPlacements) {
+        for (int i = 0; i < placements.size(); i++) {
+            for (int j = 0; j < illegalPlacements.size(); j++) {
+                if (placements.get(i).getX() == illegalPlacements.get(j).getX() && placements.get(i).getY() == illegalPlacements.get(j).getY()) {
+                    placements.remove(placements.get(i));
                     i = 0;
                     j = 1;
                 }

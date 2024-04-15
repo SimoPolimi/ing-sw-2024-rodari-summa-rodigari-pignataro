@@ -12,22 +12,17 @@ import it.polimi.ingsw.gc42.view.Classes.HandCardView;
 import it.polimi.ingsw.gc42.view.Classes.ObjectiveCardView;
 import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
 import it.polimi.ingsw.gc42.view.Dialog.Dialog;
-import it.polimi.ingsw.gc42.view.Dialog.SharedCardPickerDialog;
-import it.polimi.ingsw.gc42.view.Exceptions.AlreadyShowingADialogException;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -108,6 +103,7 @@ public class GUIController implements ViewController {
     private GameController gameController;
     private int selectedCard = 0;
     private int cardBeingPlayed = 0;
+    private boolean isShowingPlacements = false;
     private boolean canReadInput = true;
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
@@ -213,6 +209,7 @@ public class GUIController implements ViewController {
                 if (null != handCardView1.getModelCard()) {
                     handCardView1.getModelCard().removeListener(listener1);
                 }
+                setPlayingOverlay(1, false);
                 handCardView1.setModelCard(card);
                 if (null != card) {
                     handCardView1.getModelCard().setListener(listener1);
@@ -222,6 +219,7 @@ public class GUIController implements ViewController {
                 if (null != handCardView2.getModelCard()) {
                     handCardView2.getModelCard().removeListener(listener2);
                 }
+                setPlayingOverlay(2, false);
                 handCardView2.setModelCard(card);
                 if (null != card) {
                     handCardView2.getModelCard().setListener(listener2);
@@ -231,6 +229,7 @@ public class GUIController implements ViewController {
                 if (null != handCardView3.getModelCard()) {
                     handCardView3.getModelCard().removeListener(listener3);
                 }
+                setPlayingOverlay(3, false);
                 handCardView3.setModelCard(card);
                 if (null != card) {
                     handCardView3.getModelCard().setListener(listener3);
@@ -316,7 +315,9 @@ public class GUIController implements ViewController {
     }
 
     private void flipCard(HandCardView handCardView) {
-        handCardView.visualFlip(this);
+        if (!handCardView.isBeingPlayed()) {
+            handCardView.visualFlip(this);
+        }
     }
 
     public void moveDown() {
@@ -491,16 +492,20 @@ public class GUIController implements ViewController {
     }
 
     public void showAvailablePlacements() {
-        ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
-        for (Coordinates placement : placements) {
-            ImageView spotView = initImageView(new Image(
-                            Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
-                    placement.getX(), placement.getY());
-            spotView.setOnMouseClicked((e) -> {
-                placeCard(placement);
-                hideAvailablePlacements();
-            });
-            phantomPlayArea.getChildren().add(spotView);
+        if (!isShowingPlacements) {
+            ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
+            for (Coordinates placement : placements) {
+                ImageView spotView = initImageView(new Image(
+                                Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
+                        placement.getX(), placement.getY());
+                spotView.setOnMouseClicked((e) -> {
+                    placeCard(placement);
+                    hideAvailablePlacements();
+                    isShowingPlacements = false;
+                });
+                phantomPlayArea.getChildren().add(spotView);
+                isShowingPlacements = true;
+            }
         }
     }
 
@@ -510,6 +515,7 @@ public class GUIController implements ViewController {
 
     public void playCard(int number) {
         cardBeingPlayed = number;
+        setPlayingOverlay(number, true);
         showAvailablePlacements();
     }
 
@@ -653,6 +659,55 @@ public class GUIController implements ViewController {
             case YELLOW -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
             case GREEN -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
             default -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+        }
+    }
+
+    public void setPlayingOverlay(int number, boolean value) {
+        switch (number) {
+            case 0 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(this);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(this);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(this);
+                }
+            }
+            case 1 -> {
+                if (value && !handCardView1.isBeingPlayed()) {
+                    handCardView1.setPlayingSelection(this);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(this);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(this);
+                }
+            }
+            case 2 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(this);
+                }
+                if (value && !handCardView2.isBeingPlayed()) {
+                    handCardView2.setPlayingSelection(this);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(this);
+                }
+            }
+            case 3 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(this);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(this);
+                }
+                if (value && !handCardView3.isBeingPlayed()) {
+                    handCardView3.setPlayingSelection(this);
+                }
+            }
         }
     }
 }
