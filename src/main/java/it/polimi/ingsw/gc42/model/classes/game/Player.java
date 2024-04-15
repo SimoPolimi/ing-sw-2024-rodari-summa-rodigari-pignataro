@@ -8,27 +8,55 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.util.ArrayList;
 
+/**
+ * Player class. It implement the Observable class
+ */
 public class Player implements Observable {
+    /**
+     * Implement method getter for nickname
+     * @return nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Implement method setter for nickname
+     * @param nickname: player's name
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Implement method getter for token
+     * @return token
+     */
     public Token getToken() {
         return token;
     }
 
+    /**
+     * Implement method setter for token
+     * @param token: player's token
+     */
     public void setToken(Token token) {
         this.token = token;
     }
 
+    /**
+     * Implement method getter for points
+     * @return points
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * Implement method setter for points.
+     * If points > 20 notify that player reached the amount to win
+     * @param points: player's points
+     */
     public void setPoints(int points) {
         this.points = points;
         if (points >= 20) {
@@ -36,14 +64,26 @@ public class Player implements Observable {
         }
     }
 
+    /**
+     * Implement method getter for isFirst
+     * @return isFirst
+     */
     public boolean isFirst() {
         return isFirst;
     }
 
+    /**
+     * Implement method setter for isFirst
+     * @param first: boolean for knowing if you are the first to play
+     */
     public void setFirst(boolean first) {
         isFirst = first;
     }
 
+    /**
+     * Implement method getter for secretObjective
+     * @return secretObjective
+     */
     public ObjectiveCard getSecretObjective() {
         return secretObjective;
     }
@@ -97,6 +137,15 @@ public class Player implements Observable {
         setStatus(GameStatus.NOT_IN_GAME);
     }
 
+    public Player(String nickname) {
+        this.nickname = nickname;
+        this.isFirst = false;
+        this.points = 0;
+        this.token = Token.BLUE;
+        this.secretObjective = null;
+        setStatus(GameStatus.NOT_IN_GAME);
+    }
+
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
@@ -141,7 +190,7 @@ public class Player implements Observable {
                 }
                 break;
             case "My Status has changed":
-                for (Listener l: listeners) {
+                for (Listener l : listeners) {
                     if (l instanceof StatusListener) {
                         l.onEvent();
                     }
@@ -215,7 +264,7 @@ public class Player implements Observable {
      * Grabs a card of the specified PlayingDeck from one of its slots. To pick a card directly from the deck use drawCard()
      *
      * @param playingDeck the PlayingDeck from which the player wants to grab a card
-     * @param slot    the selected PlayingDeck's slot from where the Player wants to grab the Card
+     * @param slot        the selected PlayingDeck's slot from where the Player wants to grab the Card
      */
     public void grabCard(PlayingDeck playingDeck, int slot) {
         hand.add((PlayableCard) playingDeck.grabCard(slot));
@@ -227,7 +276,7 @@ public class Player implements Observable {
      *
      * @param slot the slot of the player's hand that contains the card that is returned
      * @return the PlayingCard in position slot of hand or null when there is no card in said position.
-     *         If the argument is not valid, IllegalArgumentException is thrown
+     * If the argument is not valid, IllegalArgumentException is thrown
      */
     public PlayableCard getHandCard(int slot) {
         if (slot >= 0 && slot < hand.size()) {

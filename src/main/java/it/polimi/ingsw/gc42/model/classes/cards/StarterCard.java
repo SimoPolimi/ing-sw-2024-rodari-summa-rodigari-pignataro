@@ -1,50 +1,67 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.util.ArrayList;
+
+/**
+ * Implement an extension of PlayableCard. It's one card type
+ */
 public class StarterCard extends PlayableCard{
     // Attributes
-    private KingdomResource permanentResourceOne;
-    private KingdomResource permanentResourceTwo;
-    private KingdomResource permanentResourceThree;
-
+    private final ArrayList<Item> permanentResources = new ArrayList<>();
+    /**
+     * Constructor method for StarterCard
+     * @param frontSide: card's front side
+     * @param backSide: card's back side
+     * @param isFrontFacing: a boolean that means if the selected face is front or back
+     * @param id: card identification
+     * @param x: card coordinate x
+     * @param y card coordinate y
+     * @param frontImage: image of the front face
+     * @param backImage: image of the back face
+     */
     // Constructor Method
-    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResourceOne, KingdomResource permanentResourceTwo,
-                       KingdomResource permanentResourceThree, String frontImage, String backImage) {
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, ArrayList<Item> list, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
-        this.permanentResourceOne = permanentResourceOne;
-        this.permanentResourceTwo = permanentResourceTwo;
-        this.permanentResourceThree = permanentResourceThree;
+        for (Item item: list){
+            addPermanentResource(item);
+        }
     }
-
-    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResourceOne, KingdomResource permanentResourceTwo,
-                       KingdomResource permanentResourceThree, String frontImage, String backImage) {
+    /**
+     * Constructor method for StarterCard
+     * @param frontSide: card's front side
+     * @param backSide: card's back side
+     * @param isFrontFacing: a boolean that means if the selected face is front or back
+     * @param id: card identification
+     * @param frontImage: image of the front face
+     * @param backImage: image of the back face
+     */
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, ArrayList<Item> list, String frontImage, String backImage) {
         super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
-        this.permanentResourceOne = permanentResourceOne;
-        this.permanentResourceTwo = permanentResourceTwo;
-        this.permanentResourceThree = permanentResourceThree;
+        for (Item item: list) {
+            addPermanentResource(item);
+        }
     }
 
-    // Getter and Setter
-    public KingdomResource getPermanentResourceOne() {
-        return permanentResourceOne;
+    /**
+     * Implement method getter for permanent resource
+     * @param index: item position in the array list
+     * @return permanentResource in the index position
+     * @throws IllegalArgumentException: exception called if the index is invalid
+     */
+    //Getter and Setter
+    public Item getPermanentResource(int index) throws IllegalArgumentException{
+        if (index >= 0 && index < permanentResources.size()) {
+            return permanentResources.get(index);
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
-    public void setPermanentResourceOne(KingdomResource permanentResourceOne) {
-        this.permanentResourceOne = permanentResourceOne;
-    }
-
-    public KingdomResource getPermanentResourceTwo() {
-        return permanentResourceTwo;
-    }
-
-    public void setPermanentResourceTwo(KingdomResource permanentResourceTwo) {
-        this.permanentResourceTwo = permanentResourceTwo;
-    }
-
-    public KingdomResource getPermanentResourceThree() {
-        return permanentResourceThree;
-    }
-
-    public void setPermanentResourceThree(KingdomResource permanentResourceThree) {
-        this.permanentResourceThree = permanentResourceThree;
+    /**
+     * Implement method setter for permanent resource
+     * @param item: is a new item to add at the permanentResources
+     */
+    public void addPermanentResource(Item item){
+        permanentResources.add(item);
     }
 }
