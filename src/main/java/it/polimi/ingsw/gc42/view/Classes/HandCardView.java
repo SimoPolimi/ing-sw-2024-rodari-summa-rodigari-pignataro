@@ -18,31 +18,43 @@ import javafx.util.Duration;
 public class HandCardView {
     private CardView card;
     private ImageView imageView;
-    private Text hint;
-    private ImageView hintIcon1;
-    private ImageView hintIcon2;
+    private Text hintFlip;
+    private ImageView hintIconFlipKB;
+    private ImageView hintIconFlipMouse;
+    private Text hintEnter;
+    private ImageView hintIconEnterKB;
+    private ImageView hintIconEnterMouse;
     private boolean isSelected;
     private boolean isBeingPlayed;
     private Card modelCard;
     private Listener listener;
 
-    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon1, ImageView hintIcon2, Card modelCard) {
+    public HandCardView(ImageView imageView, Text hintFlip, ImageView hintIconFlipKB, ImageView hintIconFlipMouse,
+                        Text hintEnter, ImageView hintIconEnterKB, ImageView hintIconEnterMouse, Card modelCard) {
         this.imageView = imageView;
         imageView.setImage(modelCard.getFrontImage());
-        this.hint = hint;
-        this.hintIcon1 = hintIcon1;
-        this.hintIcon2 = hintIcon2;
+        this.hintFlip = hintFlip;
+        this.hintIconFlipKB = hintIconFlipKB;
+        this.hintIconFlipMouse = hintIconFlipMouse;
+        this.hintEnter = hintEnter;
+        this.hintIconEnterKB = hintIconEnterKB;
+        this.hintIconEnterMouse = hintIconEnterMouse;
         setModelCard(modelCard);
         this.isSelected = false;
         this.isBeingPlayed = false;
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
-    public HandCardView(ImageView imageView, Text hint, ImageView hintIcon1, ImageView hintIcon2) {
+    public HandCardView(ImageView imageView, Text hintFlip, ImageView hintIconFlipKB,
+                        ImageView hintIconFlipMouse, Text hintEnter, ImageView hintIconEnterKB, ImageView hintIconEnterMouse) {
         this.imageView = imageView;
-        this.hint = hint;
-        this.hintIcon1 = hintIcon1;
-        this.hintIcon2 = hintIcon2;
+        this.hintFlip = hintFlip;
+        this.hintIconFlipKB = hintIconFlipKB;
+        this.hintIconFlipMouse = hintIconFlipMouse;
+        this.hintEnter = hintEnter;
+        this.hintIconEnterKB = hintIconEnterKB;
+        this.hintIconEnterMouse = hintIconEnterMouse;
+        setModelCard(modelCard);
         this.isSelected = false;
     }
 
@@ -62,20 +74,20 @@ public class HandCardView {
         this.imageView = imageView;
     }
 
-    public Text getHint() {
-        return hint;
+    public Text getHintFlip() {
+        return hintFlip;
     }
 
-    public void setHint(Text hint) {
-        this.hint = hint;
+    public void setHintFlip(Text hintFlip) {
+        this.hintFlip = hintFlip;
     }
 
-    public ImageView getHintIcon1() {
-        return hintIcon1;
+    public ImageView getHintIconFlipKB() {
+        return hintIconFlipKB;
     }
 
-    public void setHintIcon1(ImageView hintIcon1) {
-        this.hintIcon1 = hintIcon1;
+    public void setHintIconFlipKB(ImageView hintIconFlipKB) {
+        this.hintIconFlipKB = hintIconFlipKB;
     }
 
     public boolean isSelected() {
@@ -125,9 +137,12 @@ public class HandCardView {
         if (!isBeingPlayed) {
             controller.blockInput();
             this.isSelected = true;
-            hint.setVisible(true);
-            hintIcon1.setVisible(true);
-            hintIcon2.setVisible(true);
+            hintFlip.setVisible(true);
+            hintIconFlipKB.setVisible(true);
+            hintIconFlipMouse.setVisible(true);
+            hintEnter.setVisible(true);
+            hintIconEnterKB.setVisible(true);
+            hintIconEnterMouse.setVisible(true);
             DropShadow glowEffect = new DropShadow();
             glowEffect.setWidth(100);
             glowEffect.setHeight(100);
@@ -148,9 +163,12 @@ public class HandCardView {
         if (!isBeingPlayed) {
             controller.blockInput();
             this.isSelected = false;
-            hint.setVisible(false);
-            hintIcon1.setVisible(false);
-            hintIcon2.setVisible(false);
+            hintFlip.setVisible(false);
+            hintIconFlipKB.setVisible(false);
+            hintIconFlipMouse.setVisible(false);
+            hintEnter.setVisible(false);
+            hintIconEnterKB.setVisible(false);
+            hintIconEnterMouse.setVisible(false);
             DropShadow shadow = new DropShadow();
             shadow.setWidth(50);
             shadow.setHeight(50);
@@ -193,6 +211,7 @@ public class HandCardView {
                 break;
             default: break;
         }
+        deselect(controller);
         t.play();
     }
 
@@ -297,5 +316,6 @@ public class HandCardView {
         deselect2.setToY(1);
         deselect2.setOnFinished(e -> controller.unlockInput());
         deselect2.play();
+        deselect(controller);
     }
 }

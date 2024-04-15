@@ -75,6 +75,8 @@ public class GameWindow extends Application {
                     case ENTER -> {
                         if (controller.isShowingDialog()) {
                             controller.onDialogKeyboardPressed("ENTER");
+                        } else {
+                            controller.onEnterPressed();
                         }
                     }
                 }

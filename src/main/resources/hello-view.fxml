@@ -17,24 +17,33 @@
                             <children>
                                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
                                     <children>
-                                        <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="KBCollapseHint" fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleHand" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@collapseHandHint.png" />
                                             </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                                         </ImageView>
-                                        <Text fx:id="textCollapse" fill="white" text="Collapse">
+                                        <Text fx:id="textCollapse" fill="white" onMouseClicked="#toggleHand" text="Collapse">
                                             <font>
                                                 <Font name="Constantia Italic" size="15.0" />
                                             </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                                         </Text>
                                     </children>
                                     <padding>
                                         <Insets left="5" />
                                     </padding>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
                                 </HBox>
-                                <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="340.0" spacing="30">
+                                <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="340.0" spacing="40">
                                     <children>
-                                        <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card1Front.png" />
                                             </image>
@@ -45,36 +54,56 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                         </ImageView>
-                                        <VBox alignment="CENTER" spacing="10">
+                                        <VBox alignment="CENTER" spacing="40">
                                             <children>
-                                                <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@flipKeyboardHint.png" />
-                                                    </image>
-                                                </ImageView>
-                                                <ImageView fx:id="MouseHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@RightMouseButton.png" />
-                                                    </image>
-                                                </ImageView>
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@flipKeyboardHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHint1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@RightMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="text1" fill="white" text="Flip" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHintEnter1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@EnterHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHintEnter1" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@LeftMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="textEnter1" fill="white" text="Place" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
                                             </children>
                                         </VBox>
-                                        <Text fx:id="text1" fill="white" text="Flip" visible="false">
-                                            <font>
-                                                <Font name="Constantia Italic" size="15.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets left="-20.0" />
-                                            </HBox.margin>
-                                        </Text>
                                     </children>
                                     <opaqueInsets>
                                         <Insets />
                                     </opaqueInsets>
                                 </HBox>
-                                <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
+                                <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" pickOnBounds="false" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card2Front.png" />
                                             </image>
@@ -85,33 +114,53 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                         </ImageView>
-                                        <VBox alignment="CENTER" spacing="10">
+                                        <VBox alignment="CENTER" spacing="40">
                                             <children>
-                                                <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@flipKeyboardHint.png" />
-                                                    </image>
-                                                </ImageView>
-                                                <ImageView fx:id="MouseHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@RightMouseButton.png" />
-                                                    </image>
-                                                </ImageView>
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@flipKeyboardHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHint2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@RightMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="text2" fill="white" text="Flip" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHintEnter2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@EnterHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHintEnter2" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@LeftMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="textEnter2" fill="white" text="Place" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
                                             </children>
                                         </VBox>
-                                        <Text fx:id="text2" fill="white" text="Flip" visible="false">
-                                            <font>
-                                                <Font name="Constantia Italic" size="15.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets left="-20.0" />
-                                            </HBox.margin>
-                                        </Text>
                                     </children>
                                 </HBox>
                                 <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card3Front.png" />
                                             </image>
@@ -122,28 +171,48 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                         </ImageView>
-                                        <VBox alignment="CENTER" spacing="10">
+                                        <VBox alignment="CENTER" spacing="40">
                                             <children>
-                                                <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@flipKeyboardHint.png" />
-                                                    </image>
-                                                </ImageView>
-                                                <ImageView fx:id="MouseHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
-                                                    <image>
-                                                        <Image url="@RightMouseButton.png" />
-                                                    </image>
-                                                </ImageView>
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@flipKeyboardHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHint3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@RightMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="text3" fill="white" text="Flip" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" spacing="10">
+                                                    <children>
+                                                        <ImageView fx:id="KBHintEnter3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@EnterHint.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <ImageView fx:id="MouseHintEnter3" fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                            <image>
+                                                                <Image url="@LeftMouseButton.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Text fx:id="textEnter3" fill="white" text="Place" visible="false">
+                                                            <font>
+                                                                <Font name="Constantia Italic" size="15.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                </HBox>
                                             </children>
                                         </VBox>
-                                        <Text fx:id="text3" fill="white" text="Flip" visible="false">
-                                            <font>
-                                                <Font name="Constantia Italic" size="15.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets left="-20.0" />
-                                            </HBox.margin>
-                                        </Text>
                                     </children>
                                 </HBox>
                                 <HBox id="bottomHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">

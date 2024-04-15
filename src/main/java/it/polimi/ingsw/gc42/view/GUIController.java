@@ -59,6 +59,24 @@ public class GUIController implements ViewController {
     private Text text2;
     @FXML
     private Text text3;
+    @FXML
+    private ImageView KBHintEnter1;
+    @FXML
+    private ImageView KBHintEnter2;
+    @FXML
+    private ImageView KBHintEnter3;
+    @FXML
+    private ImageView MouseHintEnter1;
+    @FXML
+    private ImageView MouseHintEnter2;
+    @FXML
+    private ImageView MouseHintEnter3;
+    @FXML
+    private Text textEnter1;
+    @FXML
+    private Text textEnter2;
+    @FXML
+    private Text textEnter3;
 
     @FXML
     private ImageView KBNavHint;
@@ -114,9 +132,12 @@ public class GUIController implements ViewController {
 
 
     public void initializeCards() {
-        HandCardView handCardView1 = new HandCardView(view1, text1, KBHint1, MouseHint1);
-        HandCardView handCardView2 = new HandCardView(view2, text2, KBHint2, MouseHint2);
-        HandCardView handCardView3 = new HandCardView(view3, text3, KBHint3, MouseHint3);
+        HandCardView handCardView1 = new HandCardView(view1, text1, KBHint1,
+                MouseHint1, textEnter1, KBHintEnter1, MouseHintEnter1);
+        HandCardView handCardView2 = new HandCardView(view2, text2, KBHint2,
+                MouseHint2, textEnter2, KBHintEnter2, MouseHintEnter2);
+        HandCardView handCardView3 = new HandCardView(view3, text3, KBHint3,
+                MouseHint3, textEnter3, KBHintEnter3, MouseHintEnter3);
         handCardView1.getImageView().setVisible(false);
         handCardView2.getImageView().setVisible(false);
         handCardView3.getImageView().setVisible(false);
@@ -126,7 +147,11 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
-                    case PRIMARY -> playCard(1);
+                    case PRIMARY -> {
+                        if (!hand.isHidden()) {
+                            onEnterPressed();
+                        } else toggleHand();
+                    }
                     case SECONDARY -> onCard1Clicked();
                 }
             }
@@ -135,7 +160,11 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
-                    case PRIMARY -> playCard(2);
+                    case PRIMARY -> {
+                        if (!hand.isHidden()) {
+                            onEnterPressed();
+                        } else toggleHand();
+                    }
                     case SECONDARY -> onCard2Clicked();
                 }
             }
@@ -144,7 +173,11 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
-                    case PRIMARY -> playCard(3);
+                    case PRIMARY -> {
+                        if (!hand.isHidden()) {
+                            onEnterPressed();
+                        } else toggleHand();
+                    }
                     case SECONDARY -> onCard3Clicked();
                 }
             }
@@ -434,6 +467,7 @@ public class GUIController implements ViewController {
         selectCard(0);
     }
 
+    @FXML
     public void toggleHand() {
         if (!isShowingDialog) {
             if (!hand.isHidden()) {
@@ -475,17 +509,38 @@ public class GUIController implements ViewController {
     }
 
     private void hideAvailablePlacements() {
+        isShowingPlacements = false;
         phantomPlayArea.getChildren().clear();
     }
 
-    public void playCard(int number) {
-        cardBeingPlayed = number;
-        setPlayingOverlay(number, true);
-        showAvailablePlacements();
+    public void playCard() {
+        if (cardBeingPlayed == selectedCard) {
+            cardBeingPlayed = 0;
+        } else {
+            cardBeingPlayed = selectedCard;
+        }
+        setPlayingOverlay(cardBeingPlayed, true);
+        if (cardBeingPlayed > 0) {
+            showAvailablePlacements();
+        } else {
+            hideAvailablePlacements();
+        }
     }
 
     public void placeCard(Coordinates coordinates) {
-        gameController.playCard(player.getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
+        ScaleTransition transition = new ScaleTransition(Duration.millis(150), hand.getHandCardView(cardBeingPlayed).getImageView());
+        transition.setFromX(1);
+        transition.setFromY(1);
+        transition.setToX(0);
+        transition.setToY(0);
+        transition.setOnFinished((e) -> {
+            hand.getHandCardView(cardBeingPlayed).getImageView().setScaleX(1);
+            hand.getHandCardView(cardBeingPlayed).getImageView().setScaleY(1);
+        });
+        transition.setOnFinished((e) -> {
+            gameController.playCard(player.getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
+        });
+        transition.play();
     }
 
     private ImageView initImageView(Image image, int x, int y) {
@@ -691,5 +746,9 @@ public class GUIController implements ViewController {
         t1.play();
         t2.play();
         playAreaScale = scale;
+    }
+
+    public void onEnterPressed() {
+        playCard();
     }
 }
