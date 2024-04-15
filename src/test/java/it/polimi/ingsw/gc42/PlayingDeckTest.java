@@ -52,4 +52,28 @@ public class PlayingDeckTest {
         assertEquals(game.getResourcePlayingDeck().getDeck().getNumberOfCards(), 0);
         assertNull(game.getResourcePlayingDeck().getCard(1));
     }
+
+    @Test
+    void testGrabCard_EmptySlot(){
+        Game game = new Game();
+        while(!game.isResourceDeckEmpty()) {
+            game.getResourcePlayingDeck().getDeck().draw();
+        }
+        while(!game.isGoldDeckEmpty()){
+            game.getGoldPlayingDeck().getDeck().draw();
+        }
+        game.getResourcePlayingDeck().grabCard(1);
+        Card card1 = game.getResourcePlayingDeck().grabCard(1);
+        game.getResourcePlayingDeck().grabCard(2);
+        Card card2 = game.getResourcePlayingDeck().grabCard(2);
+        game.getGoldPlayingDeck().grabCard(1);
+        Card card3 = game.getGoldPlayingDeck().grabCard(1);
+        game.getGoldPlayingDeck().grabCard(2);
+        Card card4 = game.getGoldPlayingDeck().grabCard(2);
+
+        assertNull(card1);
+        assertNull(card2);
+        assertNull(card3);
+        assertNull(card4);
+    }
 }
