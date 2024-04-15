@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.view;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.view.Classes.HandView;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
@@ -14,7 +15,6 @@ import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
 import it.polimi.ingsw.gc42.view.Dialog.Dialog;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
@@ -108,18 +108,15 @@ public class GUIController implements ViewController {
     private ObjectiveCardView objectiveCardView;
     private int lastSelected = 0;
 
-    private HandCardView handCardView1;
-    private HandCardView handCardView2;
-    private HandCardView handCardView3;
-    private boolean isHandVisible = true;
+    private HandView hand;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
 
 
     public void initializeCards() {
-        handCardView1 = new HandCardView(view1, text1, KBHint1, MouseHint1);
-        handCardView2 = new HandCardView(view2, text2, KBHint2, MouseHint2);
-        handCardView3 = new HandCardView(view3, text3, KBHint3, MouseHint3);
+        HandCardView handCardView1 = new HandCardView(view1, text1, KBHint1, MouseHint1);
+        HandCardView handCardView2 = new HandCardView(view2, text2, KBHint2, MouseHint2);
+        HandCardView handCardView3 = new HandCardView(view3, text3, KBHint3, MouseHint3);
         handCardView1.getImageView().setVisible(false);
         handCardView2.getImageView().setVisible(false);
         handCardView3.getImageView().setVisible(false);
@@ -152,6 +149,10 @@ public class GUIController implements ViewController {
                 }
             }
         });
+
+        hand = new HandView(handCardView1, handCardView2, handCardView3,
+                KBNavHint, textNav, KBCollapseHint, textCollapse, this);
+        hand.hide();
     }
 
     public void setGameController(GameController gameController) {
@@ -186,54 +187,59 @@ public class GUIController implements ViewController {
         Listener listener1 = new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView1);
+                flipCard(hand.getHandCardView(1));
             }
         };
         Listener listener2 = new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView2);
+                flipCard(hand.getHandCardView(2));
             }
         };
         Listener listener3 = new Listener() {
             @Override
             public void onEvent() {
-                flipCard(handCardView3);
+                flipCard(hand.getHandCardView(3));
             }
         };
         player.setListener(new HandListener() {
             @Override
             public void onEvent() {
-                Card card;
-                card = player.getHandCard(0);
-                if (null != handCardView1.getModelCard()) {
-                    handCardView1.getModelCard().removeListener(listener1);
-                }
-                setPlayingOverlay(1, false);
-                handCardView1.setModelCard(card);
-                if (null != card) {
-                    handCardView1.getModelCard().setListener(listener1);
-                }
+                hand.refresh(new Runnable() {
+                    @Override
+                    public void run() {
+                        Card card;
+                        card = player.getHandCard(0);
+                        if (null != hand.getHandCardView(1).getModelCard()) {
+                            hand.getHandCardView(1).getModelCard().removeListener(listener1);
+                        }
+                        setPlayingOverlay(1, false);
+                        hand.getHandCardView(1).setModelCard(card);
+                        if (null != card) {
+                            hand.getHandCardView(1).getModelCard().setListener(listener1);
+                        }
 
-                card = player.getHandCard(1);
-                if (null != handCardView2.getModelCard()) {
-                    handCardView2.getModelCard().removeListener(listener2);
-                }
-                setPlayingOverlay(2, false);
-                handCardView2.setModelCard(card);
-                if (null != card) {
-                    handCardView2.getModelCard().setListener(listener2);
-                }
+                        card = player.getHandCard(1);
+                        if (null != hand.getHandCardView(2).getModelCard()) {
+                            hand.getHandCardView(2).getModelCard().removeListener(listener2);
+                        }
+                        setPlayingOverlay(2, false);
+                        hand.getHandCardView(2).setModelCard(card);
+                        if (null != card) {
+                            hand.getHandCardView(2).getModelCard().setListener(listener2);
+                        }
 
-                card = player.getHandCard(2);
-                if (null != handCardView3.getModelCard()) {
-                    handCardView3.getModelCard().removeListener(listener3);
-                }
-                setPlayingOverlay(3, false);
-                handCardView3.setModelCard(card);
-                if (null != card) {
-                    handCardView3.getModelCard().setListener(listener3);
-                }
+                        card = player.getHandCard(2);
+                        if (null != hand.getHandCardView(3).getModelCard()) {
+                            hand.getHandCardView(3).getModelCard().removeListener(listener3);
+                        }
+                        setPlayingOverlay(3, false);
+                        hand.getHandCardView(3).setModelCard(card);
+                        if (null != card) {
+                            hand.getHandCardView(3).getModelCard().setListener(listener3);
+                        }
+                    }
+                });
             }
         });
         player.setListener(new ReadyToChooseSecretObjectiveListener() {
@@ -296,21 +302,21 @@ public class GUIController implements ViewController {
     @FXML
     public void onCard1Clicked() {
         if (canReadInput() && !isShowingDialog) {
-            gameController.flipCard(handCardView1.getModelCard());
+            gameController.flipCard(hand.getHandCardView(1).getModelCard());
         }
     }
 
     @FXML
     public void onCard2Clicked() {
         if (canReadInput() && !isShowingDialog) {
-            gameController.flipCard(handCardView2.getModelCard());
+            gameController.flipCard(hand.getHandCardView(2).getModelCard());
         }
     }
 
     @FXML
     public void onCard3Clicked() {
         if (canReadInput() && !isShowingDialog) {
-            gameController.flipCard(handCardView3.getModelCard());
+            gameController.flipCard(hand.getHandCardView(3).getModelCard());
         }
     }
 
@@ -345,44 +351,44 @@ public class GUIController implements ViewController {
     }
 
     protected void selectCard(int selectedCard) {
-        if (isHandVisible && !isShowingDialog) {
+        if (!hand.isHidden() && !isShowingDialog) {
             this.selectedCard = selectedCard;
             switch (selectedCard) {
                 case 1:
-                    handCardView1.select(this);
+                    hand.getHandCardView(1).select(this);
                     if (2 == lastSelected) {
-                        handCardView2.deselect(this);
+                        hand.getHandCardView(2).deselect(this);
                     }
                     if (3 == lastSelected) {
-                        handCardView3.deselect(this);
+                        hand.getHandCardView(3).deselect(this);
                     }
                     break;
                 case 2:
-                    handCardView2.select(this);
+                    hand.getHandCardView(2).select(this);
                     if (1 == lastSelected) {
-                        handCardView1.deselect(this);
+                        hand.getHandCardView(1).deselect(this);
                     }
                     if (3 == lastSelected) {
-                        handCardView3.deselect(this);
+                        hand.getHandCardView(3).deselect(this);
                     }
                     break;
                 case 3:
-                    handCardView3.select(this);
+                    hand.getHandCardView(3).select(this);
                     if (1 == lastSelected) {
-                        handCardView1.deselect(this);
+                        hand.getHandCardView(1).deselect(this);
                     }
                     if (2 == lastSelected) {
-                        handCardView2.deselect(this);
+                        hand.getHandCardView(2).deselect(this);
                     }
                     break;
                 default:
                     if (1 == lastSelected) {
-                        handCardView1.deselect(this);
+                        hand.getHandCardView(1).deselect(this);
                     }
                     if (2 == lastSelected) {
-                        handCardView2.deselect(this);
+                        hand.getHandCardView(2).deselect(this);
                     } else if (3 == lastSelected) {
-                        handCardView3.deselect(this);
+                        hand.getHandCardView(3).deselect(this);
                     }
             }
             lastSelected = selectedCard;
@@ -430,53 +436,12 @@ public class GUIController implements ViewController {
 
     public void toggleHand() {
         if (!isShowingDialog) {
-            if (isHandVisible) {
-                hideHand();
-                isHandVisible = false;
+            if (!hand.isHidden()) {
+                hand.hide();
             } else {
-                showHand();
-                isHandVisible = true;
+                hand.show();
             }
         }
-    }
-
-    private void showHand() {
-        KBNavHint.setVisible(true);
-        textNav.setVisible(true);
-        textCollapse.setText("Collapse");
-        blockInput();
-
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
-        t1.setByY(-285);
-        t1.play();
-
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
-        t2.setByY(-285);
-        t2.play();
-
-        handCardView1.show(1, this);
-        handCardView2.show(2, this);
-        handCardView3.show(3, this);
-    }
-
-    private void hideHand() {
-        deselectAllCards();
-        KBNavHint.setVisible(false);
-        textNav.setVisible(false);
-        textCollapse.setText("My Cards");
-        blockInput();
-
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
-        t1.setByY(285);
-        t1.play();
-
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
-        t2.setByY(285);
-        t2.play();
-
-        handCardView1.hide(1, this);
-        handCardView2.hide(2, this);
-        handCardView3.hide(3, this);
     }
 
     @FXML
@@ -665,47 +630,47 @@ public class GUIController implements ViewController {
     public void setPlayingOverlay(int number, boolean value) {
         switch (number) {
             case 0 -> {
-                if (handCardView1.isBeingPlayed()) {
-                    handCardView1.removePlayingSelection(this);
+                if (hand.getHandCardView(1).isBeingPlayed()) {
+                    hand.getHandCardView(1).removePlayingSelection(this);
                 }
-                if (handCardView2.isBeingPlayed()) {
-                    handCardView2.removePlayingSelection(this);
+                if (hand.getHandCardView(2).isBeingPlayed()) {
+                    hand.getHandCardView(2).removePlayingSelection(this);
                 }
-                if (handCardView3.isBeingPlayed()) {
-                    handCardView3.removePlayingSelection(this);
+                if (hand.getHandCardView(3).isBeingPlayed()) {
+                    hand.getHandCardView(3).removePlayingSelection(this);
                 }
             }
             case 1 -> {
-                if (value && !handCardView1.isBeingPlayed()) {
-                    handCardView1.setPlayingSelection(this);
+                if (value && !hand.getHandCardView(1).isBeingPlayed()) {
+                    hand.getHandCardView(1).setPlayingSelection(this);
                 }
-                if (handCardView2.isBeingPlayed()) {
-                    handCardView2.removePlayingSelection(this);
+                if (hand.getHandCardView(2).isBeingPlayed()) {
+                    hand.getHandCardView(2).removePlayingSelection(this);
                 }
-                if (handCardView3.isBeingPlayed()) {
-                    handCardView3.removePlayingSelection(this);
+                if (hand.getHandCardView(3).isBeingPlayed()) {
+                    hand.getHandCardView(3).removePlayingSelection(this);
                 }
             }
             case 2 -> {
-                if (handCardView1.isBeingPlayed()) {
-                    handCardView1.removePlayingSelection(this);
+                if (hand.getHandCardView(1).isBeingPlayed()) {
+                    hand.getHandCardView(1).removePlayingSelection(this);
                 }
-                if (value && !handCardView2.isBeingPlayed()) {
-                    handCardView2.setPlayingSelection(this);
+                if (value && !hand.getHandCardView(2).isBeingPlayed()) {
+                    hand.getHandCardView(2).setPlayingSelection(this);
                 }
-                if (handCardView3.isBeingPlayed()) {
-                    handCardView3.removePlayingSelection(this);
+                if (hand.getHandCardView(3).isBeingPlayed()) {
+                    hand.getHandCardView(3).removePlayingSelection(this);
                 }
             }
             case 3 -> {
-                if (handCardView1.isBeingPlayed()) {
-                    handCardView1.removePlayingSelection(this);
+                if (hand.getHandCardView(1).isBeingPlayed()) {
+                    hand.getHandCardView(1).removePlayingSelection(this);
                 }
-                if (handCardView2.isBeingPlayed()) {
-                    handCardView2.removePlayingSelection(this);
+                if (hand.getHandCardView(2).isBeingPlayed()) {
+                    hand.getHandCardView(2).removePlayingSelection(this);
                 }
-                if (value && !handCardView3.isBeingPlayed()) {
-                    handCardView3.setPlayingSelection(this);
+                if (value && !hand.getHandCardView(3).isBeingPlayed()) {
+                    hand.getHandCardView(3).setPlayingSelection(this);
                 }
             }
         }
