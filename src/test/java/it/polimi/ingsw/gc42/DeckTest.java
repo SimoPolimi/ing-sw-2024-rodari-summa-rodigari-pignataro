@@ -4,8 +4,10 @@ import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,5 +54,19 @@ class DeckTest {
         assertEquals(drawnCard, oldTop);
         assertEquals(g.getResourcePlayingDeck().getDeck().getTopCard(), oldDeck.get(1));
 
+    }
+
+    @Test
+    void testCardDraw_EmptyDeck() {
+        Game game = new Game();
+        while (!game.isResourceDeckEmpty()) {
+            game.getResourcePlayingDeck().getDeck().draw();
+        }
+        assertThrowsExactly(NoSuchElementException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                game.getResourcePlayingDeck().getDeck().draw();
+            }
+        });
     }
 }
