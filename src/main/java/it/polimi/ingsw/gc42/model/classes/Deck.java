@@ -123,10 +123,12 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
-                    deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
+                    GoldCard newCard = new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null, null),
-                            points, frontImage, backImage));
+                            points, frontImage, backImage);
+                    ((CornerCountObjective) newCard.getObjective()).setCard(newCard);
+                    deck.cards.add(newCard);
                 }
                 break;
             case STARTERCARD:
