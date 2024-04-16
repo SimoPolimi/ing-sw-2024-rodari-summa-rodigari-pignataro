@@ -292,7 +292,7 @@ public class GUIController implements ViewController {
             public void onEvent() {
                 CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, GUIController.this);
                 ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
-                for (ObjectiveCard card: cards) {
+                for (ObjectiveCard card : cards) {
                     dialog.addCard(card);
                 }
                 dialog.setListener(new CardPickerListener() {
@@ -302,7 +302,7 @@ public class GUIController implements ViewController {
                         objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
                                 player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
                                 KBObjectiveHint, false, objectiveTitle, objectiveDescription, objDescriptionBox);
-                        objectiveCardView.getImageView().setTranslateX(objectiveCardView.getImageView().getTranslateX()+200);
+                        objectiveCardView.getImageView().setTranslateX(objectiveCardView.getImageView().getTranslateX() + 200);
                         objectiveCardView.getImageView().setVisible(true);
                         objectiveCardView.show();
                         objectiveView.setOnMouseEntered((e) -> {
@@ -327,6 +327,7 @@ public class GUIController implements ViewController {
     public boolean isShowingDialog() {
         return isShowingDialog;
     }
+
     public void setShowingDialog(boolean status) {
         isShowingDialog = status;
         if (!status && !dialogQueue.isEmpty()) {
@@ -658,7 +659,7 @@ public class GUIController implements ViewController {
     public void showStarterCardSelectionDialog() {
         Card card = gameController.getGame().getStarterDeck().draw();
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
-        , true, this);
+                , true, this);
         dialog.addCard(card);
         dialog.setListener(new CardPickerListener() {
             @Override
@@ -673,7 +674,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void showTokenSelectionDialog() {
-        SharedTokenPickerDialog dialog = new SharedTokenPickerDialog("Pick your Token!", false , this);
+        SharedTokenPickerDialog dialog = new SharedTokenPickerDialog("Pick your Token!", false, this);
         dialog.setListener(new TokenListener() {
             @Override
             public void onEvent() {

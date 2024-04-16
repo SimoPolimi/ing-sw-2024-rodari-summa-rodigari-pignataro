@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc42;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,16 +58,16 @@ public class ObjectiveTest {
 
         // Extracting the Cards with ID 1, 4, 16, 27 and 36.
         // Those Cards contain exactly 7 Fungi Resources on their Front Sides.
-        switch (game.getResourcePlayingDeck().getCard(1).getId()) {
+        switch (game.getResourcePlayingDeck().getSlot(1).getId()) {
             case 1, 4, 16, 27, 36:
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(1));
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(1));
                 break;
             default:
                 break;
         }
-        switch (game.getResourcePlayingDeck().getCard(2).getId()) {
+        switch (game.getResourcePlayingDeck().getSlot(2).getId()) {
             case 1, 4, 16, 27, 36:
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(2));
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(2));
                 break;
             default:
                 break;
@@ -98,24 +97,24 @@ public class ObjectiveTest {
         // 1 and 16 will be flipped, so their Corners are Empty, but their Permanent Resource is visible.
         // 1 has a Fungi Permanent Resource, 16 a Plant one.
         // Those Cards contain exactly 5 Fungi Resources.
-        switch (game.getResourcePlayingDeck().getCard(1).getId()) {
+        switch (game.getResourcePlayingDeck().getSlot(1).getId()) {
             case 4, 27, 36:
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(1));
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(1));
                 break;
             case 1, 16:
-                game.getResourcePlayingDeck().getCard(1).flip();
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(1));
+                game.getResourcePlayingDeck().getSlot(1).flip();
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(1));
                 break;
             default:
                 break;
         }
-        switch (game.getResourcePlayingDeck().getCard(2).getId()) {
+        switch (game.getResourcePlayingDeck().getSlot(2).getId()) {
             case 4, 27, 36:
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(2));
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(2));
                 break;
             case 1, 16:
-                game.getResourcePlayingDeck().getCard(2).flip();
-                test.add((PlayableCard) game.getResourcePlayingDeck().getCard(2));
+                game.getResourcePlayingDeck().getSlot(2).flip();
+                test.add((PlayableCard) game.getResourcePlayingDeck().getSlot(2));
                 break;
             default:
                 break;

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Player implements Observable {
     /**
      * Implement method getter for nickname
+     *
      * @return nickname
      */
     public String getNickname() {
@@ -22,6 +23,7 @@ public class Player implements Observable {
 
     /**
      * Implement method setter for nickname
+     *
      * @param nickname: player's name
      */
     public void setNickname(String nickname) {
@@ -30,6 +32,7 @@ public class Player implements Observable {
 
     /**
      * Implement method getter for token
+     *
      * @return token
      */
     public Token getToken() {
@@ -38,6 +41,7 @@ public class Player implements Observable {
 
     /**
      * Implement method setter for token
+     *
      * @param token: player's token
      */
     public void setToken(Token token) {
@@ -47,6 +51,7 @@ public class Player implements Observable {
 
     /**
      * Implement method getter for points
+     *
      * @return points
      */
     public int getPoints() {
@@ -56,6 +61,7 @@ public class Player implements Observable {
     /**
      * Implement method setter for points.
      * If points > 20 notify that player reached the amount to win
+     *
      * @param points: player's points
      */
     public void setPoints(int points) {
@@ -67,6 +73,7 @@ public class Player implements Observable {
 
     /**
      * Implement method getter for isFirst
+     *
      * @return isFirst
      */
     public boolean isFirst() {
@@ -75,6 +82,7 @@ public class Player implements Observable {
 
     /**
      * Implement method setter for isFirst
+     *
      * @param first: boolean for knowing if you are the first to play
      */
     public void setFirst(boolean first) {
@@ -83,6 +91,7 @@ public class Player implements Observable {
 
     /**
      * Implement method getter for secretObjective
+     *
      * @return secretObjective
      */
     public ObjectiveCard getSecretObjective() {
@@ -272,17 +281,6 @@ public class Player implements Observable {
     }
 
     /**
-     * Grabs a card of the specified PlayingDeck from one of its slots. To pick a card directly from the deck use drawCard()
-     *
-     * @param playingDeck the PlayingDeck from which the player wants to grab a card
-     * @param slot        the selected PlayingDeck's slot from where the Player wants to grab the Card
-     */
-    public void grabCard(PlayingDeck playingDeck, int slot) {
-        hand.add((PlayableCard) playingDeck.grabCard(slot));
-        notifyListeners("PlayArea Updated");
-    }
-
-    /**
      * Returns the card in the selected slot provided that a card is present
      *
      * @param slot the slot of the player's hand that contains the card that is returned
@@ -299,5 +297,9 @@ public class Player implements Observable {
 
     public int getHandSize() {
         return hand.size();
+    }
+
+    public void addHandCard(PlayableCard card) {
+        hand.add(card);
     }
 }
