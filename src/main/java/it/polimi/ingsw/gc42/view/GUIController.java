@@ -573,11 +573,11 @@ public class GUIController implements ViewController {
         shadow.setHeight(50);
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
-        if (Math.abs(x) >= 8 || Math.abs(y) >= 8) {
+        if (playAreaScale > 0.3 && (Math.abs(x) >= 8 || Math.abs(y) >= 8)) {
             scalePlayArea(0.3);
-        } else if (Math.abs(x) >= 5 || Math.abs(y) >= 5) {
+        } else if (playAreaScale > 0.5 && (Math.abs(x) >= 5 || Math.abs(y) >= 5)) {
             scalePlayArea(0.5);
-        } else if (Math.abs(x) >= 3 || Math.abs(y) >= 3) {
+        } else if (playAreaScale > 0.7 && (Math.abs(x) >= 3 || Math.abs(y) >= 3)) {
             scalePlayArea(0.7);
         }
         return imageView;
