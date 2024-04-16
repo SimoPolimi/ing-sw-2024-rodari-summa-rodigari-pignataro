@@ -2,11 +2,15 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
+import it.polimi.ingsw.gc42.model.classes.game.Chat;
+import it.polimi.ingsw.gc42.model.classes.game.Message;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.view.Classes.ClearScreen;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -38,9 +42,10 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
-    private void play() {
+    private void play() throws IOException, InterruptedException {
         // This stage is never showed
         controller = new GameController();
+        Chat chat = controller.getGame().getChat();
 
         while (!exit) {
             printMenu();
@@ -59,12 +64,14 @@ public class GameTerminal extends Application implements ViewController {
                     System.out.println();
                     break;
                 case "4":
-                    // TODO: chat
-                    System.out.println();
+                    for (int index = 0; index < chat.getChatSize(); index++) {
+                        Message message = chat.getMessage(index);
+                        System.out.println(message.getSender().getNickname()+": " +message.getText()+"/* " +message.getDateTime().toString());
+                    }
                     break;
                 case "5":
-                    // TODO: send msg
-                    scanner.next();
+                    Message message = new Message(scanner.next(), player);
+                    chat.sendMessage(message);
                     break;
                 case "6":
                     exit = true;
@@ -73,7 +80,7 @@ public class GameTerminal extends Application implements ViewController {
                     System.out.println("Unknown command");
                     break;
             }
-            // TODO: clear screen
+            ClearScreen.main();
             System.out.println("-------------------------------------------------------------------------------");
         }
     }

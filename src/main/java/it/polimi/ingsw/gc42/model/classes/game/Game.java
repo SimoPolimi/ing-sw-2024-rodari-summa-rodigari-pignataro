@@ -22,6 +22,7 @@ public class Game {
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
     private int playerTurn;
+    private final Chat chat = new Chat();
 
     private final ArrayList<Player> players = new ArrayList<>();
 
@@ -203,5 +204,9 @@ public class Game {
         this.goldPlayingDeck = new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck);
         this.objectivePlayingDeck = new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck);
         this.playerTurn = 1;
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 }
