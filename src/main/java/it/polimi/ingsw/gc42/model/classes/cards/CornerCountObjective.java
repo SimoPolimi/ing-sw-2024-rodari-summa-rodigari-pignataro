@@ -44,7 +44,23 @@ public class CornerCountObjective extends CountObjective{
      */
     @Override
     protected int check(ArrayList<PlayableCard> playArea) {
-        //TODO: Implement (check if Corners of nearby Cards are covered)
-        return 0;
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+        int points = 0;
+        for(PlayableCard c : playArea) {
+            if(c.getX() == x+1 && c.getY() == y && c.getShowingSide().getBottomLeftCorner() != null && c.getShowingSide().getBottomLeftCorner().isCovered()) {
+                points++;
+            }
+            if(c.getX() == x && c.getY() == y+1 && c.getShowingSide().getBottomRightCorner() != null && c.getShowingSide().getBottomRightCorner().isCovered()) {
+                points++;
+            }
+            if(c.getX() == x-1 && c.getY() == y && c.getShowingSide().getTopRightCorner() != null && c.getShowingSide().getTopRightCorner().isCovered()) {
+                points++;
+            }
+            if(c.getX() == x && c.getY() == y-1 && c.getShowingSide().getTopLeftCorner() != null && c.getShowingSide().getTopLeftCorner().isCovered()) {
+                points++;
+            }
+        }
+        return points;
     }
 }
