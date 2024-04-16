@@ -42,6 +42,7 @@ public class Player implements Observable {
      */
     public void setToken(Token token) {
         this.token = token;
+        notifyListeners("Token Updated");
     }
 
     /**
@@ -141,7 +142,7 @@ public class Player implements Observable {
         this.nickname = nickname;
         this.isFirst = false;
         this.points = 0;
-        this.token = Token.BLUE;
+        this.token = null;
         this.secretObjective = null;
         setStatus(GameStatus.NOT_IN_GAME);
     }
@@ -192,6 +193,13 @@ public class Player implements Observable {
             case "My Status has changed":
                 for (Listener l : listeners) {
                     if (l instanceof StatusListener) {
+                        l.onEvent();
+                    }
+                }
+                break;
+            case "Token Updated":
+                for (Listener l : listeners) {
+                    if (l instanceof TokenListener) {
                         l.onEvent();
                     }
                 }

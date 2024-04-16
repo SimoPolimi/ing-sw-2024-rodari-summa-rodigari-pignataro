@@ -91,6 +91,12 @@ public class GameController {
         }
     }
 
+    public void beginTokenChoosing() {
+        for (ViewController view: views) {
+            view.showTokenSelectionDialog();
+        }
+    }
+
     public void addView(ViewController view) {
         views.add(view);
     }
@@ -121,6 +127,10 @@ public class GameController {
                 startGame();
                 break;
             case READY:
+                break;
+            case READY_TO_CHOOSE_TOKEN:
+                beginTokenChoosing();
+                currentStatus = GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE;
                 break;
             case READY_TO_CHOOSE_SECRET_OBJECTIVE:
                 drawSecretObjectives();

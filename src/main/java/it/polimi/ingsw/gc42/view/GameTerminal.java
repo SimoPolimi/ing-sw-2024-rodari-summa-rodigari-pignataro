@@ -127,4 +127,9 @@ public class GameTerminal extends Application implements ViewController {
     public void showStarterCardSelectionDialog() {
         //TODO: Implement
     }
+
+    @Override
+    public void showTokenSelectionDialog() {
+        // TODO: Implement
+    }
 }

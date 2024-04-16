@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.view.Classes.HandView;
+import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
@@ -206,10 +207,15 @@ public class GUIController implements ViewController {
 
     public void setPlayer(Player player) {
         this.player = player;
-        setToken(player.getToken());
         if (player.isFirst()) {
             blackToken.setVisible(true);
         }
+        player.setListener(new TokenListener() {
+            @Override
+            public void onEvent() {
+                setToken(player.getToken());
+            }
+        });
         player.getPlayField().setListener(new PlayAreaListener() {
             @Override
             public void onEvent() {
@@ -638,26 +644,6 @@ public class GUIController implements ViewController {
 
     @Override
     public void showStarterCardSelectionDialog() {
-        /*
-        // Old implementation just in case
-        ArrayList<Card> starterCards = gameController.getGame().getStarterDeck().getCopy();
-        SharedCardPickerDialog dialog = new SharedCardPickerDialog("Choose a Starter Card!", false, true, this);
-        for (Card card: starterCards) {
-            dialog.addCard(card);
-        }
-        dialog.setListener(new CardPickerListener() {
-            @Override
-            public void onEvent() {
-                player.setStarterCard((StarterCard) dialog.getPickedCard());
-                hideDialog();
-                player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-            }
-        });
-        try {
-            showDialog(dialog);
-        } catch (AlreadyShowingADialogException e) {
-            dialogQueue.add(dialog);
-        }*/
         Card card = gameController.getGame().getStarterDeck().draw();
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
         , true, this);
@@ -673,13 +659,42 @@ public class GUIController implements ViewController {
         showDialog(dialog);
     }
 
+    @Override
+    public void showTokenSelectionDialog() {
+        SharedTokenPickerDialog dialog = new SharedTokenPickerDialog("Pick your Token!", false , this);
+        dialog.setListener(new TokenListener() {
+            @Override
+            public void onEvent() {
+                player.setToken(dialog.getPickedToken());
+                hideDialog();
+                player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+            }
+        });
+        showDialog(dialog);
+    }
+
     private void setToken(Token playerToken) {
         switch (playerToken) {
-            case BLUE -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
-            case RED -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
-            case YELLOW -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
-            case GREEN -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
-            default -> token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+            case BLUE -> {
+                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                token.setVisible(true);
+            }
+            case RED -> {
+                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
+                token.setVisible(true);
+            }
+            case YELLOW -> {
+                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
+                token.setVisible(true);
+            }
+            case GREEN -> {
+                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+                token.setVisible(true);
+            }
+            default -> {
+                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                token.setVisible(false);
+            }
         }
     }
 

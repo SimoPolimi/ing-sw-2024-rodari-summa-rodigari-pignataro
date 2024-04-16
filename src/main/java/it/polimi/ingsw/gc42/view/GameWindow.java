@@ -96,13 +96,13 @@ public class GameWindow extends Application {
         gameController.addView(controller);
 
 
-        Player player = new Player(Token.YELLOW);
+        Player player = new Player("Asdrubale");
         player.setFirst(true);
         Game game = gameController.getGame();
         controller.setPlayer(player);
         gameController.addPlayer(player);
-        gameController.setCurrentStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
-        player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        gameController.setCurrentStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+        player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
 
         /*gameController.playCard((PlayableCard) game.getResourcePlayingDeck().getDeck().draw(), 1, 0);
         gameController.playCard((PlayableCard) game.getGoldPlayingDeck().getDeck().draw(), 0, 1);
