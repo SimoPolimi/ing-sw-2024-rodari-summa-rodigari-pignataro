@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.controller;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
+import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
@@ -65,8 +66,8 @@ public class GameController {
         Player player = game.getCurrentPlayer();
         try {
             player.playCard(card, x, y);
-        } catch (IllegalPlacementException e) {
-            // Handle exception
+        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+            // TODO: Handle exception
             e.printStackTrace();
         }
         //TODO: Make the player choose what to draw from

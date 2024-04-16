@@ -15,23 +15,60 @@ class CornerCountObjectiveTest {
     void check() {
         Game g = new Game();
         Player p = new Player(Token.BLUE);
-        StarterCard s = (StarterCard) g.getStarterDeck().draw();
+
+        ArrayList<Card> starters = g.getStarterDeck().getCopy();
+        for (Card s: starters) {
+            if (s.getId() == 84) {
+                s.flip();
+                p.setStarterCard((StarterCard) s);
+            }
+        }
         GoldCard gold = null;
+        Card c1 = null;
+        Card c2 = null;
 
         for(Card c : g.getGoldPlayingDeck().getDeck().getCopy()) {
             if(c.getId() == 46) {
                 gold = (GoldCard) c;
             }
         }
-        s.flip();
-        p.setStarterCard(s);
+
+        if (null == gold) {
+            Card c = g.getGoldPlayingDeck().getSlot(1);
+            if (c.getId() == 46) {
+                gold = (GoldCard) c;
+            } else {
+                c = g.getGoldPlayingDeck().getSlot(2);
+                if (c.getId() == 46) {
+                    gold = (GoldCard) c;
+                }
+            }
+        }
+        for (Card c: g.getResourcePlayingDeck().getDeck().getCopy()) {
+            if(c.getId() == 36) {
+                c1 = c;
+            } else if(c.getId() == 10) {
+                c2 = c;
+            }
+        }
+        if (null == c1 || null == c2) {
+            Card c = g.getResourcePlayingDeck().getSlot(1);
+            if (c.getId() == 36) {
+                c1 = c;
+            } else if(c.getId() == 10) {
+                c2 = c;
+            }
+        } else {
+            Card c = g.getResourcePlayingDeck().getSlot(2);
+            if (c.getId() == 36) {
+                c1 = c;
+            } else if(c.getId() == 10) {
+                c2 = c;
+            }
+        }
         try {
-            PlayableCard c = (PlayableCard) g.getResourcePlayingDeck().getDeck().draw();
-            c.flip();
-            p.playCard(c, 1, 0);
-            c = (PlayableCard) g.getResourcePlayingDeck().getDeck().draw();
-            c.flip();
-            p.playCard(c, 0, 1);
+            p.playCard((PlayableCard) c1, 1, 0);
+            p.playCard((PlayableCard) c2, 0, 1);
             p.playCard( gold, 1, 1);
         } catch (Exception e) {
             e.printStackTrace();

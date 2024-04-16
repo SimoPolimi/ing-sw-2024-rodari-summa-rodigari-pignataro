@@ -1,14 +1,18 @@
 package it.polimi.ingsw.gc42;
 
+import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
+import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
+import org.junit.jupiter.api.function.Executable;
 
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 
@@ -64,7 +68,7 @@ class PlayerTest {
         // when
         try {
             player.playCard(playedCard, 1, 0);
-        } catch (IllegalPlacementException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
             e.printStackTrace();
         }
 
@@ -184,4 +188,47 @@ class PlayerTest {
         assertNull(player.getHandCard(1));
         assertEquals(card1, player.getHandCard(0));
     }*/
+
+    @Test
+    void playCard_GoldCard_ConditionNotMet() {
+        Game game = new Game();
+        Player player = new Player(Token.BLUE);
+        GoldCard goldCard = null;
+        ArrayList<Card> deckCopy = game.getGoldPlayingDeck().getDeck().getCopy();
+        ArrayList<Card> starterDeckCopy = game.getStarterDeck().getCopy();
+
+        StarterCard starterCard = null;
+        for (Card card : starterDeckCopy) {
+            if (card.getId() == 82) {
+                starterCard = (StarterCard) card;
+            }
+        }
+
+        for (Card card : deckCopy) {
+            if (card.getId() == 41) {
+                goldCard = (GoldCard) card;
+            }
+        }
+        if (null == goldCard) {
+            Card card = game.getGoldPlayingDeck().getSlot(1);
+            if (card.getId() == 41) {
+                goldCard = (GoldCard) card;
+            } else {
+                card = game.getGoldPlayingDeck().getSlot(2);
+                if (card.getId() == 41) {
+                    goldCard = (GoldCard) card;
+                }
+            }
+        }
+        starterCard.flip();
+        player.setStarterCard(starterCard);
+
+        GoldCard finalGoldCard = goldCard;
+        assertThrowsExactly(PlacementConditionNotMetException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                player.playCard(finalGoldCard, 1, 0);
+            }
+        });
+    }
 }

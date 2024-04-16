@@ -41,7 +41,7 @@ public class ObjectiveTest {
                     (card.getShowingSide().getBottomRightCorner()).getItem() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getPermanentResource() == KingdomResource.FUNGI) {
+            if (!card.isFrontFacing() && card.getPermanentResources().getFirst() == KingdomResource.FUNGI) {
                 count++;
             }
         }

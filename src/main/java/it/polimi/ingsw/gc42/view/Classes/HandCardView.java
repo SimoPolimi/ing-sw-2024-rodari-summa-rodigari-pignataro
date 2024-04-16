@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.GoldCard;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.GUIController;
@@ -129,8 +130,9 @@ public class HandCardView {
     }
 
     public void flip() {
-        if (!isBeingPlayed)
-        modelCard.flip();
+        if (!isBeingPlayed) {
+            modelCard.flip();
+        }
     }
 
     public void select(GUIController controller) {
@@ -321,5 +323,22 @@ public class HandCardView {
         deselect2.setOnFinished(e -> controller.unlockInput());
         deselect2.play();
         deselect(controller, true);
+    }
+
+    public void showError() {
+        RotateTransition transition = new RotateTransition(Duration.millis(50), imageView);
+        transition.setFromAngle(0);
+        transition.setToAngle(30);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+
+        RotateTransition transition1 = new RotateTransition(Duration.millis(50), imageView);
+        transition1.setFromAngle(0);
+        transition1.setToAngle(-30);
+        transition1.setAutoReverse(true);
+        transition1.setCycleCount(2);
+
+        transition.setOnFinished((e) -> transition1.play());
+        transition.play();
     }
 }

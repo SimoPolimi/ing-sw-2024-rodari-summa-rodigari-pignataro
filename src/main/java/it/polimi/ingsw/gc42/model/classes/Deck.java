@@ -86,7 +86,7 @@ public class Deck implements Observable {
                     int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
-                    KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsString());
+                    Item item = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsString());
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
                     String upperLeftFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperLeftCorner").getAsJsonPrimitive().getAsString();
                     String upperRightFront = list.get(i).getAsJsonObject().getAsJsonObject("FrontSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
@@ -96,9 +96,11 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    ArrayList<Item> permRes = new ArrayList<>();
+                    permRes.add(item);
                     deck.cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, kingdom, points, frontImage, backImage));
+                            true, id, permRes, points, frontImage, backImage));
                 }
                 break;
             case GOLDCARD:
@@ -108,7 +110,7 @@ public class Deck implements Observable {
                     int id = list.get(i).getAsJsonObject().get("Id").getAsInt();
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
-                    KingdomResource kingdom = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsJsonPrimitive().getAsString());
+                    Item item = getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsJsonPrimitive().getAsString());
                     String condition = list.get(i).getAsJsonObject().get("Condition").getAsJsonPrimitive().getAsString();
                     int points = list.get(i).getAsJsonObject().get("Points").getAsInt();
                     int fungiCost = list.get(i).getAsJsonObject().get("FungiCost").getAsInt();
@@ -123,9 +125,11 @@ public class Deck implements Observable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    ArrayList<Item> permRes = new ArrayList<>();
+                    permRes.add(item);
                     deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, kingdom, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null, null),
+                            true, id, permRes, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null, null),
                             points, frontImage, backImage));
                 }
                 break;
@@ -137,9 +141,9 @@ public class Deck implements Observable {
                     String frontImage = list.get(i).getAsJsonObject().get("FrontImage").getAsJsonPrimitive().getAsString();
                     String backImage = list.get(i).getAsJsonObject().get("BackImage").getAsString();
                     int permanentResourceNumber = list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResourceNumber").getAsInt();
-                    KingdomResource res1 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(0).getAsJsonPrimitive().getAsString());
-                    KingdomResource res2;
-                    KingdomResource res3;
+                    Item res1 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(0).getAsJsonPrimitive().getAsString());
+                    Item res2;
+                    Item res3;
                     //TODO: Remove and make better
                     if (permanentResourceNumber > 1) {
                         res2 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(1).getAsJsonPrimitive().getAsString());
@@ -232,7 +236,7 @@ public class Deck implements Observable {
      * @param string: the KingdomResource read from the file.
      * @return the appropriate KingdomResource.
      */
-    private static KingdomResource getKingdom(String string) {
+    private static Item getKingdom(String string) {
         switch (string) {
             case "Fungi":
                 return KingdomResource.FUNGI;

@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc42.model.classes.cards;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 /**
  * Implementation of ResourceCard for Model
  * A type of Card that can be placed without conditions.
@@ -11,7 +13,6 @@ import javafx.scene.image.Image;
  */
 public class ResourceCard extends PlayableCard{
     // Attributes
-    private KingdomResource permanentResource;
     private int earnedPoints;
 
     // Constructor Method
@@ -25,14 +26,14 @@ public class ResourceCard extends PlayableCard{
      * @param id: unique identifier for the specific Card
      * @param x: horizontal coordinate for the Card's position on the table (null if not placed)
      * @param y: vertical coordinate for the Card's position on the table (null if not placed)
-     * @param permanentResource: KingdomResource shown on the back side of the Card
+     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
      * @param earnedPoints: number of points obtained for placing the card
      * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
-        this.permanentResource = permanentResource;
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
+                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
         this.earnedPoints = earnedPoints;
     }
 
@@ -43,37 +44,17 @@ public class ResourceCard extends PlayableCard{
      * @param backSide: CardSide to be used as the front side of the Card
      * @param isFrontFacing: boolean to specify which side of the Card is visible ( True -> front, False -> back )
      * @param id: unique identifier for the specific Card
-     * @param permanentResource: KingdomResource shown on the back side of the Card
+     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
      * @param earnedPoints: number of points obtained for placing the card
      * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
-        this.permanentResource = permanentResource;
+    public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
+                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
         this.earnedPoints = earnedPoints;
     }
     // Getter and Setter
-
-    /**
-     * Getter Method for permanentResource
-     * @return the resource that can't be covered, shown on the Card's back side
-     */
-    public KingdomResource getPermanentResource() {
-        if (!isFrontFacing()) {
-            return permanentResource;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Setter Method for permanentResource
-     * @param permanentResource: the resource that can't be covered, shown on the Card's back side
-     */
-    public void setPermanentResource(KingdomResource permanentResource) {
-        this.permanentResource = permanentResource;
-    }
 
     /**
      * Getter method for earnedPoints

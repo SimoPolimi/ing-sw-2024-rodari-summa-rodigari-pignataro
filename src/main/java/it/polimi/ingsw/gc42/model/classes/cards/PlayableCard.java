@@ -1,10 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.util.ArrayList;
+
 public class PlayableCard extends Card {
     // Attributes
     private CardSide frontSide;
     private CardSide backSide;
     private final Coordinates coordinates = new Coordinates();
+    private final ArrayList<Item> permanentResources = new ArrayList<>();
 
     // Constructor Methods
     /**
@@ -20,12 +23,13 @@ public class PlayableCard extends Card {
      * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        int id, int x, int y, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int id, int x, int y, String frontImage, String backImage) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
         coordinates.setX(x);
         coordinates.setY(y);
+        this.permanentResources.addAll(permanentResources);
     }
 
     /**
@@ -39,13 +43,32 @@ public class PlayableCard extends Card {
      * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        int id, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int id, String frontImage, String backImage) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
+        this.permanentResources.addAll(permanentResources);
     }
 
     // Getters and Setters
+
+    /**
+     * Getter Method for coordinates
+     * @return a Coordinate Object containing both the x and y values
+     */
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+
+    /**
+     * Getter Method for the Permanent Resources of this Card
+     * @return a copy of the ArrayList of Items
+     */
+    public ArrayList<Item> getPermanentResources() {
+        return new ArrayList<>(permanentResources);
+    }
+
     /**
      * Getter Method for CardSide
      *

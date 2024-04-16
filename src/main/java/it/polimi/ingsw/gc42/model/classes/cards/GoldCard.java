@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -7,10 +8,9 @@ import java.util.HashMap;
  */
 public class GoldCard extends PlayableCard{
     // Attributes
-    private final HashMap<String, Integer> costs = new HashMap<>();
+    private final HashMap<Item, Integer> costs = new HashMap<>();
     private Objective objective;
     private int earnedPoints;
-    private KingdomResource permanentResource;
 
     // Constructor Methods
     /**
@@ -21,7 +21,7 @@ public class GoldCard extends PlayableCard{
      * @param id: unique identifier for the specific Gold Card
      * @param x: horizontal coordinate for the Card's position on the table
      * @param y: vertical coordinate for the Card's position on the table
-     * @param permanentResource: KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
+     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
      * @param plantKingdomPoints: Plant Type points necessary to place the Card on the table (0 if not necessary)
      * @param animalKingdomPoints: Animal Type points necessary to place the Card on the table (0 if not necessary)
      * @param fungiKingdomPoints: Fungi Type points necessary to place the Card on the table (0 if not necessary)
@@ -31,9 +31,11 @@ public class GoldCard extends PlayableCard{
      * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,KingdomResource permanentResource, int plantKingdomPoints,
-                    int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
+                    ArrayList<Item> permanentResources, int plantKingdomPoints,
+                    int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective,
+                    int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);
@@ -41,7 +43,6 @@ public class GoldCard extends PlayableCard{
         setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
         this.earnedPoints = earnedPoints;
-        this.permanentResource = permanentResource;
     }
 
     /**
@@ -50,7 +51,7 @@ public class GoldCard extends PlayableCard{
      * @param backSide: Side shown on the back of the Card
      * @param isFrontFacing: true if the frontSide is shown, false otherwise
      * @param id: unique identifier for the specific Gold Card
-     * @param permanentResource: KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
+     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
      * @param plantKingdomPoints: Plant Type points necessary to place the Card on the table (0 if not necessary)
      * @param animalKingdomPoints: Animal Type points necessary to place the Card on the table (0 if not necessary)
      * @param fungiKingdomPoints: Fungi Type points necessary to place the Card on the table (0 if not necessary)
@@ -60,9 +61,11 @@ public class GoldCard extends PlayableCard{
      * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
      * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, KingdomResource permanentResource, int plantKingdomPoints, int animalKingdomPoints,
-                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
+    public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
+                    ArrayList<Item> permanentResources, int plantKingdomPoints, int animalKingdomPoints,
+                    int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints,
+                    String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);
@@ -70,47 +73,26 @@ public class GoldCard extends PlayableCard{
         setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
         this.earnedPoints = earnedPoints;
-        this.permanentResource = permanentResource;
     }
 
     // Getter and Setter
 
     /**
      * Setter Method for costs.
-     * @param kingdom: the KingdomResource to change the cost of.
+     * @param item: the Item to change the cost of.
      * @param cost: the int value to set as cost.
      */
-    public void setCost(KingdomResource kingdom, int cost) {
-        costs.replace(kingdom.toString(), cost);
+    public void setCost(Item item, int cost) {
+        costs.replace(item, cost);
     }
 
     /**
      * Getter Method for costs.
-     * @param kingdom: the KingdomResource to get the cost of.
+     * @param item: the Item to get the cost of.
      * @return the cost of that KingdomResource as and int value.
      */
-    public int getCost(KingdomResource kingdom) {
-        return costs.get(kingdom.toString());
-    }
-
-    /**
-     * Getter Method for permanentResource
-     * @return the KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
-     */
-    public KingdomResource getPermanentResource() {
-        if (!isFrontFacing()) {
-            return permanentResource;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Setter Method for permanentResource.
-     * @param permanentResource: the KingdomResource displayed at the center of the back CardSide, also used to determine the Kingdom of the Card.
-     */
-    public void setPermanentResource(KingdomResource permanentResource) {
-        this.permanentResource = permanentResource;
+    public int getCost(Item item) {
+        return costs.get(item);
     }
 
 
@@ -150,12 +132,67 @@ public class GoldCard extends PlayableCard{
 
     // Methods
     private void initMap() {
-        costs.put(KingdomResource.FUNGI.toString(), 0);
-        costs.put(KingdomResource.ANIMAL.toString(), 0);
-        costs.put(KingdomResource.PLANT.toString(), 0);
-        costs.put(KingdomResource.INSECT.toString(), 0);
+        costs.put(KingdomResource.FUNGI, 0);
+        costs.put(KingdomResource.ANIMAL, 0);
+        costs.put(KingdomResource.PLANT, 0);
+        costs.put(KingdomResource.INSECT, 0);
+        costs.put(Resource.FEATHER, 0);
+        costs.put(Resource.POTION, 0);
+        costs.put(Resource.SCROLL, 0);
     }
 
+
+    public boolean canBePlaced(ArrayList<PlayableCard> playArea) {
+        if(isFrontFacing()) {
+            HashMap<Item, Integer> playedItems = new HashMap<>();
+            playedItems.put(KingdomResource.FUNGI, 0);
+            playedItems.put(KingdomResource.ANIMAL, 0);
+            playedItems.put(KingdomResource.PLANT, 0);
+            playedItems.put(KingdomResource.INSECT, 0);
+            playedItems.put(Resource.FEATHER, 0);
+            playedItems.put(Resource.POTION, 0);
+            playedItems.put(Resource.SCROLL, 0);
+            for (PlayableCard card : playArea) {
+                if (card instanceof StarterCard && card.isFrontFacing()) {
+                    for (Item item : card.getPermanentResources()) {
+                        if (null != item) {
+                            increaseValue(playedItems, item);
+                        }
+                    }
+                } else if (!card.isFrontFacing() && !(card instanceof StarterCard)) {
+                    for (Item item : card.getPermanentResources()) {
+                        if (null != item) {
+                            increaseValue(playedItems, item);
+                        }
+                    }
+                }
+                if (null != card.getShowingSide().getTopLeftCorner() && null != card.getShowingSide().getTopLeftCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().getTopLeftCorner().getItem());
+                }
+                if (null != card.getShowingSide().getTopRightCorner() && null != card.getShowingSide().getTopRightCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().getTopRightCorner().getItem());
+                }
+                if (null != card.getShowingSide().getBottomLeftCorner() && null != card.getShowingSide().getBottomLeftCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().getBottomLeftCorner().getItem());
+                }
+                if (null != card.getShowingSide().getBottomRightCorner() && null != card.getShowingSide().getBottomRightCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().getBottomRightCorner().getItem());
+                }
+            }
+            boolean canBePlaced = true;
+            for (Item item : costs.keySet()) {
+                if (playedItems.get(item) < costs.get(item)) {
+                    canBePlaced = false;
+                }
+            }
+            return canBePlaced;
+        } else return true;
+    }
+
+    private void increaseValue(HashMap<Item, Integer> map, Item item) {
+        int value = map.get(item);
+        map.replace(item, value + 1);
+    }
 }
 
 

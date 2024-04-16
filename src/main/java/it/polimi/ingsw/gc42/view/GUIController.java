@@ -533,15 +533,26 @@ public class GUIController implements ViewController {
     }
 
     public void playCard() {
+        int oldBeingPLayed = cardBeingPlayed;
         if (cardBeingPlayed == selectedCard) {
             cardBeingPlayed = 0;
         } else {
             cardBeingPlayed = selectedCard;
         }
-        setPlayingOverlay(cardBeingPlayed, true);
         if (cardBeingPlayed > 0) {
-            showAvailablePlacements();
+            boolean canBePlayed = true;
+            if (hand.getHandCardView(cardBeingPlayed).getModelCard() instanceof GoldCard) {
+                canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(player.getPlayField().getPlayedCards());
+            }
+            if (canBePlayed) {
+                setPlayingOverlay(cardBeingPlayed, true);
+                showAvailablePlacements();
+            } else {
+                hand.getHandCardView(cardBeingPlayed).showError();
+                cardBeingPlayed = oldBeingPLayed;
+            }
         } else {
+            setPlayingOverlay(cardBeingPlayed, true);
             hideAvailablePlacements();
         }
     }

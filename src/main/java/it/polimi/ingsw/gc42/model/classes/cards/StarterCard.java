@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class StarterCard extends PlayableCard{
     // Attributes
-    private final ArrayList<Item> permanentResources = new ArrayList<>();
+
     /**
      * Constructor method for StarterCard
      * @param frontSide: card's front side
@@ -20,11 +20,10 @@ public class StarterCard extends PlayableCard{
      * @param backImage: image of the back face
      */
     // Constructor Method
-    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y, ArrayList<Item> list, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, x, y, frontImage, backImage);
-        for (Item item: list){
-            addPermanentResource(item);
-        }
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
+                       ArrayList<Item> permanentResources, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
+
     }
     /**
      * Constructor method for StarterCard
@@ -35,33 +34,11 @@ public class StarterCard extends PlayableCard{
      * @param frontImage: image of the front face
      * @param backImage: image of the back face
      */
-    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, ArrayList<Item> list, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, id, frontImage, backImage);
-        for (Item item: list) {
-            addPermanentResource(item);
-        }
+    public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
+                       ArrayList<Item> permanentResources, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
     }
 
-    /**
-     * Implement method getter for permanent resource
-     * @param index: item position in the array list
-     * @return permanentResource in the index position
-     * @throws IllegalArgumentException: exception called if the index is invalid
-     */
-    //Getter and Setter
-    public Item getPermanentResource(int index) throws IllegalArgumentException{
-        if (index >= 0 && index < permanentResources.size()) {
-            return permanentResources.get(index);
-        }else{
-            throw new IllegalArgumentException();
-        }
-    }
+    // Getter and Setter
 
-    /**
-     * Implement method setter for permanent resource
-     * @param item: is a new item to add at the permanentResources
-     */
-    public void addPermanentResource(Item item){
-        permanentResources.add(item);
-    }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
+import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +46,7 @@ class CornerTest {
             player.playCard(card2, -1, 0);
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
             player.playCard(card2, 0, -1);
-        } catch (IllegalPlacementException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
             e.printStackTrace();
         }
 

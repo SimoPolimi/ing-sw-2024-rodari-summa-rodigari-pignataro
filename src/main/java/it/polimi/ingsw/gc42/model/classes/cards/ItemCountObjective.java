@@ -73,10 +73,10 @@ public class ItemCountObjective extends CountObjective{
                     && !card.getShowingSide().getBottomRightCorner().isCovered()) {
                 count++;
             }
-            if (!card.isFrontFacing() && card instanceof GoldCard && ((GoldCard) card).getPermanentResource().equals(item)) {
+            if (!card.isFrontFacing() && card instanceof GoldCard && card.getPermanentResources().getFirst().equals(item)) {
                 count++;
             }
-            if (!card.isFrontFacing() && card instanceof ResourceCard && ((ResourceCard) card).getPermanentResource().equals(item)) {
+            if (!card.isFrontFacing() && card instanceof ResourceCard && card.getPermanentResources().getFirst().equals(item)) {
                 count++;
             }
         }
