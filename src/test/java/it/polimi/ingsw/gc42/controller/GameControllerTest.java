@@ -44,6 +44,7 @@ class GameControllerTest {
         // given
         GameController controller = new GameController();
         Player player = new Player(Token.BLUE);
+        controller.getGame().addPlayer(player);
 
         // when
         controller.grabCard(player, controller.getGame().getResourcePlayingDeck(), 1);
@@ -59,10 +60,10 @@ class GameControllerTest {
         // given
         GameController controller = new GameController();
         Player player = new Player(Token.BLUE);
+        controller.getGame().addPlayer(player);
 
         // when
         // Deck is empty
-        int DeckSize = controller.getGame().getResourcePlayingDeck().getDeck().getNumberOfCards();
         while (controller.getGame().getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
             controller.getGame().getResourcePlayingDeck().getDeck().draw();
         }

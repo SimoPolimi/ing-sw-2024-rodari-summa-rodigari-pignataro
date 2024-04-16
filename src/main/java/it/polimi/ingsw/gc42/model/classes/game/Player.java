@@ -98,19 +98,39 @@ public class Player implements Observable {
         return secretObjective;
     }
 
+    /**
+     * Implement method setter for secretObjective
+     *
+     * @param objectiveCard The ObjectiveCard to be setted
+     */
     public void setSecretObjective(ObjectiveCard objectiveCard) {
         this.secretObjective = objectiveCard;
     }
 
+    /**
+     * Implement method getter for getStatus
+     *
+     * @return status
+     */
     public GameStatus getStatus() {
         return status;
     }
 
+    /**
+     * Implement method setter for gameStatus
+     *
+     * @param status Game's status
+     */
     public void setStatus(GameStatus status) {
         this.status = status;
         notifyListeners("My Status has changed");
     }
 
+    /**
+     * Implement method getter for playField
+     *
+     * @return playField
+     */
     public PlayField getPlayField() {
         return playField;
     }
@@ -215,6 +235,11 @@ public class Player implements Observable {
         }
     }
 
+    /**
+     * Plays the specified StarterCard in position [x=0,y=0]
+     *
+     * @param card The card to be played
+     */
     public void setStarterCard(StarterCard card) {
         try {
             playCard(card, 0, 0);
@@ -295,10 +320,22 @@ public class Player implements Observable {
         } else throw new IllegalArgumentException("No such Card in Hand");
     }
 
+    // TODO: redo description javadoc
+
+    /**
+     * Custom method that replaces size()
+     *
+     * @return The Hand's size
+     */
     public int getHandSize() {
         return hand.size();
     }
 
+    /**
+     * Adds the specified card to the hand
+     *
+     * @param card The PlayableCard added tothe Hand
+     */
     public void addHandCard(PlayableCard card) {
         hand.add(card);
     }

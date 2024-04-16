@@ -77,6 +77,9 @@ public class GameController {
         card.flip();
     }
 
+    /**
+     * Each Player in the Game draws their StartingHand
+     */
     public void drawStartingHand() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
             game.getPlayer(i).drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
@@ -86,7 +89,9 @@ public class GameController {
     /**
      * Returns the Card from one of the Slots AND removes it from there, drawing another Card to put on its place.
      *
-     * @param slot: an int value to identify the slot to grab the Card from.
+     * @param player:      the player who grabs the Card
+     * @param playingDeck: the PlayingDeck associated to the Slots where the Player grabs the Card from
+     * @param slot:        an int value to identify the slot to grab the Card from.
      * @return the Card contained in that Slot.
      */
     public void grabCard(Player player, PlayingDeck playingDeck, int slot) {
@@ -96,21 +101,33 @@ public class GameController {
                 // Fill
                 // Resource
                 if (playingDeck.getDeck().getCardType().equals(CardType.RESOURCECARD)) {
-                    // Save Card
                     card = game.getResourcePlayingDeck().getSlot(slot);
                     if (playingDeck.getDeck().getNumberOfCards() > 0) {
+                        // Grab from ResourcePlayingDeck
                         playingDeck.setSlot(game.getResourcePlayingDeck().getDeck().draw(), slot);
                     } else {
-                        playingDeck.setSlot(game.getGoldPlayingDeck().getDeck().draw(), slot);
+                        if (game.getGoldPlayingDeck().getDeck().getNumberOfCards() > 0) {
+                            // Grab from GoldPlayingDeck
+                            playingDeck.setSlot(game.getGoldPlayingDeck().getDeck().draw(), slot);
+                        } else {
+                            // Both Decks are empty
+                            playingDeck.setSlot(null, slot);
+                        }
                     }
                 } else if (playingDeck.getDeck().getCardType().equals(CardType.GOLDCARD)) {
                     // Gold
-                    // Save Card
                     card = game.getGoldPlayingDeck().getSlot(slot);
                     if (playingDeck.getDeck().getNumberOfCards() > 0) {
+                        // Grab from GoldPlayingDeck
                         playingDeck.setSlot(game.getGoldPlayingDeck().getDeck().draw(), slot);
                     } else {
-                        playingDeck.setSlot(game.getResourcePlayingDeck().getDeck().draw(), slot);
+                        if (game.getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
+                            // Grab from ResourcePlayingDeck
+                            playingDeck.setSlot(game.getResourcePlayingDeck().getDeck().draw(), slot);
+                        } else {
+                            // Both Decks are empty
+                            playingDeck.setSlot(null, slot);
+                        }
                     }
                 } else throw new IllegalArgumentException("There is no such Deck in this Game");
             } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
@@ -165,6 +182,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Changes the status of the Game
+     */
     private void nextStatus() {
         switch (currentStatus) {
             case NOT_IN_GAME:
