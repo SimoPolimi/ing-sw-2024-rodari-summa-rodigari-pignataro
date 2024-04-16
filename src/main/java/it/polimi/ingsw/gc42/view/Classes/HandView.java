@@ -54,12 +54,12 @@ public class HandView {
     }
 
     public void hide() {
-        controller.deselectAllCards();
+        controller.blockInput();
+        controller.deselectAllCards(false);
         isHidden = true;
         KBNavHint.setVisible(false);
         textNav.setVisible(false);
         textCollapse.setText("My Cards");
-        controller.blockInput();
 
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
         t1.setByY(285);
@@ -75,11 +75,11 @@ public class HandView {
     }
 
     public void show() {
+        controller.blockInput();
         isHidden = false;
         KBNavHint.setVisible(true);
         textNav.setVisible(true);
         textCollapse.setText("Collapse");
-        controller.blockInput();
 
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
         t1.setByY(-285);
@@ -95,6 +95,7 @@ public class HandView {
     }
 
     public void refresh(Runnable runnable) {
+        controller.blockInput();
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
         TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
         TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
@@ -130,6 +131,7 @@ public class HandView {
         t1.setByX(distance);
         t2.setByX(distance);
         t3.setByX(distance);
+        t1.setOnFinished((e) -> controller.unlockInput());
         t1.play();
         t2.play();
         t3.play();

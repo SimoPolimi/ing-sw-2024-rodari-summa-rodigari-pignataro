@@ -157,4 +157,10 @@ public class ObjectiveCardView {
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
     }
+
+    public void show() {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(250), imageView);
+        transition.setByX(-200);
+        transition.play();
+    }
 }

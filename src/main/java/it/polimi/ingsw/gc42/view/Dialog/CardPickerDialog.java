@@ -93,10 +93,10 @@ public class CardPickerDialog extends Dialog implements Observable {
             effect.setBlurType(BlurType.GAUSSIAN);
             view.setEffect(effect);
             view.setOnMouseEntered((e) -> {
-                selectCard(handCardView);
+                selectCard(handCardView, true);
             });
             view.setOnMouseExited((e) -> {
-                deselectCard(handCardView);
+                deselectCard(handCardView, true);
             });
             view.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
@@ -200,41 +200,43 @@ public class CardPickerDialog extends Dialog implements Observable {
     }
 
     private void pickCard(int number) {
-        pickedCard = cards.get(number).getModelCard();
-        notifyListeners("Card has been picked");
+        if (number != -1) {
+            pickedCard = cards.get(number).getModelCard();
+            notifyListeners("Card has been picked");
+        }
     }
 
-    private void selectCard(HandCardView handCardView) {
+    private void selectCard(HandCardView handCardView, boolean unlockInputAfter) {
         if (selectedCard >= 0 && selectedCard < cards.size()) {
-            deselectCard(cards.get(selectedCard));
+            deselectCard(cards.get(selectedCard), unlockInputAfter);
         }
         handCardView.select(controller);
         selectedCard = cards.indexOf(handCardView);
     }
 
-    private void deselectCard(HandCardView handCardView) {
-        handCardView.deselect(controller);
+    private void deselectCard(HandCardView handCardView, boolean unlockInputAfter) {
+        handCardView.deselect(controller, unlockInputAfter);
         lastSelected = cards.indexOf(handCardView);
     }
 
-    private void deselectAllCards() {
+    private void deselectAllCards(boolean unlockInputAfter) {
         if (selectedCard > 0 && selectedCard < cards.size()) {
-            deselectCard(cards.get(selectedCard));
+            deselectCard(cards.get(selectedCard), unlockInputAfter);
         }
         selectedCard = -1;
     }
 
     private void selectCardNumber(int number) {
         if (number >= 0 && number < cards.size()) {
-            selectCard(cards.get(number));
+            selectCard(cards.get(number), true);
         }
     }
 
     private void deselectCardNumber(int number) {
         if (number >= 0 && number < cards.size()) {
-            deselectCard(cards.get(number));
+            deselectCard(cards.get(number), true);
         } else if (number == -1) {
-            deselectAllCards();
+            deselectAllCards(true);
         }
     }
 

@@ -149,9 +149,11 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (!hand.isHidden()) {
-                            onEnterPressed();
-                        } else toggleHand();
+                        if (canReadInput) {
+                            if (!hand.isHidden()) {
+                                onEnterPressed();
+                            } else toggleHand();
+                        }
                     }
                     case SECONDARY -> onCard1Clicked();
                 }
@@ -162,9 +164,11 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (!hand.isHidden()) {
-                            onEnterPressed();
-                        } else toggleHand();
+                        if (canReadInput) {
+                            if (!hand.isHidden()) {
+                                onEnterPressed();
+                            } else toggleHand();
+                        }
                     }
                     case SECONDARY -> onCard2Clicked();
                 }
@@ -175,9 +179,11 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (!hand.isHidden()) {
-                            onEnterPressed();
-                        } else toggleHand();
+                        if (canReadInput) {
+                            if (!hand.isHidden()) {
+                                onEnterPressed();
+                            } else toggleHand();
+                        }
                     }
                     case SECONDARY -> onCard3Clicked();
                 }
@@ -296,7 +302,9 @@ public class GUIController implements ViewController {
                         objectiveCardView = new ObjectiveCardView(new CardView(player.getSecretObjective().getFrontImage(),
                                 player.getSecretObjective().getBackImage()), objectiveView, objectiveHint, player.getSecretObjective(),
                                 KBObjectiveHint, false, objectiveTitle, objectiveDescription, objDescriptionBox);
+                        objectiveCardView.getImageView().setTranslateX(objectiveCardView.getImageView().getTranslateX()+200);
                         objectiveCardView.getImageView().setVisible(true);
+                        objectiveCardView.show();
                         objectiveView.setOnMouseEntered((e) -> {
                             if (!objectiveCardView.isShowingDetails() && !isShowingDialog) {
                                 objectiveCardView.select();
@@ -373,7 +381,7 @@ public class GUIController implements ViewController {
             } else {
                 selectedCard++;
             }
-            selectCard(selectedCard);
+            selectCard(selectedCard, true);
         }
     }
 
@@ -385,49 +393,49 @@ public class GUIController implements ViewController {
             } else {
                 selectedCard--;
             }
-            selectCard(selectedCard);
+            selectCard(selectedCard, true);
         }
     }
 
-    protected void selectCard(int selectedCard) {
+    protected void selectCard(int selectedCard, boolean unlockInputAfter) {
         if (!hand.isHidden() && !isShowingDialog) {
             this.selectedCard = selectedCard;
             switch (selectedCard) {
                 case 1:
                     hand.getHandCardView(1).select(this);
                     if (2 == lastSelected) {
-                        hand.getHandCardView(2).deselect(this);
+                        hand.getHandCardView(2).deselect(this, unlockInputAfter);
                     }
                     if (3 == lastSelected) {
-                        hand.getHandCardView(3).deselect(this);
+                        hand.getHandCardView(3).deselect(this, unlockInputAfter);
                     }
                     break;
                 case 2:
                     hand.getHandCardView(2).select(this);
                     if (1 == lastSelected) {
-                        hand.getHandCardView(1).deselect(this);
+                        hand.getHandCardView(1).deselect(this, unlockInputAfter);
                     }
                     if (3 == lastSelected) {
-                        hand.getHandCardView(3).deselect(this);
+                        hand.getHandCardView(3).deselect(this, unlockInputAfter);
                     }
                     break;
                 case 3:
                     hand.getHandCardView(3).select(this);
                     if (1 == lastSelected) {
-                        hand.getHandCardView(1).deselect(this);
+                        hand.getHandCardView(1).deselect(this, unlockInputAfter);
                     }
                     if (2 == lastSelected) {
-                        hand.getHandCardView(2).deselect(this);
+                        hand.getHandCardView(2).deselect(this, unlockInputAfter);
                     }
                     break;
                 default:
                     if (1 == lastSelected) {
-                        hand.getHandCardView(1).deselect(this);
+                        hand.getHandCardView(1).deselect(this, unlockInputAfter);
                     }
                     if (2 == lastSelected) {
-                        hand.getHandCardView(2).deselect(this);
+                        hand.getHandCardView(2).deselect(this, unlockInputAfter);
                     } else if (3 == lastSelected) {
-                        hand.getHandCardView(3).deselect(this);
+                        hand.getHandCardView(3).deselect(this, unlockInputAfter);
                     }
             }
             lastSelected = selectedCard;
@@ -453,29 +461,33 @@ public class GUIController implements ViewController {
     @FXML
     public void selectCard1() {
         lastSelected = selectedCard;
-        selectCard(1);
+        selectCard(1, true);
     }
 
     @FXML
     public void selectCard2() {
         lastSelected = selectedCard;
-        selectCard(2);
+        selectCard(2, true);
     }
 
     @FXML
     public void selectCard3() {
         lastSelected = selectedCard;
-        selectCard(3);
+        selectCard(3, true);
     }
 
     @FXML
-    public void deselectAllCards() {
-        selectCard(0);
+    public void deselectAllCardsFX() {
+        selectCard(0, true);
+    }
+
+    public void deselectAllCards(boolean unlockInputAfter) {
+        selectCard(0, unlockInputAfter);
     }
 
     @FXML
     public void toggleHand() {
-        if (!isShowingDialog) {
+        if (!isShowingDialog && canReadInput) {
             if (!hand.isHidden()) {
                 hand.hide();
             } else {
@@ -593,7 +605,7 @@ public class GUIController implements ViewController {
             transition.setOnFinished(e -> bounceBack.play());
             bounceBack.setOnFinished(e -> unlockInput());
 
-            deselectAllCards();
+            deselectAllCards(true);
             setShowingDialog(true);
             mainArea.setEffect(new GaussianBlur(10));
             if (content.isDismissable()) {

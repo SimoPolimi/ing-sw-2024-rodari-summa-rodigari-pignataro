@@ -13,7 +13,7 @@
             <children>
                 <AnchorPane style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
                     <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="40.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
                             <children>
                                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
                                     <children>
@@ -43,7 +43,7 @@
                                 </HBox>
                                 <HBox id="card1Container" fx:id="handCard1" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="340.0" spacing="40">
                                     <children>
-                                        <ImageView fx:id="view1" fitHeight="120" fitWidth="160" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCards" preserveRatio="true">
+                                        <ImageView fx:id="view1" fitWidth="140.0" onMouseEntered="#selectCard1" onMouseExited="#deselectAllCardsFX" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card1Front.png" />
                                             </image>
@@ -103,7 +103,7 @@
                                 </HBox>
                                 <HBox fx:id="card2Container" alignment="CENTER_LEFT" maxWidth="-Infinity" pickOnBounds="false" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view2" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCards" preserveRatio="true">
+                                        <ImageView fx:id="view2" fitWidth="140.0" onMouseEntered="#selectCard2" onMouseExited="#deselectAllCardsFX" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card2Front.png" />
                                             </image>
@@ -160,7 +160,7 @@
                                 </HBox>
                                 <HBox id="card3Container" alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="287.0" spacing="30">
                                     <children>
-                                        <ImageView fx:id="view3" fitHeight="120.0" fitWidth="160.0" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCards" preserveRatio="true">
+                                        <ImageView fx:id="view3" fitWidth="140.0" onMouseEntered="#selectCard3" onMouseExited="#deselectAllCardsFX" preserveRatio="true">
                                             <image>
                                                 <Image url="@cards/card3Front.png" />
                                             </image>

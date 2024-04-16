@@ -159,7 +159,7 @@ public class HandCardView {
         }
     }
 
-    public void deselect(GUIController controller){
+    public void deselect(GUIController controller, boolean unlockInputAfter){
         if (!isBeingPlayed) {
             controller.blockInput();
             this.isSelected = false;
@@ -179,7 +179,11 @@ public class HandCardView {
             deselect2.setFromY(1.3);
             deselect2.setToX(1);
             deselect2.setToY(1);
-            deselect2.setOnFinished(e -> controller.unlockInput());
+            if (unlockInputAfter) {
+                deselect2.setOnFinished(e -> {
+                    controller.unlockInput();
+                });
+            }
             deselect2.play();
         }
     }
@@ -211,7 +215,7 @@ public class HandCardView {
                 break;
             default: break;
         }
-        deselect(controller);
+        //deselect(controller, false);
         t.play();
     }
 
@@ -266,7 +270,7 @@ public class HandCardView {
         flipCardHalf2.setAxis(Rotate.Y_AXIS);
         flipCardHalf2.setOnFinished(e -> {
             if (!isSelected) {
-                deselect(controller);
+                deselect(controller, true);
             }
         });
 
@@ -316,6 +320,6 @@ public class HandCardView {
         deselect2.setToY(1);
         deselect2.setOnFinished(e -> controller.unlockInput());
         deselect2.play();
-        deselect(controller);
+        deselect(controller, true);
     }
 }

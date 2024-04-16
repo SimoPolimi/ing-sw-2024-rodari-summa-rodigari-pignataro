@@ -224,8 +224,10 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
     }
 
     private void pickToken(int number) {
-        pickedToken = tokens.get(number);
-        notifyListeners("Token has been picked");
+        if (number != -1) {
+            pickedToken = tokens.get(number);
+            notifyListeners("Token has been picked");
+        }
     }
 
     private void selectToken(Token token) {
