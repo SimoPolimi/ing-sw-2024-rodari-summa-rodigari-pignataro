@@ -147,7 +147,7 @@ class PlayerTest {
     void grabCard() {
         // given
         Game game = new Game();
-        Player player = new Player(null);
+        Player player = new Player("");
 
         Card slotCard = game.getResourcePlayingDeck().getCard(1);
         // when
@@ -169,7 +169,7 @@ class PlayerTest {
     void getHandCard() {
         // given
         Game game = new Game();
-        Player player = new Player(null);
+        Player player = new Player("");
         // when
         Card card1 = game.getResourcePlayingDeck().getDeck().getTopCard();
         player.drawCard(game.getResourcePlayingDeck());
