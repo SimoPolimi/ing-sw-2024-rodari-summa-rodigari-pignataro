@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class CornerCountObjective extends CountObjective{
     // Attributes
-    private Card card;
+    private Coordinates coordinates;
 
     // Constructor Method
 
@@ -16,31 +16,23 @@ public class CornerCountObjective extends CountObjective{
      * Constructor Method for CornerCountObjective
      * @param points: the number of points the Condition gives every time it's satisfied
      * @param number: the number of Corners that need to be counted to satisfy the Condition once.
-     * @param card: the Card that contains this Condition, used to determine who are the nearby Cards to check.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
-    public CornerCountObjective(int points, int number, Card card, String name,  String description) {
+    public CornerCountObjective(int points, int number, Coordinates coordinates, String name,  String description) {
         super(points, number, name, description);
-        this.card = card;
+        this.coordinates = coordinates;
     }
 
     // Getters and Setters
 
-    /**
-     * Getter Method for card
-     * @return the Card that contains this Objective/Condition, used to determine who are the nearby Cards to check.
-     */
-    public Card getCard() {
-        return card;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    /**
-     * Setter Method for card
-     * @param card: the Card that contains this Objective/Condition, used to determine who are the nearby Cards to check.
-     */
-    public void setCard(Card card) {
-        this.card = card;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
+
 
     // Methods
 

@@ -247,6 +247,9 @@ public class Player implements Observable {
         try {
             card.setX(x);
             card.setY(y);
+            if (card instanceof GoldCard && ((GoldCard) card).getObjective() instanceof CornerCountObjective) {
+                ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
+            }
             playField.addCard(card, x, y);
         } catch (IllegalPlacementException e) {
             card.setX(0);
