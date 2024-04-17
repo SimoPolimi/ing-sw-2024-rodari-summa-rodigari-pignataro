@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.LoginViewController">
+    <children>
+        <VBox fx:id="container" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+         <children>
+             <HBox fx:id="titleContainer" alignment="CENTER" spacing="30">
+                 <children>
+                     <ImageView fx:id="logoIcon" fitWidth="150.0" preserveRatio="true">
+                         <image>
+                             <Image url="@logo.png" />
+                         </image>
+                     </ImageView>
+                     <VBox fx:id="textContainer" alignment="CENTER" spacing="20.0">
+                         <Text fx:id="title" text="Welcome to Codex Naturalis!">
+                             <font>
+                                 <Font name="Tahoma Bold" size="25.0" />
+                             </font>
+                         </Text>
+                     </VBox>
+                 </children>
+             </HBox>
+             <VBox fx:id="commandsContainer" alignment="CENTER" spacing="30">
+                 <children>
+                     <VBox fx:id="loginContainer" alignment="CENTER" spacing="10">
+                         <children>
+                             <TextField fx:id="nickNameTextArea" focusTraversable="false" maxHeight="30" maxWidth="200" promptText="Enter Your NickName">
+                                 <cursor>
+                                     <Cursor fx:constant="TEXT" />
+                                 </cursor>
+                           <font>
+                              <Font size="14.0" />
+                           </font></TextField>
+                             <VBox fx:id="playButton" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: grey; -fx-background-radius: 15">
+                                 <children>
+                                     <Text fx:id="playTxt" fill="white" text="Play">
+                                         <font>
+                                             <Font name="Tahoma Bold" size="15.0" />
+                                         </font>
+                                     </Text>
+                                 </children>
+                                 <cursor>
+                                     <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <padding>
+                                     <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                                 </padding>
+                           <effect>
+                              <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                 <bumpInput>
+                                    <Shadow blurType="GAUSSIAN" />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect>
+                             </VBox>
+                             <VBox fx:id="loginButtonSameNickName" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: forestgreen; -fx-background-radius: 15" visible="false">
+                                 <children>
+                                     <Text fx:id="playSameNickNameTxt" fill="white" text="Continue as: ">
+                                         <font>
+                                             <Font name="Tahoma Bold" size="15.0" />
+                                         </font>
+                                     </Text>
+                                 </children>
+                                 <cursor>
+                                     <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <padding>
+                                     <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                                 </padding>
+                                 <effect>
+                                     <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                         <bumpInput>
+                                             <Shadow blurType="GAUSSIAN" />
+                                         </bumpInput>
+                                         <light>
+                                             <Light.Distant />
+                                         </light>
+                                     </Lighting>
+                                 </effect>
+                             </VBox>
+                         </children>
+                     </VBox>
+                 </children>
+             </VBox>
+         </children>
+        </VBox>
+        <StackPane fx:id="networkModeContainer" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="20">
+            <children>
+                <VBox fx:id="netModeSelector" alignment="CENTER" maxWidth="45" minHeight="20" style="-fx-background-color: lightgreen; -fx-background-radius: 5" translateX="-23">
+                    <effect>
+                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                            <bumpInput>
+                                <Shadow blurType="GAUSSIAN" />
+                            </bumpInput>
+                            <light>
+                                <Light.Distant />
+                            </light>
+                        </Lighting>
+                    </effect>
+                </VBox>
+                <HBox fx:id="netModeTextContainer" alignment="CENTER" maxWidth="-Infinity" prefWidth="20.0" spacing="5">
+                    <children>
+                        <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
+                            <children>
+                                <Text fx:id="RMIModeTxt" mouseTransparent="true" text="RMI">
+                                    <font>
+                                        <Font name="Tahoma Bold" size="10.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                        </HBox>
+                        <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
+                            <children>
+                                <Text fx:id="SocketModeTxt" mouseTransparent="true" text="Socket">
+                                    <font>
+                                        <Font name="Tahoma Bold" size="10.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                        </HBox>
+                    </children>
+                </HBox>
+            </children>
+        </StackPane>
+    </children>
+</AnchorPane>
