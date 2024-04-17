@@ -28,11 +28,20 @@
                      </VBox>
                  </children>
              </HBox>
-             <VBox fx:id="commandsContainer" alignment="CENTER" spacing="30">
+             <VBox fx:id="commandsContainer" alignment="CENTER" spacing="30" maxWidth="200">
                  <children>
                      <VBox fx:id="loginContainer" alignment="CENTER" spacing="10">
                          <children>
-                             <TextField fx:id="nickNameTextArea" focusTraversable="false" maxHeight="30" maxWidth="200" promptText="Enter Your NickName">
+                             <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                     <Text text="Nickname:" textAlignment="LEFT" >
+                                         <font>
+                                             <Font name="Tahoma Regular" size="16.0" />
+                                         </font>
+                                     </Text>
+                                 </children>
+                             </HBox>
+                             <TextField fx:id="nickNameTextArea" focusTraversable="false" maxHeight="30" maxWidth="200" promptText="Enter your nickname">
                                  <cursor>
                                      <Cursor fx:constant="TEXT" />
                                  </cursor>
