@@ -95,49 +95,58 @@
              </VBox>
          </children>
         </VBox>
-        <StackPane fx:id="networkModeContainer" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="20">
+        <VBox fx:id="networkModeContainer" alignment="CENTER_LEFT" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="20" spacing="5">
             <children>
-                <VBox fx:id="netModeSelector" alignment="CENTER" maxWidth="45" minHeight="20" style="-fx-background-color: lightgreen; -fx-background-radius: 5" translateX="-23">
-                    <effect>
-                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
-                            <bumpInput>
-                                <Shadow blurType="GAUSSIAN" />
-                            </bumpInput>
-                            <light>
-                                <Light.Distant />
-                            </light>
-                        </Lighting>
-                    </effect>
-                </VBox>
-                <HBox fx:id="netModeTextContainer" alignment="CENTER" maxWidth="-Infinity" prefWidth="20.0" spacing="5">
+                <Text mouseTransparent="true" text="Connection Mode:" textAlignment="LEFT" translateX="-5">
+                    <font>
+                        <Font name="Tahoma Regular" size="12.0" />
+                    </font>
+                </Text>
+                <StackPane>
                     <children>
-                        <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
+                        <VBox fx:id="netModeSelector" alignment="CENTER" maxWidth="55" minHeight="25" style="-fx-background-color: lightgreen; -fx-background-radius: 5" translateX="-28">
+                            <effect>
+                                <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                    <bumpInput>
+                                        <Shadow blurType="GAUSSIAN" />
+                                    </bumpInput>
+                                    <light>
+                                        <Light.Distant />
+                                    </light>
+                                </Lighting>
+                            </effect>
+                        </VBox>
+                        <HBox fx:id="netModeTextContainer" alignment="CENTER" maxWidth="-Infinity" prefWidth="20.0" spacing="15">
                             <children>
-                                <Text fx:id="RMIModeTxt" mouseTransparent="true" text="RMI">
-                                    <font>
-                                        <Font name="Tahoma Bold" size="10.0" />
-                                    </font>
-                                </Text>
+                                <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
+                                    <children>
+                                        <Text fx:id="RMIModeTxt" mouseTransparent="true" text="RMI">
+                                            <font>
+                                                <Font name="Tahoma Bold" size="13.0" />
+                                            </font>
+                                        </Text>
+                                    </children>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </HBox>
+                                <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
+                                    <children>
+                                        <Text fx:id="SocketModeTxt" mouseTransparent="true" text="Socket">
+                                            <font>
+                                                <Font name="Tahoma Bold" size="13.0" />
+                                            </font>
+                                        </Text>
+                                    </children>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </HBox>
                             </children>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                        </HBox>
-                        <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0">
-                            <children>
-                                <Text fx:id="SocketModeTxt" mouseTransparent="true" text="Socket">
-                                    <font>
-                                        <Font name="Tahoma Bold" size="10.0" />
-                                    </font>
-                                </Text>
-                            </children>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
                         </HBox>
                     </children>
-                </HBox>
+                </StackPane>
             </children>
-        </StackPane>
+        </VBox>
     </children>
 </AnchorPane>

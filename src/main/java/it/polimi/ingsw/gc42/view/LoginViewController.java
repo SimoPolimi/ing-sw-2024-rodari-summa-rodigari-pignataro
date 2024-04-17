@@ -79,12 +79,12 @@ public class LoginViewController implements Observable {
         if (this.selectedNetworkMode != selectedNetworkMode) {
             if (selectedNetworkMode == NetworkMode.RMI) {
                 TranslateTransition leftTransition = new TranslateTransition(Duration.millis(150), netModeSelector);
-                leftTransition.setByX(-46);
+                leftTransition.setByX(-56);
                 leftTransition.setInterpolator(Interpolator.EASE_BOTH);
                 leftTransition.play();
             } else {
                 TranslateTransition rightTransition = new TranslateTransition(Duration.millis(150), netModeSelector);
-                rightTransition.setByX(46);
+                rightTransition.setByX(56);
                 rightTransition.setInterpolator(Interpolator.EASE_BOTH);
                 rightTransition.play();
             }

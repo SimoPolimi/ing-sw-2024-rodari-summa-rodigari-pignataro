@@ -36,6 +36,7 @@ public class GameWindow extends Application {
 
         stage.setTitle("Codex Naturalis");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
+        stage.setResizable(false);
 
         LoginViewController loginController = fxmlLoaderLogin.getController();
         loginController.setListener(new Listener() {
@@ -74,6 +75,7 @@ public class GameWindow extends Application {
         GameController gameController = new GameController();
         controller.initializeCards();
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.setMinHeight(670);
         stage.setMinWidth(800);
 
