@@ -13,6 +13,10 @@
             <children>
                 <AnchorPane style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
                     <children>
+                        <VBox fx:id="miniScoreboardContainer" alignment="CENTER_LEFT" spacing="5" style="-fx-background-color: #343434aa;" AnchorPane.leftAnchor="-40.0" AnchorPane.topAnchor="0">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding></VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="578.0" prefWidth="1160.0" spacing="30.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0">
                             <children>
                                 <HBox id="collapseHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">

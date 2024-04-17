@@ -170,7 +170,7 @@ public class Deck implements Observable {
                     resList.add(res3);
                     deck.cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, resList, frontImage, backImage));
+                            true, id, resList, 0, frontImage, backImage));
                 }
                 break;
             case OBJECTIVECARD:

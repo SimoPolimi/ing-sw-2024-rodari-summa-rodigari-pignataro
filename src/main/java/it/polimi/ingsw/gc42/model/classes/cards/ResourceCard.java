@@ -33,8 +33,7 @@ public class ResourceCard extends PlayableCard{
      */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
                         ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
-        this.earnedPoints = earnedPoints;
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
     }
 
     /**
@@ -51,24 +50,13 @@ public class ResourceCard extends PlayableCard{
      */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
                         ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
-        this.earnedPoints = earnedPoints;
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage);
+    }
+
+    @Override
+    public boolean canBePlaced(ArrayList<PlayableCard> playedCards) {
+        return true;
     }
     // Getter and Setter
 
-    /**
-     * Getter method for earnedPoints
-     * @return the number of points earned by the player when placing the Card
-     */
-    public int getEarnedPoints() {
-        return earnedPoints;
-    }
-
-    /**
-     * Setter method for earnedPoints
-     * @param earnedPoints: the number of points earned by the player when placing the Card
-     */
-    public void setEarnedPoints(int earnedPoints) {
-        this.earnedPoints = earnedPoints;
-    }
 }

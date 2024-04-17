@@ -41,7 +41,7 @@
                                      </Text>
                                  </children>
                              </HBox>
-                             <TextField fx:id="nickNameTextArea" focusTraversable="false" maxHeight="30" maxWidth="200" promptText="Enter your nickname">
+                             <TextField fx:id="nickNameTextArea" maxHeight="30" maxWidth="200" promptText="Enter your nickname">
                                  <cursor>
                                      <Cursor fx:constant="TEXT" />
                                  </cursor>

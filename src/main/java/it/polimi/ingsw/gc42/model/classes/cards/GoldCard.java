@@ -10,7 +10,6 @@ public class GoldCard extends PlayableCard{
     // Attributes
     private final HashMap<Item, Integer> costs = new HashMap<>();
     private Objective objective;
-    private int earnedPoints;
 
     // Constructor Methods
     /**
@@ -35,14 +34,13 @@ public class GoldCard extends PlayableCard{
                     ArrayList<Item> permanentResources, int plantKingdomPoints,
                     int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective,
                     int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);
         setCost(KingdomResource.ANIMAL, animalKingdomPoints);
         setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
-        this.earnedPoints = earnedPoints;
     }
 
     /**
@@ -65,14 +63,13 @@ public class GoldCard extends PlayableCard{
                     ArrayList<Item> permanentResources, int plantKingdomPoints, int animalKingdomPoints,
                     int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints,
                     String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
+        super(frontSide, backSide, isFrontFacing, permanentResources,earnedPoints, id, frontImage, backImage);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);
         setCost(KingdomResource.ANIMAL, animalKingdomPoints);
         setCost(KingdomResource.INSECT, insectKingdomPoints);
         this.objective = objective;
-        this.earnedPoints = earnedPoints;
     }
 
     // Getter and Setter
@@ -112,24 +109,6 @@ public class GoldCard extends PlayableCard{
         this.objective = objective;
     }
 
-    /**
-     * Getter Method for earnedPoints
-     * @return the number of points the Card gives once placed (before any calculation made with the objective)
-     * (0 if the Card does not give points)
-     */
-    public int getEarnedPoints() {
-        return earnedPoints;
-    }
-
-    /**
-     * Setter Method for earnedPoints
-     * @param earnedPoints: the number of points the Card gives once placed (before any calculation made with the objective)
-     * (0 if the Card does not give points)
-     */
-    public void setEarnedPoints(int earnedPoints) {
-        this.earnedPoints = earnedPoints;
-    }
-
     // Methods
     private void initMap() {
         costs.put(KingdomResource.FUNGI, 0);
@@ -141,7 +120,7 @@ public class GoldCard extends PlayableCard{
         costs.put(Resource.SCROLL, 0);
     }
 
-
+    @Override
     public boolean canBePlaced(ArrayList<PlayableCard> playArea) {
         if(isFrontFacing()) {
             HashMap<Item, Integer> playedItems = new HashMap<>();

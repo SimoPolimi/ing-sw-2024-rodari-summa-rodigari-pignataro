@@ -21,8 +21,8 @@ public class StarterCard extends PlayableCard{
      */
     // Constructor Method
     public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
-                       ArrayList<Item> permanentResources, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, x, y, frontImage, backImage);
+                       ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
 
     }
     /**
@@ -35,8 +35,13 @@ public class StarterCard extends PlayableCard{
      * @param backImage: image of the back face
      */
     public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
-                       ArrayList<Item> permanentResources, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, id, frontImage, backImage);
+                       ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage);
+    }
+
+    @Override
+    public boolean canBePlaced(ArrayList<PlayableCard> playedCards) {
+        return true;
     }
 
     // Getter and Setter

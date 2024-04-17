@@ -10,7 +10,7 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 import java.util.ArrayList;
 
 /**
- * Player class. It implement the Observable class
+ * Player class. It implements the Observable class
  */
 public class Player implements Observable {
     /**
@@ -70,6 +70,7 @@ public class Player implements Observable {
         if (points >= 20) {
             notifyListeners("Player reached 20 points");
         }
+        notifyListeners("Points updated");
     }
 
     /**
@@ -233,6 +234,14 @@ public class Player implements Observable {
                         l.onEvent();
                     }
                 }
+                break;
+            case "Points updated":
+                for (Listener l : listeners) {
+                    if (l instanceof PointsListener) {
+                        l.onEvent();
+                    }
+                }
+                break;
         }
     }
 
@@ -282,14 +291,18 @@ public class Player implements Observable {
         try {
             card.setX(x);
             card.setY(y);
-            boolean canBePlaced = true;
             if (card instanceof GoldCard){
                 if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
                     ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
                 }
-                canBePlaced = ((GoldCard) card).canBePlaced(playField.getPlayedCards());
             }
-            if (canBePlaced) {
+            if (card.canBePlaced(playField.getPlayedCards())) {
+                setPoints(getPoints() + card.getEarnedPoints());
+                if (card instanceof GoldCard) {
+                    if (null != ((GoldCard) card).getObjective()) {
+                        setPoints(getPoints() + ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards()));
+                    }
+                }
                 playField.addCard(card, x, y);
             } else throw new PlacementConditionNotMetException();
         } catch (IllegalPlacementException e) {
@@ -341,7 +354,7 @@ public class Player implements Observable {
     /**
      * Adds the specified card to the hand
      *
-     * @param card The PlayableCard added tothe Hand
+     * @param card The PlayableCard added to the Hand
      */
     public void addHandCard(PlayableCard card) {
         hand.add(card);

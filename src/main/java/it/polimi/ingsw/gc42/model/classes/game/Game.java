@@ -7,13 +7,15 @@ import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.model.interfaces.PlayerListener;
+import it.polimi.ingsw.gc42.model.interfaces.PointsListener;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class Game {
+public class Game implements Observable {
     private PlayingDeck resourcePlayingDeck;
     private PlayingDeck goldPlayingDeck;
     private PlayingDeck objectivePlayingDeck;
@@ -25,6 +27,7 @@ public class Game {
     private final Chat chat = new Chat();
 
     private final ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Listener> listeners = new ArrayList<>();
 
     // Constructor only used internally
     public Game() {
@@ -73,8 +76,7 @@ public class Game {
      *
      * @param player the player to be added from the game
      */
-    //TODO make it boolean
-    public boolean addPlayer(Player player) {
+    public void addPlayer(Player player) {
         player.setListener(new PlayerListener() {
             @Override
             public void onEvent() {
@@ -82,7 +84,16 @@ public class Game {
                 checkEndGame();
             }
         });
-        return players.add(player);
+        player.setListener(new PointsListener() {
+            @Override
+            public void onEvent() {
+                notifyListeners("Points have changed");
+                setFirstPlayer();
+            }
+        });
+        notifyListeners("Points have changed");
+        players.add(player);
+        setFirstPlayer();
     }
 
     /**
@@ -208,5 +219,40 @@ public class Game {
 
     public Chat getChat() {
         return chat;
+    }
+
+    private void setFirstPlayer() {
+        if (!players.isEmpty()) {
+            int max = 0;
+            for (Player player : players) {
+                if (player.getPoints() > players.get(max).getPoints()) {
+                    max = players.indexOf(player);
+                }
+            }
+            for (int i = 0; i < players.size(); i++) {
+                if (i == max) {
+                    players.get(i).setFirst(true);
+                } else {
+                    players.get(i).setFirst(false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(String context) {
+        for (Listener l: listeners) {
+            l.onEvent();
+        }
     }
 }

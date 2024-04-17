@@ -2,12 +2,13 @@ package it.polimi.ingsw.gc42.model.classes.cards;
 
 import java.util.ArrayList;
 
-public class PlayableCard extends Card {
+public abstract class PlayableCard extends Card {
     // Attributes
     private CardSide frontSide;
     private CardSide backSide;
     private final Coordinates coordinates = new Coordinates();
     private final ArrayList<Item> permanentResources = new ArrayList<>();
+    int earnedPoints;
 
     // Constructor Methods
     /**
@@ -23,13 +24,14 @@ public class PlayableCard extends Card {
      * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        ArrayList<Item> permanentResources, int id, int x, int y, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int earnedPoints, int id, int x, int y, String frontImage, String backImage) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
         coordinates.setX(x);
         coordinates.setY(y);
         this.permanentResources.addAll(permanentResources);
+        this.earnedPoints = earnedPoints;
     }
 
     /**
@@ -43,14 +45,31 @@ public class PlayableCard extends Card {
      * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        ArrayList<Item> permanentResources, int id, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int earnedPoints, int id, String frontImage, String backImage) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.permanentResources.addAll(permanentResources);
+        this.earnedPoints = earnedPoints;
     }
 
     // Getters and Setters
+
+    /**
+     * Getter method for earnedPoints
+     * @return the number of points earned by the player when placing the Card
+     */
+    public int getEarnedPoints() {
+        return earnedPoints;
+    }
+
+    /**
+     * Setter method for earnedPoints
+     * @param earnedPoints: the number of points earned by the player when placing the Card
+     */
+    public void setEarnedPoints(int earnedPoints) {
+        this.earnedPoints = earnedPoints;
+    }
 
     /**
      * Getter Method for coordinates
@@ -153,4 +172,6 @@ public class PlayableCard extends Card {
     public void setY(int y) {
         coordinates.setY(y);
     }
+
+    public abstract boolean canBePlaced(ArrayList<PlayableCard> playedCards);
 }

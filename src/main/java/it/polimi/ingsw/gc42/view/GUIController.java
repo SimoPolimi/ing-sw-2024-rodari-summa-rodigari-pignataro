@@ -18,15 +18,22 @@ import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -115,6 +122,8 @@ public class GUIController implements ViewController {
     private ImageView token;
     @FXML
     private ImageView blackToken;
+    @FXML
+    private VBox miniScoreboardContainer;
 
     // Attributes
     private Player player;
@@ -197,6 +206,12 @@ public class GUIController implements ViewController {
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+        gameController.getGame().setListener(new Listener() {
+            @Override
+            public void onEvent() {
+                refreshScoreBoard();
+            }
+        });
     }
 
     public GameController getGameController() {
@@ -220,6 +235,7 @@ public class GUIController implements ViewController {
             @Override
             public void onEvent() {
                 setToken(player.getToken());
+                refreshScoreBoard();
             }
         });
         player.getPlayField().setListener(new PlayAreaListener() {
@@ -789,5 +805,73 @@ public class GUIController implements ViewController {
 
     public void onEnterPressed() {
         playCard();
+    }
+
+    private void initMiniScoreBoard() {
+        ArrayList<Player> players = new ArrayList<>();
+        ArrayList<Integer> alreadySeen = new ArrayList<>();
+        // Players are ordered by their points
+        while (alreadySeen.size() != gameController.getGame().getNumberOfPlayers()) {
+            int currentMax = 1;
+            for (int i = 1; i <= gameController.getGame().getNumberOfPlayers(); i++) {
+                if (gameController.getGame().getPlayer(i).getPoints() >= gameController.getGame().getPlayer(currentMax).getPoints() && !alreadySeen.contains(i)) {
+                    currentMax = i;
+                }
+            }
+            players.add(gameController.getGame().getPlayer(currentMax));
+            alreadySeen.add(currentMax);
+        }
+
+        for (Player player : players) {
+            if (null != player.getToken()) {
+                ImageView tokenView = null;
+                switch (player.getToken()) {
+                    case BLUE ->
+                            tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                    case RED ->
+                            tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
+                    case YELLOW ->
+                            tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
+                    case GREEN ->
+                            tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+                }
+                tokenView.setPreserveRatio(true);
+                tokenView.setFitWidth(15);
+
+                Label name = new Label(player.getNickname());
+                name.setFont(Font.font("Tahoma Regular", 15));
+                name.setTextOverrun(OverrunStyle.ELLIPSIS);
+                name.setTextAlignment(TextAlignment.LEFT);
+                name.setMaxWidth(100);
+                name.setMinWidth(50);
+
+                if (player.isFirst()) {
+                    name.setTextFill(Paint.valueOf("gold"));
+                } else {
+                    name.setTextFill(Paint.valueOf("white"));
+                }
+                name.setTextAlignment(TextAlignment.LEFT);
+
+                Text points = new Text(String.valueOf(player.getPoints()));
+                points.setFont(Font.font("Tahoma Bold", 12));
+                points.setStrokeWidth(25);
+                if (player.isFirst()) {
+                    points.setFill(Paint.valueOf("gold"));
+                } else {
+                    points.setFill(Paint.valueOf("white"));
+                }
+
+                HBox container = new HBox(tokenView, name, points);
+                container.setAlignment(Pos.CENTER_LEFT);
+                container.setSpacing(5);
+
+                miniScoreboardContainer.getChildren().add(container);
+            }
+        }
+    }
+
+    private void refreshScoreBoard() {
+        miniScoreboardContainer.getChildren().clear();
+        initMiniScoreBoard();
     }
 }
