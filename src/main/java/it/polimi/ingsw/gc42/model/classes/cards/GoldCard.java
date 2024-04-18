@@ -145,16 +145,20 @@ public class GoldCard extends PlayableCard{
                         }
                     }
                 }
-                if (null != card.getShowingSide().getTopLeftCorner() && null != card.getShowingSide().getTopLeftCorner().getItem()) {
+                if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()
+                        && null != card.getShowingSide().getTopLeftCorner().getItem()) {
                     increaseValue(playedItems, card.getShowingSide().getTopLeftCorner().getItem());
                 }
-                if (null != card.getShowingSide().getTopRightCorner() && null != card.getShowingSide().getTopRightCorner().getItem()) {
+                if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()
+                        && null != card.getShowingSide().getTopRightCorner().getItem()) {
                     increaseValue(playedItems, card.getShowingSide().getTopRightCorner().getItem());
                 }
-                if (null != card.getShowingSide().getBottomLeftCorner() && null != card.getShowingSide().getBottomLeftCorner().getItem()) {
+                if (null != card.getShowingSide().getBottomLeftCorner() && !card.getShowingSide().getBottomLeftCorner().isCovered()
+                        && null != card.getShowingSide().getBottomLeftCorner().getItem()) {
                     increaseValue(playedItems, card.getShowingSide().getBottomLeftCorner().getItem());
                 }
-                if (null != card.getShowingSide().getBottomRightCorner() && null != card.getShowingSide().getBottomRightCorner().getItem()) {
+                if (null != card.getShowingSide().getBottomRightCorner() && !card.getShowingSide().getBottomRightCorner().isCovered()
+                        && null != card.getShowingSide().getBottomRightCorner().getItem()) {
                     increaseValue(playedItems, card.getShowingSide().getBottomRightCorner().getItem());
                 }
             }

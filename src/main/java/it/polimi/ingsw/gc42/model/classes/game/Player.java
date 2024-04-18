@@ -291,19 +291,17 @@ public class Player implements Observable {
         try {
             card.setX(x);
             card.setY(y);
-            if (card instanceof GoldCard){
-                if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
-                    ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
-                }
-            }
             if (card.canBePlaced(playField.getPlayedCards())) {
                 setPoints(getPoints() + card.getEarnedPoints());
+                playField.addCard(card, x, y);
                 if (card instanceof GoldCard) {
                     if (null != ((GoldCard) card).getObjective()) {
+                        if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
+                            ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
+                        }
                         setPoints(getPoints() + ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards()));
                     }
                 }
-                playField.addCard(card, x, y);
             } else throw new PlacementConditionNotMetException();
         } catch (IllegalPlacementException e) {
             card.setX(0);

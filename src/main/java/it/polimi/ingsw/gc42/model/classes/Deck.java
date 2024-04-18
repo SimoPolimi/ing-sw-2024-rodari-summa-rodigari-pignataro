@@ -127,10 +127,19 @@ public class Deck implements Observable {
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
                     ArrayList<Item> permRes = new ArrayList<>();
                     permRes.add(item);
-                    deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
-                            new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, permRes, plantCost, animalCost, fungiCost, insectCost, getObjective(points, condition, true, null, null),
-                            points, frontImage, backImage));
+                    Objective objective = getObjective(points, condition, true, null, null);
+                    if (null != objective) {
+                        points = 0;
+                    }
+                    deck.cards.add(new GoldCard(new CardSide(getCorner(upperLeftFront),
+                            getCorner(upperRightFront), getCorner(bottomLeftFront),
+                            getCorner(bottomRightFront)),
+                            new CardSide(getCorner(upperLeftBack),
+                                    getCorner(upperRightBack), getCorner(bottomLeftBack),
+                                    getCorner(bottomRightBack)),
+                            true, id, permRes,
+                            plantCost, animalCost, fungiCost,
+                            insectCost, objective, points, frontImage, backImage));
                 }
                 break;
             case STARTERCARD:
