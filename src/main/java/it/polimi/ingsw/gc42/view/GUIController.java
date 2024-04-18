@@ -122,7 +122,7 @@ public class GUIController implements ViewController {
     @FXML
     private VBox dialog;
     @FXML
-    private ImageView token;
+    private ImageView playerToken;
     @FXML
     private ImageView blackToken;
     @FXML
@@ -133,6 +133,8 @@ public class GUIController implements ViewController {
     private AnchorPane playerTableContainer;
     @FXML
     private AnchorPane backgroundContainer;
+    @FXML
+    private Text commonTableTxt;
 
     // Attributes
     private Player player;
@@ -240,7 +242,7 @@ public class GUIController implements ViewController {
         player.setListener(new TokenListener() {
             @Override
             public void onEvent() {
-                setToken(player.getToken());
+                setPlayerToken(player.getToken());
                 refreshScoreBoard();
             }
         });
@@ -719,27 +721,27 @@ public class GUIController implements ViewController {
         showDialog(dialog);
     }
 
-    private void setToken(Token playerToken) {
+    private void setPlayerToken(Token playerToken) {
         switch (playerToken) {
             case BLUE -> {
-                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
-                token.setVisible(true);
+                this.playerToken.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                this.playerToken.setVisible(true);
             }
             case RED -> {
-                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
-                token.setVisible(true);
+                this.playerToken.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
+                this.playerToken.setVisible(true);
             }
             case YELLOW -> {
-                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
-                token.setVisible(true);
+                this.playerToken.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
+                this.playerToken.setVisible(true);
             }
             case GREEN -> {
-                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
-                token.setVisible(true);
+                this.playerToken.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+                this.playerToken.setVisible(true);
             }
             default -> {
-                token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
-                token.setVisible(false);
+                this.playerToken.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                this.playerToken.setVisible(false);
             }
         }
     }
@@ -896,10 +898,11 @@ public class GUIController implements ViewController {
         blockInput();
         isCommonTableDown = true;
 
-        TranslateTransition transition = new TranslateTransition(Duration.millis(500), mainArea);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
         transition.setByY((mainArea.getHeight()+400)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
+            commonTableTxt.setText("Go back to your Table");
         });
         transition.play();
 
@@ -909,10 +912,11 @@ public class GUIController implements ViewController {
         blockInput();
         isCommonTableDown = false;
 
-        TranslateTransition transition = new TranslateTransition(Duration.millis(500), mainArea);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
         transition.setByY(-(mainArea.getHeight()+400)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
+            commonTableTxt.setText("See the Common Table");
         });
         transition.play();
 

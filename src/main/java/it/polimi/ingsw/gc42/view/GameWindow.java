@@ -123,6 +123,9 @@ public class GameWindow extends Application {
                             controller.onEnterPressed();
                         }
                     }
+                    case T -> {
+                        controller.toggleCommonTable();
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
