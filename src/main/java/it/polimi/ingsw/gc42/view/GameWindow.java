@@ -76,8 +76,12 @@ public class GameWindow extends Application {
         controller.initializeCards();
         stage.setScene(scene);
         stage.setResizable(true);
-        stage.setMinHeight(670);
-        stage.setMinWidth(800);
+        //stage.setMinHeight(670);
+        //stage.setMinWidth(800);
+        stage.centerOnScreen();
+        stage.setMaximized(true);
+        stage.setMinHeight(stage.getHeight());
+        stage.setMinWidth(stage.getWidth());
 
         controller.setGameController(gameController);
 

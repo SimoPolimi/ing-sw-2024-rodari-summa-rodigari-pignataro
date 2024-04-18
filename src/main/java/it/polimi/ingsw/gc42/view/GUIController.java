@@ -16,6 +16,7 @@ import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
 import it.polimi.ingsw.gc42.view.Dialog.Dialog;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -27,6 +28,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -115,7 +117,8 @@ public class GUIController implements ViewController {
     @FXML
     private StackPane phantomPlayArea;
     @FXML
-    private StackPane mainArea;
+    private AnchorPane mainArea;
+    //private StackPane mainArea;
     @FXML
     private VBox dialog;
     @FXML
@@ -124,6 +127,12 @@ public class GUIController implements ViewController {
     private ImageView blackToken;
     @FXML
     private VBox miniScoreboardContainer;
+    @FXML
+    private StackPane commonTableContainer;
+    @FXML
+    private AnchorPane playerTableContainer;
+    @FXML
+    private AnchorPane backgroundContainer;
 
     // Attributes
     private Player player;
@@ -139,6 +148,7 @@ public class GUIController implements ViewController {
     private HandView hand;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
+    private boolean isCommonTableDown = false;
 
 
     public void initializeCards() {
@@ -158,7 +168,7 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (canReadInput) {
+                        if (canReadInput && !isCommonTableDown) {
                             if (!hand.isHidden()) {
                                 onEnterPressed();
                             } else toggleHand();
@@ -173,7 +183,7 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (canReadInput) {
+                        if (canReadInput && !isCommonTableDown) {
                             if (!hand.isHidden()) {
                                 onEnterPressed();
                             } else toggleHand();
@@ -188,7 +198,7 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
                     case PRIMARY -> {
-                        if (canReadInput) {
+                        if (canReadInput && !isCommonTableDown) {
                             if (!hand.isHidden()) {
                                 onEnterPressed();
                             } else toggleHand();
@@ -220,10 +230,6 @@ public class GUIController implements ViewController {
 
     public StackPane getRoot() {
         return root;
-    }
-
-    public StackPane getMainArea() {
-        return mainArea;
     }
 
     public void setPlayer(Player player) {
@@ -365,21 +371,21 @@ public class GUIController implements ViewController {
 
     @FXML
     public void onCard1Clicked() {
-        if (canReadInput() && !isShowingDialog) {
+        if (canReadInput() && !isShowingDialog && !isCommonTableDown) {
             gameController.flipCard(hand.getHandCardView(1).getModelCard());
         }
     }
 
     @FXML
     public void onCard2Clicked() {
-        if (canReadInput() && !isShowingDialog) {
+        if (canReadInput() && !isShowingDialog && !isCommonTableDown) {
             gameController.flipCard(hand.getHandCardView(2).getModelCard());
         }
     }
 
     @FXML
     public void onCard3Clicked() {
-        if (canReadInput() && !isShowingDialog) {
+        if (canReadInput() && !isShowingDialog && !isCommonTableDown) {
             gameController.flipCard(hand.getHandCardView(3).getModelCard());
         }
     }
@@ -391,7 +397,7 @@ public class GUIController implements ViewController {
     }
 
     public void moveDown() {
-        if (!isShowingDialog) {
+        if (!isShowingDialog && !isCommonTableDown) {
             lastSelected = selectedCard;
             if (selectedCard == 3) {
                 selectedCard = 1;
@@ -403,7 +409,7 @@ public class GUIController implements ViewController {
     }
 
     public void moveUp() {
-        if (!isShowingDialog) {
+        if (!isShowingDialog && !isCommonTableDown) {
             lastSelected = selectedCard;
             if (selectedCard == 1) {
                 selectedCard = 3;
@@ -415,7 +421,7 @@ public class GUIController implements ViewController {
     }
 
     protected void selectCard(int selectedCard, boolean unlockInputAfter) {
-        if (!hand.isHidden() && !isShowingDialog) {
+        if (!hand.isHidden() && !isShowingDialog && !isCommonTableDown) {
             this.selectedCard = selectedCard;
             switch (selectedCard) {
                 case 1:
@@ -504,7 +510,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void toggleHand() {
-        if (!isShowingDialog && canReadInput) {
+        if (!isShowingDialog && canReadInput && !isCommonTableDown) {
             if (!hand.isHidden()) {
                 hand.hide();
             } else {
@@ -515,7 +521,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void flipObjective() {
-        if (canReadInput() && !isShowingDialog) {
+        if (canReadInput() && !isShowingDialog && !isCommonTableDown) {
             blockInput();
             objectiveCardView.rotate(this);
         }
@@ -635,9 +641,9 @@ public class GUIController implements ViewController {
 
             deselectAllCards(true);
             setShowingDialog(true);
-            mainArea.setEffect(new GaussianBlur(10));
+            backgroundContainer.setEffect(new GaussianBlur(10));
             if (content.isDismissable()) {
-                mainArea.setOnMouseClicked((e) -> {
+                backgroundContainer.setOnMouseClicked((e) -> {
                     hideDialog();
                 });
             }
@@ -668,8 +674,8 @@ public class GUIController implements ViewController {
             unlockInput();
             setShowingDialog(false);
         });
-        mainArea.setEffect(null);
-        mainArea.setOnMouseClicked(null);
+        backgroundContainer.setEffect(null);
+        backgroundContainer.setOnMouseClicked(null);
         bounce.play();
     }
 
@@ -873,5 +879,42 @@ public class GUIController implements ViewController {
     private void refreshScoreBoard() {
         miniScoreboardContainer.getChildren().clear();
         initMiniScoreBoard();
+    }
+
+    @FXML
+    public void toggleCommonTable() {
+        if (canReadInput()) {
+            if (!isCommonTableDown) {
+                bringCommonTableDown();
+            } else {
+                bringCommonTableUp();
+            }
+        }
+    }
+
+    public void bringCommonTableDown() {
+        blockInput();
+        isCommonTableDown = true;
+
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), mainArea);
+        transition.setByY((mainArea.getHeight()+400)/2);
+        transition.setOnFinished((e) -> {
+            unlockInput();
+        });
+        transition.play();
+
+    }
+
+    public void bringCommonTableUp() {
+        blockInput();
+        isCommonTableDown = false;
+
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), mainArea);
+        transition.setByY(-(mainArea.getHeight()+400)/2);
+        transition.setOnFinished((e) -> {
+            unlockInput();
+        });
+        transition.play();
+
     }
 }
