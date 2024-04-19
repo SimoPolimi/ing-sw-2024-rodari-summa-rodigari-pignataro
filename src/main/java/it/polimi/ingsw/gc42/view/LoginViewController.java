@@ -27,6 +27,10 @@ public class LoginViewController implements Observable {
     private VBox playButton;
     @FXML
     private TextField nickNameTextArea;
+    @FXML
+    private TextField ipTextField;
+    @FXML
+    private TextField portTextField;
 
     private NetworkMode selectedNetworkMode = NetworkMode.RMI;
     private final ArrayList<Listener> listeners = new ArrayList<>();
@@ -73,6 +77,14 @@ public class LoginViewController implements Observable {
         if (isPlayButtonEnabled) {
             notifyListeners("Play Button Clicked");
         }
+    }
+
+    public String getIPAddress() {
+        return ipTextField.getText();
+    }
+
+    public String getPort() {
+        return portTextField.getText();
     }
 
     public void setSelectedNetworkMode(NetworkMode selectedNetworkMode) {

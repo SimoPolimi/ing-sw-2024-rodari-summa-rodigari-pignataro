@@ -16,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
 public class PlayField implements Observable {
     // Attributes
     private final ArrayList<PlayableCard> playedCards = new ArrayList<>();
-    private final HashMap<String, Integer> counter = HashMap.newHashMap(7);
+    private final HashMap<Item, Integer> counter = HashMap.newHashMap(7);
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
     // Constructor Method
@@ -52,40 +52,21 @@ public class PlayField implements Observable {
 
     /**
      * Getter Method for the number of a specific KingdomResource inside the HashMap
-     * @param kingdom: one of the Kingdom Types
+     * @param item: one of the Items
      * @return the number of KingdomResources the player has played and which are visible on the table
      */
-    public int getNumberOf(KingdomResource kingdom) {
-        return counter.get(kingdom.toString());
+    public int getNumberOf(Item item) {
+        return counter.get(item);
     }
 
     /**
      * Setter Method for the number of a specific KingdomResource inside the HashMap.
      * ONLY USED INTERNALLY
-     * @param kingdom: one of the Kingdom Types
+     * @param item: one of the Items
      * @param num: the number to save for that specific KingdomResource
      */
-    private void setNumberOf(KingdomResource kingdom, int num) {
-        counter.replace(kingdom.toString(), num);
-    }
-
-    /**
-     * Getter Method for the number of a specific Resource or item inside the HashMap
-     * @param resource: one of the Resource Types
-     * @return the number of Resources the player has played and which are visible on the table.
-     */
-    public int getNumberOf(Resource resource) {
-        return counter.get(resource.toString());
-    }
-
-    /**
-     * Setter Method for the number of a specific Resource inside the HashMap
-     * ONLY USED INTERNALLY
-     * @param resource: one of the Resource Types
-     * @param num: the number to save for that specific Resource
-     */
-    private void setNumberOf(Resource resource, int num) {
-        counter.replace(resource.toString(), num);
+    private void setNumberOf(Item item, int num) {
+        counter.replace(item, num);
     }
 
     // Methods
@@ -103,52 +84,32 @@ public class PlayField implements Observable {
      */
     private void initMap() {
         //TODO: Make dynamic after implementing reading from JSON
-        counter.put(Resource.FEATHER.toString(), 0);
-        counter.put(Resource.SCROLL.toString(), 0);
-        counter.put(Resource.POTION.toString(), 0);
-        counter.put(KingdomResource.ANIMAL.toString(), 0);
-        counter.put(KingdomResource.PLANT.toString(), 0);
-        counter.put(KingdomResource.FUNGI.toString(), 0);
-        counter.put(KingdomResource.INSECT.toString(), 0);
+        counter.put(Resource.FEATHER, 0);
+        counter.put(Resource.SCROLL, 0);
+        counter.put(Resource.POTION, 0);
+        counter.put(KingdomResource.ANIMAL, 0);
+        counter.put(KingdomResource.PLANT, 0);
+        counter.put(KingdomResource.FUNGI, 0);
+        counter.put(KingdomResource.INSECT, 0);
     }
 
     /**
-     * Increases the number of this KingdomResource by 1.
-     * @param kingdom: the KingdomResource to be incremented.
+     * Increases the number of this Item by 1.
+     * @param item: the Item to be incremented.
      */
-    public void add(KingdomResource kingdom) {
-        setNumberOf(kingdom, getNumberOf(kingdom) + 1);
+    public void add(Item item) {
+        setNumberOf(item, getNumberOf(item) + 1);
     }
 
     /**
-     * Decreases the number of this KingdomResource by 1.
-     * @param kingdom: the KingdomResource to be decremented.
+     * Decreases the number of this Item by 1.
+     * @param item: the KingdomResource to be decremented.
      * @throws RemovingFromZeroException if the number is already 0.
      */
-    public void remove(KingdomResource kingdom) throws RemovingFromZeroException {
-        int num = getNumberOf(kingdom);
+    public void remove(Item item) throws RemovingFromZeroException {
+        int num = getNumberOf(item);
         if (num > 0) {
-            setNumberOf(kingdom, num - 1);
-        } else throw new RemovingFromZeroException();
-    }
-
-    /**
-     * Increases the number of this Resource by 1.
-     * @param resource: the Resource to be incremented.
-     */
-    public void add(Resource resource) {
-        setNumberOf(resource, getNumberOf(resource) + 1);
-    }
-
-    /**
-     * Decreases the number of this Resource by 1.
-     * @param resource: the Resource to be decremented.
-     * @throws RemovingFromZeroException if the number is already 0.
-     */
-    public void remove(Resource resource) throws RemovingFromZeroException {
-        int num = getNumberOf(resource);
-        if (num > 0) {
-            setNumberOf(resource, num - 1);
+            setNumberOf(item, num - 1);
         } else throw new RemovingFromZeroException();
     }
 
