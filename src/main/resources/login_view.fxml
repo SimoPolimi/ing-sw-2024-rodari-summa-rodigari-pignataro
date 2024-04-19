@@ -108,27 +108,6 @@
             <children>
                 <VBox alignment="CENTER_LEFT" spacing="5">
                     <children>
-                        <Text mouseTransparent="true" text="IP Address and Port:" textAlignment="LEFT" translateX="5">
-                            <font>
-                                <Font name="Tahoma Regular" size="12.0" />
-                            </font>
-                        </Text>
-                        <HBox alignment="CENTER_LEFT" spacing="5">
-                            <children>
-                                <TextField fx:id="ipTextField" prefWidth="110" promptText="IP Address">
-                           <cursor>
-                              <Cursor fx:constant="TEXT" />
-                           </cursor></TextField>
-                                <TextField fx:id="portTextField" prefWidth="50" promptText="Port">
-                           <cursor>
-                              <Cursor fx:constant="TEXT" />
-                           </cursor></TextField>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-                <VBox alignment="CENTER_LEFT" spacing="5">
-                    <children>
                         <Text mouseTransparent="true" text="Connection Mode:" textAlignment="LEFT">
                             <font>
                                 <Font name="Tahoma Regular" size="12.0" />
@@ -178,6 +157,32 @@
                                 </HBox>
                             </children>
                         </StackPane>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5">
+                    <children>
+                        <Text mouseTransparent="true" text="IP Address and Port:" textAlignment="LEFT" translateX="5">
+                            <font>
+                                <Font name="Tahoma Regular" size="12.0" />
+                            </font>
+                        </Text>
+                        <HBox alignment="CENTER_LEFT" spacing="5">
+                            <children>
+                                <TextField fx:id="ipTextField" prefWidth="110" promptText="IP Address">
+                                    <cursor>
+                                        <Cursor fx:constant="TEXT" />
+                                    </cursor></TextField>
+                                <TextField fx:id="portTextField" prefWidth="50" promptText="Port">
+                                    <cursor>
+                                        <Cursor fx:constant="TEXT" />
+                                    </cursor></TextField>
+                                <ImageView fx:id="connectionIcon" preserveRatio="true" fitWidth="20">
+                                    <image>
+                                        <Image url="@connectionErrorIcon.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
             </children>
