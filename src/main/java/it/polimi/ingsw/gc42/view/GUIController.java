@@ -127,7 +127,7 @@ public class GUIController implements ViewController {
             }
         });
         // onClick
-        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        goldDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
@@ -146,7 +146,7 @@ public class GUIController implements ViewController {
             }
         });
         // onClick
-        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        resourceDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
@@ -165,7 +165,7 @@ public class GUIController implements ViewController {
             }
         });
         // onClick
-        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
@@ -184,7 +184,7 @@ public class GUIController implements ViewController {
             }
         });
         // onClick
-        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        goldDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
@@ -203,7 +203,7 @@ public class GUIController implements ViewController {
             }
         });
         // onClick
-        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
