@@ -176,7 +176,7 @@
                                     <cursor>
                                         <Cursor fx:constant="TEXT" />
                                     </cursor></TextField>
-                                <ImageView fx:id="connectionIcon" preserveRatio="true" fitWidth="20">
+                                <ImageView fx:id="connectionIcon" preserveRatio="true" fitWidth="20" smooth="true">
                                     <image>
                                         <Image url="@connectionErrorIcon.png"/>
                                     </image>

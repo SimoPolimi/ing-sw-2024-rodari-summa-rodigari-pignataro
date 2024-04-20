@@ -91,6 +91,7 @@ public class CardPickerDialog extends Dialog implements Observable {
             effect.setHeight(50);
             effect.setBlurType(BlurType.GAUSSIAN);
             view.setEffect(effect);
+            view.setPickOnBounds(false);
             view.setOnMouseEntered((e) -> {
                 selectCard(handCardView, true);
             });

@@ -161,6 +161,7 @@ public class HandCardView {
          effect.setRadius(24.5);
          imageView.setEffect(effect);
          imageView.setVisible(false);
+         imageView.setCursor(Cursor.HAND);
 
         VBox hintContainer = new VBox();
          hintContainer.setAlignment(Pos.CENTER);

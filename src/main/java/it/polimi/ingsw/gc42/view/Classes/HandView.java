@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -33,11 +34,19 @@ public class HandView {
     private boolean isHidden;
     private boolean isPrivacyModeEnabled;
     private VBox container;
+    private Player player;
+
+    private int selectedCard = 0;
+    private int lastSelected = 0;
 
     public HandView(boolean isPrivacyModeEnabled, GUIController controller) {
         build();
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         this.controller = controller;
+    }
+
+    public int getSelectedCard() {
+        return selectedCard;
     }
 
     public Pane getPane() {
@@ -53,7 +62,7 @@ public class HandView {
         AnchorPane.setBottomAnchor(container, 0.0);
         AnchorPane.setLeftAnchor(container, 0.0);
         AnchorPane.setTopAnchor(container, 0.0);
-        //container.setPadding(new Insets(0, 0, 0, 40));
+        container.setPadding(new Insets(0, 0, 0, 40));
 
         HBox collapseHintContainer = new HBox();
         collapseHintContainer.setAlignment(Pos.CENTER_LEFT);
@@ -95,6 +104,52 @@ public class HandView {
         handCardView1 = new HandCardView(isPrivacyModeEnabled);
         handCardView2 = new HandCardView(isPrivacyModeEnabled);
         handCardView3 = new HandCardView(isPrivacyModeEnabled);
+        if (!isPrivacyModeEnabled) {
+            handCardView1.getImageView().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (!handCardView1.isBeingPlayed()) {
+                        selectCard(1, true);
+                    }
+                }
+            });
+            handCardView1.getImageView().setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (!handCardView1.isBeingPlayed()) {
+                        deselectAllCards(true);
+                    }
+                }
+            });
+            handCardView2.getImageView().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (!handCardView2.isBeingPlayed()) {
+                        selectCard(2, true);
+                    }
+                }
+            });
+            handCardView2.getImageView().setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    deselectAllCards(true);
+                }
+            });
+            handCardView3.getImageView().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (!handCardView3.isBeingPlayed()) {
+                        selectCard(3, true);
+                    }
+                }
+            });
+            handCardView3.getImageView().setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    deselectAllCards(true);
+                }
+            });
+        }
 
         Pane card1Container = handCardView1.getPane();
         Pane card2Container = handCardView2.getPane();
@@ -122,6 +177,67 @@ public class HandView {
         container.getChildren().addAll(collapseHintContainer, card1Container, card2Container, card3Container, bottomHintContainer);
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+        handCardView1.getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> {
+                        if (controller.canReadInput() && !controller.isCommonTableDown()) {
+                            if (!isHidden()) {
+                                controller.onEnterPressed();
+                            } else controller.toggleHand();
+                        }
+                    }
+                    case SECONDARY -> {
+                        if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
+                            flipCard(1);
+                        }
+                    }
+                }
+            }
+        });
+        handCardView2.getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> {
+                        if (controller.canReadInput() && !controller.isCommonTableDown()) {
+                            if (!isHidden()) {
+                                controller.onEnterPressed();
+                            } else controller.toggleHand();
+                        }
+                    }
+                    case SECONDARY -> {
+                        if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
+                            flipCard(2);
+                        }
+                    }
+                }
+            }
+        });
+        handCardView3.getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                switch (event.getButton()) {
+                    case PRIMARY -> {
+                        if (controller.canReadInput() && !controller.isCommonTableDown()) {
+                            if (!isHidden()) {
+                                controller.onEnterPressed();
+                            } else controller.toggleHand();
+                        }
+                    }
+                    case SECONDARY -> {
+                        if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
+                            flipCard(3);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     public boolean isHidden() {
         return isHidden;
     }
@@ -145,7 +261,7 @@ public class HandView {
 
     public void hide() {
         controller.blockInput();
-        controller.deselectAllCards(false);
+        deselectAllCards(false);
         isHidden = true;
         KBNavHint.setVisible(false);
         textNav.setVisible(false);
@@ -226,4 +342,135 @@ public class HandView {
         t2.play();
         t3.play();
     }
-}
+
+    private void selectCard(int selectedCard, boolean unlockInputAfter) {
+        if (!isHidden && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
+            this.selectedCard = selectedCard;
+            switch (selectedCard) {
+                case 1:
+                    handCardView1.select(controller);
+                    if (2 == lastSelected) {
+                        handCardView2.deselect(controller, unlockInputAfter);
+                    }
+                    if (3 == lastSelected) {
+                        handCardView3.deselect(controller, unlockInputAfter);
+                    }
+                    break;
+                case 2:
+                    handCardView2.select(controller);
+                    if (1 == lastSelected) {
+                        handCardView1.deselect(controller, unlockInputAfter);
+                    }
+                    if (3 == lastSelected) {
+                        handCardView3.deselect(controller, unlockInputAfter);
+                    }
+                    break;
+                case 3:
+                    handCardView3.select(controller);
+                    if (1 == lastSelected) {
+                        handCardView1.deselect(controller, unlockInputAfter);
+                    }
+                    if (2 == lastSelected) {
+                        handCardView2.deselect(controller, unlockInputAfter);
+                    }
+                    break;
+                default:
+                    if (1 == lastSelected) {
+                        handCardView1.deselect(controller, unlockInputAfter);
+                    }
+                    if (2 == lastSelected) {
+                        handCardView2.deselect(controller, unlockInputAfter);
+                    } else if (3 == lastSelected) {
+                        handCardView3.deselect(controller, unlockInputAfter);
+                    }
+            }
+            lastSelected = selectedCard;
+        }
+    }
+
+    public void moveDown() {
+        lastSelected = selectedCard;
+        if (selectedCard == 3) {
+            selectedCard = 1;
+        } else {
+            selectedCard++;
+        }
+        selectCard(selectedCard, true);
+    }
+
+    public void moveUp() {
+        lastSelected = selectedCard;
+        if (selectedCard == 1) {
+            selectedCard = 3;
+        } else {
+            selectedCard--;
+        }
+        selectCard(selectedCard, true);
+    }
+
+    public void onFKeyPressed() {
+        flipCard(selectedCard);
+    }
+
+    public void flipCard(int num) {
+        switch (num) {
+            case 1 -> handCardView1.flip();
+            case 2 -> handCardView2.flip();
+            case 3 -> handCardView3.flip();
+        }
+    }
+
+    public void deselectAllCards(boolean unlockInputAfter) {
+        selectCard(0, unlockInputAfter);
+    }
+
+    public void setPlayingOverlay(int number, boolean value) {
+        switch (number) {
+            case 0 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(controller);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(controller);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(controller);
+                }
+            }
+            case 1 -> {
+                if (value && !handCardView1.isBeingPlayed()) {
+                    handCardView1.setPlayingSelection(controller);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(controller);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(controller);
+                }
+            }
+            case 2 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(controller);
+                }
+                if (value && !handCardView2.isBeingPlayed()) {
+                    handCardView2.setPlayingSelection(controller);
+                }
+                if (handCardView3.isBeingPlayed()) {
+                    handCardView3.removePlayingSelection(controller);
+                }
+            }
+            case 3 -> {
+                if (handCardView1.isBeingPlayed()) {
+                    handCardView1.removePlayingSelection(controller);
+                }
+                if (handCardView2.isBeingPlayed()) {
+                    handCardView2.removePlayingSelection(controller);
+                }
+                if (value && !handCardView3.isBeingPlayed()) {
+                    handCardView3.setPlayingSelection(controller);
+                }
+            }
+        }
+    }
+
+ }
