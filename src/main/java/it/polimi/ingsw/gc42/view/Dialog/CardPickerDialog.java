@@ -62,8 +62,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     }
 
     public void addCard(Card card) {
-        HandCardView handCardView = new HandCardView(new ImageView(), new Text(), new ImageView(), new ImageView(),
-                new Text(), new ImageView(), new ImageView(), card);
+        HandCardView handCardView = new HandCardView(card,false);
         handCardView.getImageView().setPreserveRatio(true);
         handCardView.getImageView().setFitWidth(140);
         handCardView.getImageView().setCursor(Cursor.HAND);

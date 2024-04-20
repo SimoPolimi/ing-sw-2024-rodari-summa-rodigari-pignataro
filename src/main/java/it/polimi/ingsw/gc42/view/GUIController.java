@@ -44,60 +44,6 @@ import java.util.Objects;
 public class GUIController implements ViewController {
     // Imports from the GUI
     @FXML
-    private ImageView view1;
-    @FXML
-    private ImageView view2;
-    @FXML
-    private ImageView view3;
-
-    @FXML
-    private ImageView KBHint1;
-    @FXML
-    private ImageView KBHint2;
-    @FXML
-    private ImageView KBHint3;
-    @FXML
-    private ImageView MouseHint1;
-    @FXML
-    private ImageView MouseHint2;
-    @FXML
-    private ImageView MouseHint3;
-
-    @FXML
-    private Text text1;
-    @FXML
-    private Text text2;
-    @FXML
-    private Text text3;
-    @FXML
-    private ImageView KBHintEnter1;
-    @FXML
-    private ImageView KBHintEnter2;
-    @FXML
-    private ImageView KBHintEnter3;
-    @FXML
-    private ImageView MouseHintEnter1;
-    @FXML
-    private ImageView MouseHintEnter2;
-    @FXML
-    private ImageView MouseHintEnter3;
-    @FXML
-    private Text textEnter1;
-    @FXML
-    private Text textEnter2;
-    @FXML
-    private Text textEnter3;
-
-    @FXML
-    private ImageView KBNavHint;
-    @FXML
-    private Text textNav;
-    @FXML
-    private ImageView KBCollapseHint;
-    @FXML
-    private Text textCollapse;
-
-    @FXML
     private ImageView objectiveView;
     @FXML
     private ImageView KBObjectiveHint;
@@ -153,19 +99,11 @@ public class GUIController implements ViewController {
     private boolean isCommonTableDown = false;
 
 
-    public void initializeCards() {
-        HandCardView handCardView1 = new HandCardView(view1, text1, KBHint1,
-                MouseHint1, textEnter1, KBHintEnter1, MouseHintEnter1);
-        HandCardView handCardView2 = new HandCardView(view2, text2, KBHint2,
-                MouseHint2, textEnter2, KBHintEnter2, MouseHintEnter2);
-        HandCardView handCardView3 = new HandCardView(view3, text3, KBHint3,
-                MouseHint3, textEnter3, KBHintEnter3, MouseHintEnter3);
-        handCardView1.getImageView().setVisible(false);
-        handCardView2.getImageView().setVisible(false);
-        handCardView3.getImageView().setVisible(false);
+    public void build() {
+        hand = new HandView(true, this);
         objectiveView.setVisible(false);
 
-        view1.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        hand.getHandCardView(1).getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
@@ -180,7 +118,7 @@ public class GUIController implements ViewController {
                 }
             }
         });
-        view2.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        hand.getHandCardView(2).getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
@@ -195,7 +133,7 @@ public class GUIController implements ViewController {
                 }
             }
         });
-        view3.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        hand.getHandCardView(3).getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 switch (event.getButton()) {
@@ -211,9 +149,10 @@ public class GUIController implements ViewController {
             }
         });
 
-        hand = new HandView(handCardView1, handCardView2, handCardView3,
-                KBNavHint, textNav, KBCollapseHint, textCollapse, this);
+        hand = new HandView(true, this);
         hand.hide();
+
+        playerTableContainer.getChildren().addAll(hand.getPane());
     }
 
     public void setGameController(GameController gameController) {

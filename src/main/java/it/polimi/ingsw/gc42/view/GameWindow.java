@@ -2,25 +2,16 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -73,7 +64,7 @@ public class GameWindow extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
         GameController gameController = new GameController();
-        controller.initializeCards();
+        controller.build();
         stage.setScene(scene);
         stage.setResizable(true);
         //stage.setMinHeight(670);

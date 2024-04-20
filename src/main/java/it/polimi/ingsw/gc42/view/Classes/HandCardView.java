@@ -8,13 +8,25 @@ import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+
+import java.util.Objects;
 
 public class HandCardView {
     private CardView card;
@@ -29,32 +41,21 @@ public class HandCardView {
     private boolean isBeingPlayed;
     private Card modelCard;
     private Listener listener;
+    private boolean isPrivacyModeEnabled;
+    private HBox cardContainer;
 
-    public HandCardView(ImageView imageView, Text hintFlip, ImageView hintIconFlipKB, ImageView hintIconFlipMouse,
-                        Text hintEnter, ImageView hintIconEnterKB, ImageView hintIconEnterMouse, Card modelCard) {
-        this.imageView = imageView;
-        imageView.setImage(modelCard.getFrontImage());
-        this.hintFlip = hintFlip;
-        this.hintIconFlipKB = hintIconFlipKB;
-        this.hintIconFlipMouse = hintIconFlipMouse;
-        this.hintEnter = hintEnter;
-        this.hintIconEnterKB = hintIconEnterKB;
-        this.hintIconEnterMouse = hintIconEnterMouse;
+    public HandCardView(Card modelCard, boolean isPrivacyModeEnabled) {
+        build();
+        this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         setModelCard(modelCard);
         this.isSelected = false;
         this.isBeingPlayed = false;
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
-    public HandCardView(ImageView imageView, Text hintFlip, ImageView hintIconFlipKB,
-                        ImageView hintIconFlipMouse, Text hintEnter, ImageView hintIconEnterKB, ImageView hintIconEnterMouse) {
-        this.imageView = imageView;
-        this.hintFlip = hintFlip;
-        this.hintIconFlipKB = hintIconFlipKB;
-        this.hintIconFlipMouse = hintIconFlipMouse;
-        this.hintEnter = hintEnter;
-        this.hintIconEnterKB = hintIconEnterKB;
-        this.hintIconEnterMouse = hintIconEnterMouse;
+    public HandCardView(boolean isPrivacyModeEnabled) {
+        build();
+        this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         setModelCard(modelCard);
         this.isSelected = false;
     }
@@ -115,12 +116,20 @@ public class HandCardView {
         this.modelCard = modelCard;
         if (null != modelCard) {
             this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
-            this.imageView.setImage(modelCard.getShowingImage());
+            if (!isPrivacyModeEnabled) {
+                this.imageView.setImage(modelCard.getShowingImage());
+            } else {
+                this.imageView.setImage(modelCard.getBackImage());
+            }
             imageView.setVisible(true);
             if (card.isFrontFacing()) {
                 card.setOddRotation(true);
             }
         }
+    }
+
+    public Pane getPane() {
+        return cardContainer;
     }
 
     private void flipCard(int cardId) throws NoSuchCardException {
@@ -133,6 +142,87 @@ public class HandCardView {
         if (!isBeingPlayed) {
             modelCard.flip();
         }
+    }
+
+    private void build() {
+        cardContainer = new HBox();
+        cardContainer.setAlignment(Pos.CENTER_LEFT);
+        cardContainer.setPrefWidth(340);
+        cardContainer.setSpacing(40);
+
+         imageView = new ImageView(new Image(Objects.requireNonNull(getClass()
+                 .getResourceAsStream("/cards/card1Front.png"))));
+         imageView.setFitWidth(140);
+         imageView.setPreserveRatio(true);
+         DropShadow effect = new DropShadow();
+         effect.setBlurType(BlurType.GAUSSIAN);
+         effect.setHeight(50);
+         effect.setWidth(50);
+         effect.setRadius(24.5);
+         imageView.setEffect(effect);
+         imageView.setVisible(false);
+
+        VBox hintContainer = new VBox();
+         hintContainer.setAlignment(Pos.CENTER);
+         hintContainer.setSpacing(40);
+
+         HBox flipHintContainer = new HBox();
+         flipHintContainer.setAlignment(Pos.CENTER_LEFT);
+         flipHintContainer.setSpacing(10);
+
+         hintIconFlipKB = new ImageView(new Image(Objects.requireNonNull(getClass()
+                 .getResourceAsStream("/flipKeyboardHint.png"))));
+         hintIconFlipKB.setFitWidth(20);
+         hintIconFlipKB.setPreserveRatio(true);
+         hintIconFlipKB.setPickOnBounds(true);
+         hintIconFlipKB.setVisible(false);
+         hintIconFlipKB.setSmooth(true);
+
+         hintIconFlipMouse = new ImageView(new Image(Objects.requireNonNull(getClass()
+                 .getResourceAsStream("/RightMouseButton.png"))));
+        hintIconFlipMouse.setFitWidth(20);
+        hintIconFlipMouse.setPreserveRatio(true);
+        hintIconFlipMouse.setPickOnBounds(true);
+        hintIconFlipMouse.setVisible(false);
+        hintIconFlipMouse.setSmooth(true);
+
+        hintFlip = new Text("Flip");
+        hintFlip.setFill(Paint.valueOf("white"));
+        hintFlip.setFont(Font.font("Contantia Italic", 15));
+        hintFlip.setVisible(false);
+
+        flipHintContainer.getChildren().addAll(hintIconFlipKB, hintIconFlipMouse, hintFlip);
+
+        HBox enterHintContainer = new HBox();
+        enterHintContainer.setAlignment(Pos.CENTER_LEFT);
+        enterHintContainer.setSpacing(10);
+
+        hintIconEnterKB = new ImageView(new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/EnterHint.png"))));
+        hintIconEnterKB.setFitWidth(20);
+        hintIconEnterKB.setPreserveRatio(true);
+        hintIconEnterKB.setPickOnBounds(true);
+        hintIconEnterKB.setVisible(false);
+        hintIconEnterKB.setSmooth(true);
+
+        hintIconEnterMouse = new ImageView(new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/LeftMouseButton.png"))));
+        hintIconEnterMouse.setFitWidth(20);
+        hintIconEnterMouse.setPreserveRatio(true);
+        hintIconEnterMouse.setPickOnBounds(true);
+        hintIconEnterMouse.setVisible(false);
+        hintIconEnterMouse.setSmooth(true);
+
+        hintEnter = new Text("Place");
+        hintEnter.setFill(Paint.valueOf("white"));
+        hintEnter.setFont(Font.font("Contantia Italic", 15));
+        hintEnter.setVisible(false);
+
+        enterHintContainer.getChildren().addAll(hintIconEnterKB, hintIconEnterMouse, hintEnter);
+
+         hintContainer.getChildren().addAll(flipHintContainer, enterHintContainer);
+
+        cardContainer.getChildren().addAll(imageView, hintContainer);
     }
 
     public void select(GUIController controller) {
