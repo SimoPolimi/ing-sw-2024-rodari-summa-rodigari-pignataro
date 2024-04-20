@@ -507,7 +507,7 @@ public class GUIController implements ViewController {
         isCommonTableDown = true;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY((mainArea.getHeight()+400)/2);
+        transition.setByY((mainArea.getHeight()+500)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("Go back to your Table");
@@ -521,7 +521,7 @@ public class GUIController implements ViewController {
         isCommonTableDown = false;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY(-(mainArea.getHeight()+400)/2);
+        transition.setByY(-(mainArea.getHeight()+500)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("See the Common Table");

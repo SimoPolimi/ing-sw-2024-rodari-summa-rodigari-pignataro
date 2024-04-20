@@ -76,13 +76,6 @@ public class GameController {
             // TODO: Handle exception
             e.printStackTrace();
         }
-        //TODO: Make the player choose what to draw from
-        try{
-            player.drawCard(game.getResourcePlayingDeck());
-        }catch(IllegalActionException e){
-            //TODO: handle exception
-            e.printStackTrace();
-        }
 
     }
 
