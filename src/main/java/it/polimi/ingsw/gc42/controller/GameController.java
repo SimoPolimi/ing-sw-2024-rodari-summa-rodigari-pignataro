@@ -66,12 +66,15 @@ public class GameController {
         Player player = game.getCurrentPlayer();
         try {
             player.playCard(card, x, y);
+            for (ViewController view : views) {
+                if (view.getOwner().equals(player)) {
+                    view.askToDrawOrGrab();
+                }
+            }
         } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
             // TODO: Handle exception
             e.printStackTrace();
         }
-        //TODO: Make the player choose what to draw from
-        player.drawCard(game.getResourcePlayingDeck());
     }
 
     public void flipCard(Card card) {

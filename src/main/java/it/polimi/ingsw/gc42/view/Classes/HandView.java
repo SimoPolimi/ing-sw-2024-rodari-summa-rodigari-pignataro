@@ -35,6 +35,7 @@ public class HandView {
     private boolean isPrivacyModeEnabled;
     private VBox container;
     private Player player;
+    private boolean isFirstTime = true;
 
     private int selectedCard = 0;
     private int lastSelected = 0;
@@ -43,6 +44,7 @@ public class HandView {
         build();
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         this.controller = controller;
+        hide();
     }
 
     public int getSelectedCard() {
@@ -236,10 +238,19 @@ public class HandView {
                 }
             }
         });
+        if (handCardView1.getModelCard() != null && handCardView2.getModelCard() != null
+                && handCardView3.getModelCard() != null && isFirstTime) {
+            refresh(null);
+            isFirstTime = false;
+        }
     }
 
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        this.isFirstTime = firstTime;
     }
 
     public HandCardView getHandCardView(int number) {
@@ -302,9 +313,9 @@ public class HandView {
 
     public void refresh(Runnable runnable) {
         controller.blockInput();
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
-        TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
+        TranslateTransition t1 = new TranslateTransition(Duration.millis(150), handCardView1.getImageView());
+        TranslateTransition t2 = new TranslateTransition(Duration.millis(150), handCardView2.getImageView());
+        TranslateTransition t3 = new TranslateTransition(Duration.millis(150), handCardView3.getImageView());
         int distance;
         if (isHidden) {
             distance = -100;
@@ -324,7 +335,7 @@ public class HandView {
         t3.play();
     }
 
-    private void showAfterRefresh() {
+    public void showAfterRefresh() {
         TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
         TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
         TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
@@ -337,7 +348,12 @@ public class HandView {
         t1.setByX(distance);
         t2.setByX(distance);
         t3.setByX(distance);
-        t1.setOnFinished((e) -> controller.unlockInput());
+        t1.setOnFinished((e) -> {
+            controller.unlockInput();
+            if (player.getHandSize() == 3) {
+                controller.setPlayerCanDrawOrGrab(false);
+            }
+        });
         t1.play();
         t2.play();
         t3.play();

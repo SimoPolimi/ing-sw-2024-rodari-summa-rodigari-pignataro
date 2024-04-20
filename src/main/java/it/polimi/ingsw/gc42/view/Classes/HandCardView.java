@@ -127,6 +127,8 @@ public class HandCardView {
                     imageView.setRotate(0);
                 }
             }
+        } else {
+            imageView.setVisible(false);
         }
     }
 
@@ -141,7 +143,7 @@ public class HandCardView {
     }
 
     public void flip() {
-        if (!isBeingPlayed) {
+        if (!isBeingPlayed && null != modelCard) {
             modelCard.flip();
         }
     }

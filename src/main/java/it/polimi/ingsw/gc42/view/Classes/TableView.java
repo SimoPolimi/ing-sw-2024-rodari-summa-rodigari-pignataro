@@ -97,41 +97,39 @@ public class TableView {
         player.setListener(new HandListener() {
             @Override
             public void onEvent() {
-                hand.refresh(new Runnable() {
-                    @Override
-                    public void run() {
-                        Card card;
-                        card = player.getHandCard(0);
-                        if (null != hand.getHandCardView(1).getModelCard()) {
-                            hand.getHandCardView(1).getModelCard().removeListener(listener1);
-                        }
-                        hand.setPlayingOverlay(1, false);
-                        hand.getHandCardView(1).setModelCard(card);
-                        if (null != card) {
-                            hand.getHandCardView(1).getModelCard().setListener(listener1);
-                        }
+                Card card;
+                card = player.getHandCard(0);
+                if (null != hand.getHandCardView(1).getModelCard()) {
+                    hand.getHandCardView(1).getModelCard().removeListener(listener1);
+                }
+                hand.setPlayingOverlay(1, false);
+                hand.getHandCardView(1).setModelCard(card);
+                if (null != card) {
+                    hand.getHandCardView(1).getModelCard().setListener(listener1);
+                }
 
-                        card = player.getHandCard(1);
-                        if (null != hand.getHandCardView(2).getModelCard()) {
-                            hand.getHandCardView(2).getModelCard().removeListener(listener2);
-                        }
-                        hand.setPlayingOverlay(2, false);
-                        hand.getHandCardView(2).setModelCard(card);
-                        if (null != card) {
-                            hand.getHandCardView(2).getModelCard().setListener(listener2);
-                        }
+                card = player.getHandCard(1);
+                if (null != hand.getHandCardView(2).getModelCard()) {
+                    hand.getHandCardView(2).getModelCard().removeListener(listener2);
+                }
+                hand.setPlayingOverlay(2, false);
+                hand.getHandCardView(2).setModelCard(card);
+                if (null != card) {
+                    hand.getHandCardView(2).getModelCard().setListener(listener2);
+                }
 
-                        card = player.getHandCard(2);
-                        if (null != hand.getHandCardView(3).getModelCard()) {
-                            hand.getHandCardView(3).getModelCard().removeListener(listener3);
-                        }
-                        hand.setPlayingOverlay(3, false);
-                        hand.getHandCardView(3).setModelCard(card);
-                        if (null != card) {
-                            hand.getHandCardView(3).getModelCard().setListener(listener3);
-                        }
-                    }
-                });
+                card = player.getHandCard(2);
+                if (null != hand.getHandCardView(3).getModelCard()) {
+                    hand.getHandCardView(3).getModelCard().removeListener(listener3);
+                }
+                hand.setPlayingOverlay(3, false);
+                hand.getHandCardView(3).setModelCard(card);
+                if (null != card) {
+                    hand.getHandCardView(3).getModelCard().setListener(listener3);
+                }
+                if (player.getHandSize() == 3) {
+                    controller.setPlayerCanDrawOrGrab(false);
+                }
             }
         });
         player.setListener(new ReadyToChooseSecretObjectiveListener() {
@@ -319,7 +317,6 @@ public class TableView {
         transition.setOnFinished((e) -> {
             controller.getGameController().playCard(player
                     .getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
-            controller.setPlayerCanDrawOrGrab(true);
         });
         transition.play();
     }

@@ -116,6 +116,9 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+                    if (isCommonTableDown) {
+                        bringCommonTableUp();
+                    }
                 }
             }
         });
@@ -131,6 +134,9 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
+                    if (isCommonTableDown) {
+                        bringCommonTableUp();
+                    }
                 }
             }
         });
@@ -402,6 +408,19 @@ public class GUIController implements ViewController {
         showDialog(dialog);
     }
 
+    @Override
+    public Player getOwner() {
+        return player;
+    }
+
+    @Override
+    public void askToDrawOrGrab() {
+        setPlayerCanDrawOrGrab(true);
+        if (!isCommonTableDown) {
+            bringCommonTableDown();
+        }
+    }
+
     public void onEnterPressed() {
         table.playCard();
     }
@@ -490,7 +509,7 @@ public class GUIController implements ViewController {
         isCommonTableDown = true;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY((mainArea.getHeight()+400)/2);
+        transition.setByY((mainArea.getHeight()+500)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("Go back to your Table");
@@ -504,7 +523,7 @@ public class GUIController implements ViewController {
         isCommonTableDown = false;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY(-(mainArea.getHeight()+400)/2);
+        transition.setByY(-(mainArea.getHeight()+500)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("See the Common Table");

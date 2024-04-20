@@ -171,4 +171,14 @@ public class GameTerminal extends Application implements ViewController {
     public void showTokenSelectionDialog() {
 
     }
+
+    @Override
+    public Player getOwner() {
+        return player;
+    }
+
+    @Override
+    public void askToDrawOrGrab() {
+
+    }
 }
