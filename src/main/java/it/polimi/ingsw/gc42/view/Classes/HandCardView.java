@@ -124,6 +124,9 @@ public class HandCardView {
             imageView.setVisible(true);
             if (card.isFrontFacing()) {
                 card.setOddRotation(true);
+                if (imageView.getRotate() == 180) {
+                    imageView.setRotate(0);
+                }
             }
         }
     }

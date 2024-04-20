@@ -18,13 +18,13 @@
                 <AnchorPane fx:id="mainArea" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                     <children>
                         <AnchorPane fx:id="playerTableContainer" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
-                        <StackPane fx:id="commonTableContainer" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#toggleCommonTable" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="TOP_CENTER">
+                        <StackPane fx:id="commonTableContainer" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="TOP_CENTER">
                             <children>
                                 <VBox alignment="CENTER" spacing="5">
                                     <children>
                                         <StackPane fx:id="scoreboardContainer">
                                             <children>
-                                                <ImageView fx:id="scoreboard" fitWidth="250" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="scoreboard" fitWidth="250" pickOnBounds="true" preserveRatio="true" onMouseClicked="#toggleCommonTable">
                                                     <image>
                                                         <Image url="@scoreboard.png" />
                                                     </image>
@@ -35,9 +35,9 @@
                                                         <Cursor fx:constant="HAND" />
                                                     </cursor>
                                                 </ImageView>
-                                                <StackPane fx:id="tokensContainer" translateY="215" translateX="-60">
+                                                <StackPane fx:id="tokensContainer" translateY="215" translateX="-60" disable="true">
                                                     <children>
-                                                        <ImageView fx:id="blueToken" fitWidth="50" preserveRatio="true" visible="true">
+                                                        <ImageView fx:id="blueToken" fitWidth="50" preserveRatio="true" visible="true" disable="true">
                                                             <image>
                                                                 <Image url="@blueToken.png" />
                                                             </image>
@@ -45,7 +45,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="redToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-5">
+                                                        <ImageView fx:id="redToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-5" disable="true">
                                                             <image>
                                                                 <Image url="@redToken.png" />
                                                             </image>
@@ -53,7 +53,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="greenToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-10">
+                                                        <ImageView fx:id="greenToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-10" disable="true">
                                                             <image>
                                                                 <Image url="@greenToken.png" />
                                                             </image>
@@ -61,7 +61,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="yellowToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-15">
+                                                        <ImageView fx:id="yellowToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-15" disable="true">
                                                             <image>
                                                                 <Image url="@yellowToken.png" />
                                                             </image>
@@ -75,7 +75,7 @@
                                         </StackPane>
                                         <HBox id="commonTableHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
                                             <children>
-                                                <ImageView fx:id="commonTableHint" fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleHand" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="commonTableHint" fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
                                                     <image>
                                                         <Image url="@commonTableHInt.png" />
                                                     </image>
@@ -83,7 +83,7 @@
                                                         <Cursor fx:constant="HAND" />
                                                     </cursor>
                                                 </ImageView>
-                                                <Text fx:id="commonTableTxt" fill="white" onMouseClicked="#toggleHand" text="See the Common Table">
+                                                <Text fx:id="commonTableTxt" fill="white" onMouseClicked="#toggleCommonTable" text="See the Common Table">
                                                     <font>
                                                         <Font name="Constantia Italic" size="15.0" />
                                                     </font>
