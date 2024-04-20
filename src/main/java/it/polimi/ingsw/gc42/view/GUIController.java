@@ -20,14 +20,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.SwipeEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -90,6 +86,7 @@ public class GUIController implements ViewController {
     private TableView table;
     private DeckView resourceDeck;
     private DeckView goldDeck;
+    private boolean playerCanDrawOrGrab = false;
 
 
     public void build() {
@@ -117,7 +114,9 @@ public class GUIController implements ViewController {
         resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+                }
             }
         });
         gameController.getGame().getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
@@ -130,7 +129,9 @@ public class GUIController implements ViewController {
         goldDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
+                }
             }
         });
         resourceDown1.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage());
@@ -149,7 +150,9 @@ public class GUIController implements ViewController {
         resourceDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
+                }
             }
         });
         resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
@@ -168,7 +171,9 @@ public class GUIController implements ViewController {
         resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
+                }
             }
         });
         goldDown1.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage());
@@ -187,7 +192,9 @@ public class GUIController implements ViewController {
         goldDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
+                }
             }
         });
         goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
@@ -206,7 +213,9 @@ public class GUIController implements ViewController {
         goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
+                if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
+                    gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
+                }
             }
         });
         commonObjective1.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage());
@@ -215,6 +224,14 @@ public class GUIController implements ViewController {
 
     public GameController getGameController() {
         return gameController;
+    }
+
+    public boolean isPlayerCanDrawOrGrab() {
+        return playerCanDrawOrGrab;
+    }
+
+    public void setPlayerCanDrawOrGrab(boolean playerCanDrawOrGrab) {
+        this.playerCanDrawOrGrab = playerCanDrawOrGrab;
     }
 
     public StackPane getRoot() {

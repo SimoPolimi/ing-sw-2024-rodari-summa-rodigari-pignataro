@@ -8,10 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class DeckView {
-    private StackPane container;
+    private final StackPane container;
 
     public DeckView(StackPane container) {
         this.container = container;
@@ -20,7 +19,7 @@ public class DeckView {
     public void refresh(ArrayList<Card> cards) {
         container.getChildren().clear();
         if (!cards.isEmpty()) {
-            for (int i = 0; i < cards.size(); i++) {
+            for (int i = cards.size()-1; i >= 0; i--) {
                 ImageView view = new ImageView(cards.get(i).getBackImage());
                 view.setPreserveRatio(true);
                 view.setFitWidth(160);
@@ -30,7 +29,7 @@ public class DeckView {
                 effect.setRadius(2);
                 effect.setBlurType(BlurType.GAUSSIAN);
                 view.setEffect(effect);
-                view.setTranslateY(-i/2);
+                view.setTranslateY((double) i /2);
                 container.getChildren().add(view);
             }
             container.setCursor(Cursor.HAND);

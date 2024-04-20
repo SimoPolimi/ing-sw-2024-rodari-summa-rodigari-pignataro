@@ -217,7 +217,7 @@ public class TableView {
         effect.setWidth(50);
         effect.setHeight(50);
         effect.setRadius(24.5);
-        blackToken.setEffect(effect);
+        blackToken.setEffect(effect2);
 
         playArea = new StackPane();
         playArea.setAlignment(Pos.CENTER);
@@ -282,7 +282,7 @@ public class TableView {
     }
 
     public void playCard() {
-        int oldBeingPLayed = cardBeingPlayed;
+        int oldBeingPlayed = cardBeingPlayed;
         if (cardBeingPlayed == hand.getSelectedCard()) {
             cardBeingPlayed = 0;
         } else {
@@ -298,7 +298,7 @@ public class TableView {
                 showAvailablePlacements();
             } else {
                 hand.getHandCardView(cardBeingPlayed).showError();
-                cardBeingPlayed = oldBeingPLayed;
+                cardBeingPlayed = oldBeingPlayed;
             }
         } else {
             hand.setPlayingOverlay(cardBeingPlayed, true);
@@ -319,6 +319,7 @@ public class TableView {
         transition.setOnFinished((e) -> {
             controller.getGameController().playCard(player
                     .getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
+            controller.setPlayerCanDrawOrGrab(true);
         });
         transition.play();
     }

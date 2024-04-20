@@ -40,7 +40,6 @@ public class HandCardView {
     private boolean isSelected;
     private boolean isBeingPlayed;
     private Card modelCard;
-    private Listener listener;
     private boolean isPrivacyModeEnabled;
     private HBox cardContainer;
 
@@ -311,7 +310,6 @@ public class HandCardView {
                 break;
             default: break;
         }
-        //deselect(controller, false);
         t.play();
     }
 
