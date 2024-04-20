@@ -113,10 +113,24 @@ public class GUIController implements ViewController {
                 resourceDeck.refresh(gameController.getGame().getResourcePlayingDeck().getDeck().getCopy());
             }
         });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+            }
+        });
         gameController.getGame().getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
             @Override
             public void onEvent() {
                 goldDeck.refresh(gameController.getGame().getGoldPlayingDeck().getDeck().getCopy());
+            }
+        });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
             }
         });
         resourceDown1.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage());
@@ -131,6 +145,13 @@ public class GUIController implements ViewController {
                 }
             }
         });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
+            }
+        });
         resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
         gameController.getGame().getResourcePlayingDeck().setListener(new Slot2Listener() {
             @Override
@@ -141,6 +162,13 @@ public class GUIController implements ViewController {
                 } else {
                     resourceDown2.setVisible(false);
                 }
+            }
+        });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
             }
         });
         goldDown1.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage());
@@ -155,6 +183,13 @@ public class GUIController implements ViewController {
                 }
             }
         });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
+            }
+        });
         goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
         gameController.getGame().getGoldPlayingDeck().setListener(new Slot2Listener() {
             @Override
@@ -165,6 +200,13 @@ public class GUIController implements ViewController {
                 } else {
                     goldDown2.setVisible(false);
                 }
+            }
+        });
+        // onClick
+        resourceDeckContainer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
             }
         });
         commonObjective1.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage());
