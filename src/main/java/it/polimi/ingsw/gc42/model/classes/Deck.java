@@ -3,8 +3,10 @@ package it.polimi.ingsw.gc42.model.classes;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.interfaces.EmptyDeckListener;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -346,6 +348,7 @@ public class Deck implements Observable {
         if (cards.isEmpty()) {
             notifyListeners("Empty Deck");
         }
+        notifyListeners("Deck has changed");
         return card;
     }
 
@@ -392,8 +395,21 @@ public class Deck implements Observable {
      */
     @Override
     public void notifyListeners(String context) {
-        for (Listener d : listeners) {
-            d.onEvent();
+        switch (context) {
+            case "Empty Deck" -> {
+                for (Listener l : listeners) {
+                    if (l instanceof EmptyDeckListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Deck has changed" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof DeckViewListener) {
+                        l.onEvent();
+                    }
+                }
+            }
         }
     }
 }

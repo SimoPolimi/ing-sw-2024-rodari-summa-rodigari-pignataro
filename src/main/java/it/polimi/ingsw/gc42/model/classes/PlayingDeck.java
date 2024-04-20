@@ -1,15 +1,23 @@
 package it.polimi.ingsw.gc42.model.classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.model.interfaces.Slot1Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Slot2Listener;
+
+import java.util.ArrayList;
 
 /**
  * Implementation of the playing decks
  */
-public class PlayingDeck {
+public class PlayingDeck implements Observable {
     // Attributes
     private Card slot1;
     private Card slot2;
     private Deck deck;
+
+    private final ArrayList<Listener> listeners = new ArrayList<>(); ;
 
     // Constructor Method
 
@@ -24,6 +32,8 @@ public class PlayingDeck {
         this.slot1 = slot1;
         this.slot2 = slot2;
         this.deck = deck;
+        notifyListeners("Slot 1");
+        notifyListeners("Slot 2");
     }
 
     // Getters and Setters
@@ -37,8 +47,10 @@ public class PlayingDeck {
      */
     public Card getSlot(int slot) throws IllegalArgumentException {
         if (slot == 1) {
+            notifyListeners("Slot 1");
             return slot1;
         } else if (slot == 2) {
+            notifyListeners("Slot 2");
             return slot2;
         } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
     }
@@ -77,4 +89,33 @@ public class PlayingDeck {
     }
 
 
+    @Override
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(String context) {
+        switch (context) {
+            case "Slot 1" -> {
+                for (Listener l : listeners) {
+                    if (l instanceof Slot1Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Slot 2" -> {
+                for (Listener l : listeners) {
+                    if (l instanceof Slot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+        }
+    }
 }

@@ -15,16 +15,16 @@
                     <padding>
                         <Insets left="10.0" right="10.0" />
                     </padding></VBox>
-                <AnchorPane fx:id="mainArea" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                <AnchorPane fx:id="mainArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <children>
-                        <AnchorPane fx:id="playerTableContainer" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
-                        <StackPane fx:id="commonTableContainer" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="TOP_CENTER">
+                        <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                        <StackPane fx:id="commonTableContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" StackPane.alignment="TOP_CENTER">
                             <children>
                                 <VBox alignment="CENTER" spacing="5">
                                     <children>
                                         <StackPane fx:id="scoreboardContainer">
                                             <children>
-                                                <ImageView fx:id="scoreboard" fitWidth="250" pickOnBounds="true" preserveRatio="true" onMouseClicked="#toggleCommonTable">
+                                                <ImageView fx:id="scoreboard" fitWidth="250" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
                                                     <image>
                                                         <Image url="@scoreboard.png" />
                                                     </image>
@@ -35,9 +35,9 @@
                                                         <Cursor fx:constant="HAND" />
                                                     </cursor>
                                                 </ImageView>
-                                                <StackPane fx:id="tokensContainer" translateY="215" translateX="-60" disable="true">
+                                                <StackPane fx:id="tokensContainer" disable="true" translateX="-60" translateY="215">
                                                     <children>
-                                                        <ImageView fx:id="blueToken" fitWidth="50" preserveRatio="true" visible="true" disable="true">
+                                                        <ImageView fx:id="blueToken" disable="true" fitWidth="50" preserveRatio="true" visible="true">
                                                             <image>
                                                                 <Image url="@blueToken.png" />
                                                             </image>
@@ -45,7 +45,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="redToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-5" disable="true">
+                                                        <ImageView fx:id="redToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-5" visible="true">
                                                             <image>
                                                                 <Image url="@redToken.png" />
                                                             </image>
@@ -53,7 +53,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="greenToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-10" disable="true">
+                                                        <ImageView fx:id="greenToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-10" visible="true">
                                                             <image>
                                                                 <Image url="@greenToken.png" />
                                                             </image>
@@ -61,7 +61,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="yellowToken" fitWidth="50" preserveRatio="true" visible="true" translateY="-15" disable="true">
+                                                        <ImageView fx:id="yellowToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-15" visible="true">
                                                             <image>
                                                                 <Image url="@yellowToken.png" />
                                                             </image>
@@ -71,6 +71,62 @@
                                                         </ImageView>
                                                     </children>
                                                 </StackPane>
+                                                <StackPane fx:id="resourceDeckContainer" maxHeight="120" maxWidth="160" rotate="25" translateX="-400" translateY="-350">
+                                       <effect>
+                                          <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                       </effect></StackPane>
+                                                <StackPane fx:id="goldDeckContainer" maxHeight="120" maxWidth="160" rotate="-25" translateX="400" translateY="-350">
+                                       <effect>
+                                          <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                       </effect></StackPane>
+                                                <ImageView fx:id="resourceDown1" fitWidth="160" preserveRatio="true" rotate="5" translateX="-350" translateY="-100">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="resourceDown2" fitWidth="160" preserveRatio="true" rotate="-15" translateX="-350" translateY="100">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="goldDown1" fitWidth="160" preserveRatio="true" rotate="-10" translateX="350" translateY="-100">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="goldDown2" fitWidth="160" preserveRatio="true" rotate="25" translateX="350" translateY="100">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="commonObjective1" fitWidth="160" preserveRatio="true" rotate="5" translateX="-120" translateY="-370">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
+                                                <ImageView fx:id="commonObjective2" fitWidth="160" preserveRatio="true" rotate="-10" translateX="120" translateY="-370">
+                                                    <image>
+                                                        <Image url="@cards/card1Front.png" />
+                                                    </image>
+                                                    <effect>
+                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                    </effect>
+                                                </ImageView>
                                             </children>
                                         </StackPane>
                                         <HBox id="commonTableHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">

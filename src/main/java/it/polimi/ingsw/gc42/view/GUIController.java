@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
+import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
@@ -59,6 +60,23 @@ public class GUIController implements ViewController {
     private AnchorPane backgroundContainer;
     @FXML
     private Text commonTableTxt;
+    @FXML
+    private StackPane resourceDeckContainer;
+    @FXML
+    private StackPane goldDeckContainer;
+    @FXML
+    private ImageView resourceDown1;
+    @FXML
+    private ImageView resourceDown2;
+    @FXML
+    private ImageView goldDown1;
+    @FXML
+    private ImageView goldDown2;
+    @FXML
+    private ImageView commonObjective1;
+    @FXML
+    private ImageView commonObjective2;
+            ;
 
     // Attributes
     private Player player;
@@ -70,11 +88,15 @@ public class GUIController implements ViewController {
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
     private boolean isCommonTableDown = false;
     private TableView table;
+    private DeckView resourceDeck;
+    private DeckView goldDeck;
 
 
     public void build() {
         table = new TableView(true, 0, this);
         playerTableContainer.getChildren().addAll(table.getPane());
+        resourceDeck = new DeckView(resourceDeckContainer);
+        goldDeck = new DeckView(goldDeckContainer);
     }
 
     public void setGameController(GameController gameController) {
@@ -85,6 +107,68 @@ public class GUIController implements ViewController {
                 refreshScoreBoard();
             }
         });
+        gameController.getGame().getResourcePlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                resourceDeck.refresh(gameController.getGame().getResourcePlayingDeck().getDeck().getCopy());
+            }
+        });
+        gameController.getGame().getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                goldDeck.refresh(gameController.getGame().getGoldPlayingDeck().getDeck().getCopy());
+            }
+        });
+        resourceDown1.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage());
+        gameController.getGame().getResourcePlayingDeck().setListener(new Slot1Listener() {
+            @Override
+            public void onEvent() {
+                Card card = gameController.getGame().getResourcePlayingDeck().getSlot(1);
+                if (null != card) {
+                    resourceDown1.setImage(card.getFrontImage());
+                } else {
+                    resourceDown1.setVisible(false);
+                }
+            }
+        });
+        resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
+        gameController.getGame().getResourcePlayingDeck().setListener(new Slot2Listener() {
+            @Override
+            public void onEvent() {
+                Card card = gameController.getGame().getResourcePlayingDeck().getSlot(2);
+                if (null != card) {
+                    resourceDown2.setImage(card.getFrontImage());
+                } else {
+                    resourceDown2.setVisible(false);
+                }
+            }
+        });
+        goldDown1.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage());
+        gameController.getGame().getGoldPlayingDeck().setListener(new Slot1Listener() {
+            @Override
+            public void onEvent() {
+                Card card = gameController.getGame().getGoldPlayingDeck().getSlot(1);
+                if (null != card) {
+                    goldDown1.setImage(card.getFrontImage());
+                } else {
+                    goldDown1.setVisible(false);
+                }
+            }
+        });
+        goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
+        gameController.getGame().getGoldPlayingDeck().setListener(new Slot2Listener() {
+            @Override
+            public void onEvent() {
+                Card card = gameController.getGame().getGoldPlayingDeck().getSlot(2);
+                if (null != card) {
+                    goldDown2.setImage(card.getFrontImage());
+                } else {
+                    goldDown2.setVisible(false);
+                }
+            }
+        });
+        commonObjective1.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage());
+        commonObjective2.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage());
     }
 
     public GameController getGameController() {

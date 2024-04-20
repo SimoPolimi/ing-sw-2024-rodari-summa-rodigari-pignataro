@@ -3,17 +3,11 @@ package it.polimi.ingsw.gc42.model.classes.game;
 import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.model.interfaces.Observable;
-import it.polimi.ingsw.gc42.model.interfaces.PlayerListener;
-import it.polimi.ingsw.gc42.model.interfaces.PointsListener;
+import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class Game implements Observable {
     private PlayingDeck resourcePlayingDeck;
@@ -39,14 +33,14 @@ public class Game implements Observable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        resourcePlayingDeck.getDeck().setListener(new Listener() {
+        resourcePlayingDeck.getDeck().setListener(new EmptyDeckListener() {
             @Override
             public void onEvent() {
                 setResourceDeckEmpty(true);
                 checkEndGame();
             }
         });
-        goldPlayingDeck.getDeck().setListener(new Listener() {
+        goldPlayingDeck.getDeck().setListener(new EmptyDeckListener() {
             @Override
             public void onEvent() {
                 setGoldDeckEmpty(true);
