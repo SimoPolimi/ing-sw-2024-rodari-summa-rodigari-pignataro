@@ -292,7 +292,9 @@ public class Player implements Observable {
             card.setX(x);
             card.setY(y);
             if (card.canBePlaced(playField.getPlayedCards())) {
-                setPoints(getPoints() + card.getEarnedPoints());
+                if (card.isFrontFacing()) {
+                    setPoints(getPoints() + card.getEarnedPoints());
+                }
                 playField.addCard(card, x, y);
                 if (card instanceof GoldCard) {
                     if (null != ((GoldCard) card).getObjective()) {
