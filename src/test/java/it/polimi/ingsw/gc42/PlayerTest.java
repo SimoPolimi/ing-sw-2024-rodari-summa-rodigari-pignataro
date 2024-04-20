@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42;
 
 import it.polimi.ingsw.gc42.model.classes.Deck;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
@@ -92,12 +93,17 @@ class PlayerTest {
         // new game because it initializes the decks
         Game game = new Game();
         Player player = new Player(null, true, 0, null, null, game);
+        Card topCard = null;
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            topCard = game.getResourcePlayingDeck().getDeck().getTopCard();
+            // when
+            player.drawCard(game.getResourcePlayingDeck());
+        }catch (IllegalActionException e){
+            e.printStackTrace();
+        }
 
-        player.drawCard(game.getResourcePlayingDeck());
-        player.drawCard(game.getResourcePlayingDeck());
-        Card topCard = game.getResourcePlayingDeck().getDeck().getTopCard();
-        // when
-        player.drawCard(game.getResourcePlayingDeck());
 
         // then
         // Player has 3 Cards

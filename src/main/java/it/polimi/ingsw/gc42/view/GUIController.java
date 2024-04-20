@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.view;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
@@ -115,7 +116,12 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
-                    gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+                    try {
+                        gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
+                    }catch (IllegalActionException e){
+                        //TODO: Move to GameController?
+                        e.printStackTrace();
+                    }
                     if (isCommonTableDown) {
                         bringCommonTableUp();
                     }
@@ -133,7 +139,12 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
-                    gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
+                    try {
+                        gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
+                    }catch (IllegalActionException e){
+                        //TODO: Move to GameController?
+                        e.printStackTrace();
+                    }
                     if (isCommonTableDown) {
                         bringCommonTableUp();
                     }
@@ -408,19 +419,6 @@ public class GUIController implements ViewController {
         showDialog(dialog);
     }
 
-    @Override
-    public Player getOwner() {
-        return player;
-    }
-
-    @Override
-    public void askToDrawOrGrab() {
-        setPlayerCanDrawOrGrab(true);
-        if (!isCommonTableDown) {
-            bringCommonTableDown();
-        }
-    }
-
     public void onEnterPressed() {
         table.playCard();
     }
@@ -509,7 +507,7 @@ public class GUIController implements ViewController {
         isCommonTableDown = true;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY((mainArea.getHeight()+500)/2);
+        transition.setByY((mainArea.getHeight()+400)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("Go back to your Table");
@@ -523,12 +521,25 @@ public class GUIController implements ViewController {
         isCommonTableDown = false;
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY(-(mainArea.getHeight()+500)/2);
+        transition.setByY(-(mainArea.getHeight()+400)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("See the Common Table");
         });
         transition.play();
 
+    }
+
+    @Override
+    public Player getOwner(){
+        return player;
+    }
+
+    @Override
+    public void askToDrawOrGrab() {
+        setPlayerCanDrawOrGrab(true);
+        if (!isCommonTableDown) {
+            bringCommonTableDown();
+        }
     }
 }

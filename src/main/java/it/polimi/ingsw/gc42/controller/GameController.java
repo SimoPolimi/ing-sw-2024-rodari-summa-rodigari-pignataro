@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
@@ -75,6 +76,14 @@ public class GameController {
             // TODO: Handle exception
             e.printStackTrace();
         }
+        //TODO: Make the player choose what to draw from
+        try{
+            player.drawCard(game.getResourcePlayingDeck());
+        }catch(IllegalActionException e){
+            //TODO: handle exception
+            e.printStackTrace();
+        }
+
     }
 
     public void flipCard(Card card) {
@@ -91,60 +100,19 @@ public class GameController {
     }
 
     /**
-     * Returns the Card from one of the Slots AND removes it from there, drawing another Card to put on its place.
-     *
+     * Grabs a Card from the specified slot and Puts it in the Player's hand, then puts a Card from the top of the Deck of the PlayingDeck in the now empty slot.
+     * If the PlayingDeck is empty, puts in the slot a Card from the top of the other PlayingDeck
      * @param player:      the player who grabs the Card
      * @param playingDeck: the PlayingDeck associated to the Slots where the Player grabs the Card from
      * @param slot:        an int value to identify the slot to grab the Card from.
-     * @return the Card contained in that Slot.
      */
     public void grabCard(Player player, PlayingDeck playingDeck, int slot) {
         try {
-            Card card = null;
-            if (slot > 0 && slot < 3) {
-                // Fill
-                // Resource
-                if (playingDeck.getDeck().getCardType().equals(CardType.RESOURCECARD)) {
-                    card = game.getResourcePlayingDeck().getSlot(slot);
-                    if (playingDeck.getDeck().getNumberOfCards() > 0) {
-                        // Grab from ResourcePlayingDeck
-                        playingDeck.setSlot(game.getResourcePlayingDeck().getDeck().draw(), slot);
-                    } else {
-                        if (game.getGoldPlayingDeck().getDeck().getNumberOfCards() > 0) {
-                            // Grab from GoldPlayingDeck
-                            playingDeck.setSlot(game.getGoldPlayingDeck().getDeck().draw(), slot);
-                        } else {
-                            // Both Decks are empty
-                            playingDeck.setSlot(null, slot);
-                        }
-                    }
-                } else if (playingDeck.getDeck().getCardType().equals(CardType.GOLDCARD)) {
-                    // Gold
-                    card = game.getGoldPlayingDeck().getSlot(slot);
-                    if (playingDeck.getDeck().getNumberOfCards() > 0) {
-                        // Grab from GoldPlayingDeck
-                        playingDeck.setSlot(game.getGoldPlayingDeck().getDeck().draw(), slot);
-                    } else {
-                        if (game.getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
-                            // Grab from ResourcePlayingDeck
-                            playingDeck.setSlot(game.getResourcePlayingDeck().getDeck().draw(), slot);
-                        } else {
-                            // Both Decks are empty
-                            playingDeck.setSlot(null, slot);
-                        }
-                    }
-                } else throw new IllegalArgumentException("There is no such Deck in this Game");
-            } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
-
-            if (card != null) {
-                // Add to Player's hand
-                game.getPlayer(player.getToken()).addHandCard((PlayableCard) card);
-                return;
-            } else {
-                throw new IllegalArgumentException("Empty slot");
-            }
-        } catch (NoSuchElementException e) {
-            return;
+            player.grabCard(playingDeck, slot);
+            game.putDown(playingDeck, slot);
+            // TODO: create exception?
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
         }
     }
 

@@ -233,6 +233,48 @@ public class Game implements Observable {
         }
     }
 
+    /**
+     * Puts a Card from the top of the Deck of the PlayingDeck in the specified slot.
+     * If the Deck is empty, puts a Card from the top of the Deck of the other PlayingDeck in the specified slot.
+     * @param playingDeck: the PlayingDeck associated to the slot where the Card will be put
+     * @param slot: the slot where the Card will be put
+     */
+    public void putDown(PlayingDeck playingDeck,int slot){
+        if (slot > 0 && slot < 3) {
+            // Fill
+            // Resource
+            if (playingDeck.getDeck().getCardType().equals(CardType.RESOURCECARD)) {
+                if (playingDeck.getDeck().getNumberOfCards() > 0) {
+                    // Grab from ResourcePlayingDeck
+                    playingDeck.setSlot(resourcePlayingDeck.getDeck().draw(), slot);
+                } else {
+                    if (goldPlayingDeck.getDeck().getNumberOfCards() > 0) {
+                        // Grab from GoldPlayingDeck
+                        playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
+                    } else {
+                        // Both Decks are empty
+                        playingDeck.setSlot(null, slot);
+                    }
+                }
+            } else if (playingDeck.getDeck().getCardType().equals(CardType.GOLDCARD)) {
+                // Gold
+                if (playingDeck.getDeck().getNumberOfCards() > 0) {
+                    // Grab from GoldPlayingDeck
+                    playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
+                } else {
+                    if (resourcePlayingDeck.getDeck().getNumberOfCards() > 0) {
+                        // Grab from ResourcePlayingDeck
+                        playingDeck.setSlot(resourcePlayingDeck.getDeck().draw(), slot);
+                    } else {
+                        // Both Decks are empty
+                        playingDeck.setSlot(null, slot);
+                    }
+                }
+                // TODO: exceptions... move to Game?
+            } else throw new IllegalArgumentException("There is no such Deck in this Game");
+        } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
+    }
+
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);

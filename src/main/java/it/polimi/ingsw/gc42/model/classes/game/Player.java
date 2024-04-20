@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.game;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
@@ -275,9 +276,14 @@ public class Player implements Observable {
      * Draws 2 ResourceCard and 1 GoldCard and puts them in the Player's Hand
      */
     public void drawStartingHand(PlayingDeck resource, PlayingDeck gold) {
-        drawCard(resource);
-        drawCard(resource);
-        drawCard(gold);
+        try {
+            drawCard(resource);
+            drawCard(resource);
+            drawCard(gold);
+        }catch (IllegalActionException e){
+            // TODO: handle exception
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -316,13 +322,33 @@ public class Player implements Observable {
     }
 
     /**
-     * Draws a Card from the top of the specified deck
+     * Draws a Card from the top of the specified deck and puts it in the Player's hand
      *
      * @param playingDeck the deck from where the Card is drawn
      */
-    public void drawCard(PlayingDeck playingDeck) {
-        hand.add((PlayableCard) playingDeck.getDeck().draw());
-        notifyListeners("Hand Updated");
+    public void drawCard(PlayingDeck playingDeck) throws IllegalActionException {
+        if(hand.size()<3) {
+            hand.add((PlayableCard) playingDeck.getDeck().draw());
+            notifyListeners("Hand Updated");
+        } else throw new IllegalActionException();
+    }
+
+    /**
+     * Grabs a Card from the specified slot and puts it in the Player's hand
+     * @param playingDeck the PlayingDeck associated to the Slots where the Player grabs the Card from
+     * @param slot the slot from where the card is grabbed
+     * @throws IllegalActionException
+     */
+    //TODO: needed exception description in javadoc????
+    public void grabCard(PlayingDeck playingDeck, int slot) throws IllegalActionException {
+        if(hand.size()<3) {
+            if (playingDeck.getSlot(slot) != null) {
+                    hand.add((PlayableCard) playingDeck.getSlot(slot));
+                return;
+            } else {
+                throw new IllegalArgumentException("Empty slot");
+            }
+        } else throw new IllegalActionException();
     }
 
     /**
