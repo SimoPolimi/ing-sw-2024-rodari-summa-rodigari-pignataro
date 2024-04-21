@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.KingdomResource;
-import it.polimi.ingsw.gc42.model.classes.cards.Resource;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Chat;
 import it.polimi.ingsw.gc42.model.classes.game.Message;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
@@ -88,6 +86,13 @@ public class GameTerminal extends Application implements ViewController {
                 case "6":
                     exit = true;
                     return;
+                case "7":
+                    // Test, will be deleted later
+                    for (Card card: controller.getGame().getResourcePlayingDeck().getDeck().getCopy()) {
+                        printCard((PlayableCard) card);
+                        System.out.println();
+                    }
+                    break;
                 case "i":
                     System.out.println("Inventory");
                     System.out.println("Kingdom resource");
@@ -116,6 +121,8 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("4) Show chat");
         System.out.println("5) Digit 5 and write the message");
         System.out.println("6) Exit");
+        // Test, will be deleted later
+        System.out.println("7) Print all Resource Cards [Test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -181,4 +188,119 @@ public class GameTerminal extends Application implements ViewController {
     public void askToDrawOrGrab() {
 
     }
+
+    private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners) {
+        String string = "";
+        if (null != card) {
+            switch (line) {
+                case 1 -> {
+                    if (printCoveredCorners) {
+                        string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
+                        if (getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("◻")) {
+                            string += "―";
+                        }
+                        string += "――――――"
+                                + getCornerPrint(card.getShowingSide().getTopRightCorner());
+                    } else {
+                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
+                            string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
+                        } else string += "◻-";
+                        string += "--------";
+                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
+                            string += getCornerPrint(card.getShowingSide().getTopRightCorner());
+                        } else string+= "-◻";
+                    }
+                }
+                case 2, 4 -> {
+                    string = "│            │";
+                }
+                case 3 -> {
+                    if (!card.isFrontFacing() || (card.isFrontFacing() && card instanceof StarterCard)) {
+                        string = "│  ";
+                        switch (card.getPermanentResources().size()) {
+                            case 1 -> {
+                                string += "    " + getItemPrint(card.getPermanentResources().get(0)) + "   ";
+                            }
+                            case 2 -> {
+                                string += "   " + getItemPrint(card.getPermanentResources().get(1))
+                                        + getItemPrint(card.getPermanentResources().get(1)) + "   ";
+                            }
+                            case 3 -> {
+                                string += "  " + getItemPrint(card.getPermanentResources().get(1))
+                                        + getItemPrint(card.getPermanentResources().get(1))
+                                        + getItemPrint(card.getPermanentResources().get(2)) + "  ";
+                            }
+                            default -> {string += "         ";}
+                        }
+                        string += "  │";
+                    } else string = "│            │";
+                }
+                case 5 -> {
+                    if (printCoveredCorners) {
+                        string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
+                        if (getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("◻")) {
+                            string += "―";
+                        }
+                        string += "――――――"
+                                + getCornerPrint(card.getShowingSide().getBottomRightCorner());
+                    } else {
+                        if (null != card.getShowingSide().getBottomLeftCorner() && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
+                            string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
+                        } else string += "◻-";
+                        string += "--------";
+                        if (null != card.getShowingSide().getBottomRightCorner() &&!card.getShowingSide().getBottomRightCorner().isCovered()) {
+                            string += getCornerPrint(card.getShowingSide().getBottomRightCorner());
+                        } else string+= "-◻";
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < 11; i++) {
+                string += " ";
+            }
+        }
+        return string;
+    }
+
+    private String getCornerPrint(Corner corner) {
+        String string = "";
+        if (null != corner && null != corner.getItem()) {
+            string = getItemPrint(corner.getItem());
+        } else string = "◻";
+        return string;
+    }
+
+    private String getItemPrint(Item item) {
+        String string = "  ";
+        switch (item) {
+            //Without Emoji
+                    /*case KingdomResource.FUNGI -> string = "ନ";
+                    case KingdomResource.ANIMAL -> string = "♘";
+                    case KingdomResource.INSECT -> string = "¥";
+                    case KingdomResource.PLANT -> string = "⚜";
+                    case Resource.FEATHER -> string = "ϡ";
+                    case Resource.POTION -> string = "Ỗ";
+                    case Resource.SCROLL -> string = "";
+                    default -> {}*/
+            // With Emoji
+            case KingdomResource.FUNGI -> string = "🍄";
+            case KingdomResource.ANIMAL -> string = "🐺";
+            case KingdomResource.INSECT -> string = "🦋";
+            case KingdomResource.PLANT -> string = "🌲";
+            case Resource.FEATHER -> string = "🪶";
+            case Resource.POTION -> string = "🍷";
+            case Resource.SCROLL -> string = "📜";
+            default -> {string = "  ";}
+        }
+        return string;
+    }
+
+    public void printCard(PlayableCard card) {
+        System.out.println(getPrintCardLine(card, 1, true));
+        System.out.println(getPrintCardLine(card, 2, true));
+        System.out.println(getPrintCardLine(card, 3, true));
+        System.out.println(getPrintCardLine(card, 4, true));
+        System.out.println(getPrintCardLine(card, 5, true));
+    }
+
 }
