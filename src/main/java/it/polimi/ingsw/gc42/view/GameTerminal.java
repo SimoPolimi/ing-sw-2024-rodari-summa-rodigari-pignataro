@@ -93,6 +93,11 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println();
                     }
                     break;
+                case "8":
+                    for (Card card: controller.getGame().getGoldPlayingDeck().getDeck().getCopy()) {
+                        printCard((PlayableCard) card);
+                        System.out.println();
+                    }
                 case "i":
                     System.out.println("Inventory");
                     System.out.println("Kingdom resource");
@@ -123,6 +128,7 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("6) Exit");
         // Test, will be deleted later
         System.out.println("7) Print all Resource Cards [Test]");
+        System.out.println("8) Print all Gold Cards [Test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -196,11 +202,14 @@ public class GameTerminal extends Application implements ViewController {
                 case 1 -> {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
-                        if (getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("◻")) {
+                        if (getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("◻") || getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("X")) {
                             string += "―";
                         }
-                        string += "――――――"
-                                + getCornerPrint(card.getShowingSide().getTopRightCorner());
+                        string += "――――――";
+                        if (getCornerPrint(card.getShowingSide().getTopRightCorner()).equals("X")) {
+                            string += " ";
+                        }
+                        string += getCornerPrint(card.getShowingSide().getTopRightCorner());
                     } else {
                         if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
                             string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
@@ -238,11 +247,14 @@ public class GameTerminal extends Application implements ViewController {
                 case 5 -> {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
-                        if (getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("◻")) {
+                        if (getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("◻") || getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("X")) {
                             string += "―";
                         }
-                        string += "――――――"
-                                + getCornerPrint(card.getShowingSide().getBottomRightCorner());
+                        string += "――――――";
+                        if (getCornerPrint(card.getShowingSide().getBottomRightCorner()).equals("X")) {
+                            string += " ";
+                        }
+                        string += getCornerPrint(card.getShowingSide().getBottomRightCorner());
                     } else {
                         if (null != card.getShowingSide().getBottomLeftCorner() && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
                             string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
@@ -264,9 +276,11 @@ public class GameTerminal extends Application implements ViewController {
 
     private String getCornerPrint(Corner corner) {
         String string = "";
-        if (null != corner && null != corner.getItem()) {
-            string = getItemPrint(corner.getItem());
-        } else string = "◻";
+        if (null != corner) {
+            if (null != corner.getItem()) {
+                string = getItemPrint(corner.getItem());
+            } else string = "◻";
+        } else string = "X";
         return string;
     }
 
