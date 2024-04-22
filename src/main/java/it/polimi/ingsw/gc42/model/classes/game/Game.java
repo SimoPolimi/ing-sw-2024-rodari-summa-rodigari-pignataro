@@ -256,11 +256,6 @@ public class Game implements Observable {
                     if (goldPlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from GoldPlayingDeck
                         playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
-                        if (slot == 1) {
-                            notifyListeners("Resource 1");
-                        } else if (slot == 2) {
-                            notifyListeners("Resource 2");
-                        }
                     } else {
                         // Both Decks are empty
                         playingDeck.setSlot(null, slot);
@@ -271,6 +266,11 @@ public class Game implements Observable {
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from GoldPlayingDeck
                     playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
+                    if (slot == 1) {
+                        notifyListeners("Gold 1");
+                    } else if (slot == 2) {
+                        notifyListeners("Gold 2");
+                    }
                 } else {
                     if (resourcePlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from ResourcePlayingDeck

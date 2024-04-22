@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -333,6 +334,7 @@ public class TableView {
         shadow.setHeight(50);
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
+        imageView.setCursor(Cursor.HAND);
         if (playAreaScale > 0.3 && (Math.abs(x) >= 12 || Math.abs(y) >= 12)) {
             scalePlayArea(0.4);
         } else if (playAreaScale > 0.5 && (Math.abs(x) >= 9 || Math.abs(y) >= 9)) {

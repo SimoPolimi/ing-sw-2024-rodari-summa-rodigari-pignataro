@@ -172,9 +172,6 @@ public class GUIController implements ViewController {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
                 }
-                if (isCommonTableDown) {
-                    bringCommonTableUp();
-                }
             }
         });
         resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
@@ -198,9 +195,6 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
-                }
-                if (isCommonTableDown) {
-                    bringCommonTableUp();
                 }
             }
         });
@@ -226,9 +220,6 @@ public class GUIController implements ViewController {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
                 }
-                if (isCommonTableDown) {
-                    bringCommonTableUp();
-                }
             }
         });
         goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
@@ -252,9 +243,6 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
-                }
-                if (isCommonTableDown) {
-                    bringCommonTableUp();
                 }
             }
         });
