@@ -49,18 +49,6 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
             }
-            showTokenSelectionDialog();
-            input = scanner.next();
-            switch (input) {
-                case "1" : player.setToken(Token.RED); break;
-                case "2" : player.setToken(Token.BLUE); break;
-                case "3" : player.setToken(Token.GREEN); break;
-                case "4" : player.setToken(Token.YELLOW); break;
-            }
-
-
-            showStarterCardSelectionDialog();
-            showSecretObjectivesSelectionDialog();
         }
     }
 
@@ -69,6 +57,9 @@ public class GameTerminal extends Application implements ViewController {
         Chat chat = controller.getGame().getChat();
 
         while (!exit) {
+            showTokenSelectionDialog();
+            showStarterCardSelectionDialog();
+            showSecretObjectivesSelectionDialog();
             printPlayer();
             printMenu();
 
@@ -161,7 +152,6 @@ public class GameTerminal extends Application implements ViewController {
     private void printPlayer(){
         System.out.println("Player n° " + controller.getGame().getPlayerTurn());
         System.out.println("Nickname: "+ controller.getGame().getCurrentPlayer().getNickname());
-        //TODO chow to take the token
         String string = "  ";
         if (null != player.getToken()) {
             switch (player.getToken()) {
@@ -210,20 +200,43 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
+        System.out.println("Choose your secret objective");
+        //TODO problem to fix
         System.out.println("Secret objective 1(digit 1)");
         System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
                 + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+        //TODO: print card
         System.out.println("Secret objective 2(digit 2)");
         System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
                 + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
+        //TODO: print card
+        String input = "";
+        input = scanner.next();
+        if (input.equals("1")){
+            player.setSecretObjective(player.getTemporaryObjectiveCards().get(0));
+        }else{
+            player.setSecretObjective(player.getTemporaryObjectiveCards().get(1));
+        }
     }
 
     @Override
     public void showStarterCardSelectionDialog() {
+        System.out.println("Choose the side of your starter card");
         Card starterCard  = controller.getGame().getStarterDeck().draw();
+        System.out.println("Digit f to choose front side");
         printCard((PlayableCard) starterCard);
         starterCard.flip();
+        System.out.println("Digit b to choose back side");
         printCard((PlayableCard) starterCard);
+
+        String input = "";
+        input = scanner.next();
+        if (input.equals("b")){
+            player.setStarterCard((StarterCard) starterCard);
+        }else {
+            starterCard.flip();
+            player.setStarterCard((StarterCard) starterCard);
+        }
     }
 
     @Override
@@ -234,6 +247,14 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Digit 3 to chose: 🟢");
         System.out.println("Digit 4 to chose: 🟡");
 
+        String input = "";
+        input = scanner.next();
+        switch (input) {
+            case "1" : player.setToken(Token.RED); break;
+            case "2" : player.setToken(Token.BLUE); break;
+            case "3" : player.setToken(Token.GREEN); break;
+            case "4" : player.setToken(Token.YELLOW); break;
+        }
     }
 
     @Override
