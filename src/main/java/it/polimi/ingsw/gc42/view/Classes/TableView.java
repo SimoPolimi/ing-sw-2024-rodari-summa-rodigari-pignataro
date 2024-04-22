@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -15,6 +16,8 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -216,6 +219,27 @@ public class TableView {
         AnchorPane.setLeftAnchor(phantomPlayArea, 250.0);
         AnchorPane.setTopAnchor(phantomPlayArea, 150.0);
         AnchorPane.setRightAnchor(phantomPlayArea, 270.0);
+        phantomPlayArea.setOnZoom(new EventHandler<ZoomEvent>() {
+            @Override
+            public void handle(ZoomEvent zoomEvent) {
+                if (zoomEvent.getZoomFactor() > 0) {
+                    scalePlayArea(playAreaScale+0.1, true);
+                } else if (zoomEvent.getZoomFactor() < 0) {
+                    scalePlayArea(playAreaScale-0.1, true);
+                }
+                zoomEvent.consume();
+            }
+        });
+        phantomPlayArea.setOnScroll(new EventHandler<ScrollEvent>() {
+            public void handle(ScrollEvent scrollEvent) {
+                if (scrollEvent.getDeltaY() > 0) {
+                    scalePlayArea(playAreaScale+0.1, true);
+                } else if (scrollEvent.getDeltaY() < 0) {
+                    scalePlayArea(playAreaScale-0.1, true);
+                }
+                scrollEvent.consume();
+            }
+        });
 
         playerTableContainer.getChildren().addAll(hand.getPane(), secretObjective.getPane(),
                 playerToken, blackToken, playArea, phantomPlayArea);
@@ -320,11 +344,11 @@ public class TableView {
         imageView.setEffect(shadow);
         imageView.setCursor(Cursor.HAND);
         if (playAreaScale > 0.3 && (Math.abs(x) >= 12 || Math.abs(y) >= 12)) {
-            scalePlayArea(0.4);
+            scalePlayArea(0.4, false);
         } else if (playAreaScale > 0.5 && (Math.abs(x) >= 9 || Math.abs(y) >= 9)) {
-            scalePlayArea(0.5);
+            scalePlayArea(0.5, false);
         } else if (playAreaScale > 0.7 && (Math.abs(x) >= 6 || Math.abs(y) >= 6)) {
-            scalePlayArea(0.7);
+            scalePlayArea(0.7, false);
         }
         return imageView;
     }
@@ -354,20 +378,29 @@ public class TableView {
         }
     }
 
-    private void scalePlayArea(double scale) {
-        ScaleTransition t1 = new ScaleTransition(Duration.millis(250), playArea);
-        ScaleTransition t2 = new ScaleTransition(Duration.millis(250), phantomPlayArea);
-        t1.setFromX(playAreaScale);
-        t2.setFromX(playAreaScale);
-        t1.setToX(scale);
-        t2.setFromX(scale);
-        t1.setFromY(playAreaScale);
-        t2.setFromY(playAreaScale);
-        t1.setToY(scale);
-        t2.setToY(scale);
-        t1.play();
-        t2.play();
-        playAreaScale = scale;
+    private void scalePlayArea(double scale, boolean fastAnimation) {
+        if (scale > 0.3 && scale < 1) {
+            ScaleTransition t1;
+            ScaleTransition t2;
+            if (!fastAnimation) {
+                t1 = new ScaleTransition(Duration.millis(250), playArea);
+                t2 = new ScaleTransition(Duration.millis(250), phantomPlayArea);
+            } else {
+                t1 = new ScaleTransition(Duration.millis(100), playArea);
+                t2 = new ScaleTransition(Duration.millis(100), phantomPlayArea);
+            }
+            t1.setFromX(playAreaScale);
+            t2.setFromX(playAreaScale);
+            t1.setToX(scale);
+            t2.setFromX(scale);
+            t1.setFromY(playAreaScale);
+            t2.setFromY(playAreaScale);
+            t1.setToY(scale);
+            t2.setToY(scale);
+            t1.play();
+            t2.play();
+            playAreaScale = scale;
+        }
     }
 
     private void flipCard(HandCardView handCardView) {

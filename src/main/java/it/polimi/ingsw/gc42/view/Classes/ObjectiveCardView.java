@@ -231,6 +231,7 @@ public class ObjectiveCardView {
         effect.setRadius(24.5);
         imageView.setEffect(effect);
         imageView.setCursor(Cursor.HAND);
+        imageView.setPickOnBounds(false);
 
         objDescriptionBox = new StackPane();
         objDescriptionBox.setOpacity(0.7);

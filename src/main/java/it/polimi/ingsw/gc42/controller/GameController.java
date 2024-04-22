@@ -38,7 +38,9 @@ public class GameController {
     }
 
     public void startGame() {
-
+        for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
+            game.getPlayer(i).setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+        }
     }
 
     public void addPlayer(Player player) {
@@ -186,9 +188,10 @@ public class GameController {
             case CONNECTING:
                 break;
             case WAITING_FOR_SERVER:
-                startGame();
                 break;
             case READY:
+                currentStatus = GameStatus.READY_TO_CHOOSE_TOKEN;
+                startGame();
                 break;
             case READY_TO_CHOOSE_TOKEN:
                 currentStatus = GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE;

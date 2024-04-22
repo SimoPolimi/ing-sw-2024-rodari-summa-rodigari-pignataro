@@ -139,7 +139,7 @@ public class GameWindow extends Application {
         controller.setPlayer(player);
         gameController.addPlayer(player);
 
-        gameController.setCurrentStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
-        player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+        gameController.setCurrentStatus(GameStatus.READY);
+        player.setStatus(GameStatus.READY);
     }
 }

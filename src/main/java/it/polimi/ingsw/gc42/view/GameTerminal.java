@@ -33,7 +33,8 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Welcome to Codex Naturalis!");
         String input = "";
         while (!exit) {
-            System.out.println("Insert Nickname:");
+            System.out.println();
+            System.out.println("--- Insert Nickname: ---");
             input = scanner.next();
             switch (input) {
                 case "":
@@ -49,8 +50,8 @@ public class GameTerminal extends Application implements ViewController {
                     // Temporary
                     player.setFirst(true);
                     controller.addPlayer(player);
-                    controller.setCurrentStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
-                    player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+                    controller.setCurrentStatus(GameStatus.READY);
+                    player.setStatus(GameStatus.READY);
                     play();
                     exit = true;
                     break;
