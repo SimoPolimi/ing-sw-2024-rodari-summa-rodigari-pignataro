@@ -472,7 +472,7 @@ public class GameTerminal extends Application implements ViewController {
             case KingdomResource.FUNGI -> string = "🍄";
             case KingdomResource.ANIMAL -> string = "🐺";
             case KingdomResource.INSECT -> string = "🦋";
-            case KingdomResource.PLANT -> string = "🌲";
+            case KingdomResource.PLANT -> string = "🌳";
             case Resource.FEATHER -> string = "🪶";
             case Resource.POTION -> string = "🍷";
             case Resource.SCROLL -> string = "📜";
