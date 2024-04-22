@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Chat;
 import it.polimi.ingsw.gc42.model.classes.game.Message;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.ReadyToChooseSecretObjectiveListener;
 import it.polimi.ingsw.gc42.view.Classes.ClearScreen;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
@@ -48,6 +49,18 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
             }
+            showTokenSelectionDialog();
+            input = scanner.next();
+            switch (input) {
+                case "1" : player.setToken(Token.RED); break;
+                case "2" : player.setToken(Token.BLUE); break;
+                case "3" : player.setToken(Token.GREEN); break;
+                case "4" : player.setToken(Token.YELLOW); break;
+            }
+
+
+            showStarterCardSelectionDialog();
+            showSecretObjectivesSelectionDialog();
         }
     }
 
@@ -98,6 +111,7 @@ public class GameTerminal extends Application implements ViewController {
                         printCard((PlayableCard) card);
                         System.out.println();
                     }
+                    break;
                 case "i":
                     System.out.println("Inventory");
                     System.out.println("Kingdom resource");
@@ -109,6 +123,7 @@ public class GameTerminal extends Application implements ViewController {
                     System.out.println(("Feather:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.FEATHER)));
                     System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
                     System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
+                    break;
                 default:
                     System.out.println("Unknown command");
                     break;
@@ -135,10 +150,18 @@ public class GameTerminal extends Application implements ViewController {
     private void printPlayer(){
         System.out.println("Player n° " + controller.getGame().getPlayerTurn());
         System.out.println("Nickname: "+ controller.getGame().getCurrentPlayer().getNickname());
-        System.out.println("Token: "+ controller.getGame().getCurrentPlayer().getToken());
+        //TODO chow to take the token
+        String string = "  ";
+        switch (player.getToken()){
+            case Token.RED -> string = "🔴";
+            case Token.BLUE -> string = "🔵";
+            case Token.GREEN -> string = "🟢";
+            case Token.YELLOW -> string = "🟡";
+        }
+        System.out.println("Token: "+ string);
         System.out.println("Point: "+ controller.getGame().getCurrentPlayer().getPoints());
         //TODO set the secretObjective
-        System.out.println("Secret objective: "+ controller.getGame().getCurrentPlayer().getSecretObjective());
+        System.out.println("Secret objective: "+ controller.getGame().getCurrentPlayer().getSecretObjective().getObjective().getName());
         System.out.println("Digit I to open the inventory");
     }
 
@@ -172,16 +195,29 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
-        //TODO: Implement
+        System.out.println("Secret objective 1(digit 1)");
+        System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
+                + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+        System.out.println("Secret objective 2(digit 2)");
+        System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
+                + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
     }
 
     @Override
     public void showStarterCardSelectionDialog() {
-        //TODO: Implement
+        Card starterCard  = controller.getGame().getStarterDeck().draw();
+        printCard((PlayableCard) starterCard);
+        starterCard.flip();
+        printCard((PlayableCard) starterCard);
     }
 
     @Override
     public void showTokenSelectionDialog() {
+        System.out.println("Select your token");
+        System.out.println("Digit 1 to chose: 🔴");
+        System.out.println("Digit 2 to chose: 🔵");
+        System.out.println("Digit 3 to chose: 🟢");
+        System.out.println("Digit 4 to chose: 🟡");
 
     }
 
