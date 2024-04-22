@@ -176,9 +176,15 @@ public class Deck implements Observable {
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
                     ArrayList<Item> resList = new ArrayList<>();
-                    resList.add(res1);
-                    resList.add(res2);
-                    resList.add(res3);
+                    if (null != res1) {
+                        resList.add(res1);
+                    }
+                    if (null != res2) {
+                        resList.add(res2);
+                    }
+                    if (null != res3) {
+                        resList.add(res3);
+                    }
                     deck.cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
                             true, id, resList, 0, frontImage, backImage));

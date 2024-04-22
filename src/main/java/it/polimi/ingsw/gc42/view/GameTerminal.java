@@ -112,6 +112,16 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println();
                     }
                     break;
+                case "9":
+                    for (Card card: controller.getGame().getStarterDeck().getCopy()) {
+                        printCard((PlayableCard) card);
+                        card.flip();
+                        System.out.println();
+                        printCard((PlayableCard) card);
+                        System.out.println();
+                    }
+                    break;
+
                 case "i":
                     System.out.println("Inventory");
                     System.out.println("Kingdom resource");
@@ -144,6 +154,7 @@ public class GameTerminal extends Application implements ViewController {
         // Test, will be deleted later
         System.out.println("7) Print all Resource Cards [Test]");
         System.out.println("8) Print all Gold Cards [Test]");
+        System.out.println("9) Print all Starter Cards [Test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -152,16 +163,20 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Nickname: "+ controller.getGame().getCurrentPlayer().getNickname());
         //TODO chow to take the token
         String string = "  ";
-        switch (player.getToken()){
-            case Token.RED -> string = "🔴";
-            case Token.BLUE -> string = "🔵";
-            case Token.GREEN -> string = "🟢";
-            case Token.YELLOW -> string = "🟡";
+        if (null != player.getToken()) {
+            switch (player.getToken()) {
+                case Token.RED -> string = "🔴";
+                case Token.BLUE -> string = "🔵";
+                case Token.GREEN -> string = "🟢";
+                case Token.YELLOW -> string = "🟡";
+            }
         }
         System.out.println("Token: "+ string);
         System.out.println("Point: "+ controller.getGame().getCurrentPlayer().getPoints());
         //TODO set the secretObjective
-        System.out.println("Secret objective: "+ controller.getGame().getCurrentPlayer().getSecretObjective().getObjective().getName());
+        if (null != player.getSecretObjective()) {
+            System.out.println("Secret objective: " + controller.getGame().getCurrentPlayer().getSecretObjective().getObjective().getName());
+        }
         System.out.println("Digit I to open the inventory");
     }
 
@@ -237,6 +252,84 @@ public class GameTerminal extends Application implements ViewController {
             switch (line) {
                 case 1 -> {
                     if (printCoveredCorners) {
+                        string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
+                        for (int i=0; i < 7; i++) {
+                            string += getCardColor(card);
+                        }
+                        string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
+                    } else {
+                        //TODO: Re-do
+                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
+                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
+                        } else string += "◻-";
+                        string += "--------";
+                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
+                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
+                        } else string+= "-◻";
+                    }
+                }
+                case 2, 4 -> {
+                    for (int i = 0; i < 9; i++) {
+                        string += getCardColor(card);
+                    }
+                }
+                case 3 -> {
+                    for (int i = 0; i < 3; i++) {
+                        string += getCardColor(card);
+                    }
+                    if (!card.isFrontFacing() || (card.isFrontFacing() && card instanceof StarterCard)) {
+                        switch (card.getPermanentResources().size()) {
+                            case 1 -> {
+                                string += getCardColor(card) + getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card);
+                            }
+                            case 2 -> {
+                                string += getItemPrint(card.getPermanentResources().get(1)) + getCardColor(card)
+                                        + getItemPrint(card.getPermanentResources().get(1));
+                            }
+                            case 3 -> {
+                                string += getItemPrint(card.getPermanentResources().get(1))
+                                        + getItemPrint(card.getPermanentResources().get(1))
+                                        + getItemPrint(card.getPermanentResources().get(2));
+                            }
+                            default -> {
+                                for (int i = 0; i < 3; i++) {
+                                    string += getCardColor(card);
+                                }
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < 3; i++) {
+                            string += getCardColor(card);
+                        }
+                    }
+                    for (int i = 0; i < 3; i++) {
+                        string += getCardColor(card);
+                    }
+                }
+                case 5 -> {
+                    if (printCoveredCorners) {
+                        string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
+                        for (int i=0; i < 7; i++) {
+                            string += getCardColor(card);
+                        }
+                        string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
+                    } else {
+                        //TODO: Re-do
+                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
+                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
+                        } else string += "◻-";
+                        string += "--------";
+                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
+                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
+                        } else string+= "-◻";
+                    }
+                }
+            }
+
+            // TODO: Backup just in case
+            /*switch (line) {
+                case 1 -> {
+                    if (printCoveredCorners) {
                         string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
                         if (getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("◻") || getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("X")) {
                             string += "―";
@@ -301,7 +394,7 @@ public class GameTerminal extends Application implements ViewController {
                         } else string+= "-◻";
                     }
                 }
-            }
+            }*/
         } else {
             for (int i = 0; i < 11; i++) {
                 string += " ";
@@ -310,13 +403,16 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
-    private String getCornerPrint(Corner corner) {
+    private String getCornerPrint(PlayableCard card, Corner corner) {
         String string = "";
         if (null != corner) {
             if (null != corner.getItem()) {
                 string = getItemPrint(corner.getItem());
-            } else string = "◻";
-        } else string = "X";
+            } else {
+                //string = "◻";
+                string = "⬜";
+            }
+        } else string = getCardColor(card);
         return string;
     }
 
@@ -351,6 +447,23 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println(getPrintCardLine(card, 3, true));
         System.out.println(getPrintCardLine(card, 4, true));
         System.out.println(getPrintCardLine(card, 5, true));
+    }
+    private String getCardColor(PlayableCard card) {
+        String string = "";
+        if (card instanceof ResourceCard || card instanceof GoldCard) {
+            switch (card.getPermanentResources().getFirst()) {
+                case KingdomResource.PLANT -> string ="🟩";
+                case KingdomResource.ANIMAL -> string = "🟦";
+                case KingdomResource.FUNGI -> string = "🟥";
+                case KingdomResource.INSECT -> string = "🟪";
+                default -> string = "";
+            }
+        } else if (card instanceof StarterCard) {
+            string = "🟨";
+        } else {
+            string = "⬜";
+        }
+        return string;
     }
 
 }
