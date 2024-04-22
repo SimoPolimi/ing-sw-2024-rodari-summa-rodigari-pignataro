@@ -115,12 +115,7 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
-                    try {
-                        gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getResourcePlayingDeck());
-                    }catch (IllegalActionException e){
-                        //TODO: Move to GameController?
-                        e.printStackTrace();
-                    }
+                    gameController.drawCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck());
                     if (isCommonTableDown) {
                         bringCommonTableUp();
                     }
@@ -138,12 +133,8 @@ public class GUIController implements ViewController {
             @Override
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
-                    try {
-                        gameController.getGame().getPlayer(gameController.getGame().getPlayerTurn()).drawCard(gameController.getGame().getGoldPlayingDeck());
-                    }catch (IllegalActionException e){
-                        //TODO: Move to GameController?
-                        e.printStackTrace();
-                    }
+                    gameController.drawCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck());
+
                     if (isCommonTableDown) {
                         bringCommonTableUp();
                     }

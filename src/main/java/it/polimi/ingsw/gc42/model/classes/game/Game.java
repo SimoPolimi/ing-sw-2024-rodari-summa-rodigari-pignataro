@@ -17,7 +17,9 @@ public class Game implements Observable {
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
-    private int playerTurn;
+                                                                                            //************************************
+    private int playerTurn;                                                                 // PlayerTurn goes from 1 to 4
+                                                                                            //*************************************
     private final Chat chat = new Chat();
 
     private final ArrayList<Player> players = new ArrayList<>();
@@ -176,11 +178,8 @@ public class Game implements Observable {
     }
 
     public void setPlayerTurn(int i) throws IllegalArgumentException {
-        if (i == players.size()) {
-            i = 1;
-        }
-        if (i >= 1 && i < players.size()) {
-            this.playerTurn = i - 1;
+        if (i >= 1 && i <= players.size()) {
+            this.playerTurn = i;
         } else throw new IllegalArgumentException("This player doesn't exist");
     }
 
