@@ -139,6 +139,7 @@ public class GameController {
 
     public void drawSecretObjectives() {
         for (ViewController view : views) {
+            view.getOwner().drawSecretObjectives(game.getObjectivePlayingDeck());
             view.showSecretObjectivesSelectionDialog();
         }
     }
@@ -190,20 +191,20 @@ public class GameController {
             case READY:
                 break;
             case READY_TO_CHOOSE_TOKEN:
-                beginTokenChoosing();
                 currentStatus = GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE;
+                beginTokenChoosing();
                 break;
             case READY_TO_CHOOSE_SECRET_OBJECTIVE:
-                drawSecretObjectives();
                 currentStatus = GameStatus.READY_TO_CHOOSE_STARTER_CARD;
+                drawSecretObjectives();
                 break;
             case READY_TO_CHOOSE_STARTER_CARD:
-                beginStarterCardChoosing();
                 currentStatus = GameStatus.READY_TO_DRAW_STARTING_HAND;
+                beginStarterCardChoosing();
                 break;
             case READY_TO_DRAW_STARTING_HAND:
-                drawStartingHand();
                 currentStatus = GameStatus.PLAYING;
+                drawStartingHand();
                 break;
             case COUNTING_POINTS:
                 break;

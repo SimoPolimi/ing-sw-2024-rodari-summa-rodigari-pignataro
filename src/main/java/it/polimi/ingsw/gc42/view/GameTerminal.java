@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Chat;
 import it.polimi.ingsw.gc42.model.classes.game.Message;
@@ -27,6 +28,7 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void start(Stage stage) throws Exception {
         controller = new GameController();
+        controller.addView(this);
 
         System.out.println("Welcome to Codex Naturalis!");
         String input = "";
@@ -44,7 +46,11 @@ public class GameTerminal extends Application implements ViewController {
                             //TODO: implement method to print card in the terminal
                         }
                     });
+                    // Temporary
+                    player.setFirst(true);
                     controller.addPlayer(player);
+                    controller.setCurrentStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+                    player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
                     play();
                     exit = true;
                     break;
@@ -57,78 +63,77 @@ public class GameTerminal extends Application implements ViewController {
         Chat chat = controller.getGame().getChat();
 
         while (!exit) {
-            showTokenSelectionDialog();
-            showStarterCardSelectionDialog();
-            showSecretObjectivesSelectionDialog();
-            printPlayer();
-            printMenu();
+            if (player.getStatus() == GameStatus.PLAYING) {
+                printPlayer();
+                printMenu();
 
-            switch (scanner.next()) {
-                case "1":
-                    System.out.println("Select the number of the card you want to play (0 to cancel)");
-                    playCard(scanner.next());
-                    break;
-                case "2":
-                    System.out.println("Select the number of the card you want to flip (0 to cancel)");
-                    flipCard(scanner.next());
-                    break;
-                case "3":
-                    System.out.println(player.getSecretObjective().getObjective().getDescription());
-                    // TODO: add common objectives
-                    System.out.println();
-                    break;
-                case "4":
-                    for (int index = 0; index < chat.getChatSize(); index++) {
-                        Message message = chat.getMessage(index);
-                        System.out.println(message.getSender().getNickname()+": " +message.getText()+"/* " +message.getDateTime().toString());
-                    }
-                    break;
-                case "5":
-                    Message message = new Message(scanner.next(), player);
-                    chat.sendMessage(message);
-                    break;
-                case "6":
-                    exit = true;
-                    return;
-                case "7":
-                    // Test, will be deleted later
-                    for (Card card: controller.getGame().getResourcePlayingDeck().getDeck().getCopy()) {
-                        printCard((PlayableCard) card);
+                switch (scanner.next()) {
+                    case "1":
+                        System.out.println("Select the number of the card you want to play (0 to cancel)");
+                        playCard(scanner.next());
+                        break;
+                    case "2":
+                        System.out.println("Select the number of the card you want to flip (0 to cancel)");
+                        flipCard(scanner.next());
+                        break;
+                    case "3":
+                        System.out.println(player.getSecretObjective().getObjective().getDescription());
+                        // TODO: add common objectives
                         System.out.println();
-                    }
-                    break;
-                case "8":
-                    for (Card card: controller.getGame().getGoldPlayingDeck().getDeck().getCopy()) {
-                        printCard((PlayableCard) card);
-                        System.out.println();
-                    }
-                    break;
-                case "9":
-                    for (Card card: controller.getGame().getStarterDeck().getCopy()) {
-                        printCard((PlayableCard) card);
-                        card.flip();
-                        System.out.println();
-                        printCard((PlayableCard) card);
-                        System.out.println();
-                    }
-                    break;
+                        break;
+                    case "4":
+                        for (int index = 0; index < chat.getChatSize(); index++) {
+                            Message message = chat.getMessage(index);
+                            System.out.println(message.getSender().getNickname() + ": " + message.getText() + "/* " + message.getDateTime().toString());
+                        }
+                        break;
+                    case "5":
+                        Message message = new Message(scanner.next(), player);
+                        chat.sendMessage(message);
+                        break;
+                    case "6":
+                        exit = true;
+                        return;
+                    case "7":
+                        // Test, will be deleted later
+                        for (Card card : controller.getGame().getResourcePlayingDeck().getDeck().getCopy()) {
+                            printCard((PlayableCard) card);
+                            System.out.println();
+                        }
+                        break;
+                    case "8":
+                        for (Card card : controller.getGame().getGoldPlayingDeck().getDeck().getCopy()) {
+                            printCard((PlayableCard) card);
+                            System.out.println();
+                        }
+                        break;
+                    case "9":
+                        for (Card card : controller.getGame().getStarterDeck().getCopy()) {
+                            printCard((PlayableCard) card);
+                            card.flip();
+                            System.out.println();
+                            printCard((PlayableCard) card);
+                            System.out.println();
+                        }
+                        break;
 
-                case "i":
-                    System.out.println("Inventory");
-                    System.out.println("Kingdom resource");
-                    System.out.println(("Animal:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.ANIMAL)));
-                    System.out.println(("Plant:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.PLANT)));
-                    System.out.println(("Fungi:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.FUNGI)));
-                    System.out.println(("Insect:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.INSECT)));
-                    System.out.println("Resource");
-                    System.out.println(("Feather:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.FEATHER)));
-                    System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
-                    System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
-                    break;
-                default:
-                    System.out.println("Unknown command");
-                    break;
-            }
+                    case "i":
+                        System.out.println("Inventory");
+                        System.out.println("Kingdom resource");
+                        System.out.println(("Animal:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.ANIMAL)));
+                        System.out.println(("Plant:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.PLANT)));
+                        System.out.println(("Fungi:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.FUNGI)));
+                        System.out.println(("Insect:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.INSECT)));
+                        System.out.println("Resource");
+                        System.out.println(("Feather:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.FEATHER)));
+                        System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
+                        System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
+                        break;
+                    default:
+                        System.out.println("Unknown command");
+                        break;
+                }
+            } else continue;
             ClearScreen.main();
             System.out.println("-------------------------------------------------------------------------------");
         }
@@ -217,6 +222,7 @@ public class GameTerminal extends Application implements ViewController {
         }else{
             player.setSecretObjective(player.getTemporaryObjectiveCards().get(1));
         }
+        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
     }
 
     @Override
@@ -237,6 +243,7 @@ public class GameTerminal extends Application implements ViewController {
             starterCard.flip();
             player.setStarterCard((StarterCard) starterCard);
         }
+        player.setStatus(GameStatus.PLAYING);
     }
 
     @Override
@@ -247,13 +254,25 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Digit 3 to chose: 🟢");
         System.out.println("Digit 4 to chose: 🟡");
 
-        String input = "";
-        input = scanner.next();
+        int input;
+        input = scanner.nextInt();
         switch (input) {
-            case "1" : player.setToken(Token.RED); break;
-            case "2" : player.setToken(Token.BLUE); break;
-            case "3" : player.setToken(Token.GREEN); break;
-            case "4" : player.setToken(Token.YELLOW); break;
+            case 1 :
+                player.setToken(Token.RED);
+                break;
+            case 2 :
+                player.setToken(Token.BLUE);
+                break;
+            case 3 :
+                player.setToken(Token.GREEN);
+                break;
+            case 4 :
+                player.setToken(Token.YELLOW);
+                break;
+            default:
+                System.out.println("Comando non valido!");
+                showTokenSelectionDialog();
+                break;
         }
     }
 

@@ -133,26 +133,6 @@ public class TableView {
                 }
             }
         });
-        player.setListener(new ReadyToChooseSecretObjectiveListener() {
-            @Override
-            public void onEvent() {
-                CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, controller);
-                ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
-                for (ObjectiveCard card : cards) {
-                    dialog.addCard(card);
-                }
-                dialog.setListener(new CardPickerListener() {
-                    @Override
-                    public void onEvent() {
-                        player.setSecretObjective((ObjectiveCard) dialog.getPickedCard());
-                        secretObjective.setModelCard(player.getSecretObjective());
-                        controller.hideDialog();
-                        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
-                    }
-                });
-                controller.showDialog(dialog);
-            }
-        });
         hand.setPlayer(player);
     }
 
@@ -174,6 +154,10 @@ public class TableView {
 
     public void setAngle(int angle) {
         this.angle = angle;
+    }
+
+    public void setSecretObjective(ObjectiveCard card) {
+       secretObjective.setModelCard(card);
     }
 
     // Methods:

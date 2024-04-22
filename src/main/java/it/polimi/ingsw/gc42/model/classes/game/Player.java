@@ -48,6 +48,7 @@ public class Player implements Observable {
      */
     public void setToken(Token token) {
         this.token = token;
+        setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
         notifyListeners("Token Updated");
     }
 
@@ -262,7 +263,6 @@ public class Player implements Observable {
     public void drawSecretObjectives(PlayingDeck playingDeck) {
         tempObjective1 = (ObjectiveCard) playingDeck.getDeck().draw();
         tempObjective2 = (ObjectiveCard) playingDeck.getDeck().draw();
-        notifyListeners("Ready to choose a Secret Objective");
     }
 
     public ArrayList<ObjectiveCard> getTemporaryObjectiveCards() {

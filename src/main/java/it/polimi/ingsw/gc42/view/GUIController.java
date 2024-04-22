@@ -387,7 +387,21 @@ public class GUIController implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
-        player.drawSecretObjectives(gameController.getGame().getObjectivePlayingDeck());
+        CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
+        ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
+        for (ObjectiveCard card : cards) {
+            dialog.addCard(card);
+        }
+        dialog.setListener(new CardPickerListener() {
+            @Override
+            public void onEvent() {
+                player.setSecretObjective((ObjectiveCard) dialog.getPickedCard());
+                table.setSecretObjective(player.getSecretObjective());
+                hideDialog();
+                player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+            }
+        });
+        showDialog(dialog);
     }
 
     @Override
