@@ -247,10 +247,20 @@ public class Game implements Observable {
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from ResourcePlayingDeck
                     playingDeck.setSlot(resourcePlayingDeck.getDeck().draw(), slot);
+                    if (slot == 1) {
+                        notifyListeners("Resource 1");
+                    } else if (slot == 2) {
+                        notifyListeners("Resource 2");
+                    }
                 } else {
                     if (goldPlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from GoldPlayingDeck
                         playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
+                        if (slot == 1) {
+                            notifyListeners("Resource 1");
+                        } else if (slot == 2) {
+                            notifyListeners("Resource 2");
+                        }
                     } else {
                         // Both Decks are empty
                         playingDeck.setSlot(null, slot);
@@ -287,8 +297,42 @@ public class Game implements Observable {
 
     @Override
     public void notifyListeners(String context) {
-        for (Listener l: listeners) {
-            l.onEvent();
+        switch (context) {
+            case "Resource 1" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof ResourceSlot1Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Resource 2" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof ResourceSlot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Gold 1" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof GoldSlot1Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Gold 2" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof GoldSlot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Points have changed" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof StatusListener) {
+                        l.onEvent();
+                    }
+                }
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
@@ -152,7 +151,7 @@ public class GUIController implements ViewController {
             }
         });
         resourceDown1.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage());
-        gameController.getGame().getResourcePlayingDeck().setListener(new Slot1Listener() {
+        gameController.getGame().setListener(new ResourceSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getResourcePlayingDeck().getSlot(1);
@@ -160,6 +159,9 @@ public class GUIController implements ViewController {
                     resourceDown1.setImage(card.getFrontImage());
                 } else {
                     resourceDown1.setVisible(false);
+                }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
                 }
             }
         });
@@ -170,10 +172,13 @@ public class GUIController implements ViewController {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
                 }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
+                }
             }
         });
         resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
-        gameController.getGame().getResourcePlayingDeck().setListener(new Slot2Listener() {
+        gameController.getGame().setListener(new ResourceSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getResourcePlayingDeck().getSlot(2);
@@ -181,6 +186,9 @@ public class GUIController implements ViewController {
                     resourceDown2.setImage(card.getFrontImage());
                 } else {
                     resourceDown2.setVisible(false);
+                }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
                 }
             }
         });
@@ -191,10 +199,13 @@ public class GUIController implements ViewController {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
                 }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
+                }
             }
         });
         goldDown1.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage());
-        gameController.getGame().getGoldPlayingDeck().setListener(new Slot1Listener() {
+        gameController.getGame().setListener(new GoldSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getGoldPlayingDeck().getSlot(1);
@@ -202,6 +213,9 @@ public class GUIController implements ViewController {
                     goldDown1.setImage(card.getFrontImage());
                 } else {
                     goldDown1.setVisible(false);
+                }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
                 }
             }
         });
@@ -212,10 +226,13 @@ public class GUIController implements ViewController {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
                 }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
+                }
             }
         });
         goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
-        gameController.getGame().getGoldPlayingDeck().setListener(new Slot2Listener() {
+        gameController.getGame().setListener(new GoldSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getGoldPlayingDeck().getSlot(2);
@@ -223,6 +240,9 @@ public class GUIController implements ViewController {
                     goldDown2.setImage(card.getFrontImage());
                 } else {
                     goldDown2.setVisible(false);
+                }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
                 }
             }
         });
@@ -232,6 +252,9 @@ public class GUIController implements ViewController {
             public void handle(MouseEvent event) {
                 if (canReadInput && isCommonTableDown && !isShowingDialog && playerCanDrawOrGrab) {
                     gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
+                }
+                if (isCommonTableDown) {
+                    bringCommonTableUp();
                 }
             }
         });
