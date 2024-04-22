@@ -121,9 +121,48 @@ class PlayerTest {
 
         // TopCard is drawn
         assertNotEquals(game.getResourcePlayingDeck().getDeck().getTopCard(), topCard);
-
-
     }
+
+    @Test
+    void cannotDrawCard(){
+        // given
+        // new game because it initializes the decks
+        Game game = new Game();
+        Player player = new Player(null, true, 0, null, null, game);
+        Card topCard = null;
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+        }catch (IllegalActionException e){
+            e.printStackTrace();
+        }
+
+        topCard = game.getResourcePlayingDeck().getDeck().getTopCard();
+        // when and then
+        assertThrowsExactly(IllegalActionException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                player.drawCard(game.getResourcePlayingDeck());
+            }
+        });
+        assertEquals(game.getResourcePlayingDeck().getDeck().getTopCard(), topCard);
+
+        // TODO: boh
+        // Player has 3 Cards
+        for (int i = 0; i < 3; i++) {
+            assertNotNull(player.getHandCard(i));
+        }
+        // Card in Hand
+        boolean containsTheCard = false;
+        for (int i = 0; i < player.getHandSize(); i++) {
+            if (player.getHandCard(i).equals(topCard)) {
+                containsTheCard = true;
+            }
+        }
+        assertFalse(containsTheCard);
+    }
+
 
     @Test
     void drawEmptyDeck() {
@@ -174,7 +213,7 @@ class PlayerTest {
         assertNotEquals(game.getResourcePlayingDeck().getSlot(1), slotCard);
         assertNotEquals(game.getResourcePlayingDeck().getSlot(2), slotCard);
     }
-
+*/
     @Test
     void getHandCard() {
         // given
@@ -182,7 +221,12 @@ class PlayerTest {
         Player player = new Player("");
         // when
         Card card1 = game.getResourcePlayingDeck().getDeck().getTopCard();
-        player.drawCard(game.getResourcePlayingDeck());
+        try{
+            player.drawCard(game.getResourcePlayingDeck());
+        }catch (IllegalActionException e){
+            e.printStackTrace();
+        }
+
         boolean caught = false;
         try {
             player.getHandCard(9);
@@ -193,7 +237,7 @@ class PlayerTest {
         assertTrue(caught);
         assertNull(player.getHandCard(1));
         assertEquals(card1, player.getHandCard(0));
-    }*/
+    }
 
     @Test
     void playCard_GoldCard_ConditionNotMet() {
