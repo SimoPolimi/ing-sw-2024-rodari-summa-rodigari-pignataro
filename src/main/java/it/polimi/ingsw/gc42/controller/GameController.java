@@ -57,7 +57,16 @@ public class GameController {
 
     public void nextTurn() {
         try {
-            game.setPlayerTurn(game.getPlayerTurn() + 1);
+            game.getPlayer(game.getPlayerTurn()).setStatus(GameStatus.NOT_MY_TURN);
+            if(game.getPlayerTurn() >= game.getNumberOfPlayers()){
+                game.setPlayerTurn(1);
+                game.getPlayer(1).setStatus(GameStatus.MY_TURN);
+                System.out.println(game.getPlayerTurn());
+            }else{
+                game.getPlayer(game.getPlayerTurn()+1).setStatus(GameStatus.MY_TURN);
+                game.setPlayerTurn(game.getPlayerTurn() + 1);
+                System.out.println(game.getPlayerTurn());
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -93,8 +102,26 @@ public class GameController {
     }
 
     /**
-     * Grabs a Card from the specified slot and Puts it in the Player's hand, then puts a Card from the top of the Deck of the PlayingDeck in the now empty slot.
-     * If the PlayingDeck is empty, puts in the slot a Card from the top of the other PlayingDeck
+     * calls Player.drawCard(playingDeck).
+     * Then turn passes to the next Player
+     * @param player: the player who draw the Card
+     * @param playingDeck: the deck from where the Card is drawn
+     */
+    public void drawCard(Player player, PlayingDeck playingDeck){
+        try {
+            player.drawCard(playingDeck);
+            // End turn!!!!!!!!!!!!
+            nextTurn();
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Grabs a Card from the specified slot and Puts it in the Player's hand, then puts a Card from the top of the Deck of the PlayingDeck in the now empty slot (calls player.grabCard(playingDeck, slot).
+     * If the PlayingDeck is empty, puts in the slot a Card from the top of the other PlayingDeck (calls game.putDown(playingDeck, slot).
+     * Then turn passes to the next Player
      * @param player:      the player who grabs the Card
      * @param playingDeck: the PlayingDeck associated to the Slots where the Player grabs the Card from
      * @param slot:        an int value to identify the slot to grab the Card from.
@@ -103,7 +130,8 @@ public class GameController {
         try {
             player.grabCard(playingDeck, slot);
             game.putDown(playingDeck, slot);
-            // TODO: create exception?
+            // End turn!!!!!!!!!!!!
+            nextTurn();
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }

@@ -344,6 +344,7 @@ public class Player implements Observable {
         if(hand.size()<3) {
             if (playingDeck.getSlot(slot) != null) {
                     hand.add((PlayableCard) playingDeck.getSlot(slot));
+                    notifyListeners("Hand Updated");
                 return;
             } else {
                 throw new IllegalArgumentException("Empty slot");

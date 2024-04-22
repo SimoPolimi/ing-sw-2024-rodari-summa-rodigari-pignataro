@@ -9,8 +9,10 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.chart.Axis;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -425,12 +427,14 @@ public class HandCardView {
         transition.setToAngle(30);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
+        transition.setAxis(Rotate.Z_AXIS);
 
         RotateTransition transition1 = new RotateTransition(Duration.millis(50), imageView);
         transition1.setFromAngle(0);
         transition1.setToAngle(-30);
         transition1.setAutoReverse(true);
         transition1.setCycleCount(2);
+        transition1.setAxis(Rotate.Z_AXIS);
 
         transition.setOnFinished((e) -> transition1.play());
         transition.play();

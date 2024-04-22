@@ -17,7 +17,9 @@ public class Game implements Observable {
     private boolean isResourceDeckEmpty;
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
-    private int playerTurn;
+                                                                                            //************************************
+    private int playerTurn;                                                                 // PlayerTurn goes from 1 to 4
+                                                                                            //*************************************
     private final Chat chat = new Chat();
 
     private final ArrayList<Player> players = new ArrayList<>();
@@ -176,11 +178,8 @@ public class Game implements Observable {
     }
 
     public void setPlayerTurn(int i) throws IllegalArgumentException {
-        if (i == players.size()) {
-            i = 1;
-        }
-        if (i >= 1 && i < players.size()) {
-            this.playerTurn = i - 1;
+        if (i >= 1 && i <= players.size()) {
+            this.playerTurn = i;
         } else throw new IllegalArgumentException("This player doesn't exist");
     }
 
@@ -247,6 +246,11 @@ public class Game implements Observable {
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from ResourcePlayingDeck
                     playingDeck.setSlot(resourcePlayingDeck.getDeck().draw(), slot);
+                    if (slot == 1) {
+                        notifyListeners("Resource 1");
+                    } else if (slot == 2) {
+                        notifyListeners("Resource 2");
+                    }
                 } else {
                     if (goldPlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from GoldPlayingDeck
@@ -261,6 +265,11 @@ public class Game implements Observable {
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from GoldPlayingDeck
                     playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
+                    if (slot == 1) {
+                        notifyListeners("Gold 1");
+                    } else if (slot == 2) {
+                        notifyListeners("Gold 2");
+                    }
                 } else {
                     if (resourcePlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from ResourcePlayingDeck
@@ -287,8 +296,42 @@ public class Game implements Observable {
 
     @Override
     public void notifyListeners(String context) {
-        for (Listener l: listeners) {
-            l.onEvent();
+        switch (context) {
+            case "Resource 1" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof ResourceSlot1Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Resource 2" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof ResourceSlot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Gold 1" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof GoldSlot1Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Gold 2" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof GoldSlot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Points have changed" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof StatusListener) {
+                        l.onEvent();
+                    }
+                }
+            }
         }
     }
 }

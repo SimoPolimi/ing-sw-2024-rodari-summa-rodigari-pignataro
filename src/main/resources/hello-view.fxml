@@ -86,6 +86,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                                 <ImageView fx:id="resourceDown2" fitWidth="160" preserveRatio="true" rotate="-15" translateX="-350" translateY="100">
                                                     <image>
@@ -94,6 +97,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                                 <ImageView fx:id="goldDown1" fitWidth="160" preserveRatio="true" rotate="-10" translateX="350" translateY="-100">
                                                     <image>
@@ -102,6 +108,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                                 <ImageView fx:id="goldDown2" fitWidth="160" preserveRatio="true" rotate="25" translateX="350" translateY="100">
                                                     <image>
@@ -110,6 +119,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                                 <ImageView fx:id="commonObjective1" fitWidth="160" preserveRatio="true" rotate="5" translateX="-120" translateY="-370">
                                                     <image>
@@ -118,6 +130,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                                 <ImageView fx:id="commonObjective2" fitWidth="160" preserveRatio="true" rotate="-10" translateX="120" translateY="-370">
                                                     <image>
@@ -126,6 +141,9 @@
                                                     <effect>
                                                         <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                                     </effect>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                                 </ImageView>
                                             </children>
                                         </StackPane>
