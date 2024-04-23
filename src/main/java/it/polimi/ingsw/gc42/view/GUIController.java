@@ -108,6 +108,7 @@ public class GUIController implements ViewController {
             @Override
             public void onEvent() {
                 resourceDeck.refresh(gameController.getGame().getResourcePlayingDeck().getDeck().getCopy());
+
             }
         });
         // onClick
@@ -541,6 +542,11 @@ public class GUIController implements ViewController {
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("See the Common Table");
+            if (null != table.getHand().getHandCardView(1).getModelCard()
+                    && null != table.getHand().getHandCardView(2).getModelCard()
+                    && null != table.getHand().getHandCardView(3).getModelCard()) {
+                setPlayerCanPlayCards(true);
+            }
         });
         transition.play();
 
@@ -557,5 +563,9 @@ public class GUIController implements ViewController {
         if (!isCommonTableDown) {
             bringCommonTableDown();
         }
+    }
+
+    public void setPlayerCanPlayCards(boolean value) {
+        table.setCanPlayCards(value);
     }
 }

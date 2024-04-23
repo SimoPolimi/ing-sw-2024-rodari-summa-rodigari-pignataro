@@ -44,6 +44,7 @@ public class TableView {
     private boolean isShowingPlacements = false;
     private double playAreaScale = 1;
     private int cardBeingPlayed = 0;
+    private boolean canPlayCards = true;
 
     // Constructor Method
 
@@ -57,6 +58,16 @@ public class TableView {
     }
 
     // Getters and Setters
+
+
+    public boolean isCanPlayCards() {
+        return canPlayCards;
+    }
+
+    public void setCanPlayCards(boolean canPlayCards) {
+        this.canPlayCards = canPlayCards;
+    }
+
     public HandView getHand() {
         return hand;
     }
@@ -289,31 +300,34 @@ public class TableView {
     }
 
     public void playCard() {
-        int oldBeingPlayed = cardBeingPlayed;
-        if (cardBeingPlayed == hand.getSelectedCard()) {
-            cardBeingPlayed = 0;
-        } else {
-            cardBeingPlayed = hand.getSelectedCard();
-        }
-        if (cardBeingPlayed > 0) {
-            boolean canBePlayed = true;
-            if (hand.getHandCardView(cardBeingPlayed).getModelCard() instanceof GoldCard) {
-                canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(player.getPlayField().getPlayedCards());
-            }
-            if (canBePlayed) {
-                hand.setPlayingOverlay(cardBeingPlayed, true);
-                showAvailablePlacements();
+        if (canPlayCards) {
+            int oldBeingPlayed = cardBeingPlayed;
+            if (cardBeingPlayed == hand.getSelectedCard()) {
+                cardBeingPlayed = 0;
             } else {
-                hand.getHandCardView(cardBeingPlayed).showError();
-                cardBeingPlayed = oldBeingPlayed;
+                cardBeingPlayed = hand.getSelectedCard();
             }
-        } else {
-            hand.setPlayingOverlay(cardBeingPlayed, true);
-            hideAvailablePlacements();
+            if (cardBeingPlayed > 0) {
+                boolean canBePlayed = true;
+                if (hand.getHandCardView(cardBeingPlayed).getModelCard() instanceof GoldCard) {
+                    canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(player.getPlayField().getPlayedCards());
+                }
+                if (canBePlayed) {
+                    hand.setPlayingOverlay(cardBeingPlayed, true);
+                    showAvailablePlacements();
+                } else {
+                    hand.getHandCardView(cardBeingPlayed).showError();
+                    cardBeingPlayed = oldBeingPlayed;
+                }
+            } else {
+                hand.setPlayingOverlay(cardBeingPlayed, true);
+                hideAvailablePlacements();
+            }
         }
     }
 
     public void placeCard(Coordinates coordinates) {
+        setCanPlayCards(false);
         ScaleTransition transition = new ScaleTransition(Duration.millis(150), hand.getHandCardView(cardBeingPlayed).getImageView());
         transition.setFromX(1);
         transition.setFromY(1);
