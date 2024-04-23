@@ -86,13 +86,18 @@ public class GameController {
         Player player = game.getCurrentPlayer();
         // TODO: test drawing in GameStatus.LAST_TURN
         try {
-            if(player.equals(game.getCurrentPlayer()) && (!currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() == 3) || (currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() == 2)) {
+            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() == 3) {
                 player.playCard(card, x, y);
-                for (ViewController view : views) {
-                    if (view.getOwner().equals(player)) {
-                        view.askToDrawOrGrab();
+                if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
+                    for (ViewController view : views) {
+                        if (view.getOwner().equals(player)) {
+                            view.askToDrawOrGrab();
+                        }
                     }
+                } else {
+                    nextTurn();
                 }
+
             }else throw new IllegalActionException();
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             // TODO: Handle exception
@@ -122,8 +127,13 @@ public class GameController {
      */
     public void drawCard(Player player, PlayingDeck playingDeck){
         try {
-            if(player.equals(game.getCurrentPlayer()) && !currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() <= 2){
-                player.drawCard(playingDeck);
+            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() <= 2) {
+                try {
+                    player.drawCard(playingDeck);
+                }catch (IllegalArgumentException e){
+                    // TODO: implement dialog
+                    // Last turn and zero Cards in the decks... don't draw
+                }
                 // End turn!!!!!!!!!!!!
                 nextTurn();
             } else throw new IllegalActionException();
@@ -143,9 +153,14 @@ public class GameController {
      */
     public void grabCard(Player player, PlayingDeck playingDeck, int slot) {
         try {
-            if(player.equals(game.getCurrentPlayer()) && !currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() <= 2){
-                player.grabCard(playingDeck, slot);
-                game.putDown(playingDeck, slot);
+            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() <= 2) {
+                try{
+                    player.grabCard(playingDeck, slot);
+                    game.putDown(playingDeck, slot);
+                }catch (IllegalArgumentException e){
+                    // TODO: implement dialog
+                    // Last turn and zero Cards on the table... don't grab
+                }
                 // End turn!!!!!!!!!!!!
                 nextTurn();
             } else throw new IllegalActionException();

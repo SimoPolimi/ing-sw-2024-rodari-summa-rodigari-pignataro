@@ -326,10 +326,12 @@ public class Player implements Observable {
      *
      * @param playingDeck the deck from where the Card is drawn
      */
-    public void drawCard(PlayingDeck playingDeck) throws IllegalActionException {
+    public void drawCard(PlayingDeck playingDeck) throws IllegalActionException, IllegalArgumentException {
         if(hand.size()<3) {
-            hand.add((PlayableCard) playingDeck.getDeck().draw());
-            notifyListeners("Hand Updated");
+            if(playingDeck.getDeck().getNumberOfCards() >= 0) {
+                hand.add((PlayableCard) playingDeck.getDeck().draw());
+                notifyListeners("Hand Updated");
+            }else throw new IllegalArgumentException("Empty deck");
         } else throw new IllegalActionException();
     }
 
@@ -340,7 +342,7 @@ public class Player implements Observable {
      * @throws IllegalActionException
      */
     //TODO: needed exception description in javadoc????
-    public void grabCard(PlayingDeck playingDeck, int slot) throws IllegalActionException {
+    public void grabCard(PlayingDeck playingDeck, int slot) throws IllegalActionException, IllegalArgumentException {
         if(hand.size()<3) {
             if (playingDeck.getSlot(slot) != null) {
                     hand.add((PlayableCard) playingDeck.getSlot(slot));
