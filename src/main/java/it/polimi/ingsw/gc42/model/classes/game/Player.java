@@ -255,7 +255,7 @@ public class Player implements Observable {
     public void setStarterCard(StarterCard card) {
         try {
             playCard(card, 0, 0);
-        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
     }
@@ -293,24 +293,26 @@ public class Player implements Observable {
      * @param x    coordinate x of the position where the card will be placed
      * @param y    coordinate y of the position where the card will be placed
      */
-    public void playCard(PlayableCard card, int x, int y) throws IllegalPlacementException, PlacementConditionNotMetException {
+    public void playCard(PlayableCard card, int x, int y) throws IllegalPlacementException, PlacementConditionNotMetException, IllegalActionException {
         try {
-            card.setX(x);
-            card.setY(y);
-            if (card.canBePlaced(playField.getPlayedCards())) {
-                if (card.isFrontFacing()) {
-                    setPoints(getPoints() + card.getEarnedPoints());
-                }
-                playField.addCard(card, x, y);
-                if (card instanceof GoldCard) {
-                    if (null != ((GoldCard) card).getObjective()) {
-                        if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
-                            ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
-                        }
-                        setPoints(getPoints() + ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards()));
+            if(hand.size() == 3 || card instanceof StarterCard){
+                card.setX(x);
+                card.setY(y);
+                if (card.canBePlaced(playField.getPlayedCards())) {
+                    if (card.isFrontFacing()) {
+                        setPoints(getPoints() + card.getEarnedPoints());
                     }
-                }
-            } else throw new PlacementConditionNotMetException();
+                    playField.addCard(card, x, y);
+                    if (card instanceof GoldCard) {
+                        if (null != ((GoldCard) card).getObjective()) {
+                            if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
+                                ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
+                            }
+                            setPoints(getPoints() + ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards()));
+                        }
+                    }
+                } else throw new PlacementConditionNotMetException();
+            }else throw new IllegalActionException();
         } catch (IllegalPlacementException e) {
             card.setX(0);
             card.setY(0);
@@ -327,7 +329,7 @@ public class Player implements Observable {
      * @param playingDeck the deck from where the Card is drawn
      */
     public void drawCard(PlayingDeck playingDeck) throws IllegalActionException, IllegalArgumentException {
-        if(hand.size()<3) {
+        if(hand.size() <= 2 ) {
             if(playingDeck.getDeck().getNumberOfCards() >= 0) {
                 hand.add((PlayableCard) playingDeck.getDeck().draw());
                 notifyListeners("Hand Updated");
@@ -343,7 +345,7 @@ public class Player implements Observable {
      */
     //TODO: needed exception description in javadoc????
     public void grabCard(PlayingDeck playingDeck, int slot) throws IllegalActionException, IllegalArgumentException {
-        if(hand.size()<3) {
+        if(hand.size() <= 2) {
             if (playingDeck.getSlot(slot) != null) {
                     hand.add((PlayableCard) playingDeck.getSlot(slot));
                     notifyListeners("Hand Updated");

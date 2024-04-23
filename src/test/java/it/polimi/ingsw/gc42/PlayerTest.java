@@ -69,7 +69,7 @@ class PlayerTest {
         // when
         try {
             player.playCard(playedCard, 1, 0);
-        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
 
