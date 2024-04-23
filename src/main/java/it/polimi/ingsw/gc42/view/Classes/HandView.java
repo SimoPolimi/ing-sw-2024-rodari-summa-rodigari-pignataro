@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
+import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
@@ -19,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class HandView {

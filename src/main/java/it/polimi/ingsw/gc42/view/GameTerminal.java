@@ -101,12 +101,20 @@ public class GameTerminal extends Application implements ViewController {
                         for (Card card : controller.getGame().getResourcePlayingDeck().getDeck().getCopy()) {
                             printCard((PlayableCard) card);
                             System.out.println();
+                            card.flip();
+                            printCard((PlayableCard) card);
+                            System.out.println();
+                            card.flip();
                         }
                         break;
                     case "8":
                         for (Card card : controller.getGame().getGoldPlayingDeck().getDeck().getCopy()) {
                             printCard((PlayableCard) card);
                             System.out.println();
+                            card.flip();
+                            printCard((PlayableCard) card);
+                            System.out.println();
+                            card.flip();
                         }
                         break;
                     case "9":
@@ -118,7 +126,45 @@ public class GameTerminal extends Application implements ViewController {
                             System.out.println();
                         }
                         break;
-
+                    case "10":
+                        // Test placements
+                        ArrayList<PlayableCard> cards = new ArrayList<>();
+                        PlayableCard card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
+                        card.setX(0);
+                        card.setY(0);
+                        card.flip();
+                        card.getShowingSide().getTopLeftCorner().setCovered(true);
+                        card.getShowingSide().getBottomRightCorner().setCovered(true);
+                        card.getShowingSide().getBottomLeftCorner().setCovered(true);
+                        card.getShowingSide().getBottomRightCorner().setCovered(true);
+                        cards.add(card);
+                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
+                        card.setX(1);
+                        card.setY(0);
+                        card.flip();
+                        card.getShowingSide().getBottomLeftCorner().setCovered(true);
+                        cards.add(card);
+                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
+                        card.setX(0);
+                        card.setY(1);
+                        card.flip();
+                        card.getShowingSide().getBottomRightCorner().setCovered(true);
+                        cards.add(card);
+                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
+                        card.setX(-1);
+                        card.setY(0);
+                        card.flip();
+                        card.getShowingSide().getTopRightCorner().setCovered(true);
+                        cards.add(card);
+                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
+                        card.setX(0);
+                        card.setY(-1);
+                        card.flip();
+                        card.getShowingSide().getTopLeftCorner().setCovered(true);
+                        cards.add(card);
+                        printCardMatrix(getMatrix(cards), cards);
+                        //printPlayArea();
+                        break;
                     case "i":
                         System.out.println("Inventory");
                         System.out.println("Kingdom resource");
@@ -153,6 +199,7 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("7) Print all Resource Cards [Test]");
         System.out.println("8) Print all Gold Cards [Test]");
         System.out.println("9) Print all Starter Cards [Test]");
+        System.out.println("10) Print PlayArea [Test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -290,31 +337,51 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
-    private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners) {
+    private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners, ArrayList<PlayableCard> cards) {
         String string = "";
+        PlayField field = player.getPlayField();
         if (null != card) {
             switch (line) {
                 case 1 -> {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
                         for (int i=0; i < 7; i++) {
-                            string += getCardColor(card);
+                            if (i == 0 || i == 6) {
+                                string += "🟨";
+                            } else {
+                                string += getCardColor(card);
+                            }
                         }
                         string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
                     } else {
-                        //TODO: Re-do
-                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        } else string += "◻-";
-                        string += "--------";
-                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
+                        if (!isThereACardIn(card.getX(), card.getY()+1, cards)) {
+                            string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
+                        } else if (null == card.getShowingSide().getTopLeftCorner()) {
+                            // If there is no Corner, then it must be covering the other card's corner
+                            string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
+                        }
+                        for (int i=0; i < 7; i++) {
+                            string += getCardColor(card);
+                        }
+                        if (!isThereACardIn(card.getX()+1, card.getY(), cards)) {
                             string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
-                        } else string+= "-◻";
+                        } else if (null == card.getShowingSide().getTopRightCorner()) {
+                            // If there is no Corner, then it must be covering the other card's corner
+                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
+                        }
                     }
                 }
                 case 2, 4 -> {
-                    for (int i = 0; i < 9; i++) {
-                        string += getCardColor(card);
+                    if (card instanceof GoldCard) {
+                        string += "🟨";
+                        for (int i = 0; i < 7; i++) {
+                            string += getCardColor(card);
+                        }
+                        string += "🟨";
+                    } else {
+                        for (int i = 0; i < 9; i++) {
+                            string += getCardColor(card);
+                        }
                     }
                 }
                 case 3 -> {
@@ -354,18 +421,29 @@ public class GameTerminal extends Application implements ViewController {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
                         for (int i=0; i < 7; i++) {
-                            string += getCardColor(card);
+                            if (i == 0 || i == 6) {
+                                string += "🟨";
+                            } else {
+                                string += getCardColor(card);
+                            }
                         }
                         string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
                     } else {
-                        //TODO: Re-do
-                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        } else string += "◻-";
-                        string += "--------";
-                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
-                        } else string+= "-◻";
+                        if (!isThereACardIn(card.getX(), card.getY()-1, cards)) {
+                            string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
+                        } else if (null == card.getShowingSide().getBottomLeftCorner()) {
+                            // If there is no Corner, then it must be covering the other card's corner
+                            string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
+                        }
+                        for (int i=0; i < 7; i++) {
+                            string += getCardColor(card);
+                        }
+                        if (!isThereACardIn(card.getX()-1, card.getY(), cards)) {
+                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
+                        } else if (null == card.getShowingSide().getBottomRightCorner()) {
+                            // If there is no Corner, then it must be covering the other card's corner
+                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
+                        }
                     }
                 }
             }
@@ -440,8 +518,14 @@ public class GameTerminal extends Application implements ViewController {
                 }
             }*/
         } else {
-            for (int i = 0; i < 11; i++) {
-                string += " ";
+            if (printCoveredCorners) {
+                for (int i = 0; i < 20; i++) {
+                    string += " ";
+                }
+            } else {
+                for (int i = 0; i < 15; i++) {
+                    string += " ";
+                }
             }
         }
         return string;
@@ -486,11 +570,11 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     public void printCard(PlayableCard card) {
-        System.out.println(getPrintCardLine(card, 1, true));
-        System.out.println(getPrintCardLine(card, 2, true));
-        System.out.println(getPrintCardLine(card, 3, true));
-        System.out.println(getPrintCardLine(card, 4, true));
-        System.out.println(getPrintCardLine(card, 5, true));
+        System.out.println(getPrintCardLine(card, 1, true, null));
+        System.out.println(getPrintCardLine(card, 2, true, null));
+        System.out.println(getPrintCardLine(card, 3, true, null));
+        System.out.println(getPrintCardLine(card, 4, true, null));
+        System.out.println(getPrintCardLine(card, 5, true, null));
     }
     private String getCardColor(PlayableCard card) {
         String string = "";
@@ -510,4 +594,80 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
+    private Coordinates convertToAbsoluteCoordinates(Coordinates coordinates) {
+        int x = coordinates.getX() - coordinates.getY();
+        int y = coordinates.getX() + coordinates.getY();
+        return new Coordinates(x, y);
+    }
+
+    private Coordinates convertToMatrixCoordinates(Coordinates coordinates, int matrixSize) {
+        int shift = (matrixSize - 1) / 2;
+        int x = coordinates.getX() + shift;
+        int y = shift - coordinates.getY();
+        coordinates.setX(x);
+        coordinates.setY(y);
+        return coordinates;
+    }
+
+    private PlayableCard[][] getMatrix(ArrayList<PlayableCard> playedCards) {
+        int size = (2 * playedCards.size()) + 1;
+        PlayableCard[][] matrix = new PlayableCard[size][size];
+        // Puts all the played cards inside the Matrix
+        for (PlayableCard card : playedCards) {
+            Coordinates coord = convertToMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), size);
+            matrix[coord.getX()][coord.getY()] = card;
+        }
+        return matrix;
+    }
+
+    private void printCardMatrix(PlayableCard[][] matrix, ArrayList<PlayableCard> cards) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 1; j < 5; j++) {
+                // It takes 5 prints to completely print a Card
+                String string = "";
+                for (int k = 0; k < matrix[i].length; k++) {
+                    if (i > 0 && i < matrix.length - 1) {
+                        if (j == 1) {
+                            if (null != matrix[i][k]) {
+                                string += getPrintCardLine(matrix[i][k], 1, false, cards);
+                            } else {
+                                string += getPrintCardLine(matrix[i-1][k], 5, false, cards);
+                            }
+                        } /*else if (j == 5) {
+                            if (null == matrix[i][k] && null != matrix[i+1][k]) {
+                                string += getPrintCardLine(matrix[i+1][k], 1, false, cards);
+                            } else {
+                                //string += getPrintCardLine(matrix[i][k], j, false, cards);
+                            }
+                        }*/ else {
+                            if (k > 0 && null != matrix[i][k-1]) {
+                                string += " ";
+                            }
+                            string += " ";
+                            if (k < matrix.length-1 && null != matrix[i][k+1]) {
+                                string += " ";
+                            }
+                            string += getPrintCardLine(matrix[i][k], j, false, cards);
+                        }
+                    } else {
+                        string += getPrintCardLine(matrix[i][k], j, false, cards);
+                    }
+                }
+                System.out.println(string);
+            }
+        }
+    }
+
+    private void printPlayArea() {
+        printCardMatrix(getMatrix(player.getPlayField().getPlayedCards()), player.getPlayField().getPlayedCards());
+    }
+
+    private boolean isThereACardIn(int x, int y, ArrayList<PlayableCard> cards) {
+        for (PlayableCard card : cards) {
+            if (card.getX() == x && card.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -5,6 +5,7 @@ module it.polimi.ingsw.gc42 {
     requires org.controlsfx.controls;
     requires com.google.gson;
     requires java.desktop;
+    requires java.naming;
 
     exports it.polimi.ingsw.gc42.model.classes;
     opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;
