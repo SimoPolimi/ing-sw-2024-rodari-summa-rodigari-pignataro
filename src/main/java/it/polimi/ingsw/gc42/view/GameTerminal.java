@@ -251,17 +251,14 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
-        System.out.println("Choose your secret objective");
-        //TODO problem to fix
-        System.out.println("Secret objective 1(digit 1)");
-        System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
-                + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+        System.out.println("--- Choose your secret objective ---");
+        System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
+        System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
         //TODO: print card
-        System.out.println("Secret objective 2(digit 2)");
-        System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
-                + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
+        System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
+        System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
         //TODO: print card
-        String input = "";
+        String input = "";askToDrawOrGrab();
         boolean exit = false;
         while(!exit) {
             input = scanner.next();
@@ -275,18 +272,14 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid command!");
+                    System.out.println("Invalid command! Retry...");
                     exit = false;
-                    System.out.println("Choose your secret objective");
-                    //TODO problem to fix
-                    System.out.println("Secret objective 1(digit 1)");
-                    System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
-                            + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+                    System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
+                    System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
                     //TODO: print card
-                    System.out.println("Secret objective 2(digit 2)");
-                    System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
-                            + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
-                    //TODO: print card
+                    //System.out.println("Secret objective 2");
+                    System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
+                    System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
                     break;
             }
         }
@@ -295,7 +288,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showStarterCardSelectionDialog() {
-        System.out.println("Choose the side of your starter card");
+        System.out.println("--- Choose the side of your starter card ---");
         Card starterCard  = controller.getGame().getStarterDeck().draw();
         System.out.println("Digit f to choose front side");
         printCard((PlayableCard) starterCard);
@@ -318,9 +311,9 @@ public class GameTerminal extends Application implements ViewController {
                     exit  = true;
                     break;
                 default:
-                    System.out.println("Invalid command!");
+                    System.out.println("Invalid command! Retry...");
                     exit = false;
-                    System.out.println("Choose the side of your starter card");
+                    System.out.println("--- Choose the side of your starter card ---");
                     starterCard.flip();
                     System.out.println("Digit f to choose front side");
                     printCard((PlayableCard) starterCard);
@@ -335,7 +328,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showTokenSelectionDialog() {
-        System.out.println("Select your token");
+        System.out.println("--- Select your token ---");
         System.out.println("Digit 1 to chose: 🔴");
         System.out.println("Digit 2 to chose: 🔵");
         System.out.println("Digit 3 to chose: 🟢");
@@ -362,9 +355,9 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid command!");
+                    System.out.println("Invalid command! Retry...");
                     exit = false;
-                    System.out.println("Select your token");
+                    System.out.println("--- Select your token ---");
                     System.out.println("Digit 1 to chose: 🔴");
                     System.out.println("Digit 2 to chose: 🔵");
                     System.out.println("Digit 3 to chose: 🟢");
