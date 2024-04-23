@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.cards;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,6 +16,14 @@ class CornerCountObjectiveTest {
     void check() {
         Game g = new Game();
         Player p = new Player(Token.BLUE);
+
+        try {
+            p.drawCard(g.getResourcePlayingDeck());
+            p.drawCard(g.getResourcePlayingDeck());
+            p.drawCard(g.getResourcePlayingDeck());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
 
         ArrayList<Card> starters = g.getStarterDeck().getCopy();
         for (Card s: starters) {

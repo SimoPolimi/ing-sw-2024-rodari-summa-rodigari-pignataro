@@ -36,6 +36,14 @@ class PlayFieldTest {
         starterCard.flip();
         player.setStarterCard(starterCard);
 
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
         // Draws 7 random ResourceCards and flips them all, so they all have 4 non-null Corners
         ArrayList<PlayableCard> testCards = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

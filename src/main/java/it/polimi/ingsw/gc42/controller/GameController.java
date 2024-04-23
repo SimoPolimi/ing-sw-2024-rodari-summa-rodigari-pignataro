@@ -71,11 +71,9 @@ public class GameController {
             if(game.getPlayerTurn() >= game.getNumberOfPlayers()){
                 game.setPlayerTurn(1);
                 game.getPlayer(1).setStatus(GameStatus.MY_TURN);
-                System.out.println(game.getPlayerTurn());
             }else{
                 game.getPlayer(game.getPlayerTurn()+1).setStatus(GameStatus.MY_TURN);
                 game.setPlayerTurn(game.getPlayerTurn() + 1);
-                System.out.println(game.getPlayerTurn());
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

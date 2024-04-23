@@ -273,6 +273,14 @@ class PlayerTest {
         starterCard.flip();
         player.setStarterCard(starterCard);
 
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
         GoldCard finalGoldCard = goldCard;
         assertThrowsExactly(PlacementConditionNotMetException.class, new Executable() {
             @Override
