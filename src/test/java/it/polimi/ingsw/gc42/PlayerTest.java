@@ -69,7 +69,7 @@ class PlayerTest {
         // when
         try {
             player.playCard(playedCard, 1, 0);
-        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -272,6 +272,14 @@ class PlayerTest {
         }
         starterCard.flip();
         player.setStarterCard(starterCard);
+
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
 
         GoldCard finalGoldCard = goldCard;
         assertThrowsExactly(PlacementConditionNotMetException.class, new Executable() {

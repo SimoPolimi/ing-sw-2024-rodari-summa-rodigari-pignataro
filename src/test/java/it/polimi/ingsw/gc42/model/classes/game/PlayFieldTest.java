@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.game;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,14 @@ class PlayFieldTest {
         starterCard.flip();
         player.setStarterCard(starterCard);
 
+        try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
         // Draws 7 random ResourceCards and flips them all, so they all have 4 non-null Corners
         ArrayList<PlayableCard> testCards = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -56,7 +65,7 @@ class PlayFieldTest {
         for (int i = 0; i < 7; i++) {
             try {
                 player.playCard(testCards.get(i), testCoordinates.get(i).getX(), testCoordinates.get(i).getY());
-            } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+            } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
                 e.printStackTrace();
             }
         }

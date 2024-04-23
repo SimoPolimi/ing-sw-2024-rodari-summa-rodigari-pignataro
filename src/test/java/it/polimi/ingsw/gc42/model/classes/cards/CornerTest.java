@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.model.classes.cards;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,11 @@ class CornerTest {
         // Places 4 Cards in the nearby positions, so they cover the StarterCard's corners.
         PlayableCard card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
         try {
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+
+
             player.playCard(card2, 1, 0);
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
             player.playCard(card2, 0, 1);
@@ -46,7 +52,7 @@ class CornerTest {
             player.playCard(card2, -1, 0);
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
             player.playCard(card2, 0, -1);
-        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
 

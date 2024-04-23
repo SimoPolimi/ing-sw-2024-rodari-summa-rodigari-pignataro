@@ -71,11 +71,9 @@ public class GameController {
             if(game.getPlayerTurn() >= game.getNumberOfPlayers()){
                 game.setPlayerTurn(1);
                 game.getPlayer(1).setStatus(GameStatus.MY_TURN);
-                System.out.println(game.getPlayerTurn());
             }else{
                 game.getPlayer(game.getPlayerTurn()+1).setStatus(GameStatus.MY_TURN);
                 game.setPlayerTurn(game.getPlayerTurn() + 1);
-                System.out.println(game.getPlayerTurn());
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -86,7 +84,7 @@ public class GameController {
         Player player = game.getCurrentPlayer();
         // TODO: test drawing in GameStatus.LAST_TURN
         try {
-            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() == 3) {
+            if(player.equals(game.getCurrentPlayer())) {
                 player.playCard(card, x, y);
                 if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
                     for (ViewController view : views) {
@@ -127,7 +125,7 @@ public class GameController {
      */
     public void drawCard(Player player, PlayingDeck playingDeck){
         try {
-            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() <= 2) {
+            if(player.equals(game.getCurrentPlayer())) {
                 try {
                     player.drawCard(playingDeck);
                 }catch (IllegalArgumentException e){
@@ -153,7 +151,7 @@ public class GameController {
      */
     public void grabCard(Player player, PlayingDeck playingDeck, int slot) {
         try {
-            if(player.equals(game.getCurrentPlayer()) && player.getHandSize() <= 2) {
+            if(player.equals(game.getCurrentPlayer())) {
                 try{
                     player.grabCard(playingDeck, slot);
                     game.putDown(playingDeck, slot);

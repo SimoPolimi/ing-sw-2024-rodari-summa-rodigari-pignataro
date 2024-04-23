@@ -86,7 +86,7 @@ class GameControllerTest {
 
         try {
             player.playCard(player.getHandCard(player.getHandSize()-1),0,0);
-        } catch (PlacementConditionNotMetException | IllegalPlacementException e){
+        } catch (PlacementConditionNotMetException | IllegalPlacementException | IllegalActionException e){
             e.printStackTrace();
         }
 

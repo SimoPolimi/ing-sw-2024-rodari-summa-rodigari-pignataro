@@ -390,7 +390,7 @@ public class GameTerminal extends Application implements ViewController {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
                         for (int i = 0; i < 7; i++) {
-                            if (i == 0 || i == 6) {
+                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
                                 string += "🟨";
                             } else {
                                 string += getCardColor(card);
@@ -465,7 +465,7 @@ public class GameTerminal extends Application implements ViewController {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
                         for (int i = 0; i < 7; i++) {
-                            if (i == 0 || i == 6) {
+                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
                                 string += "🟨";
                             } else {
                                 string += getCardColor(card);
