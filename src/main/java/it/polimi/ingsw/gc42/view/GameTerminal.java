@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;
@@ -182,7 +183,8 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                 }
             } else continue;
-            ClearScreen.main();
+            //ClearScreen.main(); //  su linux (e teoricamente su ogni dispositivo senza il comando 'cmd') fa crashare il programma
+            System.out.print("\n\n\n");
             System.out.println("-------------------------------------------------------------------------------");
         }
     }
@@ -203,6 +205,7 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
+
     private void printPlayer(){
         System.out.println("Player n° " + controller.getGame().getPlayerTurn());
         System.out.println("Nickname: "+ controller.getGame().getCurrentPlayer().getNickname());
@@ -225,27 +228,25 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     private void playCard(String input) {
-        if (input.equals("1") || input.equals("2") || input.equals("3")) {
-            // Play card
-            int i = 0;
-            ArrayList<Coordinates> availablePlacements = player.getPlayField().getAvailablePlacements();
-            for (Coordinates coord : availablePlacements) {
-                System.out.println(i + ") " + coord.getX() + " " + coord.getY());
-                i++;
+        switch (input) {
+            case "1", "2", "3" -> {
+                // Play card
+                int i = 1;
+                ArrayList<Coordinates> availablePlacements = player.getPlayField().getAvailablePlacements();
+                for (Coordinates coord : availablePlacements) {
+                    System.out.println(i + ") " + coord.getX() + " " + coord.getY());
+                    i++;
+                }
+                String inputCoord = scanner.next();
+                if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
+                    System.out.println(color("Invalid coordinate", UiColors.RED));
+                } else {
+                    controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
+                }
             }
-            String inputCoord = scanner.next();
-            if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
-                System.out.println(color("Invalid coordinate", UiColors.RED));
-            } else {
-                controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
-            }
-        } else if (input.equals("0")) {
-            return;
-        } else {
-            System.out.println(color("Invalid input", UiColors.RED));
-            return;
+            case "0" -> {} // do nothing and exit
+            default -> System.out.println(color("Invalid input", UiColors.RED));
         }
-        return;
     }
 
     private void flipCard(String input) {
