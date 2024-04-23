@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -249,31 +250,33 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showTokenSelectionDialog() {
-        System.out.println("Select your token");
-        System.out.println("Digit 1 to chose: 🔴");
-        System.out.println("Digit 2 to chose: 🔵");
-        System.out.println("Digit 3 to chose: 🟢");
-        System.out.println("Digit 4 to chose: 🟡");
+        String input = "";
+        while (input.isEmpty()) {
+            System.out.println("Select your token");
+            System.out.println("Digit 1 to chose: 🔴");
+            System.out.println("Digit 2 to chose: 🔵");
+            System.out.println("Digit 3 to chose: 🟢");
+            System.out.println("Digit 4 to chose: 🟡");
 
-        int input;
-        input = scanner.nextInt();
-        switch (input) {
-            case 1 :
-                player.setToken(Token.RED);
-                break;
-            case 2 :
-                player.setToken(Token.BLUE);
-                break;
-            case 3 :
-                player.setToken(Token.GREEN);
-                break;
-            case 4 :
-                player.setToken(Token.YELLOW);
-                break;
-            default:
-                System.out.println("Comando non valido!");
-                showTokenSelectionDialog();
-                break;
+            input = scanner.next();
+            switch (input) {
+                case "1":
+                    player.setToken(Token.RED);
+                    break;
+                case "2":
+                    player.setToken(Token.BLUE);
+                    break;
+                case "3":
+                    player.setToken(Token.GREEN);
+                    break;
+                case "4":
+                    player.setToken(Token.YELLOW);
+                    break;
+                default:
+                    input = "";
+                    System.out.println("Invalid command! Retry...");
+                    break;
+            }
         }
     }
 
