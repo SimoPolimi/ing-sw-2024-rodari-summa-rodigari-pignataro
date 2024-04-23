@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
+import it.polimi.ingsw.gc42.model.interfaces.LastTurnListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
@@ -35,6 +36,13 @@ public class GameController {
     public GameController() {
         this.game = new Game();
         currentStatus = GameStatus.NOT_IN_GAME;
+        // Check last turn for drawing and playing mechanics
+        game.setListener(new LastTurnListener() {
+            @Override
+            public void onEvent() {
+                currentStatus = GameStatus.LAST_TURN;
+            }
+        });
     }
 
     public void startGame() {
@@ -76,14 +84,17 @@ public class GameController {
 
     public void playCard(PlayableCard card, int x, int y) {
         Player player = game.getCurrentPlayer();
+        // TODO: test drawing in GameStatus.LAST_TURN
         try {
-            player.playCard(card, x, y);
-            for (ViewController view : views) {
-                if (view.getOwner().equals(player)) {
-                    view.askToDrawOrGrab();
+            if(player.equals(game.getCurrentPlayer()) && (!currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() == 3) || (currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() == 2)) {
+                player.playCard(card, x, y);
+                for (ViewController view : views) {
+                    if (view.getOwner().equals(player)) {
+                        view.askToDrawOrGrab();
+                    }
                 }
-            }
-        } catch (IllegalPlacementException | PlacementConditionNotMetException e) {
+            }else throw new IllegalActionException();
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             // TODO: Handle exception
             e.printStackTrace();
         }
@@ -111,9 +122,11 @@ public class GameController {
      */
     public void drawCard(Player player, PlayingDeck playingDeck){
         try {
-            player.drawCard(playingDeck);
-            // End turn!!!!!!!!!!!!
-            nextTurn();
+            if(player.equals(game.getCurrentPlayer()) && !currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() <= 2){
+                player.drawCard(playingDeck);
+                // End turn!!!!!!!!!!!!
+                nextTurn();
+            } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
@@ -130,10 +143,12 @@ public class GameController {
      */
     public void grabCard(Player player, PlayingDeck playingDeck, int slot) {
         try {
-            player.grabCard(playingDeck, slot);
-            game.putDown(playingDeck, slot);
-            // End turn!!!!!!!!!!!!
-            nextTurn();
+            if(player.equals(game.getCurrentPlayer()) && !currentStatus.equals(GameStatus.LAST_TURN) && player.getHandSize() <= 2){
+                player.grabCard(playingDeck, slot);
+                game.putDown(playingDeck, slot);
+                // End turn!!!!!!!!!!!!
+                nextTurn();
+            } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }

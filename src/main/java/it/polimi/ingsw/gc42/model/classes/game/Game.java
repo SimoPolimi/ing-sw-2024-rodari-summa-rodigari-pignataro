@@ -63,6 +63,7 @@ public class Game implements Observable {
 
     private void checkEndGame() {
         if ((isResourceDeckEmpty && isGoldDeckEmpty) || playerHasReachedTwentyPoints) {
+            notifyListeners("End game");
             endGame();
         }
     }
@@ -328,6 +329,13 @@ public class Game implements Observable {
             case "Points have changed" -> {
                 for (Listener l: listeners) {
                     if (l instanceof StatusListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "End game" ->{
+                for (Listener l: listeners) {
+                    if(l instanceof LastTurnListener){
                         l.onEvent();
                     }
                 }

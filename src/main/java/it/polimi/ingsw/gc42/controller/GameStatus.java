@@ -12,6 +12,7 @@ public enum GameStatus {
     PLAYING,
     MY_TURN,
     NOT_MY_TURN,
+    LAST_TURN,
     COUNTING_POINTS,
     END_GAME
 }
