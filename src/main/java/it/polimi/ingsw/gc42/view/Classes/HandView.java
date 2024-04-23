@@ -43,8 +43,8 @@ public class HandView {
     private int lastSelected = 0;
 
     public HandView(boolean isPrivacyModeEnabled, GUIController controller) {
-        build();
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
+        build();
         this.controller = controller;
         hide();
     }
@@ -67,43 +67,48 @@ public class HandView {
         AnchorPane.setLeftAnchor(container, 0.0);
         AnchorPane.setTopAnchor(container, 0.0);
         container.setPadding(new Insets(0, 0, 0, 40));
+        if (isPrivacyModeEnabled) {
+            container.setTranslateX(150);
+        }
+
 
         HBox collapseHintContainer = new HBox();
         collapseHintContainer.setAlignment(Pos.CENTER_LEFT);
         collapseHintContainer.setPrefHeight(50);
         collapseHintContainer.setSpacing(15);
         collapseHintContainer.setPadding(new Insets(0, 0, 0, 15));
-
-        KBCollapseHint = new ImageView(new Image(Objects.requireNonNull(getClass()
-                .getResourceAsStream("/collapseHandHint.png"))));
-        KBCollapseHint.setFitWidth(20);
-        KBCollapseHint.setPreserveRatio(true);
-        KBCollapseHint.setPickOnBounds(true);
-        KBCollapseHint.setSmooth(true);
         if (!isPrivacyModeEnabled) {
-            KBCollapseHint.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    controller.toggleHand();
-                }
-            });
-            KBCollapseHint.setCursor(Cursor.HAND);
-        }
+            KBCollapseHint = new ImageView(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/collapseHandHint.png"))));
+            KBCollapseHint.setFitWidth(20);
+            KBCollapseHint.setPreserveRatio(true);
+            KBCollapseHint.setPickOnBounds(true);
+            KBCollapseHint.setSmooth(true);
+            if (!isPrivacyModeEnabled) {
+                KBCollapseHint.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        controller.toggleHand();
+                    }
+                });
+                KBCollapseHint.setCursor(Cursor.HAND);
+            }
 
-        textCollapse = new Text("Collapse");
-        textCollapse.setFill(Paint.valueOf("white"));
-        textCollapse.setFont(Font.font("Contantia Italic", 15));
-        if (!isPrivacyModeEnabled) {
-            textCollapse.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    controller.toggleHand();
-                }
-            });
-            textCollapse.setCursor(Cursor.HAND);
-        }
+            textCollapse = new Text("Collapse");
+            textCollapse.setFill(Paint.valueOf("white"));
+            textCollapse.setFont(Font.font("Contantia Italic", 15));
+            if (!isPrivacyModeEnabled) {
+                textCollapse.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        controller.toggleHand();
+                    }
+                });
+                textCollapse.setCursor(Cursor.HAND);
+            }
 
-        collapseHintContainer.getChildren().addAll(KBCollapseHint, textCollapse);
+            collapseHintContainer.getChildren().addAll(KBCollapseHint, textCollapse);
+        }
 
         handCardView1 = new HandCardView(isPrivacyModeEnabled);
         handCardView2 = new HandCardView(isPrivacyModeEnabled);
@@ -165,18 +170,20 @@ public class HandView {
         bottomHintContainer.setSpacing(15);
         bottomHintContainer.setPadding(new Insets(0, 0, 0, 15));
 
-        KBNavHint = new ImageView(new Image(Objects.requireNonNull(getClass()
-                .getResourceAsStream("/navigateKeyboardHintVertical.png"))));
-        KBNavHint.setFitWidth(20);
-        KBNavHint.setPreserveRatio(true);
-        KBNavHint.setPickOnBounds(true);
-        KBNavHint.setSmooth(true);
+        if (!isPrivacyModeEnabled) {
+            KBNavHint = new ImageView(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/navigateKeyboardHintVertical.png"))));
+            KBNavHint.setFitWidth(20);
+            KBNavHint.setPreserveRatio(true);
+            KBNavHint.setPickOnBounds(true);
+            KBNavHint.setSmooth(true);
 
-        textNav = new Text("Navigate");
-        textNav.setFill(Paint.valueOf("white"));
-        textNav.setFont(Font.font("Contantia Italic", 15));
+            textNav = new Text("Navigate");
+            textNav.setFill(Paint.valueOf("white"));
+            textNav.setFont(Font.font("Contantia Italic", 15));
 
-        bottomHintContainer.getChildren().addAll(KBNavHint, textNav);
+            bottomHintContainer.getChildren().addAll(KBNavHint, textNav);
+        }
 
         container.getChildren().addAll(collapseHintContainer, card1Container, card2Container, card3Container, bottomHintContainer);
     }
@@ -275,18 +282,21 @@ public class HandView {
     public void hide() {
         controller.blockInput();
         deselectAllCards(false);
-        isHidden = true;
-        KBNavHint.setVisible(false);
-        textNav.setVisible(false);
-        textCollapse.setText("My Cards");
+        if (!isPrivacyModeEnabled) {
+            isHidden = true;
+            KBNavHint.setVisible(false);
+            textNav.setVisible(false);
+            textCollapse.setText("My Cards");
 
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
-        t1.setByY(240);
-        t1.play();
 
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
-        t2.setByY(240);
-        t2.play();
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
+            t1.setByY(240);
+            t1.play();
+
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
+            t2.setByY(240);
+            t2.play();
+        }
 
         handCardView1.hide(1, controller);
         handCardView2.hide(2, controller);

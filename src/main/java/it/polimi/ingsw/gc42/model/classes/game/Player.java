@@ -109,6 +109,7 @@ public class Player implements Observable {
      */
     public void setSecretObjective(ObjectiveCard objectiveCard) {
         this.secretObjective = objectiveCard;
+        notifyListeners("Secret Objective Selected");
     }
 
     /**

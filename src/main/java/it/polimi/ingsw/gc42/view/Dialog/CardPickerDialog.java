@@ -182,8 +182,10 @@ public class CardPickerDialog extends Dialog implements Observable {
     public void onKeyPressed(String key) {
         switch (key) {
             case "F":
-                cards.get(selectedCard).flip();
-                cards.get(selectedCard).visualFlip(controller);
+                if (cardsCanBeFlipped) {
+                    cards.get(selectedCard).flip();
+                    cards.get(selectedCard).visualFlip(controller);
+                }
                 break;
             case "RIGHT":
                 moveRight();

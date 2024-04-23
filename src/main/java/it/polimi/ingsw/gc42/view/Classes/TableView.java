@@ -147,6 +147,12 @@ public class TableView {
                 }
             }
         });
+        player.setListener(new SecretObjectiveListener() {
+            @Override
+            public void onEvent() {
+                setSecretObjective(player.getSecretObjective());
+            }
+        });
         hand.setPlayer(player);
     }
 
@@ -193,14 +199,18 @@ public class TableView {
         playerToken.setFitWidth(50);
         playerToken.setPreserveRatio(true);
         playerToken.setVisible(false);
-        AnchorPane.setLeftAnchor(playerToken, 300.0);
-        AnchorPane.setTopAnchor(playerToken, 30.0);
+        AnchorPane.setLeftAnchor(playerToken, 400.0);
+        AnchorPane.setTopAnchor(playerToken, 100.0);
         DropShadow effect = new DropShadow();
         effect.setBlurType(BlurType.GAUSSIAN);
         effect.setWidth(50);
         effect.setHeight(50);
         effect.setRadius(24.5);
         playerToken.setEffect(effect);
+        if (isPrivacyModeEnabled) {
+            playerToken.setTranslateX(320);
+            playerToken.setTranslateY(-100);
+        }
 
         blackToken = new ImageView(new Image(Objects.requireNonNull(getClass()
                 .getResourceAsStream("/blackToken.png"))));
@@ -215,6 +225,10 @@ public class TableView {
         effect.setHeight(50);
         effect.setRadius(24.5);
         blackToken.setEffect(effect2);
+        if (isPrivacyModeEnabled) {
+            blackToken.setTranslateX(320);
+            blackToken.setTranslateY(-100);
+        }
 
         playArea = new StackPane();
         playArea.setAlignment(Pos.CENTER);

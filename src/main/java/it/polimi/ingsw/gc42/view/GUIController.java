@@ -53,6 +53,12 @@ public class GUIController implements ViewController {
     @FXML
     private AnchorPane playerTableContainer;
     @FXML
+    private AnchorPane rightPlayerTableContainer;
+    @FXML
+    private AnchorPane topPlayerTableContainer;
+    @FXML
+    private AnchorPane leftPlayerTableContainer;
+    @FXML
     private AnchorPane backgroundContainer;
     @FXML
     private Text commonTableTxt;
@@ -87,10 +93,11 @@ public class GUIController implements ViewController {
     private DeckView resourceDeck;
     private DeckView goldDeck;
     private boolean playerCanDrawOrGrab = false;
+    private boolean isShowingGlobalMap = false;
 
 
     public void build() {
-        table = new TableView(true, 0, this);
+        table = new TableView(false, 0, this);
         playerTableContainer.getChildren().addAll(table.getPane());
         resourceDeck = new DeckView(resourceDeckContainer);
         goldDeck = new DeckView(goldDeckContainer);
@@ -261,6 +268,44 @@ public class GUIController implements ViewController {
     public void setPlayer(Player player) {
         this.player = player;
         table.setPlayer(player);
+        setOtherPlayers();
+    }
+
+    private void setOtherPlayers() {
+        boolean isRightTableEmpty = true;
+        boolean isTopTableEmpty = true;
+        boolean isLeftTableEmpty = true;
+        TableView rightTable;
+        TableView topTable;
+        TableView leftTable;
+        ArrayList<Player> players = new ArrayList<>();
+        int numberOfPlayers = gameController.getGame().getNumberOfPlayers();
+        for (int i = 1; i <= numberOfPlayers; i++) {
+            if (!gameController.getGame().getPlayer(i).equals(player) && !players.contains(gameController.getGame().getPlayer(i))) {
+                players.add(gameController.getGame().getPlayer(i));
+                if (numberOfPlayers == 2 && isTopTableEmpty) {
+                    isTopTableEmpty = false;
+                    topTable = new TableView(true, 0, this);
+                    topTable.setPlayer(gameController.getGame().getPlayer(i));
+                    topPlayerTableContainer.getChildren().add(topTable.getPane());
+                } else if (numberOfPlayers > 2 && isRightTableEmpty) {
+                    isRightTableEmpty = false;
+                    rightTable = new TableView(true, 0, this);
+                    rightTable.setPlayer(gameController.getGame().getPlayer(i));
+                    rightPlayerTableContainer.getChildren().add(rightTable.getPane());
+                } else if (numberOfPlayers == 4 && isTopTableEmpty) {
+                    isTopTableEmpty = false;
+                    topTable = new TableView(true, 0, this);
+                    topTable.setPlayer(gameController.getGame().getPlayer(i));
+                    topPlayerTableContainer.getChildren().add(topTable.getPane());
+                } else if (numberOfPlayers >= 3 && isLeftTableEmpty){
+                    isLeftTableEmpty = false;
+                    leftTable = new TableView(true, 0, this);
+                    leftTable.setPlayer(gameController.getGame().getPlayer(i));
+                    leftPlayerTableContainer.getChildren().add(leftTable.getPane());
+                }
+            }
+        }
     }
 
     public boolean isShowingDialog() {
@@ -397,7 +442,6 @@ public class GUIController implements ViewController {
             @Override
             public void onEvent() {
                 player.setSecretObjective((ObjectiveCard) dialog.getPickedCard());
-                table.setSecretObjective(player.getSecretObjective());
                 hideDialog();
                 player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
             }
@@ -478,7 +522,7 @@ public class GUIController implements ViewController {
                 name.setMaxWidth(100);
                 name.setMinWidth(50);
 
-                if (player.isFirst()) {
+                if (players.indexOf(player) == 0) {
                     name.setTextFill(Paint.valueOf("gold"));
                 } else {
                     name.setTextFill(Paint.valueOf("white"));
@@ -488,7 +532,7 @@ public class GUIController implements ViewController {
                 Text points = new Text(String.valueOf(player.getPoints()));
                 points.setFont(Font.font("Tahoma Bold", 12));
                 points.setStrokeWidth(25);
-                if (player.isFirst()) {
+                if (players.indexOf(player) == 0) {
                     points.setFill(Paint.valueOf("gold"));
                 } else {
                     points.setFill(Paint.valueOf("white"));
@@ -567,5 +611,42 @@ public class GUIController implements ViewController {
 
     public void setPlayerCanPlayCards(boolean value) {
         table.setCanPlayCards(value);
+    }
+
+    public void toggleGlobalMap() {
+        if (canReadInput && isCommonTableDown) {
+            if (isShowingGlobalMap) {
+                hideGlobalMap();
+            } else {
+                showGlobalMap();
+            }
+        }
+    }
+
+    private void showGlobalMap() {
+        blockInput();
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
+        transition.setFromX(1);
+        transition.setFromY(1);
+        transition.setToX(0.4);
+        transition.setToY(0.4);
+        transition.setOnFinished((e) -> {
+            isShowingGlobalMap = true;
+            unlockInput();
+        });
+        transition.play();
+    }
+
+    private void hideGlobalMap() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
+        transition.setFromX(0.4);
+        transition.setFromY(0.4);
+        transition.setToX(1);
+        transition.setToY(1);
+        transition.setOnFinished((e) -> {
+            isShowingGlobalMap = false;
+            unlockInput();
+        });
+        transition.play();
     }
 }

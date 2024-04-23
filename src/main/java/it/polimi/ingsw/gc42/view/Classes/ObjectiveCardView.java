@@ -109,25 +109,31 @@ public class ObjectiveCardView {
             modelCard.removeListener(listener);
         }
         this.modelCard = modelCard;
-        imageView.setImage(modelCard.getFrontImage());
+        if (!isPrivacyModeEnabled) {
+            imageView.setImage(modelCard.getFrontImage());
+        } else {
+            imageView.setImage(modelCard.getBackImage());
+        }
         imageView.setVisible(true);
         show();
-        imageView.setOnMouseEntered((e) -> {
-            if (!isShowingDetails && !controller.isShowingDialog()) {
-                select();
-            }
-        });
-        imageView.setOnMouseExited((e) -> {
-            if (!isShowingDetails && !controller.isShowingDialog()) {
-                deselect();
-            }
-        });
-        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                rotate();
-            }
-        });
+        if (!isPrivacyModeEnabled) {
+            imageView.setOnMouseEntered((e) -> {
+                if (!isShowingDetails && !controller.isShowingDialog()) {
+                    select();
+                }
+            });
+            imageView.setOnMouseExited((e) -> {
+                if (!isShowingDetails && !controller.isShowingDialog()) {
+                    deselect();
+                }
+            });
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    rotate();
+                }
+            });
+        }
         title.setText(modelCard.getObjective().getName());
         description.setText(modelCard.getObjective().getDescription());
     }
@@ -198,25 +204,30 @@ public class ObjectiveCardView {
         AnchorPane.setBottomAnchor(container, 0.0);
         AnchorPane.setRightAnchor(container, 0.0);
         AnchorPane.setTopAnchor(container, 0.0);
+        if (isPrivacyModeEnabled) {
+            container.setTranslateX(-60);
+        }
 
         HBox hintContainer = new HBox();
         hintContainer.setAlignment(Pos.CENTER);
         hintContainer.setSpacing(10);
         hintContainer.setPadding(new Insets(0, 0, 20, 0));
 
-        hintImage = new ImageView(new Image(Objects.requireNonNull(getClass()
-                .getResourceAsStream("/KBObjectiveHint.png"))));
-        hintImage.setFitWidth(20);
-        hintImage.setPreserveRatio(true);
-        hintImage.setSmooth(true);
-        hintImage.setPickOnBounds(true);
+        if (!isPrivacyModeEnabled) {
+            hintImage = new ImageView(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/KBObjectiveHint.png"))));
+            hintImage.setFitWidth(20);
+            hintImage.setPreserveRatio(true);
+            hintImage.setSmooth(true);
+            hintImage.setPickOnBounds(true);
 
-        hint = new Text("Secret Objective");
-        hint.setFill(Paint.valueOf("white"));
-        hint.setFont(Font.font("Constantia Italic", 15));
-        HBox.setMargin(hint, new Insets(3, 0, 0, 0));
+            hint = new Text("Secret Objective");
+            hint.setFill(Paint.valueOf("white"));
+            hint.setFont(Font.font("Constantia Italic", 15));
+            HBox.setMargin(hint, new Insets(3, 0, 0, 0));
 
-        hintContainer.getChildren().addAll(hintImage, hint);
+            hintContainer.getChildren().addAll(hintImage, hint);
+        }
 
         imageView = new ImageView(new Image(Objects.requireNonNull(getClass()
                 .getResourceAsStream("/cards/card99Front.png"))));

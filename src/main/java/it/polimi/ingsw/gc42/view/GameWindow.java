@@ -2,7 +2,11 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
+import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -14,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameWindow extends Application {
@@ -117,6 +122,9 @@ public class GameWindow extends Application {
                     case T -> {
                         controller.toggleCommonTable();
                     }
+                    case M -> {
+                        controller.toggleGlobalMap();
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
@@ -133,13 +141,42 @@ public class GameWindow extends Application {
 
         gameController.addView(controller);
 
+        // Scripting for testing
+        Player player1 = new Player("Cugola");
+        Player player2 = new Player("Gianpaolo");
+        Player player3 = new Player("Damiano");
+        player1.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        player2.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        player3.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        ArrayList<Card> copyDeck = gameController.getGame().getResourcePlayingDeck().getDeck().getCopy();
+        gameController.addPlayer(player1);
+
+        gameController.addPlayer(player2);
+        gameController.addPlayer(player3);
+
 
         Player player = new Player(nickName);
         player.setFirst(true);
-        controller.setPlayer(player);
         gameController.addPlayer(player);
+        controller.setPlayer(player);
 
-        gameController.setCurrentStatus(GameStatus.READY);
-        player.setStatus(GameStatus.READY);
+        //gameController.setCurrentStatus(GameStatus.READY);
+        //player.setStatus(GameStatus.READY);
+        gameController.setCurrentStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+
+        player.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
+        player1.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
+        player2.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
+        player3.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
+        player1.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
+        player2.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
+        player3.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
+        player1.setToken(Token.RED);
+        player2.setToken(Token.YELLOW);
+        player3.setToken(Token.GREEN);
+        player.setToken(Token.BLUE);
+        player.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
+        player.setStatus(GameStatus.MY_TURN);
     }
 }
