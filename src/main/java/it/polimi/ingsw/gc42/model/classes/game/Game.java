@@ -247,11 +247,6 @@ public class Game implements Observable {
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from ResourcePlayingDeck
                     playingDeck.setSlot(resourcePlayingDeck.getDeck().draw(), slot);
-                    if (slot == 1) {
-                        notifyListeners("Resource 1");
-                    } else if (slot == 2) {
-                        notifyListeners("Resource 2");
-                    }
                 } else {
                     if (goldPlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from GoldPlayingDeck
@@ -261,16 +256,16 @@ public class Game implements Observable {
                         playingDeck.setSlot(null, slot);
                     }
                 }
+                if (slot == 1) {
+                    notifyListeners("Resource 1");
+                } else if (slot == 2) {
+                    notifyListeners("Resource 2");
+                }
             } else if (playingDeck.getDeck().getCardType().equals(CardType.GOLDCARD)) {
                 // Gold
                 if (playingDeck.getDeck().getNumberOfCards() > 0) {
                     // Grab from GoldPlayingDeck
                     playingDeck.setSlot(goldPlayingDeck.getDeck().draw(), slot);
-                    if (slot == 1) {
-                        notifyListeners("Gold 1");
-                    } else if (slot == 2) {
-                        notifyListeners("Gold 2");
-                    }
                 } else {
                     if (resourcePlayingDeck.getDeck().getNumberOfCards() > 0) {
                         // Grab from ResourcePlayingDeck
@@ -279,6 +274,11 @@ public class Game implements Observable {
                         // Both Decks are empty
                         playingDeck.setSlot(null, slot);
                     }
+                }
+                if (slot == 1) {
+                    notifyListeners("Gold 1");
+                } else if (slot == 2) {
+                    notifyListeners("Gold 2");
                 }
                 // TODO: exceptions... move to Game?
             } else throw new IllegalArgumentException("There is no such Deck in this Game");
@@ -333,6 +333,7 @@ public class Game implements Observable {
                     }
                 }
             }
+            // TODO: check uses
             case "End game" ->{
                 for (Listener l: listeners) {
                     if(l instanceof LastTurnListener){
