@@ -251,26 +251,43 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
+        System.out.println("Choose your secret objective");
+        //TODO problem to fix
+        System.out.println("Secret objective 1(digit 1)");
+        System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
+                + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+        //TODO: print card
+        System.out.println("Secret objective 2(digit 2)");
+        System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
+                + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
+        //TODO: print card
         String input = "";
-        while (input.isEmpty()) {
-            System.out.println("--- Choose your secret objective ---");
-            //TODO problem to fix
-            //System.out.println("Secret objective 1");
-            System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
-            System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
-            //TODO: print card
-            //System.out.println("Secret objective 2");
-            System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
-            System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
-            //TODO: print card
+        boolean exit = false;
+        while(!exit) {
             input = scanner.next();
             switch (input) {
-                case "1" -> player.setSecretObjective(player.getTemporaryObjectiveCards().get(0));
-                case "2" -> player.setSecretObjective(player.getTemporaryObjectiveCards().get(1));
-                default -> {
-                    System.out.println("Invalid command! Retry...");
-                    input = "";
-                }
+                case "1":
+                    player.setSecretObjective(player.getTemporaryObjectiveCards().get(0));
+                    exit = true;
+                    break;
+                case "2":
+                    player.setSecretObjective(player.getTemporaryObjectiveCards().get(1));
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid command!");
+                    exit = false;
+                    System.out.println("Choose your secret objective");
+                    //TODO problem to fix
+                    System.out.println("Secret objective 1(digit 1)");
+                    System.out.println(player.getTemporaryObjectiveCards().get(0).getObjective().getName() + ":"
+                            + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
+                    //TODO: print card
+                    System.out.println("Secret objective 2(digit 2)");
+                    System.out.println(player.getTemporaryObjectiveCards().get(1).getObjective().getName() + ":"
+                            + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
+                    //TODO: print card
+                    break;
             }
         }
         player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
@@ -287,43 +304,71 @@ public class GameTerminal extends Application implements ViewController {
         printCard((PlayableCard) starterCard);
 
         String input = "";
-        input = scanner.next();
-        if (input.equals("b")){
-            player.setStarterCard((StarterCard) starterCard);
-        }else {
-            starterCard.flip();
-            player.setStarterCard((StarterCard) starterCard);
+        boolean exit = false;
+        while (!exit) {
+            input = scanner.next();
+            switch (input) {
+                case "b":
+                    player.setStarterCard((StarterCard) starterCard);
+                    exit = true;
+                    break;
+                case "f":
+                    starterCard.flip();
+                    player.setStarterCard((StarterCard) starterCard);
+                    exit  = true;
+                    break;
+                default:
+                    System.out.println("Invalid command!");
+                    exit = false;
+                    System.out.println("Choose the side of your starter card");
+                    starterCard.flip();
+                    System.out.println("Digit f to choose front side");
+                    printCard((PlayableCard) starterCard);
+                    starterCard.flip();
+                    System.out.println("Digit b to choose back side");
+                    printCard((PlayableCard) starterCard);
+                    break;
+            }
         }
         player.setStatus(GameStatus.PLAYING);
     }
 
     @Override
     public void showTokenSelectionDialog() {
+        System.out.println("Select your token");
+        System.out.println("Digit 1 to chose: 🔴");
+        System.out.println("Digit 2 to chose: 🔵");
+        System.out.println("Digit 3 to chose: 🟢");
+        System.out.println("Digit 4 to chose: 🟡");
         String input = "";
-        while (input.isEmpty()) {
-            System.out.println("--- Select your token ---");
-            System.out.println("Digit 1 to chose: 🔴");
-            System.out.println("Digit 2 to chose: 🔵");
-            System.out.println("Digit 3 to chose: 🟢");
-            System.out.println("Digit 4 to chose: 🟡");
-
+        boolean exit = false;
+        while(!exit){
             input = scanner.next();
             switch (input) {
                 case "1":
                     player.setToken(Token.RED);
+                    exit = true;
                     break;
                 case "2":
                     player.setToken(Token.BLUE);
+                    exit = true;
                     break;
                 case "3":
                     player.setToken(Token.GREEN);
+                    exit = true;
                     break;
                 case "4":
                     player.setToken(Token.YELLOW);
+                    exit = true;
                     break;
                 default:
-                    input = "";
-                    System.out.println("Invalid command! Retry...");
+                    System.out.println("Invalid command!");
+                    exit = false;
+                    System.out.println("Select your token");
+                    System.out.println("Digit 1 to chose: 🔴");
+                    System.out.println("Digit 2 to chose: 🔵");
+                    System.out.println("Digit 3 to chose: 🟢");
+                    System.out.println("Digit 4 to chose: 🟡");
                     break;
             }
         }
@@ -347,7 +392,7 @@ public class GameTerminal extends Application implements ViewController {
                 case 1 -> {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        for (int i=0; i < 7; i++) {
+                        for (int i = 0; i < 7; i++) {
                             if (i == 0 || i == 6) {
                                 string += "🟨";
                             } else {
@@ -356,16 +401,16 @@ public class GameTerminal extends Application implements ViewController {
                         }
                         string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
                     } else {
-                        if (!isThereACardIn(card.getX(), card.getY()+1, cards)) {
+                        if (!isThereACardIn(card.getX(), card.getY() + 1, cards)) {
                             string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
                         } else if (null == card.getShowingSide().getTopLeftCorner()) {
                             // If there is no Corner, then it must be covering the other card's corner
                             string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
                         }
-                        for (int i=0; i < 7; i++) {
+                        for (int i = 0; i < 7; i++) {
                             string += getCardColor(card);
                         }
-                        if (!isThereACardIn(card.getX()+1, card.getY(), cards)) {
+                        if (!isThereACardIn(card.getX() + 1, card.getY(), cards)) {
                             string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
                         } else if (null == card.getShowingSide().getTopRightCorner()) {
                             // If there is no Corner, then it must be covering the other card's corner
@@ -422,7 +467,7 @@ public class GameTerminal extends Application implements ViewController {
                 case 5 -> {
                     if (printCoveredCorners) {
                         string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
-                        for (int i=0; i < 7; i++) {
+                        for (int i = 0; i < 7; i++) {
                             if (i == 0 || i == 6) {
                                 string += "🟨";
                             } else {
@@ -431,16 +476,16 @@ public class GameTerminal extends Application implements ViewController {
                         }
                         string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
                     } else {
-                        if (!isThereACardIn(card.getX(), card.getY()-1, cards)) {
+                        if (!isThereACardIn(card.getX(), card.getY() - 1, cards)) {
                             string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
                         } else if (null == card.getShowingSide().getBottomLeftCorner()) {
                             // If there is no Corner, then it must be covering the other card's corner
                             string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
                         }
-                        for (int i=0; i < 7; i++) {
+                        for (int i = 0; i < 7; i++) {
                             string += getCardColor(card);
                         }
-                        if (!isThereACardIn(card.getX()-1, card.getY(), cards)) {
+                        if (!isThereACardIn(card.getX() - 1, card.getY(), cards)) {
                             string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
                         } else if (null == card.getShowingSide().getBottomRightCorner()) {
                             // If there is no Corner, then it must be covering the other card's corner
@@ -673,3 +718,4 @@ public class GameTerminal extends Application implements ViewController {
         return false;
     }
 }
+
