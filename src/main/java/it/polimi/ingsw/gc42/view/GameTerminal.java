@@ -183,7 +183,6 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                 }
             } else continue;
-            //ClearScreen.main(); //  su linux (e teoricamente su ogni dispositivo senza il comando 'cmd') fa crashare il programma
             System.out.print("\n\n\n");
             System.out.println("-------------------------------------------------------------------------------");
         }
@@ -231,21 +230,27 @@ public class GameTerminal extends Application implements ViewController {
         switch (input) {
             case "1", "2", "3" -> {
                 // Play card
-                int i = 1;
-                ArrayList<Coordinates> availablePlacements = player.getPlayField().getAvailablePlacements();
-                for (Coordinates coord : availablePlacements) {
-                    System.out.println(i + ") " + coord.getX() + " " + coord.getY());
-                    i++;
-                }
-                String inputCoord = scanner.next();
-                if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
-                    System.out.println(color("Invalid coordinate", UiColors.RED));
-                } else {
-                    controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
+                boolean valid = false;
+                // loops until the input is accepted
+                while (!valid) {
+                    int i = 1;
+                    ArrayList<Coordinates> availablePlacements = player.getPlayField().getAvailablePlacements();
+                    for (Coordinates coord : availablePlacements) {
+                        System.out.println(i + ") " + coord.getX() + " " + coord.getY());
+                        i++;
+                    }
+                    // TODO: Handle str to int conversion exceptions or use nextInt() (there are still exceptions to be handled in this case)
+                    String inputCoord = scanner.next();
+                    if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
+                        System.out.println(color("Invalid coordinate choice! Retry...", UiColors.RED));
+                    } else {
+                        valid = true;
+                        controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
+                    }
                 }
             }
             case "0" -> {} // do nothing and exit
-            default -> System.out.println(color("Invalid input", UiColors.RED));
+            default -> System.out.println(color("Invalid choice!", UiColors.RED));
         }
     }
 
@@ -276,7 +281,7 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
+                    System.out.println(color("Invalid choice! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
                     System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
@@ -315,7 +320,7 @@ public class GameTerminal extends Application implements ViewController {
                     exit  = true;
                     break;
                 default:
-                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
+                    System.out.println(color("Invalid choice! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("--- Choose the side of your starter card ---");
                     starterCard.flip();
@@ -333,10 +338,10 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void showTokenSelectionDialog() {
         System.out.println("--- Select your token ---");
-        System.out.println("Digit 1 to chose: 🔴");
-        System.out.println("Digit 2 to chose: 🔵");
-        System.out.println("Digit 3 to chose: 🟢");
-        System.out.println("Digit 4 to chose: 🟡");
+        System.out.println("Digit 1 to choose: 🔴");
+        System.out.println("Digit 2 to choose: 🔵");
+        System.out.println("Digit 3 to choose: 🟢");
+        System.out.println("Digit 4 to choose: 🟡");
         String input = "";
         boolean exit = false;
         while(!exit){
@@ -359,13 +364,13 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
+                    System.out.println(color("Invalid choice! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("--- Select your token ---");
-                    System.out.println("Digit 1 to chose: 🔴");
-                    System.out.println("Digit 2 to chose: 🔵");
-                    System.out.println("Digit 3 to chose: 🟢");
-                    System.out.println("Digit 4 to chose: 🟡");
+                    System.out.println("Digit 1 to choose: 🔴");
+                    System.out.println("Digit 2 to choose: 🔵");
+                    System.out.println("Digit 3 to choose: 🟢");
+                    System.out.println("Digit 4 to choose: 🟡");
                     break;
             }
         }
