@@ -22,6 +22,9 @@ public class GameTerminal extends Application implements ViewController {
     private Player player;
     private Scanner scanner = new Scanner(System.in);
 
+    private String color(String str, UiColors color) {
+        return color + str + UiColors.RESET;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -175,7 +178,7 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
                         break;
                     default:
-                        System.out.println("Unknown command");
+                        System.out.println(color("Unknown command", UiColors.RED));
                         break;
                 }
             } else continue;
@@ -232,14 +235,14 @@ public class GameTerminal extends Application implements ViewController {
             }
             String inputCoord = scanner.next();
             if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
-                System.out.println("Invalid coordinate");
+                System.out.println(color("Invalid coordinate", UiColors.RED));
             } else {
                 controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
             }
         } else if (input.equals("0")) {
             return;
         } else {
-            System.out.println("Invalid input");
+            System.out.println(color("Invalid input", UiColors.RED));
             return;
         }
         return;
@@ -272,7 +275,7 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid command! Retry...");
+                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
                     System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
@@ -311,7 +314,7 @@ public class GameTerminal extends Application implements ViewController {
                     exit  = true;
                     break;
                 default:
-                    System.out.println("Invalid command! Retry...");
+                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("--- Choose the side of your starter card ---");
                     starterCard.flip();
@@ -355,7 +358,7 @@ public class GameTerminal extends Application implements ViewController {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid command! Retry...");
+                    System.out.println(color("Invalid command! Retry...", UiColors.RED));
                     exit = false;
                     System.out.println("--- Select your token ---");
                     System.out.println("Digit 1 to chose: 🔴");
