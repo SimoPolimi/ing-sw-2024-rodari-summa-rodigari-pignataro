@@ -6,6 +6,10 @@ module it.polimi.ingsw.gc42 {
     requires com.google.gson;
     requires java.desktop;
     requires java.naming;
+    requires java.rmi;
+
+    //TODO: test
+    exports it.polimi.ingsw.gc42.network to java.rmi;
 
     exports it.polimi.ingsw.gc42.model.classes;
     opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;

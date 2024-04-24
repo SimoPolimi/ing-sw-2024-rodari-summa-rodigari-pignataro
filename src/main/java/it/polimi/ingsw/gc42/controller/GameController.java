@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.LastTurnListener;
+import it.polimi.ingsw.gc42.network.RemoteObject;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
@@ -13,10 +14,12 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.StatusListener;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class GameController {
+public class GameController extends UnicastRemoteObject implements RemoteObject {
     private final Game game;
     private final ArrayList<ViewController> views = new ArrayList<>();
     private GameStatus currentStatus;
@@ -33,7 +36,7 @@ public class GameController {
         this.currentStatus = currentStatus;
     }
 
-    public GameController() {
+    public GameController() throws RemoteException{
         this.game = new Game();
         currentStatus = GameStatus.NOT_IN_GAME;
         // Check last turn for drawing and playing mechanics
@@ -86,6 +89,7 @@ public class GameController {
         try {
             if(player.equals(game.getCurrentPlayer())) {
                 player.playCard(card, x, y);
+                // Don's ask to grab or draw if there are no cards to be picked
                 if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
                     for (ViewController view : views) {
                         if (view.getOwner().equals(player)) {
@@ -244,5 +248,10 @@ public class GameController {
             default:
                 break;
         }
+    }
+
+    //TODO: remove after test
+    public void test(int a) throws RemoteException{
+        System.out.println("Metodo chiamato dal client");
     }
 }
