@@ -251,7 +251,8 @@ public class GameController extends UnicastRemoteObject implements RemoteObject 
     }
 
     //TODO: remove after test
-    public void test(int a) throws RemoteException{
+    public String test(int a) throws RemoteException{
         System.out.println("Metodo chiamato dal client");
+        return "Sono il GameController";
     }
 }

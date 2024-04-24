@@ -20,7 +20,7 @@ public class Client implements Remote {
     public void connect(String ip, int port) throws RemoteException {
         try{
             Registry registry = LocateRegistry.getRegistry(ip, port);
-            gameController = (RemoteObject) registry.lookup("gameController");
+            gameController = (RemoteObject) registry.lookup("GameController");
         }catch (NotBoundException e){
             throw new RuntimeException(e);
         }
@@ -39,8 +39,8 @@ public class Client implements Remote {
             System.out.println("Enter Server Port:");
             int port = scanner.nextInt();
             Registry registry = LocateRegistry.getRegistry(ip, port);
-            RemoteObject gameController1 = (RemoteObject) registry.lookup("gameController");
-            gameController1.test(1);
+            RemoteObject gameController1 = (RemoteObject) registry.lookup("GameController");
+            System.out.println(gameController1.test(1));
         } catch (NotBoundException  e) {
             throw new RuntimeException(e);
         }

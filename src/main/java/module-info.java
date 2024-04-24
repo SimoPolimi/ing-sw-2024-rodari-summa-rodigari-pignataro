@@ -9,8 +9,6 @@ module it.polimi.ingsw.gc42 {
     requires java.rmi;
 
     //TODO: test
-    exports it.polimi.ingsw.gc42.network to java.rmi;
-
     exports it.polimi.ingsw.gc42.model.classes;
     opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;
     exports it.polimi.ingsw.gc42.model.classes.cards;
@@ -35,4 +33,6 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.view.Classes to javafx.fxml;
     exports it.polimi.ingsw.gc42.view.Interfaces;
     opens it.polimi.ingsw.gc42.view.Interfaces to javafx.fxml;
+    exports it.polimi.ingsw.gc42.network;
+    opens it.polimi.ingsw.gc42.network to javafx.fxml;
 }

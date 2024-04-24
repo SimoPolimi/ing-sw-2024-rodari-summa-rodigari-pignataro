@@ -31,6 +31,6 @@ public interface RemoteObject extends Remote {
         public void drawSecretObjectives() throws RemoteException;*/
 
         //TODO: remove after test
-        public void test(int a) throws RemoteException;
+        public String test(int a) throws RemoteException;
 }
 
