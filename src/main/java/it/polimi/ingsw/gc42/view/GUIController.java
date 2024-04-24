@@ -554,7 +554,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void toggleCommonTable() {
-        if (canReadInput()) {
+        if (canReadInput() && !isShowingGlobalMap) {
             if (!isCommonTableDown) {
                 bringCommonTableDown();
             } else {
@@ -638,6 +638,7 @@ public class GUIController implements ViewController {
     }
 
     private void hideGlobalMap() {
+        blockInput();
         ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
         transition.setFromX(0.4);
         transition.setFromY(0.4);

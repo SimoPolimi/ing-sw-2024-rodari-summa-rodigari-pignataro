@@ -118,19 +118,21 @@ public class ObjectiveCardView {
         show();
         if (!isPrivacyModeEnabled) {
             imageView.setOnMouseEntered((e) -> {
-                if (!isShowingDetails && !controller.isShowingDialog()) {
+                if (!isShowingDetails && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
                     select();
                 }
             });
             imageView.setOnMouseExited((e) -> {
-                if (!isShowingDetails && !controller.isShowingDialog()) {
+                if (!isShowingDetails && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
                     deselect();
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    rotate();
+                    if (!controller.isShowingDialog() && !controller.isCommonTableDown()) {
+                        rotate();
+                    }
                 }
             });
         }
