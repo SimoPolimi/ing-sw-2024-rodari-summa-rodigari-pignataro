@@ -8,6 +8,7 @@ import java.lang.reflect.Executable;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -20,6 +21,7 @@ public class RmiController implements NetworkController {
     // GameController will be the stub
     private final RemoteObject gameController = new GameController();
     private Runnable onReady;
+    private Registry registry;
 
     public RmiController() throws RemoteException {
     }
@@ -40,7 +42,7 @@ public class RmiController implements NetworkController {
         // Closes the socket because it's not needed anymore
         serverSocket.close();
         // Uses that port in combination with the current IP Address to create an RMI Registry
-        Registry registry = LocateRegistry.createRegistry(port);
+        registry = LocateRegistry.createRegistry(port);
         registry.bind("GameController", gameController);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
         System.out.println("Open for connections at: " + ipAddress
@@ -49,6 +51,12 @@ public class RmiController implements NetworkController {
         System.out.println("Waiting for invocations from clients...");;
         onReady.run();
 
+    }
+
+    @Override
+    public void stop() throws NotBoundException, RemoteException {
+        registry.unbind("GameController");
+        System.out.println("Server stopped");
     }
 
     private void registerUser(Player player) {

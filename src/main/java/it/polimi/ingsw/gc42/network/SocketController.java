@@ -23,4 +23,9 @@ public class SocketController implements NetworkController{
     public void start() throws IOException {
 
     }
+
+    @Override
+    public void stop() {
+
+    }
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -13,11 +14,11 @@
                 <Font name="Tahoma Bold" size="20.0" />
             </font>
         </Text>
-        <VBox alignment="CENTER_LEFT" spacing="5">
+        <HBox alignment="CENTER_LEFT" spacing="20">
             <children>
                 <Text mouseTransparent="true" text="Connection Mode:" textAlignment="LEFT">
                     <font>
-                        <Font name="Tahoma Regular" size="12.0" />
+                        <Font name="Tahoma Regular" size="15.0" />
                     </font>
                 </Text>
                 <StackPane>
@@ -36,7 +37,7 @@
                         </VBox>
                         <HBox fx:id="netModeTextContainer" alignment="CENTER" maxWidth="-Infinity" prefWidth="20.0" spacing="15">
                             <children>
-                                <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" onMouseClicked="#setRmiMode">
+                                <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#setRmiMode" prefWidth="40.0">
                                     <children>
                                         <Text fx:id="RMIModeTxt" mouseTransparent="true" text="RMI">
                                             <font>
@@ -48,7 +49,7 @@
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </HBox>
-                                <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" onMouseClicked="#setSocketMode">
+                                <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#setSocketMode" prefWidth="40.0">
                                     <children>
                                         <Text fx:id="SocketModeTxt" mouseTransparent="true" text="Socket">
                                             <font>
@@ -65,38 +66,54 @@
                     </children>
                 </StackPane>
             </children>
-        </VBox>
+        </HBox>
         <HBox fx:id="ipContainer" spacing="10">
             <children>
-                <Text fx:id="ipTitleText" text="IP Address: ">
+                <Text fx:id="ipTitleText" text="IP Address: " underline="true">
                     <font>
-                        <Font name="Port: " />
+                        <Font name="Tahoma Regular" size="15" />
                     </font>
                 </Text>
                 <Text fx:id="ipText" visible="false">
                     <font>
-                        <Font name="Port: " />
+                        <Font name="Tahoma Regular" size="15" />
                     </font>
                 </Text>
+                <ImageView fx:id="ipCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddress" pickOnBounds="true" preserveRatio="true" visible="false">
+                    <image>
+                        <Image url="@copyIcon.png" />
+                    </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+                </ImageView>
             </children>
         </HBox>
         <HBox fx:id="portContainer" spacing="10">
             <children>
-                <Text fx:id="portTitleText" text="Port: ">
+                <Text fx:id="portTitleText" text="Port: " underline="true">
                     <font>
-                        <Font name="Port: " />
+                        <Font name="Tahoma Regular" size="15" />
                     </font>
                 </Text>
                 <Text fx:id="portText" visible="false">
                     <font>
-                        <Font name="Port: " />
+                        <Font name="Tahoma Regular" size="15" />
                     </font>
                 </Text>
+                <ImageView fx:id="portCopyIcon" fitWidth="15" onMouseClicked="#copyPort" pickOnBounds="true" preserveRatio="true" visible="false">
+                    <image>
+                        <Image url="@copyIcon.png" />
+                    </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+                </ImageView>
             </children>
         </HBox>
         <VBox alignment="CENTER">
             <children>
-                <VBox fx:id="startButton" alignment="CENTER" onMouseClicked="#startServer" maxWidth="NaN" style="-fx-background-color: green; -fx-background-radius: 15">
+                <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" onMouseClicked="#toggleServer" style="-fx-background-color: green; -fx-background-radius: 15">
                     <children>
                         <Text fx:id="startTxt" fill="white" text="Start">
                             <font>
