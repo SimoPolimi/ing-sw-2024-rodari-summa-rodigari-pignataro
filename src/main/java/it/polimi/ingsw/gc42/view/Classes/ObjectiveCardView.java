@@ -207,7 +207,8 @@ public class ObjectiveCardView {
         AnchorPane.setRightAnchor(container, 0.0);
         AnchorPane.setTopAnchor(container, 0.0);
         if (isPrivacyModeEnabled) {
-            container.setTranslateX(-60);
+            container.setTranslateX(-200);
+            container.setTranslateY(300);
         }
 
         HBox hintContainer = new HBox();

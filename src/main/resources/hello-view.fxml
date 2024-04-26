@@ -14,7 +14,7 @@
                 <AnchorPane fx:id="mainArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <children>
                         <AnchorPane fx:id="rightPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="270" translateX="1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                        <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1650" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                        <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1500" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                         <AnchorPane fx:id="leftPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="90" translateX="-1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                         <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                         <StackPane fx:id="commonTableContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" StackPane.alignment="TOP_CENTER">
@@ -235,6 +235,11 @@
                 <Insets left="10.0" right="10.0" />
             </padding>
         </VBox>
+        <ImageView fx:id="fullTableButton" preserveRatio="true" fitWidth="150" translateX="850" translateY="-400" onMouseClicked="#toggleGlobalMap" visible="false">
+            <image>
+                <Image url="@fullTableIcon.png"/>
+            </image>
+        </ImageView>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
 

@@ -90,6 +90,8 @@ public class GUIController implements ViewController {
     private StackPane commonObjDescriptiionBox1;
     @FXML
     private StackPane commonObjDescriptiionBox2;
+    @FXML
+    private ImageView fullTableButton;
             ;
 
     // Attributes
@@ -476,6 +478,15 @@ public class GUIController implements ViewController {
         transition.setOnFinished((e) -> {
             unlockInput();
             commonTableTxt.setText("Go back to your Table");
+            fullTableButton.setScaleX(0);
+            fullTableButton.setScaleY(0);
+            fullTableButton.setVisible(true);
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
+            scaleTransition.setFromX(0);
+            scaleTransition.setFromY(0);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
         });
         transition.play();
 
@@ -484,6 +495,17 @@ public class GUIController implements ViewController {
     public void bringCommonTableUp() {
         blockInput();
         isCommonTableDown = false;
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
+        scaleTransition.setFromX(1);
+        scaleTransition.setFromY(1);
+        scaleTransition.setToX(0);
+        scaleTransition.setToY(0);
+        scaleTransition.setOnFinished((e) -> {
+            fullTableButton.setVisible(false);
+            fullTableButton.setScaleX(1);
+            fullTableButton.setScaleY(1);
+        });
+        scaleTransition.play();
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
         transition.setByY(-(mainArea.getHeight()+500)/2);
@@ -517,6 +539,7 @@ public class GUIController implements ViewController {
         table.setCanPlayCards(value);
     }
 
+    @FXML
     public void toggleGlobalMap() {
         if (canReadInput && isCommonTableDown) {
             if (isShowingGlobalMap) {

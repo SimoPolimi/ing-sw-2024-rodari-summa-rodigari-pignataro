@@ -68,7 +68,9 @@ public class HandView {
         AnchorPane.setTopAnchor(container, 0.0);
         container.setPadding(new Insets(0, 0, 0, 40));
         if (isPrivacyModeEnabled) {
-            container.setTranslateX(150);
+            container.setTranslateX(300);
+            container.setTranslateY(100);
+            container.setRotate(-60);
         }
 
 
