@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class ResourceCard extends PlayableCard{
     // Attributes
-    private int earnedPoints;
 
     // Constructor Method
 
@@ -57,6 +56,4 @@ public class ResourceCard extends PlayableCard{
     public boolean canBePlaced(ArrayList<PlayableCard> playedCards) {
         return true;
     }
-    // Getter and Setter
-
 }

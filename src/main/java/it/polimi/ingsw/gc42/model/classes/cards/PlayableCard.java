@@ -8,7 +8,7 @@ public abstract class PlayableCard extends Card {
     private CardSide backSide;
     private final Coordinates coordinates = new Coordinates();
     private final ArrayList<Item> permanentResources = new ArrayList<>();
-    int earnedPoints;
+    private int earnedPoints;
 
     // Constructor Methods
     /**

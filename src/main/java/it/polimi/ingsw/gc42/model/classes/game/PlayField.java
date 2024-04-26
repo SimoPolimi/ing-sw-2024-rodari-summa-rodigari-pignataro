@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -47,7 +48,8 @@ public class PlayField implements Observable {
      * @return the ArrayList that stores the plauer's played Cards
      */
     public ArrayList<PlayableCard> getPlayedCards() {
-        return playedCards;
+        ArrayList<PlayableCard> copy = new ArrayList<>(playedCards);
+        return copy;
     }
 
     /**

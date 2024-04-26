@@ -1,11 +1,9 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
@@ -21,7 +19,6 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -31,11 +28,10 @@ public class TableView {
     // Attributes
     private Player player;
     private boolean isPrivacyModeEnabled;
-    private int angle;
     private AnchorPane playerTableContainer;
-    HandView hand;
-    ObjectiveCardView secretObjective;
-    GUIController controller;
+    private HandView hand;
+    private ObjectiveCardView secretObjective;
+    private GUIController controller;
     private ImageView playerToken;
     private ImageView blackToken;
     private StackPane playArea;
@@ -48,9 +44,8 @@ public class TableView {
 
     // Constructor Method
 
-    public TableView(boolean isPrivacyModeEnabled, int angle, GUIController controller) {
+    public TableView(boolean isPrivacyModeEnabled, GUIController controller) {
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
-        this.angle = angle;
         this.controller = controller;
         build();
         hand.hide();
@@ -168,14 +163,6 @@ public class TableView {
         isPrivacyModeEnabled = privacyModeEnabled;
     }
 
-    public int getAngle() {
-        return angle;
-    }
-
-    public void setAngle(int angle) {
-        this.angle = angle;
-    }
-
     public void setSecretObjective(ObjectiveCard card) {
        secretObjective.setModelCard(card);
     }
@@ -188,7 +175,6 @@ public class TableView {
         AnchorPane.setTopAnchor(playerTableContainer, 0.0);
         AnchorPane.setBottomAnchor(playerTableContainer, 0.0);
         playerTableContainer.setPadding(new Insets(0, 40, 0, 0));
-        playerTableContainer.setRotate(angle);
 
         hand = new HandView(isPrivacyModeEnabled, controller);
 
@@ -290,7 +276,7 @@ public class TableView {
         playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
     }
 
-    public void showAvailablePlacements() {
+    private void showAvailablePlacements() {
         if (!isShowingPlacements) {
             ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
             for (Coordinates placement : placements) {

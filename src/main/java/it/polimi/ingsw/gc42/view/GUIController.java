@@ -92,30 +92,24 @@ public class GUIController implements ViewController {
     private StackPane commonObjDescriptiionBox2;
     @FXML
     private ImageView fullTableButton;
-            ;
 
     // Attributes
     private Player player;
     private Dialog showingDialog;
     private GameController gameController;
     private boolean canReadInput = true;
-    private ObjectiveCardView objectiveCardView;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
     private boolean isCommonTableDown = false;
     private TableView table;
-    private DeckView resourceDeck;
-    private DeckView goldDeck;
     private boolean playerCanDrawOrGrab = false;
     private boolean isShowingGlobalMap = false;
     private CommonTableView commonTable;
 
 
     public void build() {
-        table = new TableView(false, 0, this);
+        table = new TableView(false, this);
         playerTableContainer.getChildren().addAll(table.getPane());
-        resourceDeck = new DeckView(resourceDeckContainer);
-        goldDeck = new DeckView(goldDeckContainer);
     }
 
     public void setGameController(GameController gameController) {
@@ -126,7 +120,8 @@ public class GUIController implements ViewController {
                 refreshScoreBoard();
             }
         });
-        commonTable = new CommonTableView(gameController, this, resourceDeck, goldDeck, resourceDown1,
+        commonTable = new CommonTableView(gameController, this,
+                new DeckView(resourceDeckContainer), new DeckView(goldDeckContainer), resourceDown1,
                 resourceDown2, goldDown1, goldDown2, commonObjective1, commonObjective2, objName1, objDescr1,
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
     }
@@ -167,22 +162,22 @@ public class GUIController implements ViewController {
                 players.add(gameController.getGame().getPlayer(i));
                 if (numberOfPlayers == 2 && isTopTableEmpty) {
                     isTopTableEmpty = false;
-                    topTable = new TableView(true, 0, this);
+                    topTable = new TableView(true, this);
                     topTable.setPlayer(gameController.getGame().getPlayer(i));
                     topPlayerTableContainer.getChildren().add(topTable.getPane());
                 } else if (numberOfPlayers > 2 && isRightTableEmpty) {
                     isRightTableEmpty = false;
-                    rightTable = new TableView(true, 0, this);
+                    rightTable = new TableView(true, this);
                     rightTable.setPlayer(gameController.getGame().getPlayer(i));
                     rightPlayerTableContainer.getChildren().add(rightTable.getPane());
                 } else if (numberOfPlayers == 4 && isTopTableEmpty) {
                     isTopTableEmpty = false;
-                    topTable = new TableView(true, 0, this);
+                    topTable = new TableView(true, this);
                     topTable.setPlayer(gameController.getGame().getPlayer(i));
                     topPlayerTableContainer.getChildren().add(topTable.getPane());
                 } else if (numberOfPlayers >= 3 && isLeftTableEmpty){
                     isLeftTableEmpty = false;
-                    leftTable = new TableView(true, 0, this);
+                    leftTable = new TableView(true, this);
                     leftTable.setPlayer(gameController.getGame().getPlayer(i));
                     leftPlayerTableContainer.getChildren().add(leftTable.getPane());
                 }
