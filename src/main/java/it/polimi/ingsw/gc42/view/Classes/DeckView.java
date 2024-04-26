@@ -5,6 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ public class DeckView {
 
     public DeckView(StackPane container) {
         this.container = container;
+    }
+
+    public Pane getContainer() {
+        return container;
     }
 
     public void refresh(ArrayList<Card> cards) {

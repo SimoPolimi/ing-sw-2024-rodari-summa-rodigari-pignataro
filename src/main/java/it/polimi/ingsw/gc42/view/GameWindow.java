@@ -103,14 +103,10 @@ public class GameWindow extends Application {
                         controller.flipObjective();
                     }
                     case LEFT -> {
-                        if (controller.isShowingDialog()) {
-                            controller.onDialogKeyboardPressed("LEFT");
-                        }
+                        controller.moveLeft();
                     }
                     case RIGHT -> {
-                        if (controller.isShowingDialog()) {
-                            controller.onDialogKeyboardPressed("RIGHT");
-                        }
+                        controller.moveRight();
                     }
                     case ENTER -> {
                         if (controller.isShowingDialog()) {
