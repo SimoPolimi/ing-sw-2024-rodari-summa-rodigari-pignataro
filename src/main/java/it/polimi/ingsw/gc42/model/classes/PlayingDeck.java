@@ -6,12 +6,13 @@ import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot2Listener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Implementation of the playing decks
  */
-public class PlayingDeck {
+public class PlayingDeck implements Serializable {
     // Attributes
     private Card slot1;
     private Card slot2;

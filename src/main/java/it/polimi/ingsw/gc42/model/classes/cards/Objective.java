@@ -1,12 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Model representation for all the Objectives.
  * Abstract Class: can't create an Objective, but one of its children.
  */
-public abstract class Objective {
+public abstract class Objective implements Serializable {
     // Attributes
     private int points;
     private String name;

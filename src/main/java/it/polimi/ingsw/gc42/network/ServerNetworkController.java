@@ -1,0 +1,14 @@
+package it.polimi.ingsw.gc42.network;
+
+import java.io.IOException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+public interface ServerNetworkController {
+    String getIpAddress();
+    String getPort();
+    void setWhenReady(Runnable runnable);
+    void start() throws IOException, AlreadyBoundException;
+    void stop() throws NotBoundException, RemoteException;
+}

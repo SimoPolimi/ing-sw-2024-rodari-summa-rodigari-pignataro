@@ -118,9 +118,9 @@ public class HandCardView {
         if (null != modelCard) {
             this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
             if (!isPrivacyModeEnabled) {
-                this.imageView.setImage(modelCard.getShowingImage());
+                this.imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getShowingImage()))));
             } else {
-                this.imageView.setImage(modelCard.getBackImage());
+                this.imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getBackImage()))));
             }
             imageView.setVisible(true);
             if (card.isFrontFacing()) {
@@ -363,7 +363,7 @@ public class HandCardView {
         RotateTransition flipCardHalf1 = new RotateTransition(Duration.millis(200), imageView);
         flipCardHalf1.setAxis(Rotate.Y_AXIS);
         flipCardHalf1.setOnFinished(event -> {
-           imageView.setImage(modelCard.getShowingImage());
+           imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getShowingImage()))));
             flipCardHalf2.play();
         });
         flipCardHalf2.setAxis(Rotate.Y_AXIS);

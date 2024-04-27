@@ -10,6 +10,8 @@ import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import java.rmi.RemoteException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
@@ -45,7 +47,12 @@ class GameControllerTest {
     @Test
     void testIsPutDownAfterGrabCard() {
         // given
-        GameController controller = new GameController();
+        GameController controller = null;
+        try {
+            controller = new GameController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         Player player = new Player(Token.BLUE);
         controller.getGame().addPlayer(player);
 
@@ -61,7 +68,12 @@ class GameControllerTest {
     @Test
     void testCannotGrabCardEmptySlot() {
         // given
-        GameController controller = new GameController();
+        GameController controller = null;
+        try {
+            controller = new GameController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         Player player = new Player(Token.BLUE);
         controller.getGame().addPlayer(player);
 

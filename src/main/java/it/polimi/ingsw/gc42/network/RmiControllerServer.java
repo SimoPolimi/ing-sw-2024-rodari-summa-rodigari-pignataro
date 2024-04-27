@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.IOException;
-import java.lang.reflect.Executable;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.rmi.AlreadyBoundException;
@@ -14,16 +13,16 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-public class RmiController implements NetworkController {
+public class RmiControllerServer implements ServerNetworkController {
     String ipAddress;
     private int port;
     private ArrayList<Player> users;
     // GameController will be the stub
-    private final RemoteObject gameController = new GameController();
+    private final GameController gameController = new GameController();
     private Runnable onReady;
     private Registry registry;
 
-    public RmiController() throws RemoteException {
+    public RmiControllerServer() throws RemoteException {
     }
 
     public RemoteObject getGameController() {

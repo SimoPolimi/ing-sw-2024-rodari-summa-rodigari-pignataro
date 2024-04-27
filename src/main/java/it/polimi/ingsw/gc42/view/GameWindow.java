@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import java.util.Objects;
 public class GameWindow extends Application {
 
     private boolean isFullScreen = false;
+    private LoginViewController loginController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,7 +36,7 @@ public class GameWindow extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png"))));
         stage.setResizable(false);
 
-        LoginViewController loginController = fxmlLoaderLogin.getController();
+        loginController = fxmlLoaderLogin.getController();
         loginController.setListener(new Listener() {
             @Override
             public void onEvent() {
@@ -68,7 +70,7 @@ public class GameWindow extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
-        GameController gameController = new GameController();
+        NetworkController gameController = loginController.getNetworkController();
         controller.build();
         stage.setScene(scene);
         stage.setResizable(true);

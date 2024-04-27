@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.io.Serializable;
+
 /**
  * Implementation of cards coordinates. We use this system for put down the card on the player field
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     // Attributes
     private int x;
     private int y;

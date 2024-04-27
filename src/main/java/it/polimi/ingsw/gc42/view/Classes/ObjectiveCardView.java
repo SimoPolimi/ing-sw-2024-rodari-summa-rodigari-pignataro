@@ -110,9 +110,9 @@ public class ObjectiveCardView {
         }
         this.modelCard = modelCard;
         if (!isPrivacyModeEnabled) {
-            imageView.setImage(modelCard.getFrontImage());
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getFrontImage()))));
         } else {
-            imageView.setImage(modelCard.getBackImage());
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getBackImage()))));
         }
         imageView.setVisible(true);
         show();

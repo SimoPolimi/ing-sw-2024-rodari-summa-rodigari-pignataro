@@ -10,13 +10,14 @@ import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Implementation of Deck for Model.
  * A Deck is a group of Cards, all belonging the same Type.
  */
-public class Deck implements Observable {
+public class Deck implements Observable, Serializable {
     // Attributes
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private final ArrayList<Card> cards = new ArrayList<>();

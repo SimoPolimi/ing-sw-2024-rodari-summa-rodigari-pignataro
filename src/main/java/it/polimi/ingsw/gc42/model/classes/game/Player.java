@@ -8,12 +8,13 @@ import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Player class. It implements the Observable class
  */
-public class Player implements Observable {
+public class Player implements Observable, Serializable {
     /**
      * Implement method getter for nickname
      *

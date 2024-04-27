@@ -25,7 +25,7 @@ import java.util.Objects;
 
 public class Server extends Application {
     private NetworkMode selectedNetworkMode = NetworkMode.RMI;
-    private NetworkController networkController;
+    private ServerNetworkController serverNetworkController;
     private boolean isRunning = false;
 
     @FXML
@@ -86,22 +86,22 @@ public class Server extends Application {
             startButton.setStyle("-fx-background-color: red; -fx-background-radius: 15");
             startTxt.setText("Stop");
             if (selectedNetworkMode == NetworkMode.RMI) {
-                networkController = new RmiController();
+                serverNetworkController = new RmiControllerServer();
             } else {
-                networkController = new SocketController();
+                serverNetworkController = new SocketControllerServer();
             }
-            networkController.setWhenReady(new Runnable() {
+            serverNetworkController.setWhenReady(new Runnable() {
                 @Override
                 public void run() {
-                    ipText.setText(networkController.getIpAddress());
+                    ipText.setText(serverNetworkController.getIpAddress());
                     ipText.setVisible(true);
                     ipCopyIcon.setVisible(true);
-                    portText.setText(networkController.getPort());
+                    portText.setText(serverNetworkController.getPort());
                     portText.setVisible(true);
                     portCopyIcon.setVisible(true);
                 }
             });
-            networkController.start();
+            serverNetworkController.start();
             isRunning = true;
         } else {
             startButton.setStyle("-fx-background-color: green; -fx-background-radius: 15");
@@ -110,7 +110,7 @@ public class Server extends Application {
             ipCopyIcon.setVisible(false);
             portText.setVisible(false);
             portCopyIcon.setVisible(false);
-            networkController.stop();
+            serverNetworkController.stop();
             isRunning = false;
         }
     }
@@ -137,7 +137,7 @@ public class Server extends Application {
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.play();
-        StringSelection ip = new StringSelection(networkController.getIpAddress());
+        StringSelection ip = new StringSelection(serverNetworkController.getIpAddress());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
     }
 
@@ -149,7 +149,7 @@ public class Server extends Application {
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.play();
-        StringSelection port = new StringSelection(networkController.getPort());
+        StringSelection port = new StringSelection(serverNetworkController.getPort());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
     }
 }

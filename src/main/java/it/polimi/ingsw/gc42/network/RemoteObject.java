@@ -16,19 +16,27 @@ import java.util.ArrayList;
 public interface RemoteObject extends Remote {
 
 
-      /*  public boolean kickPlayer(Player player) throws RemoteException;
+        boolean kickPlayer(Player player) throws RemoteException;
 
-        public void nextTurn() throws RemoteException;
+        void nextTurn() throws RemoteException;
 
-        public void playCard(PlayableCard card, int x, int y) throws RemoteException;
+        void playCard(PlayableCard card, int x, int y) throws RemoteException;
 
-        public void flipCard(Card card) throws RemoteException;
+        void flipCard(Card card) throws RemoteException;
 
-        public void drawCard(Player player, PlayingDeck playingDeck) throws RemoteException;
+        void drawCard(Player player, PlayingDeck playingDeck) throws RemoteException;
 
-        public void grabCard(Player player, PlayingDeck playingDeck, int slot) throws RemoteException;
+        void grabCard(Player player, PlayingDeck playingDeck, int slot) throws RemoteException;
 
-        public void drawSecretObjectives() throws RemoteException;*/
+        void drawSecretObjectives() throws RemoteException;
+
+        Game getGame() throws RemoteException;
+
+        void addView(ViewController viewController) throws RemoteException;
+
+        void addPlayer(Player player) throws RemoteException;
+
+        void setCurrentStatus(GameStatus status) throws RemoteException;
 
         //TODO: remove after test
         public String test(int a) throws RemoteException;

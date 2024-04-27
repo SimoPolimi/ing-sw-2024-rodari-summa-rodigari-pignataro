@@ -14,12 +14,13 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.StatusListener;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class GameController extends UnicastRemoteObject implements RemoteObject {
+public class GameController implements RemoteObject, Serializable {
     private final Game game;
     private final ArrayList<ViewController> views = new ArrayList<>();
     private GameStatus currentStatus;

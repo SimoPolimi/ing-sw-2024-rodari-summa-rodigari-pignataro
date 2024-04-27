@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Chat {
+public class Chat implements Serializable {
     private final ArrayList<Message> messages = new ArrayList<>();
 
     public void sendMessage(Message mes){

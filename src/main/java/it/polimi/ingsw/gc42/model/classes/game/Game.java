@@ -7,9 +7,10 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game implements Observable {
+public class Game implements Observable, Serializable {
     private PlayingDeck resourcePlayingDeck;
     private PlayingDeck goldPlayingDeck;
     private PlayingDeck objectivePlayingDeck;

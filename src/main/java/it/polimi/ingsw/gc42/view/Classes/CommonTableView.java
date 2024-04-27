@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc42.model.interfaces.GoldSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.GoldSlot2Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot2Listener;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import javafx.animation.ScaleTransition;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -22,8 +24,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.rmi.RemoteException;
+import java.util.Objects;
+
 public class CommonTableView {
-    private GameController gameController;
+    private NetworkController gameController;
     private GUIController guiController;
     private DeckView resourceDeck;
     private DeckView goldDeck;
@@ -45,7 +50,7 @@ public class CommonTableView {
 
     private int isShowingInfo = 0;
 
-    public CommonTableView(GameController gameController, GUIController guiController, DeckView resourceDeck,
+    public CommonTableView(NetworkController gameController, GUIController guiController, DeckView resourceDeck,
                            DeckView goldDeck, ImageView resourceDown1, ImageView resourceDown2,
                            ImageView goldDown1, ImageView goldDown2, ImageView commonObjective1, ImageView commonObjective2,
                            Text objName1, Text objDescr1, Text objName2, Text objDescr2, StackPane commonObjDescriptiionBox1, StackPane commonObjDescriptiionBox2) {
@@ -116,13 +121,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown1.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage());
+        resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
         gameController.getGame().setListener(new ResourceSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getResourcePlayingDeck().getSlot(1);
                 if (null != card) {
-                    resourceDown1.setImage(card.getFrontImage());
+                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     resourceDown1.setVisible(false);
                 }
@@ -150,13 +155,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown2.setImage(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage());
+        resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
         gameController.getGame().setListener(new ResourceSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getResourcePlayingDeck().getSlot(2);
                 if (null != card) {
-                    resourceDown2.setImage(card.getFrontImage());
+                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     resourceDown2.setVisible(false);
                 }
@@ -169,7 +174,7 @@ public class CommonTableView {
         resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               onEnterPressed();
+                onEnterPressed();
             }
         });
         resourceDown2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -184,13 +189,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown1.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage());
+        goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
         gameController.getGame().setListener(new GoldSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getGoldPlayingDeck().getSlot(1);
                 if (null != card) {
-                    goldDown1.setImage(card.getFrontImage());
+                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     goldDown1.setVisible(false);
                 }
@@ -218,13 +223,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown2.setImage(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage());
+        goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
         gameController.getGame().setListener(new GoldSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = gameController.getGame().getGoldPlayingDeck().getSlot(2);
                 if (null != card) {
-                    goldDown2.setImage(card.getFrontImage());
+                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     goldDown2.setVisible(false);
                 }
@@ -237,7 +242,7 @@ public class CommonTableView {
         goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               onEnterPressed();
+                onEnterPressed();
             }
         });
         goldDown2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -252,7 +257,7 @@ public class CommonTableView {
                 select(0);
             }
         });
-        commonObjective1.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage());
+        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
         objName1.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
         objDescr1.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
         commonObjective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -273,7 +278,7 @@ public class CommonTableView {
                 onEnterPressed();
             }
         });
-        commonObjective2.setImage(gameController.getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage());
+        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
         objName2.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(2)).getObjective().getName());
         objDescr2.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(2)).getObjective().getDescription());
         commonObjective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -292,6 +297,7 @@ public class CommonTableView {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 onEnterPressed();
+
             }
         });
     }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc42.network;
 
 import java.io.IOException;
 
-public class SocketController implements NetworkController{
+public class SocketControllerServer implements ServerNetworkController {
     private Runnable onReady;
     @Override
     public String getIpAddress() {

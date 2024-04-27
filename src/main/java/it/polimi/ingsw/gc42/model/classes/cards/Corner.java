@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.io.Serializable;
+
 /**
  * Implementation of Corner for Model.
  * A Corner is a part of the CardSide of a Card.
  * Each CardSide contains 4 Corners, so each Card contains 8 Corners.
  */
-public class Corner {
+public class Corner implements Serializable {
     // Attributes
     private boolean isCovered;
     private Item item;

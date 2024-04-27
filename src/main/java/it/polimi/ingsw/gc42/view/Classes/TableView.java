@@ -273,7 +273,7 @@ public class TableView {
     }
 
     private void addToPlayArea(PlayableCard card, int x, int y) {
-        playArea.getChildren().add(initImageView(card.getShowingImage(), x, y));
+        playArea.getChildren().add(initImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getShowingImage()))), x, y));
     }
 
     private void showAvailablePlacements() {

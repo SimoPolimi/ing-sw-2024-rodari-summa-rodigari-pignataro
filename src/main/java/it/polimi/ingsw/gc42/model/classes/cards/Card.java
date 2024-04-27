@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -13,13 +14,13 @@ import java.util.Objects;
  * It's an Observable object, meaning that other objects can add a Listener to a Card to be notified
  * when the Card gets flipped.
  */
-public class Card implements Observable {
+public class Card implements Observable, Serializable {
     // Attributes
     private final ArrayList<Listener> listeners;
     protected boolean isFrontFacing;
     private int id;
-    private Image frontImage;
-    private Image backImage;
+    private String frontImage;
+    private String backImage;
 
     // Constructor Method
 
@@ -34,8 +35,8 @@ public class Card implements Observable {
     public Card(boolean isFrontFacing, int id, String frontImage, String backImage) {
         this.isFrontFacing = isFrontFacing;
         this.id = id;
-        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + frontImage)));
-        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/cards/" + backImage)));
+        this.frontImage = "/cards/" + frontImage;
+        this.backImage = "/cards/" + backImage;
         listeners = new ArrayList<>();
     }
 
@@ -83,17 +84,8 @@ public class Card implements Observable {
      *
      * @return Image resource to display on the GUI
      */
-    public Image getFrontImage() {
+    public String getFrontImage() {
         return frontImage;
-    }
-
-    /**
-     * Setter Method for frontImage
-     *
-     * @param frontImage: the Image resource to display on the GUI
-     */
-    public void setFrontImage(Image frontImage) {
-        this.frontImage = frontImage;
     }
 
     /**
@@ -102,7 +94,7 @@ public class Card implements Observable {
      * @param frontImage: the String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public void setFrontImage(String frontImage) {
-        this.frontImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/hand/" + frontImage)));
+        this.frontImage = frontImage;
     }
 
     /**
@@ -110,17 +102,8 @@ public class Card implements Observable {
      *
      * @return the Image resource to display on the GUI
      */
-    public Image getBackImage() {
+    public String getBackImage() {
         return backImage;
-    }
-
-    /**
-     * Setter Method for backImage
-     *
-     * @param backImage: the Image resource to display on the GUI
-     */
-    public void setBackImage(Image backImage) {
-        this.backImage = backImage;
     }
 
     /**
@@ -129,14 +112,14 @@ public class Card implements Observable {
      * @param backImage: the String containing the name (+ extension) of the Image resource to display on the GUI
      */
     public void setBackImage(String backImage) {
-        this.backImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/hand/" + backImage)));
+        this.backImage = backImage;
     }
 
     /**
      * Getter Method for frontImage and backImage.
      * @return the appropriate Image resource to display on the GUI, based on which Side is shown.
      */
-    public Image getShowingImage() {
+    public String getShowingImage() {
         if (isFrontFacing()) {
             return frontImage;
         } else {

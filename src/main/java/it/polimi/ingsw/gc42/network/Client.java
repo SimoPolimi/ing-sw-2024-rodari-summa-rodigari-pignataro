@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.model.classes.game.Game;
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -40,7 +42,8 @@ public class Client implements Remote {
             int port = scanner.nextInt();
             Registry registry = LocateRegistry.getRegistry(ip, port);
             RemoteObject gameController1 = (RemoteObject) registry.lookup("GameController");
-            System.out.println(gameController1.test(1));
+            //System.out.println(gameController1.test(1));
+            Game game = gameController1.getGame();
         } catch (NotBoundException  e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.view;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
@@ -34,6 +35,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -96,7 +98,7 @@ public class GUIController implements ViewController {
     // Attributes
     private Player player;
     private Dialog showingDialog;
-    private GameController gameController;
+    private NetworkController gameController;
     private boolean canReadInput = true;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
@@ -112,7 +114,7 @@ public class GUIController implements ViewController {
         playerTableContainer.getChildren().addAll(table.getPane());
     }
 
-    public void setGameController(GameController gameController) {
+    public void setGameController(NetworkController gameController) {
         this.gameController = gameController;
         gameController.getGame().setListener(new Listener() {
             @Override
@@ -126,7 +128,7 @@ public class GUIController implements ViewController {
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
     }
 
-    public GameController getGameController() {
+    public NetworkController getGameController() {
         return gameController;
     }
 

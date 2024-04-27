@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.network.Server;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
@@ -169,5 +171,14 @@ public class LauncherController {
         transition.setFromY(view.getScaleY());
         transition.setToY(1);
         transition.play();
+    }
+
+    @FXML
+    public void openServer() throws IOException {
+        Server server = new Server();
+        Stage stage = new Stage();
+        stage.setX(100);
+        stage.setY(100);
+        server.start(stage);
     }
 }

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
+import java.io.Serializable;
+
 /**
  * Implementation of CardSide for Model.
  * A CardSide contains the four corners displayed on the side of a Card.
  * Each Corner can be either a KingdomCorner, a ResourceCorner, an EmptyCorner or null, in case there is no Corner.
  */
-public class CardSide {
+public class CardSide implements Serializable {
     // Attributes
     private Corner topLeftCorner;
     private Corner topRightCorner;
