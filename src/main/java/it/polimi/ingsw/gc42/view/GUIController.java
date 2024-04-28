@@ -2,13 +2,12 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.network.RemoteServer;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
-import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
+import it.polimi.ingsw.gc42.view.Interfaces.DrawOrGrabListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
-import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
@@ -16,7 +15,6 @@ import it.polimi.ingsw.gc42.view.Dialog.Dialog;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -24,7 +22,6 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -98,7 +95,8 @@ public class GUIController implements ViewController {
     // Attributes
     private Player player;
     private Dialog showingDialog;
-    private NetworkController gameController;
+    private NetworkController controller;
+    private int gameID;
     private boolean canReadInput = true;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
@@ -114,22 +112,51 @@ public class GUIController implements ViewController {
         playerTableContainer.getChildren().addAll(table.getPane());
     }
 
-    public void setGameController(NetworkController gameController) {
-        this.gameController = gameController;
-        gameController.getGame().setListener(new Listener() {
+    public void setGameController(NetworkController controller, int gameID) throws RemoteException {
+        this.controller = controller;
+        this.gameID = gameID;
+        controller.setListener(gameID, new GameListener() {
             @Override
             public void onEvent() {
                 refreshScoreBoard();
             }
         });
-        commonTable = new CommonTableView(gameController, this,
+        controller.setListener(gameID, new ReadyToChooseSecretObjectiveListener() {
+            @Override
+            public void onEvent() {
+                showSecretObjectivesSelectionDialog();
+            }
+        });
+        controller.setListener(gameID, new ReadyToChooseStarterCardListener() {
+            @Override
+            public void onEvent() {
+                showStarterCardSelectionDialog();
+            }
+        });
+        controller.setListener(gameID, new TokenListener() {
+            @Override
+            public void onEvent() {
+                showTokenSelectionDialog();
+            }
+        });
+        controller.setListener(gameID, new DrawOrGrabListener() {
+            @Override
+            public void onEvent() {
+                askToDrawOrGrab();
+            }
+        });
+        commonTable = new CommonTableView(controller, gameID, this,
                 new DeckView(resourceDeckContainer), new DeckView(goldDeckContainer), resourceDown1,
                 resourceDown2, goldDown1, goldDown2, commonObjective1, commonObjective2, objName1, objDescr1,
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
     }
 
-    public NetworkController getGameController() {
-        return gameController;
+    public NetworkController getNetworkController() {
+        return controller;
+    }
+
+    public int getGameId() {
+        return gameID;
     }
 
     public boolean isPlayerCanDrawOrGrab() {
@@ -144,13 +171,13 @@ public class GUIController implements ViewController {
         return root;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(Player player) throws RemoteException {
         this.player = player;
         table.setPlayer(player);
         setOtherPlayers();
     }
 
-    private void setOtherPlayers() {
+    private void setOtherPlayers() throws RemoteException {
         boolean isRightTableEmpty = true;
         boolean isTopTableEmpty = true;
         boolean isLeftTableEmpty = true;
@@ -158,29 +185,29 @@ public class GUIController implements ViewController {
         TableView topTable;
         TableView leftTable;
         ArrayList<Player> players = new ArrayList<>();
-        int numberOfPlayers = gameController.getGame().getNumberOfPlayers();
+        int numberOfPlayers = controller.getGame().getNumberOfPlayers();
         for (int i = 1; i <= numberOfPlayers; i++) {
-            if (!gameController.getGame().getPlayer(i).equals(player) && !players.contains(gameController.getGame().getPlayer(i))) {
-                players.add(gameController.getGame().getPlayer(i));
+            if (!controller.getGame().getPlayer(i).equals(player) && !players.contains(controller.getGame().getPlayer(i))) {
+                players.add(controller.getGame().getPlayer(i));
                 if (numberOfPlayers == 2 && isTopTableEmpty) {
                     isTopTableEmpty = false;
                     topTable = new TableView(true, this);
-                    topTable.setPlayer(gameController.getGame().getPlayer(i));
+                    topTable.setPlayer(controller.getGame().getPlayer(i));
                     topPlayerTableContainer.getChildren().add(topTable.getPane());
                 } else if (numberOfPlayers > 2 && isRightTableEmpty) {
                     isRightTableEmpty = false;
                     rightTable = new TableView(true, this);
-                    rightTable.setPlayer(gameController.getGame().getPlayer(i));
+                    rightTable.setPlayer(controller.getGame().getPlayer(i));
                     rightPlayerTableContainer.getChildren().add(rightTable.getPane());
                 } else if (numberOfPlayers == 4 && isTopTableEmpty) {
                     isTopTableEmpty = false;
                     topTable = new TableView(true, this);
-                    topTable.setPlayer(gameController.getGame().getPlayer(i));
+                    topTable.setPlayer(controller.getGame().getPlayer(i));
                     topPlayerTableContainer.getChildren().add(topTable.getPane());
                 } else if (numberOfPlayers >= 3 && isLeftTableEmpty){
                     isLeftTableEmpty = false;
                     leftTable = new TableView(true, this);
-                    leftTable.setPlayer(gameController.getGame().getPlayer(i));
+                    leftTable.setPlayer(controller.getGame().getPlayer(i));
                     leftPlayerTableContainer.getChildren().add(leftTable.getPane());
                 }
             }
@@ -350,7 +377,12 @@ public class GUIController implements ViewController {
 
     @Override
     public void showStarterCardSelectionDialog() {
-        Card card = gameController.getGame().getStarterDeck().draw();
+        Card card = null;
+        try {
+            card = controller.drawStarterCard();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
                 , true, this);
         dialog.addCard(card);
@@ -383,22 +415,26 @@ public class GUIController implements ViewController {
         if (!isCommonTableDown) {
             table.playCard();
         } else if (!isShowingGlobalMap){
-            commonTable.onEnterPressed();
+            try {
+                commonTable.onEnterPressed();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void initMiniScoreBoard() {
+    private void initMiniScoreBoard() throws RemoteException {
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Integer> alreadySeen = new ArrayList<>();
         // Players are ordered by their points
-        while (alreadySeen.size() != gameController.getGame().getNumberOfPlayers()) {
+        while (alreadySeen.size() != controller.getGame().getNumberOfPlayers()) {
             int currentMax = 1;
-            for (int i = 1; i <= gameController.getGame().getNumberOfPlayers(); i++) {
-                if (gameController.getGame().getPlayer(i).getPoints() >= gameController.getGame().getPlayer(currentMax).getPoints() && !alreadySeen.contains(i)) {
+            for (int i = 1; i <= controller.getGame().getNumberOfPlayers(); i++) {
+                if (controller.getGame().getPlayer(i).getPoints() >= controller.getGame().getPlayer(currentMax).getPoints() && !alreadySeen.contains(i)) {
                     currentMax = i;
                 }
             }
-            players.add(gameController.getGame().getPlayer(currentMax));
+            players.add(controller.getGame().getPlayer(currentMax));
             alreadySeen.add(currentMax);
         }
 
@@ -452,7 +488,11 @@ public class GUIController implements ViewController {
 
     public void refreshScoreBoard() {
         miniScoreboardContainer.getChildren().clear();
-        initMiniScoreBoard();
+        try {
+            initMiniScoreBoard();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML

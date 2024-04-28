@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.interfaces.EmptyDeckListener;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
-import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
+import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -412,7 +412,7 @@ public class Deck implements Observable, Serializable {
             }
             case "Deck has changed" -> {
                 for (Listener l: listeners) {
-                    if (l instanceof DeckViewListener) {
+                    if (l instanceof ResourceDeckViewListener) {
                         l.onEvent();
                     }
                 }

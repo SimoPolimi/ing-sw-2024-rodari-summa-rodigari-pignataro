@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.NewGameViewController">
+    <children>
+        <VBox fx:id="container" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <children>
+                <HBox fx:id="titleContainer" alignment="CENTER" spacing="30">
+                    <children>
+                        <ImageView fx:id="logoIcon" fitWidth="100.0" preserveRatio="true">
+                            <image>
+                                <Image url="@logo.png" />
+                            </image>
+                        </ImageView>
+                        <VBox fx:id="textContainer" alignment="CENTER" spacing="20.0">
+                            <Text fx:id="title" text="Welcome to Codex Naturalis!">
+                                <font>
+                                    <Font name="Tahoma Bold" size="25.0" />
+                                </font>
+                            </Text>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox fx:id="nameContainer" alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Text fx:id="nameTxt" text="Game's Name:">
+                            <font>
+                                <Font name="Tahoma Regular" size="11.0" />
+                            </font>
+                        </Text>
+                        <TextField fx:id="gameNameTextField" maxWidth="200" />
+                    </children>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+                </HBox>
+                <VBox alignment="CENTER_RIGHT">
+                    <children>
+                        <ScrollPane fx:id="playersList" minWidth="100.0" prefHeight="400.0" prefWidth="200.0">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                            </content>
+                            <VBox.margin>
+                                <Insets bottom="20.0" left="40.0" right="40.0" top="5.0" />
+                            </VBox.margin>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+                <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: grey; -fx-background-radius: 15">
+                    <children>
+                        <Text fx:id="playTxt" fill="white" text="Start">
+                            <font>
+                                <Font name="Tahoma Bold" size="15.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                    </padding>
+                    <effect>
+                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                            <bumpInput>
+                                <Shadow blurType="GAUSSIAN" />
+                            </bumpInput>
+                            <light>
+                                <Light.Distant />
+                            </light>
+                        </Lighting>
+                    </effect>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" top="20.0" />
+    </padding>
+</AnchorPane>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.GamesListViewController">
+    <children>
+        <VBox fx:id="container" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <children>
+                <HBox fx:id="titleContainer" alignment="CENTER" spacing="30">
+                    <children>
+                        <ImageView fx:id="logoIcon" fitWidth="100.0" preserveRatio="true">
+                            <image>
+                                <Image url="@logo.png" />
+                            </image>
+                        </ImageView>
+                        <VBox fx:id="textContainer" alignment="CENTER" spacing="20.0">
+                            <Text fx:id="title" text="Welcome to Codex Naturalis!">
+                                <font>
+                                    <Font name="Tahoma Bold" size="25.0" />
+                                </font>
+                            </Text>
+                        </VBox>
+                    </children>
+                </HBox>
+                <VBox alignment="CENTER_RIGHT">
+                    <children>
+                        <VBox fx:id="refreshButton" alignment="CENTER" maxHeight="10" maxWidth="40" minWidth="20" style="-fx-background-color: #2d9ad4; -fx-background-radius: 5" onMouseClicked="#refresh">
+                            <children>
+                                <ImageView fx:id="refreshIcon" preserveRatio="true" fitWidth="18">
+                                    <image>
+                                        <Image url="@refreshIcon.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <padding>
+                                <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                            </padding>
+                            <effect>
+                                <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                    <bumpInput>
+                                        <Shadow blurType="GAUSSIAN" />
+                                    </bumpInput>
+                                    <light>
+                                        <Light.Distant />
+                                    </light>
+                                </Lighting>
+                            </effect>
+                     <VBox.margin>
+                        <Insets right="40.0" top="5.0" />
+                     </VBox.margin>
+                        </VBox>
+                        <ScrollPane fx:id="gamesList" prefHeight="400.0" prefWidth="200.0">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                            </content>
+                            <VBox.margin>
+                                <Insets bottom="20.0" left="40.0" right="40.0" top="5.0" />
+                            </VBox.margin>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+                <VBox fx:id="newGameButton" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: forestgreen; -fx-background-radius: 15" onMouseClicked="#newGame">
+                    <children>
+                        <Text fx:id="playTxt" fill="white" text="Create new game">
+                            <font>
+                                <Font name="Tahoma Bold" size="15.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                    </padding>
+                    <effect>
+                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                            <bumpInput>
+                                <Shadow blurType="GAUSSIAN" />
+                            </bumpInput>
+                            <light>
+                                <Light.Distant />
+                            </light>
+                        </Lighting>
+                    </effect>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+   <padding>
+      <Insets bottom="20.0" top="20.0" />
+   </padding>
+</AnchorPane>

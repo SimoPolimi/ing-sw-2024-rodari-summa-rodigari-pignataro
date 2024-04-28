@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.controller;
 
 public enum GameStatus {
+    WAITING_FOR_PLAYERS,
     NOT_IN_GAME,
     CONNECTING,
     WAITING_FOR_SERVER,

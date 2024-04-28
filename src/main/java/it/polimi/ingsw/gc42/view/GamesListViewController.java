@@ -1,0 +1,163 @@
+package it.polimi.ingsw.gc42.view;
+
+import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.network.GameCollection;
+import it.polimi.ingsw.gc42.network.RemoteCollection;
+import it.polimi.ingsw.gc42.network.RemoteObject;
+import it.polimi.ingsw.gc42.network.RemoteServer;
+import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
+import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
+import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
+public class GamesListViewController {
+    @FXML
+    private ScrollPane gamesList;
+    @FXML
+    private VBox refreshButton;
+
+    private RemoteServer server;
+
+    private final ArrayList<Listener> listeners = new ArrayList<>();
+    private int pickedGame;
+
+    public void setServer(RemoteServer server) {
+        this.server = server;
+    }
+
+    @FXML
+    public void refresh() throws RemoteException {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(200), refreshButton);
+        transition.setFromX(1);
+        transition.setFromY(1);
+        transition.setToX(0.8);
+        transition.setToY(0.8);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.play();
+
+
+        VBox content = new VBox();
+        content.setAlignment(Pos.CENTER);
+        content.setSpacing(10);
+
+        for (int i = 0; i < server.getGames().size(); i++) {
+            Pane newListItem = getNewListItem(server.getGames().get(i));
+            int finalI = i;
+            newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    pickedGame = finalI;
+                    notifyListeners("Existing Game");
+                }
+            });
+            content.getChildren().add(newListItem);
+        }
+
+        if (server.getGames().size() == 0) {
+            HBox hbox = new HBox();
+            hbox.setAlignment(Pos.CENTER);
+
+            Text text = new Text("No available games. Create a new one.");
+            text.setFont(Font.font("Tahoma Regular", 15));
+
+            hbox.getChildren().add(text);
+            content.getChildren().add(hbox);
+            gamesList.setFitToHeight(true);
+            gamesList.setFitToWidth(true);
+        }
+
+        gamesList.setContent(content);
+    }
+
+    private Pane getNewListItem(GameController obj) {
+        HBox newListItem = new HBox();
+        newListItem.setSpacing(20);
+        newListItem.setAlignment(Pos.CENTER_LEFT);
+        newListItem.setPadding(new Insets(10, 0, 0, 10));
+        newListItem.setMaxHeight(50);
+
+        Text name;
+        Text number;
+        Text status;
+        try {
+            name = new Text(obj.getName());
+            name.setFont(Font.font("Tahoma Regular", 11));
+            name.setTextAlignment(TextAlignment.LEFT);
+
+            number = new Text(String.valueOf(obj.getGame().getNumberOfPlayers()));
+            number.setFont(Font.font("Tahoma Bold", 11));
+
+            status = new Text(statusToString(obj.getCurrentStatus()));
+            status.setFont(Font.font("Tahoma Bold", 11));
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        newListItem.getChildren().addAll(name, number, status);
+        newListItem.setCursor(Cursor.HAND);
+        return newListItem;
+    }
+
+    private String statusToString(GameStatus status) {
+        String string = "Unknown";
+        switch (status) {
+            case WAITING_FOR_PLAYERS -> {
+                string = "Waiting for players";
+            }
+        }
+        return string;
+    }
+
+    @FXML
+    public void newGame() {
+        notifyListeners("New Game");
+    }
+
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    public void notifyListeners(String context) {
+        switch (context) {
+            case "New Game" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof NewGameListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Existing Game" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof ExistingGameListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,9 @@ import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.LastTurnListener;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.network.PlayersNumberListener;
 import it.polimi.ingsw.gc42.network.RemoteObject;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
@@ -20,10 +23,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class GameController implements RemoteObject, Serializable {
+public class GameController implements Serializable, Observable {
     private final Game game;
     private final ArrayList<ViewController> views = new ArrayList<>();
     private GameStatus currentStatus;
+    private String name;
+
+    private final ArrayList<Listener> listeners = new ArrayList<>();
 
     public Game getGame() {
         return game;
@@ -37,7 +43,16 @@ public class GameController implements RemoteObject, Serializable {
         this.currentStatus = currentStatus;
     }
 
-    public GameController() throws RemoteException{
+    public String getName() throws RemoteException {
+        return name;
+    }
+
+    public void setName(String name) throws RemoteException {
+        this.name = name;
+    }
+
+    public GameController(String name) throws RemoteException{
+        this.name = name;
         this.game = new Game();
         currentStatus = GameStatus.NOT_IN_GAME;
         // Check last turn for drawing and playing mechanics
@@ -63,6 +78,7 @@ public class GameController implements RemoteObject, Serializable {
             }
         });
         game.addPlayer(player);
+        notifyListeners("Number of Players changed");
     }
 
     public boolean kickPlayer(Player player) {
@@ -255,5 +271,28 @@ public class GameController implements RemoteObject, Serializable {
     public String test(int a) throws RemoteException{
         System.out.println("Metodo chiamato dal client");
         return "Sono il GameController";
+    }
+
+    @Override
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(String context) {
+        switch (context) {
+            case "Number of Players changed" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof PlayersNumberListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+        }
     }
 }

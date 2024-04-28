@@ -1,18 +1,19 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.interfaces.GoldSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.GoldSlot2Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot2Listener;
 import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.network.RemoteServer;
 import it.polimi.ingsw.gc42.view.GUIController;
-import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
+import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
+import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -28,7 +29,8 @@ import java.rmi.RemoteException;
 import java.util.Objects;
 
 public class CommonTableView {
-    private NetworkController gameController;
+    private NetworkController controller;
+    private int gameID;
     private GUIController guiController;
     private DeckView resourceDeck;
     private DeckView goldDeck;
@@ -50,11 +52,12 @@ public class CommonTableView {
 
     private int isShowingInfo = 0;
 
-    public CommonTableView(NetworkController gameController, GUIController guiController, DeckView resourceDeck,
+    public CommonTableView(NetworkController controller, int gameID, GUIController guiController, DeckView resourceDeck,
                            DeckView goldDeck, ImageView resourceDown1, ImageView resourceDown2,
                            ImageView goldDown1, ImageView goldDown2, ImageView commonObjective1, ImageView commonObjective2,
-                           Text objName1, Text objDescr1, Text objName2, Text objDescr2, StackPane commonObjDescriptiionBox1, StackPane commonObjDescriptiionBox2) {
-        this.gameController = gameController;
+                           Text objName1, Text objDescr1, Text objName2, Text objDescr2, StackPane commonObjDescriptiionBox1, StackPane commonObjDescriptiionBox2) throws RemoteException {
+        this.controller = controller;
+        this.gameID = gameID;
         this.guiController = guiController;
         this.resourceDeck = resourceDeck;
         this.goldDeck = goldDeck;
@@ -70,18 +73,26 @@ public class CommonTableView {
         this.objDescr2 = objDescr2;
         this.commonObjDescriptiionBox1 = commonObjDescriptiionBox1;
         this.commonObjDescriptiionBox2 = commonObjDescriptiionBox2;
-        gameController.getGame().getResourcePlayingDeck().getDeck().setListener(new DeckViewListener() {
-            @Override
-            public void onEvent() {
-                resourceDeck.refresh(gameController.getGame().getResourcePlayingDeck().getDeck().getCopy());
+        try {
+            controller.setListener(gameID,new ResourceDeckViewListener() {
+                @Override
+                public void onEvent() {
+                    resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy());
 
-            }
-        });
+                }
+            });
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         // onClick
         resourceDeck.getContainer().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         resourceDeck.getContainer().setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -96,17 +107,21 @@ public class CommonTableView {
                 select(0);
             }
         });
-        gameController.getGame().getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
+        controller.setListener(gameID,new GoldDeckViewListener() {
             @Override
             public void onEvent() {
-                goldDeck.refresh(gameController.getGame().getGoldPlayingDeck().getDeck().getCopy());
+                goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy());
             }
         });
         // onClick
         goldDeck.getContainer().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         goldDeck.getContainer().setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -121,11 +136,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
-        gameController.getGame().setListener(new ResourceSlot1Listener() {
+        resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
+        controller.setListener(gameID,new ResourceSlot1Listener() {
             @Override
             public void onEvent() {
-                Card card = gameController.getGame().getResourcePlayingDeck().getSlot(1);
+                Card card = null;
+                card = controller.getGame().getResourcePlayingDeck().getSlot(1);
                 if (null != card) {
                     resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
@@ -140,7 +157,11 @@ public class CommonTableView {
         resourceDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         resourceDown1.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -155,11 +176,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
-        gameController.getGame().setListener(new ResourceSlot2Listener() {
+        resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
+        controller.setListener(gameID,new ResourceSlot2Listener() {
             @Override
             public void onEvent() {
-                Card card = gameController.getGame().getResourcePlayingDeck().getSlot(2);
+                Card card = null;
+                card = controller.getGame().getResourcePlayingDeck().getSlot(2);
                 if (null != card) {
                     resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
@@ -174,7 +197,11 @@ public class CommonTableView {
         resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         resourceDown2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -189,11 +216,13 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
-        gameController.getGame().setListener(new GoldSlot1Listener() {
+        goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
+        controller.setListener(gameID, new GoldSlot1Listener() {
             @Override
             public void onEvent() {
-                Card card = gameController.getGame().getGoldPlayingDeck().getSlot(1);
+                Card card = null;
+                card = controller.getGame().getGoldPlayingDeck().getSlot(1);
                 if (null != card) {
                     goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
@@ -208,7 +237,11 @@ public class CommonTableView {
         goldDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         goldDown1.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -223,11 +256,12 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
-        gameController.getGame().setListener(new GoldSlot2Listener() {
+        goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
+        controller.setListener(gameID, new GoldSlot2Listener() {
             @Override
             public void onEvent() {
-                Card card = gameController.getGame().getGoldPlayingDeck().getSlot(2);
+                Card card = null;
+                card = controller.getGame().getGoldPlayingDeck().getSlot(2);
                 if (null != card) {
                     goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
@@ -242,7 +276,11 @@ public class CommonTableView {
         goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         goldDown2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -257,9 +295,10 @@ public class CommonTableView {
                 select(0);
             }
         });
-        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
-        objName1.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
-        objDescr1.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
+        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
+        objName1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
+        objDescr1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
         commonObjective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -275,12 +314,19 @@ public class CommonTableView {
         commonObjective1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(gameController.getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
-        objName2.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(2)).getObjective().getName());
-        objDescr2.setText(((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getSlot(2)).getObjective().getDescription());
+        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
+        objName2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
+                .getSlot(2)).getObjective().getName());
+        objDescr2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
+                .getSlot(2)).getObjective().getDescription());
         commonObjective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -296,7 +342,11 @@ public class CommonTableView {
         commonObjective2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                onEnterPressed();
+                try {
+                    onEnterPressed();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
 
             }
         });
@@ -427,28 +477,28 @@ public class CommonTableView {
         }
     }
 
-    public void onEnterPressed() {
+    public void onEnterPressed() throws RemoteException {
         if (guiController.canReadInput() && guiController.isCommonTableDown()
                 && !guiController.isShowingDialog()) {
             if (guiController.isPlayerCanDrawOrGrab()) {
                 switch (selected) {
                     case 1 -> {
-                        gameController.drawCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck());
+                        controller.drawCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD);
                     }
                     case 2 -> {
-                        gameController.drawCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck());
+                        controller.drawCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD);
                     }
                     case 3 -> {
-                        gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 1);
+                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD, 1);
                     }
                     case 4 -> {
-                        gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getResourcePlayingDeck(), 2);
+                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD, 2);
                     }
                     case 5 -> {
-                        gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 1);
+                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD, 1);
                     }
                     case 6 -> {
-                        gameController.grabCard(gameController.getGame().getCurrentPlayer(), gameController.getGame().getGoldPlayingDeck(), 2);
+                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD, 2);
                     }
                 }
                 if (guiController.isCommonTableDown()) {

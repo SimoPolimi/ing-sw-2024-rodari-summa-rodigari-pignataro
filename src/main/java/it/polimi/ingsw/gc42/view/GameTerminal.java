@@ -29,7 +29,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void start(Stage stage) throws Exception {
-        controller = new GameController();
+        controller = new GameController("Test");
         controller.addView(this);
 
         System.out.println("Welcome to Codex Naturalis!");

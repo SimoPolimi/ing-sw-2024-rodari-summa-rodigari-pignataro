@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
@@ -9,6 +8,8 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
+import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ public class GameWindow extends Application {
 
     private boolean isFullScreen = false;
     private LoginViewController loginController;
+    private Player player;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -41,7 +43,8 @@ public class GameWindow extends Application {
             @Override
             public void onEvent() {
                 try {
-                    goToPlayScreen(stage, loginController.getNickName());
+                    player = new Player(loginController.getNickName());
+                    goToGameSelectionScreen(stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -66,7 +69,64 @@ public class GameWindow extends Application {
         launch();
     }
 
-    private void goToPlayScreen(Stage stage, String nickName) throws IOException {
+
+    private void goToGameSelectionScreen(Stage stage) throws IOException {
+        FXMLLoader gamesSelection = new FXMLLoader(getClass().getResource("/games-list-view.fxml"));
+        Scene gamesSelectionScene = new Scene(gamesSelection.load());
+
+        GamesListViewController gamesListViewController = gamesSelection.getController();
+        gamesListViewController.setServer(loginController.getNetworkController().getServer());
+        gamesListViewController.refresh();
+
+        gamesListViewController.setListener(new NewGameListener() {
+            @Override
+            public void onEvent() {
+                try {
+                    goToNewGameScreen(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        gamesListViewController.setListener(new ExistingGameListener() {
+            @Override
+            public void onEvent() {
+                try {
+                    goToPlayScreen(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        stage.setScene(gamesSelectionScene);
+    }
+
+    private void goToNewGameScreen(Stage stage) throws IOException {
+        FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/new-game-view.fxml"));
+        Scene newGameScene = new Scene(newGameLoader.load());
+        stage.setScene(newGameScene);
+
+        NewGameViewController newGameController = newGameLoader.getController();
+        NetworkController network = loginController.getNetworkController();
+        network.getNewGameController();
+        newGameController.setServer(network.getServer(), network.getIndex());
+        newGameController.setPlayer(player);
+
+        newGameController.setListener(new NewGameListener() {
+            @Override
+            public void onEvent() {
+                try {
+                    goToPlayScreen(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        stage.show();
+    }
+
+    private void goToPlayScreen(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
@@ -81,7 +141,7 @@ public class GameWindow extends Application {
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
 
-        controller.setGameController(gameController);
+        controller.setGameController(gameController, gameController.getIndex());
 
         scene.setOnKeyPressed(e -> {
             if (controller.canReadInput()) {
@@ -137,7 +197,7 @@ public class GameWindow extends Application {
 
         stage.show();
 
-        gameController.addView(controller);
+        gameController.addView();
 
         // Scripting for testing
         Player player1 = new Player("Cugola");
@@ -153,7 +213,6 @@ public class GameWindow extends Application {
         gameController.addPlayer(player3);
 
 
-        Player player = new Player(nickName);
         player.setFirst(true);
         gameController.addPlayer(player);
         controller.setPlayer(player);

@@ -3,40 +3,57 @@ package it.polimi.ingsw.gc42.network;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public interface NetworkController {
-    public void connect() throws RemoteException, NotBoundException;
-    public void disconnect();
-    public boolean isConnected();
+    void connect() throws RemoteException, NotBoundException;
+    void disconnect();
+    boolean isConnected();
 
-    public Game getGame();
+    Game getGame();
 
-    public boolean kickPlayer(Player player);
+    boolean kickPlayer(Player player);
 
-    public void nextTurn();
+    void nextTurn();
 
-    public void playCard(PlayableCard card, int x, int y);
+     void playCard(PlayableCard card, int x, int y);
 
-    public void flipCard(Card card);
+    void flipCard(Card card);
 
-    public void drawCard(Player player, PlayingDeck playingDeck);
+    void drawCard(Player player, CardType type);
 
-    public void grabCard(Player player, PlayingDeck playingDeck, int slot);
+    void grabCard(Player player, CardType type, int slot);
 
-    public void drawSecretObjectives();
+    void drawSecretObjectives();
 
-    public void addView(ViewController viewController);
+    void addView();
 
-    public void addPlayer(Player player);
+    void addPlayer(Player player);
 
-    public void setCurrentStatus(GameStatus status);
+    void setCurrentStatus(GameStatus status);
+
+    RemoteCollection getAvailableGames() throws RemoteException;
+
+    void pickGame(int index) throws RemoteException;
+
+    void getNewGameController() throws RemoteException;
+
+    int getIndex() throws RemoteException;
+
+    RemoteServer getServer() throws RemoteException;
+
+    StarterCard drawStarterCard() throws RemoteException;
+
+    void setListener(int gameID, Listener listener) throws RemoteException;
 
 
 }

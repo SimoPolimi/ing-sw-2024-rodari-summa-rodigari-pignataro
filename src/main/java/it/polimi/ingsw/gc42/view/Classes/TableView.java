@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -338,7 +339,7 @@ public class TableView {
             hand.getHandCardView(cardBeingPlayed).getImageView().setScaleY(1);
         });
         transition.setOnFinished((e) -> {
-            controller.getGameController().playCard(player
+            controller.getNetworkController().playCard(player
                     .getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
         });
         transition.play();

@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.rmi.AlreadyBoundException;
@@ -13,20 +14,25 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-public class RmiControllerServer implements ServerNetworkController {
+public class RmiControllerServer implements ServerNetworkController, Serializable {
     String ipAddress;
     private int port;
     private ArrayList<Player> users;
     // GameController will be the stub
-    private final GameController gameController = new GameController();
+    private final ServerManager newGame = new ServerManager();
     private Runnable onReady;
     private Registry registry;
+    private ServerManager server;
+    private final GameCollection games = new GameCollection();
 
-    public RmiControllerServer() throws RemoteException {
-    }
+    public RmiControllerServer() throws RemoteException {}
 
-    public RemoteObject getGameController() {
-        return gameController;
+    public GameController getGameController(int index) {
+        try {
+            return games.get(index);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -42,7 +48,10 @@ public class RmiControllerServer implements ServerNetworkController {
         serverSocket.close();
         // Uses that port in combination with the current IP Address to create an RMI Registry
         registry = LocateRegistry.createRegistry(port);
-        registry.bind("GameController", gameController);
+        //registry.bind("GameController", gameController);
+        server = new ServerManager();
+        server.setCollection(games);
+        registry.bind("ServerManager", server);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
         System.out.println("Open for connections at: " + ipAddress
                 + ", " + port);
@@ -54,7 +63,8 @@ public class RmiControllerServer implements ServerNetworkController {
 
     @Override
     public void stop() throws NotBoundException, RemoteException {
-        registry.unbind("GameController");
+        //registry.unbind("GameController");
+        registry.unbind("GameControllers");
         System.out.println("Server stopped");
     }
 

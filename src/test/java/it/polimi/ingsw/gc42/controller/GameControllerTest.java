@@ -49,7 +49,7 @@ class GameControllerTest {
         // given
         GameController controller = null;
         try {
-            controller = new GameController();
+            controller = new GameController("Test");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +70,7 @@ class GameControllerTest {
         // given
         GameController controller = null;
         try {
-            controller = new GameController();
+            controller = new GameController("Test");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
