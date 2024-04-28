@@ -175,20 +175,11 @@ class PlayerTest {
         while (game.getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
             game.getResourcePlayingDeck().getDeck().draw();
         }
-        // when
-        // TODO: Redo using assertThrows
-        boolean deckWasEmpty = false;
-        try {
-            game.getResourcePlayingDeck().getDeck().draw();
-        } catch (NoSuchElementException e) {
-            deckWasEmpty = true;
-        }
         // then
 
         // Deck is empty
         assertEquals(game.getResourcePlayingDeck().getDeck().getNumberOfCards(), 0);
-        //assertThrowsExactly(NoSuchElementException.class, () -> game.getResourcePlayingDeck().getDeck().draw());
-        assertTrue(deckWasEmpty);
+        assertThrowsExactly(NoSuchElementException.class, () -> game.getResourcePlayingDeck().getDeck().draw());
     }
 
     // TODO: remove comment
@@ -215,6 +206,19 @@ class PlayerTest {
     }
 */
     @Test
+    void grabWhenFullHand() {
+        Game game = new Game();
+        Player player = new Player("");
+
+        assertThrowsExactly(IllegalActionException.class, () -> {
+            // force player more cards than the hand's max size
+            for (int i = 0; i < 5; i++) {
+                player.grabCard(game.getResourcePlayingDeck(), 1);
+            }
+        });
+    }
+
+    @Test
     void getHandCard() {
         // given
         Game game = new Game();
@@ -227,14 +231,8 @@ class PlayerTest {
             e.printStackTrace();
         }
 
-        boolean caught = false;
-        try {
-            player.getHandCard(9);
-        } catch (IllegalArgumentException e) {
-            caught = true;
-        }
         // then
-        assertTrue(caught);
+        assertThrowsExactly(IllegalArgumentException.class, () -> player.getHandCard(9));
         assertNull(player.getHandCard(1));
         assertEquals(card1, player.getHandCard(0));
     }
@@ -287,6 +285,34 @@ class PlayerTest {
             public void execute() throws Throwable {
                 player.playCard(finalGoldCard, 1, 0);
             }
+        });
+    }
+
+    @Test
+    void playCard_sizeLessThan3_notStarter() {
+        Game game = new Game();
+        Player player = new Player("");
+
+        try {
+            // grab only 2 cards
+            player.grabCard(game.getResourcePlayingDeck(), 1);
+            player.grabCard(game.getResourcePlayingDeck(), 1);
+        } catch (IllegalActionException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThrowsExactly(IllegalActionException.class, () -> {
+            player.playCard(player.getHandCard(1), 0, 0);
+        });
+    }
+
+    @Test
+    void playCard_illegalPlacement() {
+        Game game = new Game();
+        Player player = new Player("");
+
+        assertThrowsExactly(IllegalPlacementException.class, () -> {
+            player.playCard( (PlayableCard) game.getStarterDeck().draw(), 1, 3);
         });
     }
 }
