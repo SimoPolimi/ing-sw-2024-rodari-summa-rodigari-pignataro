@@ -5,18 +5,17 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
-import it.polimi.ingsw.gc42.model.interfaces.LastTurnListener;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.PlayersNumberListener;
 import it.polimi.ingsw.gc42.network.RemoteObject;
+import it.polimi.ingsw.gc42.network.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.interfaces.StatusListener;
 
+import javax.swing.text.View;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -25,7 +24,7 @@ import java.util.NoSuchElementException;
 
 public class GameController implements Serializable, Observable {
     private final Game game;
-    private final ArrayList<ViewController> views = new ArrayList<>();
+    private final ArrayList<RemoteViewController> views = new ArrayList<>();
     private GameStatus currentStatus;
     private String name;
 
@@ -81,6 +80,54 @@ public class GameController implements Serializable, Observable {
                 checkIfGameCanContinue();
             }
         });
+        player.setListener(new HandListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyPlayersHandChanged(game.getIndexOfPlayer(player.getNickname()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        player.setListener(new SecretObjectiveListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyPlayersObjectiveChanged(game.getIndexOfPlayer(player.getNickname()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        player.setListener(new TokenListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyPlayersTokenChanged(game.getIndexOfPlayer(player.getNickname()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        player.setListener(new PointsListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyPlayersPointsChanged();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
         game.addPlayer(player);
         notifyListeners("Number of Players changed");
     }
@@ -112,7 +159,7 @@ public class GameController implements Serializable, Observable {
                 player.playCard(card, x, y);
                 // Don's ask to grab or draw if there are no cards to be picked
                 if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
-                    for (ViewController view : views) {
+                    for (RemoteViewController view : views) {
                         if (view.getOwner().equals(player)) {
                             view.askToDrawOrGrab();
                         }
@@ -125,6 +172,8 @@ public class GameController implements Serializable, Observable {
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             // TODO: Handle exception
             e.printStackTrace();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -193,25 +242,39 @@ public class GameController implements Serializable, Observable {
     }
 
     public void drawSecretObjectives() {
-        for (ViewController view : views) {
-            view.getOwner().drawSecretObjectives(game.getObjectivePlayingDeck());
-            view.showSecretObjectivesSelectionDialog();
+        for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
+            game.getPlayer(i).drawSecretObjectives(game.getObjectivePlayingDeck());
+        }
+        for (RemoteViewController view : views) {
+            try {
+                view.showSecretObjectivesSelectionDialog();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void beginStarterCardChoosing() {
-        for (ViewController view : views) {
-            view.showStarterCardSelectionDialog();
+        for (RemoteViewController view : views) {
+            try {
+                view.showStarterCardSelectionDialog();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void beginTokenChoosing() {
-        for (ViewController view : views) {
-            view.showTokenSelectionDialog();
+        for (RemoteViewController view : views) {
+            try {
+                view.showTokenSelectionDialog();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void addView(ViewController view) {
+    public void addView(RemoteViewController view) {
         views.add(view);
     }
 
@@ -291,9 +354,11 @@ public class GameController implements Serializable, Observable {
     public void notifyListeners(String context) {
         switch (context) {
             case "Number of Players changed" -> {
-                for (Listener l: listeners) {
-                    if (l instanceof PlayersNumberListener) {
-                        l.onEvent();
+                for (RemoteViewController v: views) {
+                    try {
+                        v.notifyNumberOfPlayersChanged();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }

@@ -79,20 +79,6 @@ public class TableView {
         if (server.getPlayer(playerID).isFirst()) {
             blackToken.setVisible(true);
         }
-        server.setPlayerListener(playerID, new TokenListener() {
-            @Override
-            public void onEvent() {
-                setPlayerToken(server.getPlayer(playerID).getToken());
-                controller.refreshScoreBoard();
-            }
-        });
-        server.setPlayerListener(playerID, new PlayAreaListener() {
-            @Override
-            public void onEvent() {
-                PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
-                addToPlayArea(card, card.getX(), card.getY());
-            }
-        });
         Flip1Listener listener1 = new Flip1Listener() {
             @Override
             public void onEvent() {
@@ -111,59 +97,6 @@ public class TableView {
                 flipCard(hand.getHandCardView(3));
             }
         };
-        server.setPlayerListener(playerID, new HandListener() {
-            @Override
-            public void onEvent() {
-                Card card;
-                card = server.getPlayer(playerID).getHandCard(0);
-                if (null != hand.getHandCardView(1).getModelCard()) {
-                    try {
-                        server.removeListener(playerID, 1, listener1);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                hand.setPlayingOverlay(1, false);
-                hand.getHandCardView(1).setModelCard(card);
-                if (null != card) {
-                    hand.getHandCardView(1).getModelCard().setListener(listener1);
-                    try {
-                        server.setHandCardListener(playerID, 1, listener1);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                card = server.getPlayer(playerID).getHandCard(1);
-                if (null != hand.getHandCardView(2).getModelCard()) {
-                    hand.getHandCardView(2).getModelCard().removeListener(listener2);
-                }
-                hand.setPlayingOverlay(2, false);
-                hand.getHandCardView(2).setModelCard(card);
-                if (null != card) {
-                    hand.getHandCardView(2).getModelCard().setListener(listener2);
-                }
-
-                card = server.getPlayer(playerID).getHandCard(2);
-                if (null != hand.getHandCardView(3).getModelCard()) {
-                    hand.getHandCardView(3).getModelCard().removeListener(listener3);
-                }
-                hand.setPlayingOverlay(3, false);
-                hand.getHandCardView(3).setModelCard(card);
-                if (null != card) {
-                    hand.getHandCardView(3).getModelCard().setListener(listener3);
-                }
-                if (server.getPlayer(playerID).getHandSize() == 3) {
-                    controller.setPlayerCanDrawOrGrab(false);
-                }
-            }
-        });
-        server.setPlayerListener(playerID, new SecretObjectiveListener() {
-            @Override
-            public void onEvent() {
-                setSecretObjective(server.getPlayer(playerID).getSecretObjective());
-            }
-        });
         hand.setPlayer(server, playerID);
     }
 
@@ -437,5 +370,27 @@ public class TableView {
         if (!handCardView.isBeingPlayed()) {
             handCardView.visualFlip(controller);
         }
+    }
+
+    public void refreshToken() {
+        setPlayerToken(server.getPlayer(playerID).getToken());
+        controller.refreshScoreBoard();
+    }
+
+    public void refreshPlayArea() {
+        PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
+        addToPlayArea(card, card.getX(), card.getY());
+    }
+
+    public void refreshHand() {
+        hand.refresh(() -> {
+            hand.getHandCardView(1).setModelCard(server.getPlayer(playerID).getHandCard(1));
+            hand.getHandCardView(2).setModelCard(server.getPlayer(playerID).getHandCard(2));
+            hand.getHandCardView(3).setModelCard(server.getPlayer(playerID).getHandCard(3));
+        });
+    }
+
+    public void refreshSecretObjective() {
+        setSecretObjective(server.getPlayer(playerID).getSecretObjective());
     }
 }

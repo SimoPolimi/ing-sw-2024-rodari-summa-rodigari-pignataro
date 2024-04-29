@@ -197,7 +197,5 @@ public class GameWindow extends Application {
         });
 
         stage.show();
-
-        gameController.addView();
     }
 }

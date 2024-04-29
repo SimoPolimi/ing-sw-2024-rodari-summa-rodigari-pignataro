@@ -15,13 +15,18 @@ import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.io.Serializable;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class ServerManager extends UnicastRemoteObject implements RemoteServer, Serializable {
     private GameCollection collection;
+    int port;
 
-    protected ServerManager() throws RemoteException {
+    protected ServerManager(int port) throws RemoteException {
+        this.port = port;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void addView(int gameID, ViewController viewController) throws RemoteException {
+    public void addView(int gameID, RemoteViewController viewController) throws RemoteException {
         collection.get(gameID).addView(viewController);
     }
 
@@ -176,6 +181,12 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void startGame(int gameID) throws RemoteException {
         collection.get(gameID).startGame();
+    }
+
+    @Override
+    public void lookupClient(int gameID, String clientID) throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry(port);
+        addView(gameID, (RemoteViewController) registry.lookup(clientID));
     }
 
     public void setCollection(GameCollection collection) {

@@ -1,11 +1,15 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.network.PlayersNumberListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -20,10 +24,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class NewGameViewController implements Observable  {
+public class NewGameViewController implements Observable, ViewController {
     @FXML
     private ScrollPane playersList;
     @FXML
@@ -82,11 +87,14 @@ public class NewGameViewController implements Observable  {
 
     public void setPlayer(Player player) {
         try {
+            controller.setViewController(new ClientController(this));
             controller.addPlayer(player);
             refresh();
             controller.pickGame(gameID);
         } catch (RemoteException e) {
 
+        } catch (AlreadyBoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -161,5 +169,87 @@ public class NewGameViewController implements Observable  {
                 }
             }
         }
+    }
+
+    @Override
+    public void showSecretObjectivesSelectionDialog() {
+        // Don't need
+    }
+
+    @Override
+    public void showStarterCardSelectionDialog() {
+        // Don't need
+    }
+
+    @Override
+    public void showTokenSelectionDialog() {
+        // Don't need
+    }
+
+    @Override
+    public Player getOwner() {
+        // Don't need
+        return null;
+    }
+
+    @Override
+    public void askToDrawOrGrab() {
+        // Don't need
+    }
+
+    @Override
+    public void notifyGameIsStarting() {
+        // TODO: Implement
+    }
+
+    @Override
+    public void notifyDeckChanged(CardType type) {
+        // Don't need
+    }
+
+    @Override
+    public void notifySlotCardChanged(CardType type, int slot) {
+        // Don't need
+    }
+
+    @Override
+    public void notifyPlayersPointsChanged() {
+        // Don't need
+    }
+
+    @Override
+    public void notifyNumberOfPlayersChanged() {
+        Platform.runLater(() -> {
+            try {
+                refresh();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Override
+    public void notifyPlayersTokenChanged(int playerID) {
+        // Don't need
+    }
+
+    @Override
+    public void notifyPlayersPlayAreaChanged(int playerID) {
+        // Don't need
+    }
+
+    @Override
+    public void notifyPlayersHandChanged(int playerID) {
+        // Don't need
+    }
+
+    @Override
+    public void notifyPlayersObjectiveChanged(int playerID) {
+        // Don't need
+    }
+
+    @Override
+    public void notifyCommonObjectivesChanged() {
+        // Don't need
     }
 }

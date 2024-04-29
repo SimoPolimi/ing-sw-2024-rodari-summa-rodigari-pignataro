@@ -18,8 +18,6 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
     String ipAddress;
     private int port;
     private ArrayList<Player> users;
-    // GameController will be the stub
-    private final ServerManager newGame = new ServerManager();
     private Runnable onReady;
     private Registry registry;
     private ServerManager server;
@@ -48,8 +46,7 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         serverSocket.close();
         // Uses that port in combination with the current IP Address to create an RMI Registry
         registry = LocateRegistry.createRegistry(port);
-        //registry.bind("GameController", gameController);
-        server = new ServerManager();
+        server = new ServerManager(port);
         server.setCollection(games);
         registry.bind("ServerManager", server);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
@@ -63,7 +60,6 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
 
     @Override
     public void stop() throws NotBoundException, RemoteException {
-        //registry.unbind("GameController");
         registry.unbind("GameControllers");
         System.out.println("Server stopped");
     }

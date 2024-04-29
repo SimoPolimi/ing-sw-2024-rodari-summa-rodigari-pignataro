@@ -11,6 +11,7 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -36,7 +37,7 @@ public interface RemoteServer extends Remote {
 
     Game getGame(int gameID) throws RemoteException;
 
-    void addView(int gameID, ViewController viewController) throws RemoteException;
+    void addView(int gameID, RemoteViewController viewController) throws RemoteException;
 
     void addPlayer(int gameID, Player player) throws RemoteException;
 
@@ -60,4 +61,6 @@ public interface RemoteServer extends Remote {
     int newGame() throws RemoteException;
 
     void startGame(int gameID) throws RemoteException;
+
+    void lookupClient(int gameID, String clientID) throws RemoteException, NotBoundException;
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
@@ -31,6 +32,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -106,6 +108,10 @@ public class GUIController implements ViewController {
     private CommonTableView commonTable;
     private int playerID;
 
+    private TableView rightTable;
+    private TableView topTable;
+    private TableView leftTable;
+
 
     public void build() {
         table = new TableView(false, this);
@@ -115,12 +121,11 @@ public class GUIController implements ViewController {
     public void setGameController(NetworkController controller, int gameID) throws RemoteException {
         this.controller = controller;
         this.gameID = gameID;
-        controller.setGameListener(new GameListener() {
-            @Override
-            public void onEvent() {
-                refreshScoreBoard();
-            }
-        });
+        try {
+            controller.setViewController(new ClientController(this));
+        } catch (AlreadyBoundException e) {
+            throw new RuntimeException(e);
+        }
         controller.setGameListener(new ReadyToChooseSecretObjectiveListener() {
             @Override
             public void onEvent() {
@@ -182,9 +187,6 @@ public class GUIController implements ViewController {
         boolean isRightTableEmpty = true;
         boolean isTopTableEmpty = true;
         boolean isLeftTableEmpty = true;
-        TableView rightTable;
-        TableView topTable;
-        TableView leftTable;
         ArrayList<Integer> players = new ArrayList<>();
         int numberOfPlayers = controller.getGame().getNumberOfPlayers();
         for (int i = 1; i <= numberOfPlayers; i++) {
@@ -571,6 +573,94 @@ public class GUIController implements ViewController {
         if (!isCommonTableDown) {
             bringCommonTableDown();
         }
+    }
+
+    @Override
+    public void notifyGameIsStarting() {
+        // Don't need
+    }
+
+    @Override
+    public void notifyDeckChanged(CardType type) {
+        switch (type) {
+            case RESOURCECARD -> commonTable.refreshResourceDeck();
+            case GOLDCARD -> commonTable.refreshGoldDeck();
+        }
+    }
+
+    @Override
+    public void notifySlotCardChanged(CardType type, int slot) {
+        switch (type) {
+            case RESOURCECARD -> commonTable.refreshResourceSlot(slot);
+            case GOLDCARD -> commonTable.refreshGoldSlot(slot);
+        }
+    }
+
+    @Override
+    public void notifyPlayersPointsChanged() {
+        refreshScoreBoard();
+    }
+
+    @Override
+    public void notifyNumberOfPlayersChanged() {
+        // Don't need
+    }
+
+    @Override
+    public void notifyPlayersTokenChanged(int playerID) {
+        if (this.playerID == playerID) {
+            table.refreshToken();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshToken();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshToken();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshToken();
+        }
+    }
+
+    @Override
+    public void notifyPlayersPlayAreaChanged(int playerID) {
+        if (this.playerID == playerID) {
+            table.refreshPlayArea();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshPlayArea();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshPlayArea();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshPlayArea();
+        }
+    }
+
+    @Override
+    public void notifyPlayersHandChanged(int playerID) {
+        if (this.playerID == playerID) {
+            table.refreshHand();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshHand();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshHand();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshHand();
+        }
+    }
+
+    @Override
+    public void notifyPlayersObjectiveChanged(int playerID) {
+        if (this.playerID == playerID) {
+            table.refreshSecretObjective();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshSecretObjective();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshSecretObjective();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshSecretObjective();
+        }
+    }
+
+    @Override
+    public void notifyCommonObjectivesChanged() {
+        commonTable.refreshCommonObjectives();
     }
 
     public void setPlayerCanPlayCards(boolean value) {

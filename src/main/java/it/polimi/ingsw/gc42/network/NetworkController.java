@@ -8,7 +8,9 @@ import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
@@ -16,6 +18,8 @@ public interface NetworkController {
     void connect() throws RemoteException, NotBoundException;
     void disconnect();
     boolean isConnected();
+
+    void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException;
 
     Game getGame();
 
@@ -32,8 +36,6 @@ public interface NetworkController {
     void grabCard(Player player, CardType type, int slot);
 
     void drawSecretObjectives();
-
-    void addView();
 
     void addPlayer(Player player);
 

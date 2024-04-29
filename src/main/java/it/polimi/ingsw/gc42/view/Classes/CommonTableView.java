@@ -72,17 +72,7 @@ public class CommonTableView {
         this.objDescr2 = objDescr2;
         this.commonObjDescriptiionBox1 = commonObjDescriptiionBox1;
         this.commonObjDescriptiionBox2 = commonObjDescriptiionBox2;
-        try {
-            controller.setGameListener(new ResourceDeckViewListener() {
-                @Override
-                public void onEvent() {
-                    resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy());
 
-                }
-            });
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
         // onClick
         resourceDeck.getContainer().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -104,12 +94,6 @@ public class CommonTableView {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 select(0);
-            }
-        });
-        controller.setGameListener(new GoldDeckViewListener() {
-            @Override
-            public void onEvent() {
-                goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy());
             }
         });
         // onClick
@@ -137,21 +121,6 @@ public class CommonTableView {
         });
         resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
-        controller.setGameListener(new ResourceSlot1Listener() {
-            @Override
-            public void onEvent() {
-                Card card = null;
-                card = controller.getGame().getResourcePlayingDeck().getSlot(1);
-                if (null != card) {
-                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
-                } else {
-                    resourceDown1.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
-            }
-        });
         // onClick
         resourceDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -177,21 +146,6 @@ public class CommonTableView {
         });
         resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
-        controller.setGameListener(new ResourceSlot2Listener() {
-            @Override
-            public void onEvent() {
-                Card card = null;
-                card = controller.getGame().getResourcePlayingDeck().getSlot(2);
-                if (null != card) {
-                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
-                } else {
-                    resourceDown2.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
-            }
-        });
         // onClick
         resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -217,21 +171,6 @@ public class CommonTableView {
         });
         goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
-        controller.setGameListener(new GoldSlot1Listener() {
-            @Override
-            public void onEvent() {
-                Card card = null;
-                card = controller.getGame().getGoldPlayingDeck().getSlot(1);
-                if (null != card) {
-                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
-                } else {
-                    goldDown1.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
-            }
-        });
         // onClick
         goldDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -256,21 +195,6 @@ public class CommonTableView {
             }
         });
         goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
-        controller.setGameListener(new GoldSlot2Listener() {
-            @Override
-            public void onEvent() {
-                Card card = null;
-                card = controller.getGame().getGoldPlayingDeck().getSlot(2);
-                if (null != card) {
-                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
-                } else {
-                    goldDown2.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
-            }
-        });
         // onClick
         goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -294,10 +218,6 @@ public class CommonTableView {
                 select(0);
             }
         });
-        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
-        objName1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
-        objDescr1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
         commonObjective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -320,12 +240,6 @@ public class CommonTableView {
                 }
             }
         });
-        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
-        objName2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
-                .getSlot(2)).getObjective().getName());
-        objDescr2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
-                .getSlot(2)).getObjective().getDescription());
         commonObjective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -529,5 +443,84 @@ public class CommonTableView {
                 }
             }
         }
+    }
+
+    public void refreshResourceDeck() {
+        resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy());
+    }
+
+    public void refreshGoldDeck() {
+        goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy());
+    }
+
+    public void refreshResourceSlot(int slot) {
+        switch (slot) {
+            case 1 -> {
+                Card card = null;
+                card = controller.getGame().getResourcePlayingDeck().getSlot(1);
+                if (null != card) {
+                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                } else {
+                    resourceDown1.setVisible(false);
+                }
+                if (guiController.isCommonTableDown()) {
+                    guiController.bringCommonTableUp();
+                }
+            }
+            case 2 -> {
+                Card card = null;
+                card = controller.getGame().getResourcePlayingDeck().getSlot(2);
+                if (null != card) {
+                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                } else {
+                    resourceDown2.setVisible(false);
+                }
+                if (guiController.isCommonTableDown()) {
+                    guiController.bringCommonTableUp();
+                }
+            }
+        }
+    }
+
+    public void refreshGoldSlot(int slot) {
+        switch (slot) {
+            case 1 -> {
+                Card card = null;
+                card = controller.getGame().getGoldPlayingDeck().getSlot(1);
+                if (null != card) {
+                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                } else {
+                    goldDown1.setVisible(false);
+                }
+                if (guiController.isCommonTableDown()) {
+                    guiController.bringCommonTableUp();
+                }
+            }
+            case 2 -> {
+                Card card = null;
+                card = controller.getGame().getGoldPlayingDeck().getSlot(2);
+                if (null != card) {
+                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                } else {
+                    goldDown2.setVisible(false);
+                }
+                if (guiController.isCommonTableDown()) {
+                    guiController.bringCommonTableUp();
+                }
+            }
+        }
+    }
+
+    public void refreshCommonObjectives() {
+        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
+        objName1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
+        objDescr1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
+        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
+                .getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
+        objName2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
+                .getSlot(2)).getObjective().getName());
+        objDescr2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
+                .getSlot(2)).getObjective().getDescription());
     }
 }

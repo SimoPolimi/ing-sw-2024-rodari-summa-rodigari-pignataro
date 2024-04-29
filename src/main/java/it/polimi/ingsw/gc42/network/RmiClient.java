@@ -12,11 +12,13 @@ import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.Interfaces.*;
 
 import java.io.Serializable;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class RmiClient implements NetworkController, Serializable {
     private String ipAddress;
@@ -33,6 +35,7 @@ public class RmiClient implements NetworkController, Serializable {
     private Listener handCard2Listener;
     private Listener handCard3Listener;
 
+    private ClientController clientController;
     private transient ArrayList<Listener> viewListeners = new ArrayList<>();
 
     public RmiClient(String ipAddress, int port) {
@@ -46,6 +49,20 @@ public class RmiClient implements NetworkController, Serializable {
         //games = (RemoteCollection) registry.lookup("GameControllers");
         server = (RemoteServer) registry.lookup("ServerManager");
         isConnected = true;
+    }
+
+    @Override
+    public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
+        if (isConnected) {
+            Random random = new Random();
+            int id = random.nextInt(100000000);
+            registry.bind(String.valueOf(id), viewController);
+            try {
+                server.lookupClient(gameID, String.valueOf(id));
+            } catch (NotBoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -158,40 +175,6 @@ public class RmiClient implements NetworkController, Serializable {
     public void drawSecretObjectives() {
         try {
             server.drawSecretObjectives(gameID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void addView() {
-        try {
-            server.addView(gameID, new ViewController() {
-                @Override
-                public void showSecretObjectivesSelectionDialog() {
-                    notifyListener("Secret Objectives Selection Dialog");
-                }
-
-                @Override
-                public void showStarterCardSelectionDialog() {
-                    notifyListener("Starter Card Selection Dialog");
-                }
-
-                @Override
-                public void showTokenSelectionDialog() {
-                    notifyListener("Token Selection Dialog");
-                }
-
-                @Override
-                public Player getOwner() {
-                    return owner;
-                }
-
-                @Override
-                public void askToDrawOrGrab() {
-                    notifyListener("Draw Or Grab");
-                }
-            });
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

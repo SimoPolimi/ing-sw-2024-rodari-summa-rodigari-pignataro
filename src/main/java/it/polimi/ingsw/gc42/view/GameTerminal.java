@@ -5,12 +5,15 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
 import it.polimi.ingsw.gc42.model.interfaces.ReadyToChooseSecretObjectiveListener;
+import it.polimi.ingsw.gc42.network.ClientController;
+import it.polimi.ingsw.gc42.network.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Classes.ClearScreen;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -30,7 +33,8 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void start(Stage stage) throws Exception {
         controller = new GameController("Test");
-        controller.addView(this);
+        //TODO: Temporary
+        controller.addView(new ClientController(this));
 
         System.out.println("Welcome to Codex Naturalis!");
         String input = "";
@@ -383,6 +387,56 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void askToDrawOrGrab() {
+
+    }
+
+    @Override
+    public void notifyGameIsStarting() {
+
+    }
+
+    @Override
+    public void notifyDeckChanged(CardType type) {
+
+    }
+
+    @Override
+    public void notifySlotCardChanged(CardType type, int slot) {
+
+    }
+
+    @Override
+    public void notifyPlayersPointsChanged() {
+
+    }
+
+    @Override
+    public void notifyNumberOfPlayersChanged() {
+
+    }
+
+    @Override
+    public void notifyPlayersTokenChanged(int playerID) {
+
+    }
+
+    @Override
+    public void notifyPlayersPlayAreaChanged(int playerID) {
+
+    }
+
+    @Override
+    public void notifyPlayersHandChanged(int playerID) {
+
+    }
+
+    @Override
+    public void notifyPlayersObjectiveChanged(int playerID) {
+
+    }
+
+    @Override
+    public void notifyCommonObjectivesChanged() {
 
     }
 
