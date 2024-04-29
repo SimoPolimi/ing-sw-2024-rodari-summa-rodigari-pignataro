@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc42.model.exceptions.RemovingFromZeroException;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Implement PlayField
  */
-public class PlayField implements Observable {
+public class PlayField implements Observable, Serializable {
     // Attributes
     private final ArrayList<PlayableCard> playedCards = new ArrayList<>();
     private final HashMap<Item, Integer> counter = HashMap.newHashMap(7);

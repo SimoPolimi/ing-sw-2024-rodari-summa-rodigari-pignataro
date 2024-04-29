@@ -9,10 +9,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.Interfaces.DrawOrGrabListener;
-import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
+import it.polimi.ingsw.gc42.view.Interfaces.*;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -30,8 +27,13 @@ public class RmiClient implements NetworkController, Serializable {
     private int gameID;
     private boolean isConnected = false;
     private Player owner;
+    private int playerID;
 
-    private transient final ArrayList<Listener> viewListeners = new ArrayList<>();
+    private Listener handCard1Listener;
+    private Listener handCard2Listener;
+    private Listener handCard3Listener;
+
+    private transient ArrayList<Listener> viewListeners = new ArrayList<>();
 
     public RmiClient(String ipAddress, int port) {
         this.ipAddress = ipAddress;
@@ -60,6 +62,39 @@ public class RmiClient implements NetworkController, Serializable {
     public Game getGame() {
         try {
             return server.getGame(gameID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Player getPlayer(int index) {
+        try {
+            Player player =  server.getPlayer(gameID, index);
+            return player;
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getIndexOfPlayer(String nickName) throws RemoteException {
+        return server.getGame(gameID).getIndexOfPlayer(nickName);
+    }
+
+    @Override
+    public int getNumberOfPlayers() {
+        try {
+            return server.getNumberOfPlayers(gameID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void startGame() {
+        try {
+            server.startGame(gameID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -167,6 +202,7 @@ public class RmiClient implements NetworkController, Serializable {
         try {
             server.addPlayer(gameID, player);
             this.owner = player;
+            playerID = server.getGame(gameID).getIndexOfPlayer(owner.getNickname());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -193,10 +229,13 @@ public class RmiClient implements NetworkController, Serializable {
 
     @Override
     public void getNewGameController() throws RemoteException {
-        GameController game = new GameController(null);
-        game.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
-        gameID = server.addGame(game);
+        gameID = server.newGame();
 
+    }
+
+    @Override
+    public void setName(String name) throws RemoteException {
+        server.setName(gameID, name);
     }
 
     @Override
@@ -215,48 +254,75 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public void setListener(int gameID, Listener listener) {
+    public void setGameListener(Listener listener) {
         viewListeners.add(listener);
     }
 
+    @Override
+    public void setPlayerListener(int playerID, Listener listener) {
+        viewListeners.add(listener);
+        this.playerID = playerID;
+    }
+
+    @Override
+    public void setHandCardListener(int playerID, int cardID, Listener listener) throws RemoteException {
+        viewListeners.add(listener);
+        server.getPlayer(gameID, playerID).getHandCard(cardID).setListener(new Listener() {
+            @Override
+            public void onEvent() {
+                notifyListener("Hand Card " + cardID);
+            }
+        });
+    }
+
+    @Override
+    public void removeListener(int playerID, int cardID, Listener listener) throws RemoteException {
+        viewListeners.remove(listener);
+        switch (cardID) {
+            case 1 -> server.removeCardListener(gameID, playerID, cardID, handCard1Listener);
+            case 2 -> server.removeCardListener(gameID, playerID, cardID, handCard2Listener);
+            case 3 -> server.removeCardListener(gameID, playerID, cardID, handCard3Listener);
+        }
+    }
+
     private void initListeners() throws RemoteException {
-        server.setListener(gameID, new GameListener() {
+        server.setGameListener(gameID, new GameListener() {
             @Override
             public void onEvent() {
                 notifyListener("Game Listener");
             }
         });
-        server.setListener(gameID, new ResourceDeckViewListener() {
+        server.setGameListener(gameID, new ResourceDeckViewListener() {
             @Override
             public void onEvent() {
                 notifyListener("Resource Deck");
             }
         });
-        server.setListener(gameID, new GoldDeckViewListener() {
+        server.setGameListener(gameID, new GoldDeckViewListener() {
             @Override
             public void onEvent() {
                 notifyListener("Gold Deck");
             }
         });
-        server.setListener(gameID, new ResourceSlot1Listener() {
+        server.setGameListener(gameID, new ResourceSlot1Listener() {
             @Override
             public void onEvent() {
                 notifyListener("Resource Down 1");
             }
         });
-        server.setListener(gameID, new ResourceSlot2Listener() {
+        server.setGameListener(gameID, new ResourceSlot2Listener() {
             @Override
             public void onEvent() {
                 notifyListener("Resource Down 2");
             }
         });
-        server.setListener(gameID, new GoldSlot1Listener() {
+        server.setGameListener(gameID, new GoldSlot1Listener() {
             @Override
             public void onEvent() {
                 notifyListener("Gold Down 1");
             }
         });
-        server.setListener(gameID, new GoldSlot2Listener() {
+        server.setGameListener(gameID, new GoldSlot2Listener() {
             @Override
             public void onEvent() {
                 notifyListener("Gold Down 2");
@@ -302,28 +368,28 @@ public class RmiClient implements NetworkController, Serializable {
                 }
             }
             case "Gold Down 1" -> {
-                for (Listener l: viewListeners) {
+                for (Listener l : viewListeners) {
                     if (l instanceof GoldSlot1Listener) {
                         l.onEvent();
                     }
                 }
             }
             case "Gold Down 2" -> {
-                for (Listener l: viewListeners) {
+                for (Listener l : viewListeners) {
                     if (l instanceof GoldSlot2Listener) {
                         l.onEvent();
                     }
                 }
             }
             case "Secret Objectives Selection Dialog" -> {
-                for (Listener l: viewListeners) {
+                for (Listener l : viewListeners) {
                     if (l instanceof ReadyToChooseSecretObjectiveListener) {
                         l.onEvent();
                     }
                 }
             }
             case "Starter Card Selection Dialog" -> {
-                for (Listener l: viewListeners) {
+                for (Listener l : viewListeners) {
                     if (l instanceof ReadyToChooseStarterCardListener) {
                         l.onEvent();
                     }
@@ -331,13 +397,13 @@ public class RmiClient implements NetworkController, Serializable {
             }
             case "Token Selection Dialog" -> {
                 for (Listener l : viewListeners) {
-                    if (l instanceof TokenListener) {
+                    if (l instanceof ReadyToChooseTokenListener) {
                         l.onEvent();
                     }
                 }
             }
             case "Draw or Grab" -> {
-                for (Listener l: viewListeners) {
+                for (Listener l : viewListeners) {
                     if (l instanceof DrawOrGrabListener) {
                         l.onEvent();
                     }

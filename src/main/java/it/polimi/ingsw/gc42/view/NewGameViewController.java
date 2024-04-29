@@ -3,8 +3,8 @@ package it.polimi.ingsw.gc42.view;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.network.PlayersNumberListener;
-import it.polimi.ingsw.gc42.network.RemoteServer;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,22 +30,26 @@ public class NewGameViewController implements Observable  {
     private TextField gameNameTextField;
 
     private int gameID;
-    private RemoteServer server;
+    NetworkController controller;
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
     private boolean isNameSet = false;
     private int players = 0;
 
-    public void setServer(RemoteServer server, int index) throws RemoteException {
-        this.server = server;
+    @FXML
+    private VBox startButton;
+    private boolean isStartButtonEnabled = false;
+
+    public void setServer(NetworkController controller, int index) throws RemoteException {
+        this.controller = controller;
         this.gameID = index;
         gameNameTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if (!gameNameTextField.getText().isEmpty()) {
                     try {
-                        server.setName(gameID, gameNameTextField.getText());
+                        controller.setName(gameNameTextField.getText());
                         isNameSet = true;
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
@@ -55,11 +59,11 @@ public class NewGameViewController implements Observable  {
                 }
             }
         });
-        server.getGames().get(gameID).setListener(new PlayersNumberListener() {
+        controller.setGameListener(new PlayersNumberListener() {
             @Override
             public void onEvent() {
                 try {
-                    players = server.getGames().get(gameID).getGame().getNumberOfPlayers();
+                    players = controller.getGame().getNumberOfPlayers();
                     if (players >= 2) {
                         // Doesn't start automatically, but allows to manually start the Game with 2 or 3 Players
                         enableStartButton();
@@ -78,20 +82,30 @@ public class NewGameViewController implements Observable  {
 
     public void setPlayer(Player player) {
         try {
-            server.addPlayer(gameID, player);
+            controller.addPlayer(player);
             refresh();
+            controller.pickGame(gameID);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+
         }
     }
 
     public void refresh() throws RemoteException {
+        players = controller.getGame().getNumberOfPlayers();
+        if (players >= 2) {
+            // Doesn't start automatically, but allows to manually start the Game with 2 or 3 Players
+            enableStartButton();
+        }
+        // Automatically starts once there are 4 Players
+        if (players == 4) {
+            notifyListeners("Game Started");
+        }
         VBox content = new VBox();
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        for (int i = 1; i <= server.getGames().get(gameID).getGame().getNumberOfPlayers(); i++) {
-            content.getChildren().add(getNewListItem(server.getGames().get(gameID).getGame().getPlayer(i)));
+        for (int i = 1; i <= controller.getNumberOfPlayers(); i++) {
+            content.getChildren().add(getNewListItem(controller.getPlayer(i)));
         }
 
         playersList.setContent(content);
@@ -114,7 +128,16 @@ public class NewGameViewController implements Observable  {
     }
 
     private void enableStartButton() {
+        isStartButtonEnabled = true;
+        startButton.setStyle("-fx-background-color: forestgreen; -fx-background-radius: 15;");
+    }
 
+    @FXML
+    public void start() {
+        if (isStartButtonEnabled) {
+            controller.startGame();
+            notifyListeners("Game Started");
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.interfaces.*;
+import it.polimi.ingsw.gc42.network.PlayersNumberListener;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -90,6 +91,7 @@ public class Game implements Observable, Serializable {
             }
         });
         notifyListeners("Points have changed");
+        notifyListeners("Players Changed");
         players.add(player);
         setFirstPlayer();
     }
@@ -286,6 +288,16 @@ public class Game implements Observable, Serializable {
         } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
     }
 
+    public int getIndexOfPlayer(String nickName) {
+        int index = -1;
+        for (Player player : players) {
+            if (player.getNickname().equals(nickName)) {
+                index = players.indexOf(player);
+            }
+        }
+        return index + 1;
+    }
+
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
@@ -338,6 +350,13 @@ public class Game implements Observable, Serializable {
             case "End game" ->{
                 for (Listener l: listeners) {
                     if(l instanceof LastTurnListener){
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Players Changed" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof PlayersNumberListener) {
                         l.onEvent();
                     }
                 }

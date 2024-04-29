@@ -2,12 +2,10 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
-import it.polimi.ingsw.gc42.network.GameCollection;
-import it.polimi.ingsw.gc42.network.RemoteCollection;
-import it.polimi.ingsw.gc42.network.RemoteObject;
-import it.polimi.ingsw.gc42.network.RemoteServer;
+import it.polimi.ingsw.gc42.network.*;
 import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import javafx.animation.ScaleTransition;
@@ -35,12 +33,14 @@ public class GamesListViewController {
     @FXML
     private VBox refreshButton;
 
-    private RemoteServer server;
+    private NetworkController server;
+
+    private Player player;
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private int pickedGame;
 
-    public void setServer(RemoteServer server) {
+    public void setServer(NetworkController server) {
         this.server = server;
     }
 
@@ -60,8 +60,8 @@ public class GamesListViewController {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        for (int i = 0; i < server.getGames().size(); i++) {
-            Pane newListItem = getNewListItem(server.getGames().get(i));
+        for (int i = 0; i < server.getServer().getGames().size(); i++) {
+            Pane newListItem = getNewListItem(server.getServer().getGames().get(i), i);
             int finalI = i;
             newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -73,7 +73,7 @@ public class GamesListViewController {
             content.getChildren().add(newListItem);
         }
 
-        if (server.getGames().size() == 0) {
+        if (server.getServer().getGames().size() == 0) {
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER);
 
@@ -89,7 +89,7 @@ public class GamesListViewController {
         gamesList.setContent(content);
     }
 
-    private Pane getNewListItem(GameController obj) {
+    private Pane getNewListItem(GameController obj, int gameID) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
         newListItem.setAlignment(Pos.CENTER_LEFT);
@@ -114,9 +114,41 @@ public class GamesListViewController {
             throw new RuntimeException(e);
         }
 
-        newListItem.getChildren().addAll(name, number, status);
+        HBox joinButton = new HBox();
+        joinButton.setSpacing(15);
+        joinButton.setAlignment(Pos.CENTER);
+        joinButton.setPrefWidth(50);
+        joinButton.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 5");
+        joinButton.setCursor(Cursor.HAND);
+        joinButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                joinGame(gameID);
+            }
+        });
+
+        Text connectTxt = new Text("JOIN");
+        connectTxt.setFont(Font.font("Tahoma Bold", 11));
+        connectTxt.setTextAlignment(TextAlignment.CENTER);
+
+        joinButton.getChildren().add(connectTxt);
+
+        newListItem.getChildren().addAll(name, number, status, joinButton);
         newListItem.setCursor(Cursor.HAND);
         return newListItem;
+    }
+
+    private void joinGame(int gameID) {
+        try {
+            server.addPlayer(player);
+            server.pickGame(gameID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     private String statusToString(GameStatus status) {

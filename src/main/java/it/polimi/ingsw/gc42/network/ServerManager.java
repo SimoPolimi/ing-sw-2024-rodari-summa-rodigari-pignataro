@@ -126,7 +126,17 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void setListener(int gameID, Listener listener) throws RemoteException {
+    public int getNumberOfPlayers(int gameID) throws RemoteException {
+        return collection.get(gameID).getGame().getNumberOfPlayers();
+    }
+
+    @Override
+    public Player getPlayer(int gameID, int index) throws RemoteException {
+        return collection.get(gameID).getPlayer(index);
+    }
+
+    @Override
+    public void setGameListener(int gameID, Listener listener) throws RemoteException {
         if (listener instanceof GameListener) {
             collection.get(gameID).setListener(listener);
         } else if (listener instanceof ResourceDeckViewListener) {
@@ -136,7 +146,36 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
         } else if (listener instanceof ResourceSlot1Listener || listener instanceof ResourceSlot2Listener
                 || listener instanceof GoldSlot1Listener || listener instanceof GoldSlot2Listener) {
             collection.get(gameID).getGame().setListener(listener);
+        } else if (listener instanceof PlayersNumberListener) {
+            collection.get(gameID).getGame().setListener(listener);
         }
+    }
+
+    @Override
+    public void setPlayerListener(int gameID, int playerID, Listener listener) throws RemoteException {
+        if (listener instanceof TokenListener) {
+            collection.get(gameID).getPlayer(playerID).setListener(listener);
+        } else if (listener instanceof PlayAreaListener) {
+            collection.get(gameID).getPlayer(playerID).getPlayField().setListener(listener);
+        }
+    }
+
+    @Override
+    public void removeCardListener(int gameID, int playerID, int cardID, Listener listener) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).getHandCard(cardID).removeListener(listener);
+    }
+
+    @Override
+    public int newGame() throws RemoteException {
+        GameController game = new GameController(null);
+        game.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
+        collection.add(game);
+        return collection.size() - 1;
+    }
+
+    @Override
+    public void startGame(int gameID) throws RemoteException {
+        collection.get(gameID).startGame();
     }
 
     public void setCollection(GameCollection collection) {

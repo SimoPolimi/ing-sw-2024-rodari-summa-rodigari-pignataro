@@ -75,7 +75,8 @@ public class GameWindow extends Application {
         Scene gamesSelectionScene = new Scene(gamesSelection.load());
 
         GamesListViewController gamesListViewController = gamesSelection.getController();
-        gamesListViewController.setServer(loginController.getNetworkController().getServer());
+        gamesListViewController.setServer(loginController.getNetworkController());
+        gamesListViewController.setPlayer(player);
         gamesListViewController.refresh();
 
         gamesListViewController.setListener(new NewGameListener() {
@@ -109,7 +110,7 @@ public class GameWindow extends Application {
         NewGameViewController newGameController = newGameLoader.getController();
         NetworkController network = loginController.getNetworkController();
         network.getNewGameController();
-        newGameController.setServer(network.getServer(), network.getIndex());
+        newGameController.setServer(network, network.getIndex());
         newGameController.setPlayer(player);
 
         newGameController.setListener(new NewGameListener() {
@@ -198,42 +199,5 @@ public class GameWindow extends Application {
         stage.show();
 
         gameController.addView();
-
-        // Scripting for testing
-        Player player1 = new Player("Cugola");
-        Player player2 = new Player("Gianpaolo");
-        Player player3 = new Player("Damiano");
-        player1.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-        player2.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-        player3.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-        ArrayList<Card> copyDeck = gameController.getGame().getResourcePlayingDeck().getDeck().getCopy();
-        gameController.addPlayer(player1);
-
-        gameController.addPlayer(player2);
-        gameController.addPlayer(player3);
-
-
-        player.setFirst(true);
-        gameController.addPlayer(player);
-        controller.setPlayer(player);
-
-        //gameController.setCurrentStatus(GameStatus.READY);
-        //player.setStatus(GameStatus.READY);
-        gameController.setCurrentStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-        player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-
-        player.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
-        player1.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
-        player2.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
-        player3.setSecretObjective((ObjectiveCard) gameController.getGame().getObjectivePlayingDeck().getDeck().draw());
-        player1.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
-        player2.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
-        player3.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
-        player1.setToken(Token.RED);
-        player2.setToken(Token.YELLOW);
-        player3.setToken(Token.GREEN);
-        player.setToken(Token.BLUE);
-        player.setStarterCard((StarterCard) gameController.getGame().getStarterDeck().draw());
-        player.setStatus(GameStatus.MY_TURN);
     }
 }

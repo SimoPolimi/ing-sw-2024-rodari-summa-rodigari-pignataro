@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -36,7 +37,8 @@ public class HandView {
     private boolean isHidden;
     private boolean isPrivacyModeEnabled;
     private VBox container;
-    private Player player;
+    private int playerID;
+    private NetworkController server;
     private boolean isFirstTime = true;
 
     private int selectedCard = 0;
@@ -190,8 +192,8 @@ public class HandView {
         container.getChildren().addAll(collapseHintContainer, card1Container, card2Container, card3Container, bottomHintContainer);
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(NetworkController server, int playerID) {
+
         handCardView1.getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -364,7 +366,7 @@ public class HandView {
         t3.setByX(distance);
         t1.setOnFinished((e) -> {
             controller.unlockInput();
-            if (player.getHandSize() == 3) {
+            if (server.getPlayer(playerID).getHandSize() == 3) {
                 controller.setPlayerCanDrawOrGrab(false);
             }
         });

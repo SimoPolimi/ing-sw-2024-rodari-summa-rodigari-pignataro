@@ -35,6 +35,10 @@ public class GameController implements Serializable, Observable {
         return game;
     }
 
+    public Player getPlayer(int index) {
+        return game.getPlayer(index);
+    }
+
     public GameStatus getCurrentStatus() {
         return currentStatus;
     }

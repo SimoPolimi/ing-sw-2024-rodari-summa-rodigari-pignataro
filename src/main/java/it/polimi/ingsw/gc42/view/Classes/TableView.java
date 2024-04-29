@@ -4,7 +4,11 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
+import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
+import it.polimi.ingsw.gc42.view.Interfaces.Flip1Listener;
+import it.polimi.ingsw.gc42.view.Interfaces.Flip2Listener;
+import it.polimi.ingsw.gc42.view.Interfaces.Flip3Listener;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,7 +31,7 @@ import java.util.Objects;
 
 public class TableView {
     // Attributes
-    private Player player;
+    private int playerID;
     private boolean isPrivacyModeEnabled;
     private AnchorPane playerTableContainer;
     private HandView hand;
@@ -37,6 +41,7 @@ public class TableView {
     private ImageView blackToken;
     private StackPane playArea;
     private StackPane phantomPlayArea;
+    private NetworkController server;
 
     private boolean isShowingPlacements = false;
     private double playAreaScale = 1;
@@ -68,58 +73,68 @@ public class TableView {
         return hand;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-        if (player.isFirst()) {
+    public void setServer(NetworkController server, int playerID) {
+        this.playerID = playerID;
+        this.server = server;
+        if (server.getPlayer(playerID).isFirst()) {
             blackToken.setVisible(true);
         }
-        player.setListener(new TokenListener() {
+        server.setPlayerListener(playerID, new TokenListener() {
             @Override
             public void onEvent() {
-                setPlayerToken(player.getToken());
+                setPlayerToken(server.getPlayer(playerID).getToken());
                 controller.refreshScoreBoard();
             }
         });
-        player.getPlayField().setListener(new PlayAreaListener() {
+        server.setPlayerListener(playerID, new PlayAreaListener() {
             @Override
             public void onEvent() {
-                PlayableCard card = player.getPlayField().getLastPlayedCard();
+                PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
                 addToPlayArea(card, card.getX(), card.getY());
             }
         });
-        Listener listener1 = new Listener() {
+        Flip1Listener listener1 = new Flip1Listener() {
             @Override
             public void onEvent() {
                 flipCard(hand.getHandCardView(1));
             }
         };
-        Listener listener2 = new Listener() {
+        Flip2Listener listener2 = new Flip2Listener() {
             @Override
             public void onEvent() {
                 flipCard(hand.getHandCardView(2));
             }
         };
-        Listener listener3 = new Listener() {
+        Flip3Listener listener3 = new Flip3Listener() {
             @Override
             public void onEvent() {
                 flipCard(hand.getHandCardView(3));
             }
         };
-        player.setListener(new HandListener() {
+        server.setPlayerListener(playerID, new HandListener() {
             @Override
             public void onEvent() {
                 Card card;
-                card = player.getHandCard(0);
+                card = server.getPlayer(playerID).getHandCard(0);
                 if (null != hand.getHandCardView(1).getModelCard()) {
-                    hand.getHandCardView(1).getModelCard().removeListener(listener1);
+                    try {
+                        server.removeListener(playerID, 1, listener1);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 hand.setPlayingOverlay(1, false);
                 hand.getHandCardView(1).setModelCard(card);
                 if (null != card) {
                     hand.getHandCardView(1).getModelCard().setListener(listener1);
+                    try {
+                        server.setHandCardListener(playerID, 1, listener1);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
-                card = player.getHandCard(1);
+                card = server.getPlayer(playerID).getHandCard(1);
                 if (null != hand.getHandCardView(2).getModelCard()) {
                     hand.getHandCardView(2).getModelCard().removeListener(listener2);
                 }
@@ -129,7 +144,7 @@ public class TableView {
                     hand.getHandCardView(2).getModelCard().setListener(listener2);
                 }
 
-                card = player.getHandCard(2);
+                card = server.getPlayer(playerID).getHandCard(2);
                 if (null != hand.getHandCardView(3).getModelCard()) {
                     hand.getHandCardView(3).getModelCard().removeListener(listener3);
                 }
@@ -138,22 +153,22 @@ public class TableView {
                 if (null != card) {
                     hand.getHandCardView(3).getModelCard().setListener(listener3);
                 }
-                if (player.getHandSize() == 3) {
+                if (server.getPlayer(playerID).getHandSize() == 3) {
                     controller.setPlayerCanDrawOrGrab(false);
                 }
             }
         });
-        player.setListener(new SecretObjectiveListener() {
+        server.setPlayerListener(playerID, new SecretObjectiveListener() {
             @Override
             public void onEvent() {
-                setSecretObjective(player.getSecretObjective());
+                setSecretObjective(server.getPlayer(playerID).getSecretObjective());
             }
         });
-        hand.setPlayer(player);
+        hand.setPlayer(server, playerID);
     }
 
-    public Player getPlayer() {
-        return player;
+    public int getPlayer() {
+        return playerID;
     }
 
     public boolean isPrivacyModeEnabled() {
@@ -279,7 +294,7 @@ public class TableView {
 
     private void showAvailablePlacements() {
         if (!isShowingPlacements) {
-            ArrayList<Coordinates> placements = player.getPlayField().getAvailablePlacements();
+            ArrayList<Coordinates> placements = server.getPlayer(playerID).getPlayField().getAvailablePlacements();
             for (Coordinates placement : placements) {
                 ImageView spotView = initImageView(new Image(
                                 Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
@@ -311,7 +326,7 @@ public class TableView {
             if (cardBeingPlayed > 0) {
                 boolean canBePlayed = true;
                 if (hand.getHandCardView(cardBeingPlayed).getModelCard() instanceof GoldCard) {
-                    canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(player.getPlayField().getPlayedCards());
+                    canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(server.getPlayer(playerID).getPlayField().getPlayedCards());
                 }
                 if (canBePlayed) {
                     hand.setPlayingOverlay(cardBeingPlayed, true);
@@ -339,7 +354,7 @@ public class TableView {
             hand.getHandCardView(cardBeingPlayed).getImageView().setScaleY(1);
         });
         transition.setOnFinished((e) -> {
-            controller.getNetworkController().playCard(player
+            controller.getNetworkController().playCard(server.getPlayer(playerID)
                     .getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
         });
         transition.play();

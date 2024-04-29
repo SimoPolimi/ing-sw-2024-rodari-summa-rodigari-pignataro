@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -53,7 +51,22 @@ public interface NetworkController {
 
     StarterCard drawStarterCard() throws RemoteException;
 
-    void setListener(int gameID, Listener listener) throws RemoteException;
+    void setGameListener(Listener listener) throws RemoteException;
 
+    void setPlayerListener(int playerID, Listener listener);
+
+    void setHandCardListener(int playerID, int cardID, Listener listener) throws RemoteException;
+
+    void removeListener(int playerID, int cardID, Listener listener) throws RemoteException;
+
+    void setName(String name) throws RemoteException;
+
+    Player getPlayer(int index);
+
+    int getIndexOfPlayer(String nickName) throws RemoteException;
+
+    int getNumberOfPlayers();
+
+    void startGame();
 
 }

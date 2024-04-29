@@ -8,7 +8,6 @@ import it.polimi.ingsw.gc42.model.interfaces.GoldSlot2Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot1Listener;
 import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot2Listener;
 import it.polimi.ingsw.gc42.network.NetworkController;
-import it.polimi.ingsw.gc42.network.RemoteServer;
 import it.polimi.ingsw.gc42.view.GUIController;
 import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
@@ -74,7 +73,7 @@ public class CommonTableView {
         this.commonObjDescriptiionBox1 = commonObjDescriptiionBox1;
         this.commonObjDescriptiionBox2 = commonObjDescriptiionBox2;
         try {
-            controller.setListener(gameID,new ResourceDeckViewListener() {
+            controller.setGameListener(new ResourceDeckViewListener() {
                 @Override
                 public void onEvent() {
                     resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy());
@@ -107,7 +106,7 @@ public class CommonTableView {
                 select(0);
             }
         });
-        controller.setListener(gameID,new GoldDeckViewListener() {
+        controller.setGameListener(new GoldDeckViewListener() {
             @Override
             public void onEvent() {
                 goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy());
@@ -138,7 +137,7 @@ public class CommonTableView {
         });
         resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
-        controller.setListener(gameID,new ResourceSlot1Listener() {
+        controller.setGameListener(new ResourceSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = null;
@@ -178,7 +177,7 @@ public class CommonTableView {
         });
         resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
-        controller.setListener(gameID,new ResourceSlot2Listener() {
+        controller.setGameListener(new ResourceSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = null;
@@ -218,7 +217,7 @@ public class CommonTableView {
         });
         goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
                 .getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
-        controller.setListener(gameID, new GoldSlot1Listener() {
+        controller.setGameListener(new GoldSlot1Listener() {
             @Override
             public void onEvent() {
                 Card card = null;
@@ -257,7 +256,7 @@ public class CommonTableView {
             }
         });
         goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
-        controller.setListener(gameID, new GoldSlot2Listener() {
+        controller.setGameListener(new GoldSlot2Listener() {
             @Override
             public void onEvent() {
                 Card card = null;
