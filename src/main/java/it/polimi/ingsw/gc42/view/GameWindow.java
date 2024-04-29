@@ -93,7 +93,7 @@ public class GameWindow extends Application {
             @Override
             public void onEvent() {
                 try {
-                    goToPlayScreen(stage);
+                    goToPlayScreen(stage, loginController.getNickName(), false);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -117,7 +117,7 @@ public class GameWindow extends Application {
             @Override
             public void onEvent() {
                 try {
-                    goToPlayScreen(stage);
+                    goToPlayScreen(stage, player.getNickname(), newGameController.getStartGame());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,7 +127,7 @@ public class GameWindow extends Application {
         stage.show();
     }
 
-    private void goToPlayScreen(Stage stage) throws IOException {
+    private void goToPlayScreen(Stage stage, String nickName, boolean startGame) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
@@ -143,6 +143,11 @@ public class GameWindow extends Application {
         stage.setMinWidth(stage.getWidth());
 
         controller.setGameController(gameController, gameController.getIndex());
+        controller.setPlayer(gameController.getPlayer(gameController.getIndexOfPlayer(nickName)));
+
+        if (startGame) {
+            gameController.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
+        }
 
         scene.setOnKeyPressed(e -> {
             if (controller.canReadInput()) {
@@ -197,5 +202,6 @@ public class GameWindow extends Application {
         });
 
         stage.show();
+        controller.showWaitingForServerDialog();
     }
 }

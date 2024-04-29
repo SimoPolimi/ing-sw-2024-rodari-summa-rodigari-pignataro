@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
+import it.polimi.ingsw.gc42.view.Dialog.TextDialog;
 import it.polimi.ingsw.gc42.view.Interfaces.DrawOrGrabListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.gc42.view.Dialog.Dialog;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -126,30 +128,6 @@ public class GUIController implements ViewController {
         } catch (AlreadyBoundException e) {
             throw new RuntimeException(e);
         }
-        controller.setGameListener(new ReadyToChooseSecretObjectiveListener() {
-            @Override
-            public void onEvent() {
-                showSecretObjectivesSelectionDialog();
-            }
-        });
-        controller.setGameListener(new ReadyToChooseStarterCardListener() {
-            @Override
-            public void onEvent() {
-                showStarterCardSelectionDialog();
-            }
-        });
-        controller.setGameListener(new ReadyToChooseTokenListener() {
-            @Override
-            public void onEvent() {
-                showTokenSelectionDialog();
-            }
-        });
-        controller.setGameListener(new DrawOrGrabListener() {
-            @Override
-            public void onEvent() {
-                askToDrawOrGrab();
-            }
-        });
         commonTable = new CommonTableView(controller, gameID, this,
                 new DeckView(resourceDeckContainer), new DeckView(goldDeckContainer), resourceDown1,
                 resourceDown2, goldDown1, goldDown2, commonObjective1, commonObjective2, objName1, objDescr1,
@@ -363,7 +341,7 @@ public class GUIController implements ViewController {
     @Override
     public void showSecretObjectivesSelectionDialog() {
         CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
-        ArrayList<ObjectiveCard> cards = player.getTemporaryObjectiveCards();
+        ArrayList<ObjectiveCard> cards = controller.getPlayer(playerID).getTemporaryObjectiveCards();
         for (ObjectiveCard card : cards) {
             dialog.addCard(card);
         }
@@ -375,7 +353,7 @@ public class GUIController implements ViewController {
                 player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
             }
         });
-        showDialog(dialog);
+        Platform.runLater(() -> showDialog(dialog));
     }
 
     @Override
@@ -406,12 +384,12 @@ public class GUIController implements ViewController {
         dialog.setListener(new TokenListener() {
             @Override
             public void onEvent() {
-                player.setToken(dialog.getPickedToken());
+                controller.setPlayerToken(playerID, dialog.getPickedToken());
                 hideDialog();
-                player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+                controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
             }
         });
-        showDialog(dialog);
+        Platform.runLater(() -> showDialog(dialog));
     }
 
     public void onEnterPressed() {
@@ -598,7 +576,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyPlayersPointsChanged() {
-        refreshScoreBoard();
+        Platform.runLater(this::refreshScoreBoard);
     }
 
     @Override
@@ -661,6 +639,21 @@ public class GUIController implements ViewController {
     @Override
     public void notifyCommonObjectivesChanged() {
         commonTable.refreshCommonObjectives();
+    }
+
+    @Override
+    public void showWaitingForServerDialog() {
+        TextDialog dialog = new TextDialog("Waiting for Server...", false);
+        showDialog(dialog);
+        controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+    }
+
+    @Override
+    public void getReady() {
+        if (isShowingDialog) {
+            hideDialog();
+        }
+        controller.setPlayerStatus(playerID, GameStatus.READY);
     }
 
     public void setPlayerCanPlayCards(boolean value) {

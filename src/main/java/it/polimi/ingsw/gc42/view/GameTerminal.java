@@ -440,6 +440,16 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
+    @Override
+    public void showWaitingForServerDialog() {
+
+    }
+
+    @Override
+    public void getReady() {
+
+    }
+
     private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners, ArrayList<PlayableCard> cards) {
         String string = "";
         PlayField field = player.getPlayField();

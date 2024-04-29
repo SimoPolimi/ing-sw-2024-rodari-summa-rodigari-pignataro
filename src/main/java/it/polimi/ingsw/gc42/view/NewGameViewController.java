@@ -41,6 +41,7 @@ public class NewGameViewController implements Observable, ViewController {
 
     private boolean isNameSet = false;
     private int players = 0;
+    private boolean startGame = false;
 
     @FXML
     private VBox startButton;
@@ -64,25 +65,6 @@ public class NewGameViewController implements Observable, ViewController {
                 }
             }
         });
-        controller.setGameListener(new PlayersNumberListener() {
-            @Override
-            public void onEvent() {
-                try {
-                    players = controller.getGame().getNumberOfPlayers();
-                    if (players >= 2) {
-                        // Doesn't start automatically, but allows to manually start the Game with 2 or 3 Players
-                        enableStartButton();
-                    }
-                    // Automatically starts once there are 4 Players
-                    if (players == 4) {
-                        notifyListeners("Game Started");
-                    }
-                    refresh();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
     }
 
     public void setPlayer(Player player) {
@@ -96,6 +78,10 @@ public class NewGameViewController implements Observable, ViewController {
         } catch (AlreadyBoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean getStartGame() {
+        return startGame;
     }
 
     public void refresh() throws RemoteException {
@@ -143,7 +129,7 @@ public class NewGameViewController implements Observable, ViewController {
     @FXML
     public void start() {
         if (isStartButtonEnabled) {
-            controller.startGame();
+            startGame = true;
             notifyListeners("Game Started");
         }
     }
@@ -250,6 +236,16 @@ public class NewGameViewController implements Observable, ViewController {
 
     @Override
     public void notifyCommonObjectivesChanged() {
+        // Don't need
+    }
+
+    @Override
+    public void showWaitingForServerDialog() {
+        // Don't need
+    }
+
+    @Override
+    public void getReady() {
         // Don't need
     }
 }

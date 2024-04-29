@@ -48,6 +48,7 @@ public abstract class Dialog {
 
     // Methods
     public abstract Node build();
+
     public void addNode(Node node) {
         container.getChildren().add(node);
     }

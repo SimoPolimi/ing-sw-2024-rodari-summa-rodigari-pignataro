@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
@@ -103,6 +104,16 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void addView(int gameID, RemoteViewController viewController) throws RemoteException {
         collection.get(gameID).addView(viewController);
+    }
+
+    @Override
+    public void setPlayerStatus(int gameID, int playerID, GameStatus status) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).setStatus(status);
+    }
+
+    @Override
+    public void setPlayerToken(int gameID, int playerID, Token token) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).setToken(token);
     }
 
     @Override

@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 public interface ViewController extends Serializable {
     void showSecretObjectivesSelectionDialog();
@@ -22,4 +21,6 @@ public interface ViewController extends Serializable {
     void notifyPlayersHandChanged(int playerID);
     void notifyPlayersObjectiveChanged(int playerID);
     void notifyCommonObjectivesChanged();
+    void showWaitingForServerDialog();
+    void getReady();
 }

@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
@@ -53,12 +54,6 @@ public interface NetworkController {
 
     StarterCard drawStarterCard() throws RemoteException;
 
-    void setGameListener(Listener listener) throws RemoteException;
-
-    void setPlayerListener(int playerID, Listener listener);
-
-    void setHandCardListener(int playerID, int cardID, Listener listener) throws RemoteException;
-
     void removeListener(int playerID, int cardID, Listener listener) throws RemoteException;
 
     void setName(String name) throws RemoteException;
@@ -70,5 +65,9 @@ public interface NetworkController {
     int getNumberOfPlayers();
 
     void startGame();
+
+    void setPlayerStatus(int playerID, GameStatus status);
+
+    void setPlayerToken(int playerID, Token token);
 
 }

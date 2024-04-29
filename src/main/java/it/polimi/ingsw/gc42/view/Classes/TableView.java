@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc42.view.Interfaces.Flip1Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.Flip2Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.Flip3Listener;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -373,8 +374,10 @@ public class TableView {
     }
 
     public void refreshToken() {
-        setPlayerToken(server.getPlayer(playerID).getToken());
-        controller.refreshScoreBoard();
+        if (null != server.getPlayer(playerID).getToken()) {
+            setPlayerToken(server.getPlayer(playerID).getToken());
+            Platform.runLater(() -> controller.refreshScoreBoard());
+        }
     }
 
     public void refreshPlayArea() {

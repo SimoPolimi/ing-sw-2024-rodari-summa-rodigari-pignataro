@@ -81,7 +81,7 @@
                         </ScrollPane>
                     </children>
                 </VBox>
-                <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: grey; -fx-background-radius: 15">
+                <VBox fx:id="startButton" onMouseClicked="#start" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: grey; -fx-background-radius: 15">
                     <children>
                         <Text fx:id="playTxt" fill="white" text="Start">
                             <font>

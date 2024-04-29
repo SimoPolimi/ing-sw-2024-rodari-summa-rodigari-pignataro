@@ -68,9 +68,7 @@ public class GameController implements Serializable, Observable {
     }
 
     public void startGame() {
-        for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
-            game.getPlayer(i).setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
-        }
+        setCurrentStatus(GameStatus.READY);
     }
 
     public void addPlayer(Player player) {
@@ -294,6 +292,16 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    private void setupViews() {
+        for (RemoteViewController view: views) {
+            try {
+                view.getReady();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     /**
      * Changes the status of the Game
      */
@@ -304,10 +312,14 @@ public class GameController implements Serializable, Observable {
             case CONNECTING:
                 break;
             case WAITING_FOR_SERVER:
+                currentStatus = GameStatus.READY;
+                setupViews();
                 break;
             case READY:
                 currentStatus = GameStatus.READY_TO_CHOOSE_TOKEN;
-                startGame();
+                for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
+                    game.getPlayer(i).setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+                }
                 break;
             case READY_TO_CHOOSE_TOKEN:
                 currentStatus = GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE;

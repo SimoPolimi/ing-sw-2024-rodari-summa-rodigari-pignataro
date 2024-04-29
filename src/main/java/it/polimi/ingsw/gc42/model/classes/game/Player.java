@@ -15,6 +15,50 @@ import java.util.ArrayList;
  * Player class. It implements the Observable class
  */
 public class Player implements Observable, Serializable {
+
+    // Attributes
+    private final ArrayList<Listener> listeners = new ArrayList<>();
+    private String nickname;
+    private boolean isFirst;
+    private Token token;
+    private int points;
+    private ObjectiveCard secretObjective;
+    private final ArrayList<PlayableCard> hand = new ArrayList<>();
+    private final PlayField playField = new PlayField();
+
+    private ObjectiveCard tempObjective1;
+    private ObjectiveCard tempObjective2;
+    private GameStatus status;
+
+    // Constructor Methods
+    public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
+        this.nickname = nickname;
+        this.isFirst = isFirst;
+        this.points = points;
+        this.token = token;
+        this.secretObjective = objectiveCard;
+        setStatus(GameStatus.NOT_IN_GAME);
+
+    }
+
+    public Player(Token token) {
+        this.nickname = "Bot";
+        this.isFirst = false;
+        this.points = 0;
+        this.token = token;
+        this.secretObjective = null;
+        setStatus(GameStatus.NOT_IN_GAME);
+    }
+
+    public Player(String nickname) {
+        this.nickname = nickname;
+        this.isFirst = false;
+        this.points = 0;
+        this.token = null;
+        this.secretObjective = null;
+        setStatus(GameStatus.NOT_IN_GAME);
+    }
+
     /**
      * Implement method getter for nickname
      *
@@ -139,47 +183,6 @@ public class Player implements Observable, Serializable {
      */
     public PlayField getPlayField() {
         return playField;
-    }
-
-    private final ArrayList<Listener> listeners = new ArrayList<>();
-    private String nickname;
-    private boolean isFirst;
-    private Token token;
-    private int points;
-    private ObjectiveCard secretObjective;
-    private final ArrayList<PlayableCard> hand = new ArrayList<>();
-    private final PlayField playField = new PlayField();
-
-    private ObjectiveCard tempObjective1;
-    private ObjectiveCard tempObjective2;
-    private GameStatus status;
-
-    public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
-        this.nickname = nickname;
-        this.isFirst = isFirst;
-        this.points = points;
-        this.token = token;
-        this.secretObjective = objectiveCard;
-        setStatus(GameStatus.NOT_IN_GAME);
-
-    }
-
-    public Player(Token token) {
-        this.nickname = "Bot";
-        this.isFirst = false;
-        this.points = 0;
-        this.token = token;
-        this.secretObjective = null;
-        setStatus(GameStatus.NOT_IN_GAME);
-    }
-
-    public Player(String nickname) {
-        this.nickname = nickname;
-        this.isFirst = false;
-        this.points = 0;
-        this.token = null;
-        this.secretObjective = null;
-        setStatus(GameStatus.NOT_IN_GAME);
     }
 
     @Override

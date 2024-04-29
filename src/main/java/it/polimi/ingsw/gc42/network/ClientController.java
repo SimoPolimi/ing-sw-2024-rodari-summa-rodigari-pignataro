@@ -88,4 +88,9 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     public void notifyCommonObjectivesChanged() throws RemoteException {
         viewController.notifyCommonObjectivesChanged();
     }
+
+    @Override
+    public void getReady() throws RemoteException {
+        viewController.getReady();
+    }
 }
