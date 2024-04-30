@@ -140,8 +140,8 @@ public class GamesListViewController {
 
     private void joinGame(int gameID) {
         try {
-            server.addPlayer(player);
             server.pickGame(gameID);
+            server.addPlayer(player);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
