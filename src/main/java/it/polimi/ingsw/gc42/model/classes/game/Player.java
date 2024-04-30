@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
@@ -29,6 +30,8 @@ public class Player implements Observable, Serializable {
     private ObjectiveCard tempObjective1;
     private ObjectiveCard tempObjective2;
     private GameStatus status;
+
+    private StarterCard temporaryStarterCard;
 
     // Constructor Methods
     public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
@@ -185,6 +188,10 @@ public class Player implements Observable, Serializable {
         return playField;
     }
 
+    public StarterCard getTemporaryStarterCard() {
+        return temporaryStarterCard;
+    }
+
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
@@ -259,7 +266,7 @@ public class Player implements Observable, Serializable {
      */
     public void setStarterCard(StarterCard card) {
         try {
-            playCard(card, 0, 0);
+            playCard(-1, 0, 0);
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
@@ -275,6 +282,10 @@ public class Player implements Observable, Serializable {
         cards.add(tempObjective1);
         cards.add(tempObjective2);
         return cards;
+    }
+
+    public void drawTemporaryStarterCard(Deck starterDeck) {
+        temporaryStarterCard = (StarterCard) starterDeck.draw();
     }
 
     /**
@@ -294,11 +305,17 @@ public class Player implements Observable, Serializable {
     /**
      * Move a Card from the Player's Hand to the Player's Field in position (x,y)
      *
-     * @param card the Card the Player wants to play
+     * @param handCard: the index of the Card the Player wants to play
      * @param x    coordinate x of the position where the card will be placed
      * @param y    coordinate y of the position where the card will be placed
      */
-    public void playCard(PlayableCard card, int x, int y) throws IllegalPlacementException, PlacementConditionNotMetException, IllegalActionException {
+    public void playCard(int handCard, int x, int y) throws IllegalPlacementException, PlacementConditionNotMetException, IllegalActionException {
+        PlayableCard card;
+        if (handCard == -1) {
+            card = temporaryStarterCard;
+        } else {
+            card = hand.get(handCard - 1);
+        }
         try {
             if(hand.size() == 3 || card instanceof StarterCard){
                 card.setX(x);

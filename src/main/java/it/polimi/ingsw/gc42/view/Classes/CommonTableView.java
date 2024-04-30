@@ -3,15 +3,10 @@ package it.polimi.ingsw.gc42.view.Classes;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.model.interfaces.GoldSlot1Listener;
-import it.polimi.ingsw.gc42.model.interfaces.GoldSlot2Listener;
-import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot1Listener;
-import it.polimi.ingsw.gc42.model.interfaces.ResourceSlot2Listener;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
-import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
@@ -119,8 +114,6 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getResourcePlayingDeck().getSlot(1).getFrontImage()))));
         // onClick
         resourceDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -144,8 +137,6 @@ public class CommonTableView {
                 select(0);
             }
         });
-        resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getResourcePlayingDeck().getSlot(2).getFrontImage()))));
         // onClick
         resourceDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -169,8 +160,6 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getGoldPlayingDeck().getSlot(1).getFrontImage()))));
         // onClick
         goldDown1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -194,7 +183,6 @@ public class CommonTableView {
                 select(0);
             }
         });
-        goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller.getGame().getGoldPlayingDeck().getSlot(2).getFrontImage()))));
         // onClick
         goldDown2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -446,11 +434,11 @@ public class CommonTableView {
     }
 
     public void refreshResourceDeck() {
-        resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy());
+        Platform.runLater(() -> resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy()));
     }
 
     public void refreshGoldDeck() {
-        goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy());
+        Platform.runLater(() -> goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy()));
     }
 
     public void refreshResourceSlot(int slot) {

@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class HandView {
@@ -44,8 +42,9 @@ public class HandView {
     private int selectedCard = 0;
     private int lastSelected = 0;
 
-    public HandView(boolean isPrivacyModeEnabled, GUIController controller) {
+    public HandView(boolean isPrivacyModeEnabled, GUIController controller, NetworkController server) {
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
+        this.server = server;
         build();
         this.controller = controller;
         hide();
@@ -192,7 +191,8 @@ public class HandView {
         container.getChildren().addAll(collapseHintContainer, card1Container, card2Container, card3Container, bottomHintContainer);
     }
 
-    public void setPlayer(NetworkController server, int playerID) {
+    public void setPlayer(int playerID) {
+        this.playerID = playerID;
 
         handCardView1.getImageView().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -328,51 +328,55 @@ public class HandView {
     }
 
     public void refresh(Runnable runnable) {
-        controller.blockInput();
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(150), handCardView1.getImageView());
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(150), handCardView2.getImageView());
-        TranslateTransition t3 = new TranslateTransition(Duration.millis(150), handCardView3.getImageView());
-        int distance;
-        if (isHidden) {
-            distance = -100;
-        } else {
-            distance = -300;
-        }
-        t1.setByX(distance);
-        t2.setByX(distance);
-        t3.setByX(distance);
+        Platform.runLater(() -> {
+            controller.blockInput();
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(150), handCardView1.getImageView());
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(150), handCardView2.getImageView());
+            TranslateTransition t3 = new TranslateTransition(Duration.millis(150), handCardView3.getImageView());
+            int distance;
+            if (isHidden) {
+                distance = -100;
+            } else {
+                distance = -300;
+            }
+            t1.setByX(distance);
+            t2.setByX(distance);
+            t3.setByX(distance);
 
-        t1.setOnFinished((e) -> {
-            runnable.run();
-            showAfterRefresh();
+            t1.setOnFinished((e) -> {
+                runnable.run();
+                showAfterRefresh();
+            });
+            t1.play();
+            t2.play();
+            t3.play();
         });
-        t1.play();
-        t2.play();
-        t3.play();
     }
 
     public void showAfterRefresh() {
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
-        TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
-        int distance;
-        if (isHidden) {
-            distance = 100;
-        } else {
-            distance = 300;
-        }
-        t1.setByX(distance);
-        t2.setByX(distance);
-        t3.setByX(distance);
-        t1.setOnFinished((e) -> {
-            controller.unlockInput();
-            if (server.getPlayer(playerID).getHandSize() == 3) {
-                controller.setPlayerCanDrawOrGrab(false);
+        Platform.runLater(() -> {
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
+            TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
+            int distance;
+            if (isHidden) {
+                distance = 100;
+            } else {
+                distance = 300;
             }
+            t1.setByX(distance);
+            t2.setByX(distance);
+            t3.setByX(distance);
+            t1.setOnFinished((e) -> {
+                controller.unlockInput();
+                if (null != server && server.getPlayer(playerID).getHandSize() == 3) {
+                    controller.setPlayerCanDrawOrGrab(false);
+                }
+            });
+            t1.play();
+            t2.play();
+            t3.play();
         });
-        t1.play();
-        t2.play();
-        t3.play();
     }
 
     private void selectCard(int selectedCard, boolean unlockInputAfter) {

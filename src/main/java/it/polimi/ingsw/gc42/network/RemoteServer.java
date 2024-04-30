@@ -10,7 +10,6 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -26,7 +25,7 @@ public interface RemoteServer extends Remote {
 
     void nextTurn(int gameID) throws RemoteException;
 
-    void playCard(int gameID, PlayableCard card, int x, int y) throws RemoteException;
+    void playCard(int gameID, int playerID,  int cardID, int x, int y) throws RemoteException;
 
     void flipCard(int gameID, Card card) throws RemoteException;
 
@@ -53,10 +52,6 @@ public interface RemoteServer extends Remote {
 
     Player getPlayer(int gameID, int index) throws RemoteException;
 
-    void setGameListener(int gameId, Listener listener) throws RemoteException;
-
-    void setPlayerListener(int gameID, int playerID, Listener listener) throws RemoteException;
-
     void removeCardListener(int gameID, int playerID, int cardID, Listener listener) throws RemoteException;
 
     int newGame() throws RemoteException;
@@ -68,4 +63,10 @@ public interface RemoteServer extends Remote {
     void setPlayerStatus(int gameID, int playerID, GameStatus status) throws RemoteException;
 
     void setPlayerToken(int gameID, int playerID, Token token) throws RemoteException;
+
+    void setPlayerSecretObjective(int gameID, int playerID, int pickedCard) throws RemoteException;
+
+    void setPlayerStarterCard(int gameID, int playerID) throws RemoteException;
+
+    void flipStarterCard(int gameID, int playerID) throws RemoteException;
 }

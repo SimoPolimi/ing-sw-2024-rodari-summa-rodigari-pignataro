@@ -249,7 +249,8 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(color("Invalid coordinate choice! Retry...", UiColors.RED));
                     } else {
                         valid = true;
-                        controller.playCard(player.getHandCard(Integer.parseInt(input)), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
+                        //TODO: Fix
+                        controller.playCard(1, Integer.valueOf(input), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
                     }
                 }
             }

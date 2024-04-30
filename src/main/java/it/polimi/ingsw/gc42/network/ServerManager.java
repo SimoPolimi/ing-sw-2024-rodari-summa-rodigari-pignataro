@@ -2,18 +2,14 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.Interfaces.GoldDeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ResourceDeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
+import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -52,8 +48,8 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void playCard(int gameID, PlayableCard card, int x, int y) throws RemoteException {
-        collection.get(gameID).playCard(card, x, y);
+    public void playCard(int gameID, int playerID,  int cardID, int x, int y) throws RemoteException {
+        collection.get(gameID).playCard(playerID, cardID, x, y);
     }
 
     @Override
@@ -152,33 +148,19 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void setGameListener(int gameID, Listener listener) throws RemoteException {
-        if (listener instanceof GameListener) {
-            collection.get(gameID).setListener(listener);
-        } else if (listener instanceof ResourceDeckViewListener) {
-            collection.get(gameID).getGame().getResourcePlayingDeck().getDeck().setListener(listener);
-        } else if (listener instanceof GoldDeckViewListener) {
-            collection.get(gameID).getGame().getGoldPlayingDeck().getDeck().setListener(listener);
-        } else if (listener instanceof ResourceSlot1Listener || listener instanceof ResourceSlot2Listener
-                || listener instanceof GoldSlot1Listener || listener instanceof GoldSlot2Listener) {
-            collection.get(gameID).getGame().setListener(listener);
-        } else if (listener instanceof PlayersNumberListener) {
-            collection.get(gameID).getGame().setListener(listener);
-        }
-    }
-
-    @Override
-    public void setPlayerListener(int gameID, int playerID, Listener listener) throws RemoteException {
-        if (listener instanceof TokenListener) {
-            collection.get(gameID).getPlayer(playerID).setListener(listener);
-        } else if (listener instanceof PlayAreaListener) {
-            collection.get(gameID).getPlayer(playerID).getPlayField().setListener(listener);
-        }
-    }
-
-    @Override
     public void removeCardListener(int gameID, int playerID, int cardID, Listener listener) throws RemoteException {
         collection.get(gameID).getPlayer(playerID).getHandCard(cardID).removeListener(listener);
+    }
+
+    @Override
+    public void setPlayerStarterCard(int gameID, int playerID) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).setStarterCard(collection.get(gameID)
+                .getPlayer(playerID).getTemporaryStarterCard());
+    }
+
+    @Override
+    public void flipStarterCard(int gameID, int playerID) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).getTemporaryStarterCard().flip();
     }
 
     @Override
@@ -192,6 +174,12 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void startGame(int gameID) throws RemoteException {
         collection.get(gameID).startGame();
+    }
+
+    @Override
+    public void setPlayerSecretObjective(int gameID, int playerID, int pickedCard) throws RemoteException {
+        collection.get(gameID).getPlayer(playerID).setSecretObjective(collection.get(gameID)
+                .getPlayer(playerID).getTemporaryObjectiveCards().get(pickedCard));
     }
 
     @Override

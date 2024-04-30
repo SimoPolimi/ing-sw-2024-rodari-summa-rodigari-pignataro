@@ -28,7 +28,7 @@ public interface NetworkController {
 
     void nextTurn();
 
-     void playCard(PlayableCard card, int x, int y);
+     void playCard(int handCard, int x, int y);
 
     void flipCard(Card card);
 
@@ -69,5 +69,11 @@ public interface NetworkController {
     void setPlayerStatus(int playerID, GameStatus status);
 
     void setPlayerToken(int playerID, Token token);
+
+    void setPlayerSecretObjective(int playerID, int pickedCard);
+
+    void setPlayerStarterCard(int playerID);
+
+    void flipStarterCard(int playerID);
 
 }

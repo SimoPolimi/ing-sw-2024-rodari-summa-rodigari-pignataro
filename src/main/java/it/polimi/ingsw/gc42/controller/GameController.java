@@ -6,21 +6,16 @@ import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.network.PlayersNumberListener;
-import it.polimi.ingsw.gc42.network.RemoteObject;
 import it.polimi.ingsw.gc42.network.RemoteViewController;
+import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
-import javax.swing.text.View;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class GameController implements Serializable, Observable {
     private final Game game;
@@ -63,6 +58,90 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 currentStatus = GameStatus.LAST_TURN;
+            }
+        });
+        game.getResourcePlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyDeckChanged(CardType.RESOURCECARD);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyDeckChanged(CardType.GOLDCARD);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.setListener(new ResourceSlot1Listener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifySlotCardChanged(CardType.RESOURCECARD, 1);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.setListener(new ResourceSlot2Listener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifySlotCardChanged(CardType.RESOURCECARD, 2);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.setListener(new GoldSlot1Listener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifySlotCardChanged(CardType.GOLDCARD, 1);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.setListener(new GoldSlot2Listener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifySlotCardChanged(CardType.GOLDCARD, 2);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.setListener(new CommonObjectivesListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyCommonObjectivesChanged();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
     }
@@ -126,6 +205,18 @@ public class GameController implements Serializable, Observable {
                 }
             }
         });
+        player.getPlayField().setListener(new PlayAreaListener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view: views) {
+                    try {
+                        view.notifyPlayersPlayAreaChanged(game.getIndexOfPlayer(player.getNickname()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
         game.addPlayer(player);
         notifyListeners("Number of Players changed");
     }
@@ -149,16 +240,17 @@ public class GameController implements Serializable, Observable {
         }
     }
 
-    public void playCard(PlayableCard card, int x, int y) {
-        Player player = game.getCurrentPlayer();
+    public void playCard(int playerID, int handCard, int x, int y) {
+        Player player = game.getPlayer(playerID);
         // TODO: test drawing in GameStatus.LAST_TURN
         try {
             if(player.equals(game.getCurrentPlayer())) {
-                player.playCard(card, x, y);
+                player.playCard(handCard, x, y);
+
                 // Don's ask to grab or draw if there are no cards to be picked
                 if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
                     for (RemoteViewController view : views) {
-                        if (view.getOwner().equals(player)) {
+                        if (null != view.getOwner() && view.getOwner().equals(player)) {
                             view.askToDrawOrGrab();
                         }
                     }
@@ -253,6 +345,9 @@ public class GameController implements Serializable, Observable {
     }
 
     public void beginStarterCardChoosing() {
+        for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
+            game.getPlayer(i).drawTemporaryStarterCard(game.getStarterDeck());
+        }
         for (RemoteViewController view : views) {
             try {
                 view.showStarterCardSelectionDialog();

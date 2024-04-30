@@ -87,12 +87,8 @@ public class NewGameViewController implements Observable, ViewController {
     public void refresh() throws RemoteException {
         players = controller.getGame().getNumberOfPlayers();
         if (players >= 2) {
-            // Doesn't start automatically, but allows to manually start the Game with 2 or 3 Players
+            // Doesn't start automatically, but allows to manually start the Game
             enableStartButton();
-        }
-        // Automatically starts once there are 4 Players
-        if (players == 4) {
-            notifyListeners("Game Started");
         }
         VBox content = new VBox();
         content.setAlignment(Pos.CENTER);

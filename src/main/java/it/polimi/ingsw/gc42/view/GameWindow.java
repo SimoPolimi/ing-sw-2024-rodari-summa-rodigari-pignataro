@@ -132,7 +132,6 @@ public class GameWindow extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
         NetworkController gameController = loginController.getNetworkController();
-        controller.build();
         stage.setScene(scene);
         stage.setResizable(true);
         //stage.setMinHeight(670);
@@ -143,6 +142,7 @@ public class GameWindow extends Application {
         stage.setMinWidth(stage.getWidth());
 
         controller.setGameController(gameController, gameController.getIndex());
+        controller.build();
         controller.setPlayer(gameController.getPlayer(gameController.getIndexOfPlayer(nickName)));
 
         if (startGame) {

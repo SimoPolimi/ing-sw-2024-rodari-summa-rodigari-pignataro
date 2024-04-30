@@ -35,6 +35,7 @@ public class Game implements Observable, Serializable {
         this.playerHasReachedTwentyPoints = false;
         try {
             initPlayingDecks();
+            notifyListeners("Common Objectives");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -336,6 +337,13 @@ public class Game implements Observable, Serializable {
             case "Gold 2" -> {
                 for (Listener l: listeners) {
                     if (l instanceof GoldSlot2Listener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Common Objectives" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof CommonObjectivesListener) {
                         l.onEvent();
                     }
                 }

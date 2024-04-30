@@ -51,6 +51,33 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
+    public void flipStarterCard(int playerID) {
+        try {
+            server.flipStarterCard(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void setPlayerStarterCard(int playerID) {
+        try {
+            server.setPlayerStarterCard(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void setPlayerSecretObjective(int playerID, int pickedCard) {
+        try {
+            server.setPlayerSecretObjective(gameID, playerID, pickedCard);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
             Random random = new Random();
@@ -86,8 +113,7 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public Player getPlayer(int index) {
         try {
-            Player player =  server.getPlayer(gameID, index);
-            return player;
+            return server.getPlayer(gameID, index);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -153,9 +179,9 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public void playCard(PlayableCard card, int x, int y) {
+    public void playCard(int handCard, int x, int y) {
         try {
-            server.playCard(gameID, card, x, y);
+            server.playCard(gameID, playerID, handCard, x, y);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

@@ -33,6 +33,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     protected final ArrayList<HandCardView> cards = new ArrayList<>();
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private Card pickedCard;
+    int pickedCardNumber;
     private int lastSelected = -1;
     private int selectedCard = -1;
 
@@ -47,6 +48,10 @@ public class CardPickerDialog extends Dialog implements Observable {
 
     public Card getPickedCard() {
         return pickedCard;
+    }
+
+    public int getPickedCardNumber() {
+        return pickedCardNumber;
     }
 
     public int getNumberOfCards() {
@@ -204,6 +209,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     private void pickCard(int number) {
         if (number != -1) {
             pickedCard = cards.get(number).getModelCard();
+            pickedCardNumber = number;
             notifyListeners("Card has been picked");
         }
     }

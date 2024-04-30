@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import it.polimi.ingsw.gc42.view.Interfaces.Flip1Listener;
@@ -26,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -47,11 +44,12 @@ public class TableView {
     private boolean isShowingPlacements = false;
     private double playAreaScale = 1;
     private int cardBeingPlayed = 0;
-    private boolean canPlayCards = true;
+    private boolean canPlayCards = false;
 
     // Constructor Method
 
-    public TableView(boolean isPrivacyModeEnabled, GUIController controller) {
+    public TableView(boolean isPrivacyModeEnabled, GUIController controller, NetworkController server) {
+        this.server = server;
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         this.controller = controller;
         build();
@@ -74,9 +72,8 @@ public class TableView {
         return hand;
     }
 
-    public void setServer(NetworkController server, int playerID) {
+    public void setPlayer(int playerID) {
         this.playerID = playerID;
-        this.server = server;
         if (server.getPlayer(playerID).isFirst()) {
             blackToken.setVisible(true);
         }
@@ -98,7 +95,7 @@ public class TableView {
                 flipCard(hand.getHandCardView(3));
             }
         };
-        hand.setPlayer(server, playerID);
+        hand.setPlayer(playerID);
     }
 
     public int getPlayer() {
@@ -126,7 +123,7 @@ public class TableView {
         AnchorPane.setBottomAnchor(playerTableContainer, 0.0);
         playerTableContainer.setPadding(new Insets(0, 40, 0, 0));
 
-        hand = new HandView(isPrivacyModeEnabled, controller);
+        hand = new HandView(isPrivacyModeEnabled, controller, server);
 
         secretObjective = new ObjectiveCardView(isPrivacyModeEnabled, controller);
 
@@ -288,8 +285,7 @@ public class TableView {
             hand.getHandCardView(cardBeingPlayed).getImageView().setScaleY(1);
         });
         transition.setOnFinished((e) -> {
-            controller.getNetworkController().playCard(server.getPlayer(playerID)
-                    .getHandCard(cardBeingPlayed - 1), coordinates.getX(), coordinates.getY());
+            server.playCard(cardBeingPlayed, coordinates.getX(), coordinates.getY());
         });
         transition.play();
     }
@@ -381,16 +377,22 @@ public class TableView {
     }
 
     public void refreshPlayArea() {
-        PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
-        addToPlayArea(card, card.getX(), card.getY());
+        Platform.runLater(() -> {
+            PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
+            addToPlayArea(card, card.getX(), card.getY());
+        });
     }
 
     public void refreshHand() {
-        hand.refresh(() -> {
-            hand.getHandCardView(1).setModelCard(server.getPlayer(playerID).getHandCard(1));
-            hand.getHandCardView(2).setModelCard(server.getPlayer(playerID).getHandCard(2));
-            hand.getHandCardView(3).setModelCard(server.getPlayer(playerID).getHandCard(3));
-        });
+        Platform.runLater(() -> hand.refresh(() -> {
+            try {
+                hand.getHandCardView(1).setModelCard(server.getPlayer(playerID).getHandCard(0));
+                hand.getHandCardView(2).setModelCard(server.getPlayer(playerID).getHandCard(1));
+                hand.getHandCardView(3).setModelCard(server.getPlayer(playerID).getHandCard(2));
+            } catch (IllegalArgumentException e) {
+                // The Hand is still empty (it's normal)
+            }
+        }));
     }
 
     public void refreshSecretObjective() {

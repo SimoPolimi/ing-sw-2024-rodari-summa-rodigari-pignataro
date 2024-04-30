@@ -97,7 +97,7 @@ class GameControllerTest {
         controller.grabCard(player, controller.getGame().getResourcePlayingDeck(), 1);
 
         try {
-            player.playCard(player.getHandCard(player.getHandSize()-1),0,0);
+            player.playCard(player.getHandSize()-1,0,0);
         } catch (PlacementConditionNotMetException | IllegalPlacementException | IllegalActionException e){
             e.printStackTrace();
         }
