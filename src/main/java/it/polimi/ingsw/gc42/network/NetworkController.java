@@ -52,8 +52,6 @@ public interface NetworkController {
 
     RemoteServer getServer() throws RemoteException;
 
-    StarterCard drawStarterCard() throws RemoteException;
-
     void removeListener(int playerID, int cardID, Listener listener) throws RemoteException;
 
     void setName(String name) throws RemoteException;

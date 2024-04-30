@@ -43,8 +43,6 @@ public interface RemoteServer extends Remote {
 
     void setCurrentStatus(int gameID, GameStatus status) throws RemoteException;
 
-    StarterCard drawStarterCard(int gameID) throws RemoteException;
-
     String getName(int gameID) throws RemoteException;
     void setName(int gameID, String name) throws RemoteException;
 

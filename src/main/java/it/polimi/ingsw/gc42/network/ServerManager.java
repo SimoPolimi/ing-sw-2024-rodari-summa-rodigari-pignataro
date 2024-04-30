@@ -123,11 +123,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public StarterCard drawStarterCard(int gameID) throws RemoteException {
-        return (StarterCard) collection.get(gameID).getGame().getStarterDeck().draw();
-    }
-
-    @Override
     public String getName(int gameID) throws RemoteException {
         return collection.get(gameID).getName();
     }

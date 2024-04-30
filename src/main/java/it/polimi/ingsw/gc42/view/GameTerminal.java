@@ -303,7 +303,7 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void showStarterCardSelectionDialog() {
         System.out.println("--- Choose the side of your starter card ---");
-        Card starterCard  = controller.getGame().getStarterDeck().draw();
+        Card starterCard  = player.getTemporaryStarterCard();
         System.out.println("Digit f to choose front side");
         printCard((PlayableCard) starterCard);
         starterCard.flip();
@@ -338,6 +338,7 @@ public class GameTerminal extends Application implements ViewController {
             }
         }
         player.setStatus(GameStatus.PLAYING);
+        printCard(player.getPlayField().getPlayedCards().getFirst());
     }
 
     @Override

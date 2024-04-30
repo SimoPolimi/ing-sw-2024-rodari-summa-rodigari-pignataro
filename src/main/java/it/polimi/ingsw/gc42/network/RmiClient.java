@@ -3,8 +3,6 @@ package it.polimi.ingsw.gc42.network;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -271,11 +269,6 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public RemoteServer getServer() throws RemoteException {
         return server;
-    }
-
-    @Override
-    public StarterCard drawStarterCard() throws RemoteException {
-        return server.drawStarterCard(gameID);
     }
 
     @Override
