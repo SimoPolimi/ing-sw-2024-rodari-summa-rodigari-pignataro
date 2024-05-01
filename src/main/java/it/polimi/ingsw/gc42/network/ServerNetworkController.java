@@ -11,4 +11,5 @@ public interface ServerNetworkController {
     void setWhenReady(Runnable runnable);
     void start() throws IOException, AlreadyBoundException;
     void stop() throws NotBoundException, RemoteException;
+    void setCollection(GameCollection collection);
 }

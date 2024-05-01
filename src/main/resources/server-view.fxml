@@ -14,103 +14,112 @@
                 <Font name="Tahoma Bold" size="20.0" />
             </font>
         </Text>
-        <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox fx:id="rmiInfo" alignment="TOP_LEFT" spacing="10">
             <children>
-                <Text mouseTransparent="true" text="Connection Mode:" textAlignment="LEFT">
+                <Text fx:id="rmiTitle" textAlignment="LEFT" text="RMI:">
                     <font>
-                        <Font name="Tahoma Regular" size="15.0" />
+                        <Font name="Tahoma Bold" size="20"/>
                     </font>
                 </Text>
-                <StackPane>
+                <HBox fx:id="rmiIpContainer" spacing="10">
                     <children>
-                        <VBox fx:id="netModeSelector" alignment="CENTER" maxWidth="55" minHeight="25" style="-fx-background-color: lightgreen; -fx-background-radius: 5" translateX="-28">
-                            <effect>
-                                <Lighting diffuseConstant="1.5" specularConstant="0.4">
-                                    <bumpInput>
-                                        <Shadow blurType="GAUSSIAN" />
-                                    </bumpInput>
-                                    <light>
-                              <Light.Distant />
-                                    </light>
-                                </Lighting>
-                            </effect>
-                        </VBox>
-                        <HBox fx:id="netModeTextContainer" alignment="CENTER" maxWidth="-Infinity" prefWidth="20.0" spacing="15">
-                            <children>
-                                <HBox fx:id="rmiMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#setRmiMode" prefWidth="40.0">
-                                    <children>
-                                        <Text fx:id="RMIModeTxt" mouseTransparent="true" text="RMI">
-                                            <font>
-                                                <Font name="Tahoma Bold" size="13.0" />
-                                            </font>
-                                        </Text>
-                                    </children>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </HBox>
-                                <HBox fx:id="socketMode" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#setSocketMode" prefWidth="40.0">
-                                    <children>
-                                        <Text fx:id="SocketModeTxt" mouseTransparent="true" text="Socket">
-                                            <font>
-                                                <Font name="Tahoma Bold" size="13.0" />
-                                            </font>
-                                        </Text>
-                                    </children>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </HBox>
-                            </children>
-                        </HBox>
+                        <Text fx:id="rmiIpTitleText" text="IP Address: " underline="true">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <Text fx:id="rmiIpText" visible="false">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <ImageView fx:id="rmiIpCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddressRMI" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@copyIcon.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ImageView>
                     </children>
-                </StackPane>
+                </HBox>
+                <HBox fx:id="rmiPortContainer" spacing="10">
+                    <children>
+                        <Text fx:id="rmiPortTitleText" text="Port: " underline="true">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <Text fx:id="rmiPortText" visible="false">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <ImageView fx:id="rmiPortCopyIcon" fitWidth="15" onMouseClicked="#copyPortRMI" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@copyIcon.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ImageView>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
-        <HBox fx:id="ipContainer" spacing="10">
+        </VBox>
+        <VBox fx:id="socketInfo" alignment="TOP_LEFT" spacing="10">
             <children>
-                <Text fx:id="ipTitleText" text="IP Address: " underline="true">
+                <Text fx:id="socketTitle" textAlignment="LEFT" text="Socket:">
                     <font>
-                        <Font name="Tahoma Regular" size="15" />
+                        <Font name="Tahoma Bold" size="20"/>
                     </font>
                 </Text>
-                <Text fx:id="ipText" visible="false">
-                    <font>
-                        <Font name="Tahoma Regular" size="15" />
-                    </font>
-                </Text>
-                <ImageView fx:id="ipCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddress" pickOnBounds="true" preserveRatio="true" visible="false">
-                    <image>
-                        <Image url="@copyIcon.png" />
-                    </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </ImageView>
+                <HBox fx:id="socketIpContainer" spacing="10">
+                    <children>
+                        <Text fx:id="socketIpTitleText" text="IP Address: " underline="true">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <Text fx:id="socketIpText" visible="false">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <ImageView fx:id="socketIpCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddressSocket" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@copyIcon.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <HBox fx:id="socketPortContainer" spacing="10">
+                    <children>
+                        <Text fx:id="socketPortTitleText" text="Port: " underline="true">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <Text fx:id="socketPortText" visible="false">
+                            <font>
+                                <Font name="Tahoma Regular" size="15" />
+                            </font>
+                        </Text>
+                        <ImageView fx:id="socketPortCopyIcon" fitWidth="15" onMouseClicked="#copyPortSocket" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@copyIcon.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ImageView>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
-        <HBox fx:id="portContainer" spacing="10">
-            <children>
-                <Text fx:id="portTitleText" text="Port: " underline="true">
-                    <font>
-                        <Font name="Tahoma Regular" size="15" />
-                    </font>
-                </Text>
-                <Text fx:id="portText" visible="false">
-                    <font>
-                        <Font name="Tahoma Regular" size="15" />
-                    </font>
-                </Text>
-                <ImageView fx:id="portCopyIcon" fitWidth="15" onMouseClicked="#copyPort" pickOnBounds="true" preserveRatio="true" visible="false">
-                    <image>
-                        <Image url="@copyIcon.png" />
-                    </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </ImageView>
-            </children>
-        </HBox>
+        </VBox>
         <VBox alignment="CENTER">
             <children>
                 <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" onMouseClicked="#toggleServer" style="-fx-background-color: green; -fx-background-radius: 15">

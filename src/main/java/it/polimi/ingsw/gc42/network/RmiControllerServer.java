@@ -15,23 +15,15 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 public class RmiControllerServer implements ServerNetworkController, Serializable {
-    String ipAddress;
+    private String ipAddress;
     private int port;
     private ArrayList<Player> users;
     private Runnable onReady;
     private Registry registry;
     private ServerManager server;
-    private final GameCollection games = new GameCollection();
+    private GameCollection games;
 
     public RmiControllerServer() throws RemoteException {}
-
-    public GameController getGameController(int index) {
-        try {
-            return games.get(index);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void start() throws IOException, AlreadyBoundException {
@@ -47,13 +39,15 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         // Uses that port in combination with the current IP Address to create an RMI Registry
         registry = LocateRegistry.createRegistry(port);
         server = new ServerManager(port);
+        // Puts the shared GameCollection inside the ServerManager
         server.setCollection(games);
         registry.bind("ServerManager", server);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
         System.out.println("Open for connections at: " + ipAddress
                 + ", " + port);
 
-        System.out.println("Waiting for invocations from clients...");;
+        System.out.println("Waiting for invocations from clients...");
+        // Executes the GUI refresh Code to show the IP and Port in Server's GUI
         onReady.run();
 
     }
@@ -62,6 +56,11 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
     public void stop() throws NotBoundException, RemoteException {
         registry.unbind("GameControllers");
         System.out.println("Server stopped");
+    }
+
+    @Override
+    public void setCollection(GameCollection collection) {
+        this.games = collection;
     }
 
     private void registerUser(Player player) {

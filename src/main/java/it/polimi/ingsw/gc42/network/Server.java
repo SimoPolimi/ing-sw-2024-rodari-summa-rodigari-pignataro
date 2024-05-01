@@ -25,28 +25,30 @@ import java.rmi.NotBoundException;
 import java.util.Objects;
 
 public class Server extends Application {
-    private NetworkMode selectedNetworkMode = NetworkMode.RMI;
-    private ServerNetworkController serverNetworkController;
+    private ServerNetworkController rmiController;
+    private ServerNetworkController socketController;
     private boolean isRunning = false;
 
     @FXML
-    private VBox netModeSelector;
+    private Text rmiIpText;
     @FXML
-    private Text ipText;
+    private Text rmiPortText;
     @FXML
-    private Text portText;
+    private Text socketIpText;
     @FXML
-    private HBox rmiMode;
-    @FXML
-    private HBox socketMode;
+    private Text socketPortText;
     @FXML
     private VBox startButton;
     @FXML
     private Text startTxt;
     @FXML
-    private ImageView ipCopyIcon;
+    private ImageView rmiIpCopyIcon;
     @FXML
-    private ImageView portCopyIcon;
+    private ImageView rmiPortCopyIcon;
+    @FXML
+    private ImageView socketIpCopyIcon;
+    @FXML
+    private ImageView socketPortCopyIcon;
 
 
     public static void main(String[] args) {
@@ -64,93 +66,113 @@ public class Server extends Application {
         stage.show();
     }
 
-    public void setSelectedNetworkMode(NetworkMode selectedNetworkMode) {
-        if (this.selectedNetworkMode != selectedNetworkMode) {
-            if (selectedNetworkMode == NetworkMode.RMI) {
-                TranslateTransition leftTransition = new TranslateTransition(Duration.millis(150), netModeSelector);
-                leftTransition.setByX(-56);
-                leftTransition.setInterpolator(Interpolator.EASE_BOTH);
-                leftTransition.play();
-            } else {
-                TranslateTransition rightTransition = new TranslateTransition(Duration.millis(150), netModeSelector);
-                rightTransition.setByX(56);
-                rightTransition.setInterpolator(Interpolator.EASE_BOTH);
-                rightTransition.play();
-            }
-            this.selectedNetworkMode = selectedNetworkMode;
-        }
-    }
-
     @FXML
     public void toggleServer() throws AlreadyBoundException, IOException, NotBoundException {
         if (!isRunning) {
+            // Creates the GameCollection
+            GameCollection collection = new GameCollection();
+
             startButton.setStyle("-fx-background-color: red; -fx-background-radius: 15");
             startTxt.setText("Stop");
-            if (selectedNetworkMode == NetworkMode.RMI) {
-                serverNetworkController = new RmiControllerServer();
-            } else {
-                serverNetworkController = new SocketControllerServer();
-            }
-            serverNetworkController.setWhenReady(new Runnable() {
+            // Creates the RMI Network Controller
+            rmiController = new RmiControllerServer();
+            rmiController.setWhenReady(new Runnable() {
                 @Override
                 public void run() {
-                    ipText.setText(serverNetworkController.getIpAddress());
-                    ipText.setVisible(true);
-                    ipCopyIcon.setVisible(true);
-                    portText.setText(serverNetworkController.getPort());
-                    portText.setVisible(true);
-                    portCopyIcon.setVisible(true);
+                    rmiIpText.setText(rmiController.getIpAddress());
+                    rmiIpText.setVisible(true);
+                    rmiIpCopyIcon.setVisible(true);
+                    rmiPortText.setText(rmiController.getPort());
+                    rmiPortText.setVisible(true);
+                    rmiPortCopyIcon.setVisible(true);
                 }
             });
-            serverNetworkController.start();
+            // Creates the Socket Network Controller
+            socketController = new SocketControllerServer();
+            socketController.setWhenReady(new Runnable() {
+                @Override
+                public void run() {
+                    socketIpText.setText(socketController.getIpAddress());
+                    socketIpText.setVisible(true);
+                    socketIpCopyIcon.setVisible(true);
+                    socketPortText.setText(socketController.getPort());
+                    socketPortText.setVisible(true);
+                    socketPortCopyIcon.setVisible(true);
+                }
+            });
+            // Passes THE SAME GameCollection to both: any edit made by one will be visible
+            // to the other
+            rmiController.setCollection(collection);
+            socketController.setCollection(collection);
+
+            // Starts both connections
+            rmiController.start();
+            socketController.start();
             isRunning = true;
         } else {
+            // Closes the RMI Connection
             startButton.setStyle("-fx-background-color: green; -fx-background-radius: 15");
             startTxt.setText("Start");
-            ipText.setVisible(false);
-            ipCopyIcon.setVisible(false);
-            portText.setVisible(false);
-            portCopyIcon.setVisible(false);
-            serverNetworkController.stop();
+            rmiIpText.setVisible(false);
+            rmiIpCopyIcon.setVisible(false);
+            rmiPortText.setVisible(false);
+            rmiPortCopyIcon.setVisible(false);
+            rmiController.stop();
+            // Closes the Socket Connection
+            socketIpText.setVisible(false);
+            socketIpCopyIcon.setVisible(false);
+            socketPortText.setVisible(false);
+            socketPortCopyIcon.setVisible(false);
+            socketController.stop();
             isRunning = false;
         }
     }
 
     @FXML
-    public void setRmiMode() {
-        if (!isRunning) {
-            setSelectedNetworkMode(NetworkMode.RMI);
-        }
-    }
-
-    @FXML
-    public void setSocketMode() {
-        if (!isRunning) {
-            setSelectedNetworkMode(NetworkMode.SOCKET);
-        }
-    }
-
-    @FXML
-    public  void copyIPAddress() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), ipCopyIcon);
+    public  void copyIPAddressRMI() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiIpCopyIcon);
         transition.setByX(-0.2);
         transition.setByY(-0.2);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.play();
-        StringSelection ip = new StringSelection(serverNetworkController.getIpAddress());
+        StringSelection ip = new StringSelection(rmiController.getIpAddress());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
     }
 
     @FXML
-    public  void copyPort() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), portCopyIcon);
+    public  void copyPortRMI() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiPortCopyIcon);
         transition.setByX(-0.2);
         transition.setByY(-0.2);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.play();
-        StringSelection port = new StringSelection(serverNetworkController.getPort());
+        StringSelection port = new StringSelection(rmiController.getPort());
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
+    }
+
+    @FXML
+    public  void copyIPAddressSocket() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketIpCopyIcon);
+        transition.setByX(-0.2);
+        transition.setByY(-0.2);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.play();
+        StringSelection ip = new StringSelection(socketController.getIpAddress());
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
+    }
+
+    @FXML
+    public  void copyPortSocket() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketPortCopyIcon);
+        transition.setByX(-0.2);
+        transition.setByY(-0.2);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.play();
+        StringSelection port = new StringSelection(socketController.getPort());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
     }
 }
