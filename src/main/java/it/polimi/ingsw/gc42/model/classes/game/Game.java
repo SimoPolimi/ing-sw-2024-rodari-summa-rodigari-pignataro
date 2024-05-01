@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
+import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
@@ -187,6 +188,13 @@ public class Game implements Observable, Serializable {
         if (i >= 1 && i <= players.size()) {
             this.playerTurn = i;
         } else throw new IllegalArgumentException("This player doesn't exist");
+        for (int j = 1; j <= players.size(); j++) {
+            if (j == i) {
+                players.get(j-1).setStatus(GameStatus.MY_TURN);
+            } else {
+                players.get(j-1).setStatus(GameStatus.NOT_MY_TURN);
+            }
+        }
     }
 
     public Player getCurrentPlayer() {

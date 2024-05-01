@@ -1,33 +1,40 @@
 package it.polimi.ingsw.gc42.network;
 
-import it.polimi.ingsw.gc42.view.Classes.NetworkMode;
-import javafx.animation.Interpolator;
+import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Objects;
 
 public class Server extends Application {
     private ServerNetworkController rmiController;
     private ServerNetworkController socketController;
     private boolean isRunning = false;
+    private GameCollection collection;
 
     @FXML
     private Text rmiIpText;
@@ -49,6 +56,8 @@ public class Server extends Application {
     private ImageView socketIpCopyIcon;
     @FXML
     private ImageView socketPortCopyIcon;
+    @FXML
+    private ScrollPane gamesList;
 
 
     public static void main(String[] args) {
@@ -70,7 +79,7 @@ public class Server extends Application {
     public void toggleServer() throws AlreadyBoundException, IOException, NotBoundException {
         if (!isRunning) {
             // Creates the GameCollection
-            GameCollection collection = new GameCollection();
+            collection = new GameCollection();
 
             startButton.setStyle("-fx-background-color: red; -fx-background-radius: 15");
             startTxt.setText("Stop");
@@ -106,8 +115,19 @@ public class Server extends Application {
             socketController.setCollection(collection);
 
             // Starts both connections
-            rmiController.start();
-            socketController.start();
+            Thread thread = new Thread(() -> {
+                try {
+                    rmiController.start();
+                } catch (IOException | AlreadyBoundException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    socketController.start();
+                } catch (IOException | AlreadyBoundException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            thread.start();
             isRunning = true;
         } else {
             // Closes the RMI Connection
@@ -126,6 +146,7 @@ public class Server extends Application {
             socketController.stop();
             isRunning = false;
         }
+        refresh();
     }
 
     @FXML
@@ -174,5 +195,81 @@ public class Server extends Application {
         transition.play();
         StringSelection port = new StringSelection(socketController.getPort());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
+    }
+
+    @FXML
+    public void refresh() throws RemoteException {
+        VBox content = new VBox();
+        content.setAlignment(Pos.CENTER);
+        content.setSpacing(10);
+
+        if (null == collection || collection.size() == 0) {
+            HBox hbox = new HBox();
+            hbox.setAlignment(Pos.CENTER);
+
+            String string = "";
+            if (isRunning) {
+                string = "No available games: nobody is playing on this server";
+            } else {
+                string = "Server is not running";
+            }
+            Text text = new Text(string);
+            text.setFont(javafx.scene.text.Font.font("Tahoma Regular", 15));
+
+            hbox.getChildren().add(text);
+            content.getChildren().add(hbox);
+            gamesList.setFitToHeight(true);
+            gamesList.setFitToWidth(true);
+        } else {
+            for (int i = 0; i < collection.size(); i++) {
+                if (collection.get(i).getCurrentStatus() == GameStatus.WAITING_FOR_PLAYERS) {
+                    Pane newListItem = getNewListItem(collection.get(i), i);
+                    content.getChildren().add(newListItem);
+                }
+            }
+            gamesList.setFitToHeight(false);
+            gamesList.setFitToWidth(true);
+        }
+        gamesList.setContent(content);
+    }
+
+    private Pane getNewListItem(GameController obj, int gameID) {
+        HBox newListItem = new HBox();
+        newListItem.setSpacing(20);
+        newListItem.setAlignment(Pos.CENTER_LEFT);
+        newListItem.setPadding(new Insets(10, 0, 0, 10));
+        newListItem.setMaxHeight(50);
+
+        Text name;
+        Text number;
+        Text status;
+        try {
+            name = new Text(obj.getName());
+            name.setFont(javafx.scene.text.Font.font("Tahoma Regular", 11));
+            name.setTextAlignment(TextAlignment.LEFT);
+
+            number = new Text(String.valueOf(obj.getGame().getNumberOfPlayers()));
+            number.setFont(javafx.scene.text.Font.font("Tahoma Bold", 11));
+
+            status = new Text(statusToString(obj.getCurrentStatus()));
+            status.setFont(javafx.scene.text.Font.font("Tahoma Bold", 11));
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        newListItem.getChildren().addAll(name, number, status);
+        newListItem.setCursor(Cursor.HAND);
+        return newListItem;
+    }
+
+    private String statusToString(GameStatus status) {
+        String string = "Unknown";
+        switch (status) {
+            case WAITING_FOR_PLAYERS -> {
+                string = "Waiting for players";
+            }
+        }
+        return string;
     }
 }

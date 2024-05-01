@@ -1,13 +1,14 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class GameCollection extends UnicastRemoteObject implements RemoteCollection, Serializable {
+public class GameCollection implements RemoteCollection, Serializable {
     private final ArrayList<GameController> gameControllers = new ArrayList<>();
 
     public GameCollection() throws RemoteException {}

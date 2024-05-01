@@ -60,20 +60,22 @@ public class GamesListViewController {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        for (int i = 0; i < server.getServer().getGames().size(); i++) {
-            Pane newListItem = getNewListItem(server.getServer().getGames().get(i), i);
-            int finalI = i;
-            newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    pickedGame = finalI;
-                    notifyListeners("Existing Game");
-                }
-            });
-            content.getChildren().add(newListItem);
+        for (int i = 0; i < server.getAvailableGames().size(); i++) {
+            if (server.getAvailableGames().get(i).getCurrentStatus() == GameStatus.WAITING_FOR_PLAYERS) {
+                Pane newListItem = getNewListItem(server.getAvailableGames().get(i), i);
+                int finalI = i;
+                newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        pickedGame = finalI;
+                        notifyListeners("Existing Game");
+                    }
+                });
+                content.getChildren().add(newListItem);
+            }
         }
 
-        if (server.getServer().getGames().size() == 0) {
+        if (server.getAvailableGames().size() == 0) {
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER);
 
@@ -83,6 +85,9 @@ public class GamesListViewController {
             hbox.getChildren().add(text);
             content.getChildren().add(hbox);
             gamesList.setFitToHeight(true);
+            gamesList.setFitToWidth(true);
+        } else {
+            gamesList.setFitToHeight(false);
             gamesList.setFitToWidth(true);
         }
 

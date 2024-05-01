@@ -54,7 +54,7 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
 
     @Override
     public void stop() throws NotBoundException, RemoteException {
-        registry.unbind("GameControllers");
+        registry.unbind("ServerManager");
         System.out.println("Server stopped");
     }
 

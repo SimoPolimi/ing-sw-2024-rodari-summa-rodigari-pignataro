@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
+import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
@@ -20,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class CommonTableView {
@@ -434,11 +436,13 @@ public class CommonTableView {
     }
 
     public void refreshResourceDeck() {
-        Platform.runLater(() -> resourceDeck.refresh(controller.getGame().getResourcePlayingDeck().getDeck().getCopy()));
+        ArrayList<Card> deck = controller.getGame().getResourcePlayingDeck().getDeck().getCopy();
+        Platform.runLater(() -> resourceDeck.refresh(deck));
     }
 
     public void refreshGoldDeck() {
-        Platform.runLater(() -> goldDeck.refresh(controller.getGame().getGoldPlayingDeck().getDeck().getCopy()));
+        ArrayList<Card> deck = controller.getGame().getGoldPlayingDeck().getDeck().getCopy();
+        Platform.runLater(() -> goldDeck.refresh(deck));
     }
 
     public void refreshResourceSlot(int slot) {

@@ -393,7 +393,9 @@ public class GUIController implements ViewController {
 
     public void onEnterPressed() {
         if (!isCommonTableDown) {
-            table.playCard();
+            if (controller.getPlayer(playerID).getStatus() == GameStatus.MY_TURN) {
+                table.playCard();
+            }
         } else if (!isShowingGlobalMap){
             try {
                 commonTable.onEnterPressed();
@@ -541,7 +543,6 @@ public class GUIController implements ViewController {
             if (null != table.getHand().getHandCardView(1).getModelCard()
                     && null != table.getHand().getHandCardView(2).getModelCard()
                     && null != table.getHand().getHandCardView(3).getModelCard()) {
-                setPlayerCanPlayCards(true);
             }
         });
         transition.play();
@@ -607,17 +608,15 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
-        Platform.runLater(() -> {
-            if (this.playerID == playerID) {
-                table.refreshPlayArea();
-            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-                rightTable.refreshPlayArea();
-            } else if (null != topTable && playerID == topTable.getPlayer()) {
-                topTable.refreshPlayArea();
-            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-                leftTable.refreshPlayArea();
-            }
-        });
+        if (this.playerID == playerID) {
+            table.refreshPlayArea();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshPlayArea();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshPlayArea();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshPlayArea();
+        }
     }
 
     @Override

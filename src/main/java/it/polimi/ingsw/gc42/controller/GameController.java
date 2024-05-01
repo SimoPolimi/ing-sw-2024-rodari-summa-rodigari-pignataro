@@ -296,8 +296,6 @@ public class GameController implements Serializable, Observable {
                     // TODO: implement dialog
                     // Last turn and zero Cards in the decks... don't draw
                 }
-                // End turn!!!!!!!!!!!!
-                nextTurn();
             } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
@@ -323,8 +321,6 @@ public class GameController implements Serializable, Observable {
                     // TODO: implement dialog
                     // Last turn and zero Cards on the table... don't grab
                 }
-                // End turn!!!!!!!!!!!!
-                nextTurn();
             } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
@@ -432,6 +428,8 @@ public class GameController implements Serializable, Observable {
                 currentStatus = GameStatus.PLAYING;
                 drawStartingHand();
                 break;
+            case PLAYING:
+                game.setPlayerTurn(1);
             case COUNTING_POINTS:
                 break;
             case END_GAME:
