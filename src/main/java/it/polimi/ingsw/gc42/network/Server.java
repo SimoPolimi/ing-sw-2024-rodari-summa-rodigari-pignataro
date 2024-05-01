@@ -144,6 +144,7 @@ public class Server extends Application {
             socketPortText.setVisible(false);
             socketPortCopyIcon.setVisible(false);
             socketController.stop();
+            collection.empty();
             isRunning = false;
         }
         refresh();

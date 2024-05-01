@@ -182,9 +182,6 @@
                                     </light>
                                 </Lighting>
                             </effect>
-                            <VBox.margin>
-                                <Insets right="0.0" top="5.0" />
-                            </VBox.margin>
                         </VBox>
                         <ScrollPane fx:id="gamesList" prefHeight="250.0" prefWidth="500.0" fitToHeight="true" fitToWidth="true">
                             <content>

@@ -44,4 +44,8 @@ public class GameCollection implements RemoteCollection, Serializable {
     public void remove(GameController gameController) throws RemoteException {
         gameControllers.remove(gameController);
     }
+
+    public void empty() {
+        gameControllers.clear();
+    }
 }
