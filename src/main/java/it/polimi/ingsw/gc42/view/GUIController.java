@@ -404,18 +404,23 @@ public class GUIController implements ViewController {
     }
 
     private void initMiniScoreBoard() throws RemoteException {
+        ArrayList<Player> notOrderedPlayers = new ArrayList<>();
+        int number = controller.getNumberOfPlayers();
+        for (int i = 1; i <= number; i++) {
+            notOrderedPlayers.add(controller.getPlayer(i));
+        }
         Platform.runLater(() -> {
             ArrayList<Player> players = new ArrayList<>();
             ArrayList<Integer> alreadySeen = new ArrayList<>();
             // Players are ordered by their points
-            while (alreadySeen.size() != controller.getNumberOfPlayers()) {
+            while (alreadySeen.size() != number) {
                 int currentMax = 1;
-                for (int i = 1; i <= controller.getNumberOfPlayers(); i++) {
-                    if (controller.getPlayer(i).getPoints() >= controller.getPlayer(currentMax).getPoints() && !alreadySeen.contains(i)) {
+                for (int i = 0; i < number; i++) {
+                    if (notOrderedPlayers.get(i).getPoints() >= notOrderedPlayers.get(currentMax).getPoints() && !alreadySeen.contains(i)) {
                         currentMax = i;
                     }
                 }
-                players.add(controller.getPlayer(currentMax));
+                players.add(notOrderedPlayers.get(currentMax));
                 alreadySeen.add(currentMax);
             }
 
