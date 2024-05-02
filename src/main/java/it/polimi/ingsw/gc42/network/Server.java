@@ -77,6 +77,13 @@ public class Server extends Application {
 
     @FXML
     public void toggleServer() throws AlreadyBoundException, IOException, NotBoundException {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(200), startButton);
+        transition.setByX(-0.2);
+        transition.setByY(-0.2);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.play();
+
         if (!isRunning) {
             // Creates the GameCollection
             collection = new GameCollection();

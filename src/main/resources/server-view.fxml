@@ -10,15 +10,24 @@
 
 <VBox prefHeight="400" prefWidth="700" spacing="20" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.network.Server">
     <children>
-        <Text fx:id="title" text="Server">
-            <font>
-                <Font name="Tahoma Bold" size="20.0" />
-            </font>
-        </Text>
         <HBox fx:id="container" spacing="40.0">
             <children>
-                <VBox fx:id="leftContainer" maxHeight="-Infinity" prefHeight="200" spacing="20.0">
+                <VBox fx:id="leftContainer" maxHeight="-Infinity" minWidth="200.0" prefHeight="200" spacing="20.0">
                     <children>
+                        <HBox fx:id="titleContainer" spacing="10" alignment="CENTER_LEFT">
+                            <children>
+                                <ImageView fx:id="logo" fitWidth="40" preserveRatio="true" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+                                    <image>
+                                        <Image url="@logo.png" />
+                                    </image>
+                                </ImageView>
+                                <Text fx:id="title" text="Server">
+                                    <font>
+                                        <Font name="Tahoma Bold" size="20.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </HBox>
                         <VBox fx:id="rmiInfo" alignment="TOP_LEFT" spacing="10">
                             <children>
                                 <Text fx:id="rmiTitle" text="RMI:" textAlignment="LEFT">
@@ -156,13 +165,13 @@
                         </VBox>
                     </children>
                 </VBox>
-                <VBox alignment="TOP_RIGHT" spacing="5">
+                <VBox alignment="TOP_RIGHT" prefHeight="400.0" prefWidth="420.0" spacing="5">
                     <children>
-                        <VBox fx:id="refreshButton" alignment="CENTER" maxHeight="10" maxWidth="40" minWidth="20" style="-fx-background-color: #2d9ad4; -fx-background-radius: 5" onMouseClicked="#refresh">
+                        <VBox fx:id="refreshButton" alignment="CENTER" maxHeight="10" maxWidth="40" minWidth="20" onMouseClicked="#refresh" style="-fx-background-color: #2d9ad4; -fx-background-radius: 5">
                             <children>
-                                <ImageView fx:id="refreshIcon" preserveRatio="true" fitWidth="18">
+                                <ImageView fx:id="refreshIcon" fitWidth="18" preserveRatio="true">
                                     <image>
-                                        <Image url="@refreshIcon.png"/>
+                                        <Image url="@refreshIcon.png" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -182,14 +191,17 @@
                                     </light>
                                 </Lighting>
                             </effect>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                         </VBox>
-                        <ScrollPane fx:id="gamesList" prefHeight="250.0" prefWidth="500.0" fitToHeight="true" fitToWidth="true">
+                        <ScrollPane fx:id="gamesList" fitToHeight="true" fitToWidth="true" prefHeight="400.0" prefWidth="500.0">
                             <content>
-                                <VBox alignment="CENTER" spacing="10">
+                                <VBox alignment="CENTER" prefHeight="273.0" prefWidth="418.0" spacing="10">
                                     <children>
                                         <Text text="Server is not running">
                                             <font>
-                                                <Font name="Tahoma Regular" size="15"/>
+                                                <Font name="Tahoma Regular" size="15" />
                                             </font>
                                         </Text>
                                     </children>
