@@ -23,11 +23,19 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 ## Screenshots
 Launcher:
 
-![launcher](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6763af06-8fc0-47ad-be9f-15399066b337)
+![launcher](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/e9148572-66b7-41d3-a799-b409fcbeb64f)
 
 Login Screen:
 
-![LoginGUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/aee1e2de-7219-43e5-a73a-de05e7fd6f81)
+![Login Screen](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/2d23ffd1-e85d-4fc0-a89e-59a33b27e560)
+
+New Game Creation Screen:
+
+![New Game Screen](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/881a281b-9b86-4b93-9f88-3429550a555c)
+
+Server:
+
+![Server](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/274400a2-c2d3-444a-af3c-0612f0df1015)
 
 Main Player's table:
 
@@ -36,4 +44,8 @@ Main Player's table:
 
 Common table:
 
-![commonTable](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/a70fd2de-5d26-40c4-a838-352d605508d7)
+![Common Table](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/72abc57c-430a-4922-a63b-c1c1c828eefd)
+
+Full Table:
+
+![Full Table](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/9c6c9566-df94-4183-883f-b6afe282b1fb)
