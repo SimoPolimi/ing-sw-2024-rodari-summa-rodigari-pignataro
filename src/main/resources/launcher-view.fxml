@@ -136,16 +136,34 @@
         </HBox>
         <HBox fx:id="serverButton" alignment="CENTER">
             <children>
-                <Text fx:id="serverText" fill="forestgreen" text="Open Server" underline="true" onMouseClicked="#openServer">
-                    <font>
-                        <Font name="Tahoma Bold" size="12.0" />
-                    </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </Text>
+                <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" onMouseClicked="#openServer" style="-fx-background-color: green; -fx-background-radius: 15">
+                    <children>
+                        <Text fx:id="serverText" fill="white" text="Open Server">
+                            <font>
+                                <Font name="Tahoma Bold" size="15.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <padding>
+                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                    </padding>
+                    <effect>
+                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                            <bumpInput>
+                                <Shadow blurType="GAUSSIAN" />
+                            </bumpInput>
+                            <light>
+                                <Light.Distant />
+                            </light>
+                        </Lighting>
+                    </effect>
+                </VBox>
             </children>
         </HBox>
+
     </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

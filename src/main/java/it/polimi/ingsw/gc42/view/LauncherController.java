@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +20,8 @@ public class LauncherController {
     @FXML
     private ImageView tuiIcon;
     private int selectedMode = 0;
+    @FXML
+    private HBox serverButton;
 
 
     @FXML
@@ -175,6 +178,13 @@ public class LauncherController {
 
     @FXML
     public void openServer() throws IOException {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(200), serverButton);
+        transition.setByX(-0.2);
+        transition.setByY(-0.2);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.play();
+
         Server server = new Server();
         Stage stage = new Stage();
         stage.setX(100);
