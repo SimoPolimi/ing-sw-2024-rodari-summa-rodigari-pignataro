@@ -27,6 +27,17 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
 
     @Override
     public void start() throws IOException, AlreadyBoundException {
+        Thread thread = new Thread(() -> {
+            try {
+                connect();
+            } catch (IOException | AlreadyBoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
+    }
+
+    private void connect() throws IOException, AlreadyBoundException {
         System.out.println("Constructing Server Implementation...");
 
         System.out.println("Binding Server Implementation to registry...");
@@ -49,7 +60,6 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         System.out.println("Waiting for invocations from clients...");
         // Executes the GUI refresh Code to show the IP and Port in Server's GUI
         onReady.run();
-
     }
 
     @Override

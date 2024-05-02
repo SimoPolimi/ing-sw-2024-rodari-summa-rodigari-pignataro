@@ -35,6 +35,7 @@ public class Server extends Application {
     private ServerNetworkController socketController;
     private boolean isRunning = false;
     private GameCollection collection;
+    private boolean canReadInput = true;
 
     @FXML
     private Text rmiIpText;
@@ -76,85 +77,79 @@ public class Server extends Application {
     }
 
     @FXML
-    public void toggleServer() throws AlreadyBoundException, IOException, NotBoundException {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(200), startButton);
-        transition.setByX(-0.2);
-        transition.setByY(-0.2);
-        transition.setAutoReverse(true);
-        transition.setCycleCount(2);
-        transition.play();
+    public void toggleServer() throws IOException, NotBoundException, AlreadyBoundException {
+        // Animates the button
+        if (canReadInput) {
+            canReadInput = false;
+            ScaleTransition transition = new ScaleTransition(Duration.millis(200), startButton);
+            transition.setByX(-0.2);
+            transition.setByY(-0.2);
+            transition.setAutoReverse(true);
+            transition.setCycleCount(2);
+            transition.setOnFinished((e) -> canReadInput = true);
+            transition.play();
 
-        if (!isRunning) {
-            // Creates the GameCollection
-            collection = new GameCollection();
+            if (!isRunning) {
+                // Creates the GameCollection
+                collection = new GameCollection();
 
-            startButton.setStyle("-fx-background-color: red; -fx-background-radius: 15");
-            startTxt.setText("Stop");
-            // Creates the RMI Network Controller
-            rmiController = new RmiControllerServer();
-            rmiController.setWhenReady(new Runnable() {
-                @Override
-                public void run() {
-                    rmiIpText.setText(rmiController.getIpAddress());
-                    rmiIpText.setVisible(true);
-                    rmiIpCopyIcon.setVisible(true);
-                    rmiPortText.setText(rmiController.getPort());
-                    rmiPortText.setVisible(true);
-                    rmiPortCopyIcon.setVisible(true);
-                }
-            });
-            // Creates the Socket Network Controller
-            socketController = new SocketControllerServer();
-            socketController.setWhenReady(new Runnable() {
-                @Override
-                public void run() {
-                    socketIpText.setText(socketController.getIpAddress());
-                    socketIpText.setVisible(true);
-                    socketIpCopyIcon.setVisible(true);
-                    socketPortText.setText(socketController.getPort());
-                    socketPortText.setVisible(true);
-                    socketPortCopyIcon.setVisible(true);
-                }
-            });
-            // Passes THE SAME GameCollection to both: any edit made by one will be visible
-            // to the other
-            rmiController.setCollection(collection);
-            socketController.setCollection(collection);
+                startButton.setStyle("-fx-background-color: red; -fx-background-radius: 15");
+                startTxt.setText("Stop");
+                // Creates the RMI Network Controller
+                rmiController = new RmiControllerServer();
+                rmiController.setWhenReady(new Runnable() {
+                    @Override
+                    public void run() {
+                        rmiIpText.setText(rmiController.getIpAddress());
+                        rmiIpText.setVisible(true);
+                        rmiIpCopyIcon.setVisible(true);
+                        rmiPortText.setText(rmiController.getPort());
+                        rmiPortText.setVisible(true);
+                        rmiPortCopyIcon.setVisible(true);
+                    }
+                });
+                // Creates the Socket Network Controller
+                socketController = new SocketControllerServer();
+                socketController.setWhenReady(new Runnable() {
+                    @Override
+                    public void run() {
+                        socketIpText.setText(socketController.getIpAddress());
+                        socketIpText.setVisible(true);
+                        socketIpCopyIcon.setVisible(true);
+                        socketPortText.setText(socketController.getPort());
+                        socketPortText.setVisible(true);
+                        socketPortCopyIcon.setVisible(true);
+                    }
+                });
+                // Passes THE SAME GameCollection to both: any edit made by one will be visible
+                // to the other
+                rmiController.setCollection(collection);
+                socketController.setCollection(collection);
 
-            // Starts both connections
-            Thread thread = new Thread(() -> {
-                try {
-                    rmiController.start();
-                } catch (IOException | AlreadyBoundException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    socketController.start();
-                } catch (IOException | AlreadyBoundException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            thread.start();
-            isRunning = true;
-        } else {
-            // Closes the RMI Connection
-            startButton.setStyle("-fx-background-color: green; -fx-background-radius: 15");
-            startTxt.setText("Start");
-            rmiIpText.setVisible(false);
-            rmiIpCopyIcon.setVisible(false);
-            rmiPortText.setVisible(false);
-            rmiPortCopyIcon.setVisible(false);
-            rmiController.stop();
-            // Closes the Socket Connection
-            socketIpText.setVisible(false);
-            socketIpCopyIcon.setVisible(false);
-            socketPortText.setVisible(false);
-            socketPortCopyIcon.setVisible(false);
-            socketController.stop();
-            collection.empty();
-            isRunning = false;
+                // Starts both connections
+                rmiController.start();
+                socketController.start();
+                isRunning = true;
+            } else {
+                // Closes the RMI Connection
+                startButton.setStyle("-fx-background-color: green; -fx-background-radius: 15");
+                startTxt.setText("Start");
+                rmiIpText.setVisible(false);
+                rmiIpCopyIcon.setVisible(false);
+                rmiPortText.setVisible(false);
+                rmiPortCopyIcon.setVisible(false);
+                rmiController.stop();
+                // Closes the Socket Connection
+                socketIpText.setVisible(false);
+                socketIpCopyIcon.setVisible(false);
+                socketPortText.setVisible(false);
+                socketPortCopyIcon.setVisible(false);
+                socketController.stop();
+                collection.empty();
+                isRunning = false;
+            }
+            refresh();
         }
-        refresh();
     }
 
     @FXML
@@ -230,10 +225,8 @@ public class Server extends Application {
             gamesList.setFitToWidth(true);
         } else {
             for (int i = 0; i < collection.size(); i++) {
-                if (collection.get(i).getCurrentStatus() == GameStatus.WAITING_FOR_PLAYERS) {
-                    Pane newListItem = getNewListItem(collection.get(i), i);
-                    content.getChildren().add(newListItem);
-                }
+                Pane newListItem = getNewListItem(collection.get(i));
+                content.getChildren().add(newListItem);
             }
             gamesList.setFitToHeight(false);
             gamesList.setFitToWidth(true);
@@ -241,7 +234,7 @@ public class Server extends Application {
         gamesList.setContent(content);
     }
 
-    private Pane getNewListItem(GameController obj, int gameID) {
+    private Pane getNewListItem(GameController obj) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
         newListItem.setAlignment(Pos.CENTER_LEFT);
@@ -276,6 +269,9 @@ public class Server extends Application {
         switch (status) {
             case WAITING_FOR_PLAYERS -> {
                 string = "Waiting for players";
+            }
+            case PLAYING -> {
+                string = "Playing";
             }
         }
         return string;
