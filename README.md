@@ -33,6 +33,9 @@ New Game Creation Screen:
 
 ![New Game Screen](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/881a281b-9b86-4b93-9f88-3429550a555c)
 
+Server:
+
+![Server](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/274400a2-c2d3-444a-af3c-0612f0df1015)
 
 Main Player's table:
 
