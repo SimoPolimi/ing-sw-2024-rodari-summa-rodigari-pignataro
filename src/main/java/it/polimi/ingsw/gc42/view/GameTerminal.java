@@ -433,6 +433,11 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     @Override
+    public void notifyHandCardWasFlipped(int playedID, int cardID) {
+
+    }
+
+    @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
 
     }

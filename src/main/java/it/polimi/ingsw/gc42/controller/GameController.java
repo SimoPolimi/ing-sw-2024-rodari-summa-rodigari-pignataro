@@ -287,8 +287,15 @@ public class GameController implements Serializable, Observable {
 
     }
 
-    public void flipCard(Card card) {
-        card.flip();
+    public void flipCard(int playerID, int cardID) {
+        game.getPlayer(playerID).getHandCard(cardID).flip();
+        for (RemoteViewController view: views) {
+            try {
+                view.notifyHandCardWasFlipped(playerID,cardID);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**

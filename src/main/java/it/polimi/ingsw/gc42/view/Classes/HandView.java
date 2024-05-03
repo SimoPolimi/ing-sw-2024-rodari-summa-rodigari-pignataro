@@ -207,7 +207,7 @@ public class HandView {
                     }
                     case SECONDARY -> {
                         if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
-                            flipCard(1);
+                            server.flipCard(playerID, 0);
                         }
                     }
                 }
@@ -226,7 +226,7 @@ public class HandView {
                     }
                     case SECONDARY -> {
                         if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
-                            flipCard(2);
+                            server.flipCard(playerID, 1);
                         }
                     }
                 }
@@ -245,7 +245,7 @@ public class HandView {
                     }
                     case SECONDARY -> {
                         if (controller.canReadInput() && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
-                            flipCard(3);
+                            server.flipCard(playerID,2);
                         }
                     }
                 }
@@ -450,9 +450,9 @@ public class HandView {
 
     public void flipCard(int num) {
         switch (num) {
-            case 1 -> handCardView1.flip();
-            case 2 -> handCardView2.flip();
-            case 3 -> handCardView3.flip();
+            case 1 -> server.flipCard(playerID, 0);
+            case 2 -> server.flipCard(playerID, 1);
+            case 3 -> server.flipCard(playerID, 2);
         }
     }
 

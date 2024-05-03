@@ -19,6 +19,7 @@ public interface ViewController extends Serializable {
     void notifyPlayersTokenChanged(int playerID);
     void notifyPlayersPlayAreaChanged(int playerID);
     void notifyPlayersHandChanged(int playerID);
+    void notifyHandCardWasFlipped(int playedID, int cardID);
     void notifyPlayersObjectiveChanged(int playerID);
     void notifyCommonObjectivesChanged();
     void notifyTurnChanged();

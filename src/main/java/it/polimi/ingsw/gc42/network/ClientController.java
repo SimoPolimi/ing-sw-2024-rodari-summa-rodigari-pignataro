@@ -80,6 +80,11 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
+    public void notifyHandCardWasFlipped(int playedID, int cardID) throws RemoteException {
+        viewController.notifyHandCardWasFlipped(playedID, cardID);
+    }
+
+    @Override
     public void notifyPlayersObjectiveChanged(int playerID) throws RemoteException {
         viewController.notifyPlayersObjectiveChanged(playerID);
     }

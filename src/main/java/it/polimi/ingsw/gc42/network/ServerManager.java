@@ -53,8 +53,8 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void flipCard(int gameID, Card card) throws RemoteException {
-        collection.get(gameID).flipCard(card);
+    public void flipCard(int gameID, int playerID, int cardiID) throws RemoteException {
+        collection.get(gameID).flipCard(playerID, cardiID);
     }
 
     @Override

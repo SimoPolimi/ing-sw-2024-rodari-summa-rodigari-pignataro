@@ -77,24 +77,6 @@ public class TableView {
         if (server.getPlayer(playerID).isFirst()) {
             blackToken.setVisible(true);
         }
-        Flip1Listener listener1 = new Flip1Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(hand.getHandCardView(1));
-            }
-        };
-        Flip2Listener listener2 = new Flip2Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(hand.getHandCardView(2));
-            }
-        };
-        Flip3Listener listener3 = new Flip3Listener() {
-            @Override
-            public void onEvent() {
-                flipCard(hand.getHandCardView(3));
-            }
-        };
         hand.setPlayer(playerID);
     }
 
@@ -362,8 +344,10 @@ public class TableView {
         }
     }
 
-    private void flipCard(HandCardView handCardView) {
+    public void flipCard(int cardID) {
+        HandCardView handCardView = hand.getHandCardView(cardID);
         if (!handCardView.isBeingPlayed()) {
+            handCardView.flip();
             handCardView.visualFlip(controller);
         }
     }

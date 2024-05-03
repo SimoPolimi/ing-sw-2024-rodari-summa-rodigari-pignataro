@@ -71,7 +71,7 @@ public class SocketClient implements NetworkController{
     }
 
     @Override
-    public void flipCard(Card card) {
+    public void flipCard(int playerID, int cardID) {
 
     }
 

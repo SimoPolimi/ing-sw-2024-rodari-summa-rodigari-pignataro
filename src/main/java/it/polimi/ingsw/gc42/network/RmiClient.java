@@ -186,9 +186,9 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public void flipCard(Card card) {
+    public void flipCard(int playerID, int cardID) {
         try {
-            server.flipCard(gameID, card);
+            server.flipCard(gameID, playerID, cardID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

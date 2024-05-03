@@ -27,7 +27,7 @@ public interface RemoteServer extends Remote {
 
     void playCard(int gameID, int playerID,  int cardID, int x, int y) throws RemoteException;
 
-    void flipCard(int gameID, Card card) throws RemoteException;
+    void flipCard(int gameID, int playerID, int cardID) throws RemoteException;
 
     void drawCard(int gameID, int playerID, CardType type) throws RemoteException;
 

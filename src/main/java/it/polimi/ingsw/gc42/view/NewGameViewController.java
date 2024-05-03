@@ -226,6 +226,11 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     @Override
+    public void notifyHandCardWasFlipped(int playedID, int cardID) {
+        // Don't need
+    }
+
+    @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
         // Don't need
     }

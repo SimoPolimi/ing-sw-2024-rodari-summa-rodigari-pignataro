@@ -1,23 +1,16 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.GoldCard;
-import it.polimi.ingsw.gc42.model.exceptions.NoSuchCardException;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.chart.Axis;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;

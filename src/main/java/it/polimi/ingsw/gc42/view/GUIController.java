@@ -635,6 +635,13 @@ public class GUIController implements ViewController {
     }
 
     @Override
+    public void notifyHandCardWasFlipped(int playedID, int cardID) {
+        if (this.playerID == playedID) {
+            table.flipCard(cardID+1);
+        }
+    }
+
+    @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
         if (this.playerID == playerID) {
             table.refreshSecretObjective();

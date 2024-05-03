@@ -30,7 +30,7 @@ public interface NetworkController {
 
      void playCard(int handCard, int x, int y);
 
-    void flipCard(Card card);
+    void flipCard(int playerID, int cardID);
 
     void drawCard(int playerID, CardType type);
 
