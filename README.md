@@ -48,4 +48,4 @@ Common table:
 
 Full Table:
 
-![Full Table](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/9c6c9566-df94-4183-883f-b6afe282b1fb)
+![Full Table](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/683bffaf-32a9-472e-9cd0-da01a2163fdc)
