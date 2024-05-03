@@ -6,15 +6,13 @@ import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.network.RemoteViewController;
+import it.polimi.ingsw.gc42.controller.network.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 

@@ -33,6 +33,6 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.view.Classes to javafx.fxml;
     exports it.polimi.ingsw.gc42.view.Interfaces;
     opens it.polimi.ingsw.gc42.view.Interfaces to javafx.fxml;
-    exports it.polimi.ingsw.gc42.network;
-    opens it.polimi.ingsw.gc42.network to javafx.fxml;
+    exports it.polimi.ingsw.gc42.controller.network;
+    opens it.polimi.ingsw.gc42.controller.network to javafx.fxml;
 }

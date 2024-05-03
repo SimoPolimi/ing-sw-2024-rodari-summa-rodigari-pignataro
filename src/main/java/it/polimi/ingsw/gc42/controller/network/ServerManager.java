@@ -1,15 +1,12 @@
-package it.polimi.ingsw.gc42.network;
+package it.polimi.ingsw.gc42.controller.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -149,8 +146,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void setPlayerStarterCard(int gameID, int playerID) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).setStarterCard(collection.get(gameID)
-                .getPlayer(playerID).getTemporaryStarterCard());
+        collection.get(gameID).getPlayer(playerID).setStarterCard();
     }
 
     @Override

@@ -5,20 +5,14 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
 import it.polimi.ingsw.gc42.model.interfaces.ReadyToChooseSecretObjectiveListener;
-import it.polimi.ingsw.gc42.network.ClientController;
-import it.polimi.ingsw.gc42.network.RemoteViewController;
-import it.polimi.ingsw.gc42.view.Classes.ClearScreen;
+import it.polimi.ingsw.gc42.controller.network.ClientController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;
@@ -316,12 +310,14 @@ public class GameTerminal extends Application implements ViewController {
             input = scanner.next();
             switch (input) {
                 case "b":
-                    player.setStarterCard((StarterCard) starterCard);
+                    player.setTemporaryStarterCard((StarterCard) starterCard);
+                    player.setStarterCard();
                     exit = true;
                     break;
                 case "f":
                     starterCard.flip();
-                    player.setStarterCard((StarterCard) starterCard);
+                    player.setTemporaryStarterCard((StarterCard) starterCard);
+                    player.setStarterCard();
                     exit  = true;
                     break;
                 default:

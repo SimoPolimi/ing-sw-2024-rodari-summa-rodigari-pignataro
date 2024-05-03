@@ -1,15 +1,11 @@
-package it.polimi.ingsw.gc42.network;
+package it.polimi.ingsw.gc42.controller.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;

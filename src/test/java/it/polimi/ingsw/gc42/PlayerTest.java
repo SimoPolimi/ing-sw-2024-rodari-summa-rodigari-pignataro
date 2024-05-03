@@ -63,12 +63,13 @@ class PlayerTest {
         PlayField playField = new PlayField((StarterCard) game.getStarterDeck().draw());
         Player player = new Player(null, true, 0, null, null, game);
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
-        player.setStarterCard((StarterCard) game.getStarterDeck().draw());
+        player.drawTemporaryStarterCard(game.getStarterDeck());
+        player.setStarterCard();
 
         PlayableCard playedCard = player.getHandCard(0);
         // when
         try {
-            player.playCard(playedCard, 1, 0);
+            player.playCard(1, 1, 0);
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
@@ -269,7 +270,8 @@ class PlayerTest {
             }
         }
         starterCard.flip();
-        player.setStarterCard(starterCard);
+        player.setTemporaryStarterCard(starterCard);
+        player.setStarterCard();
 
         try {
             player.drawCard(game.getResourcePlayingDeck());
@@ -279,11 +281,11 @@ class PlayerTest {
             e.printStackTrace();
         }
 
-        GoldCard finalGoldCard = goldCard;
+        player.setHandCard(0, goldCard);
         assertThrowsExactly(PlacementConditionNotMetException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                player.playCard(finalGoldCard, 1, 0);
+                player.playCard(1, 1, 0);
             }
         });
     }
@@ -302,7 +304,7 @@ class PlayerTest {
         }
 
         assertThrowsExactly(IllegalActionException.class, () -> {
-            player.playCard(player.getHandCard(1), 0, 0);
+            player.playCard(1, 0, 0);
         });
     }
 
@@ -311,8 +313,9 @@ class PlayerTest {
         Game game = new Game();
         Player player = new Player("");
 
+        player.setHandCard(0, (PlayableCard) game.getStarterDeck().draw());
         assertThrowsExactly(IllegalPlacementException.class, () -> {
-            player.playCard( (PlayableCard) game.getStarterDeck().draw(), 1, 3);
+            player.playCard( 1, 1, 3);
         });
     }
 }

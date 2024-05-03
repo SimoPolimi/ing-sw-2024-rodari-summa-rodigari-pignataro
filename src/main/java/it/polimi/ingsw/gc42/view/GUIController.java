@@ -2,8 +2,8 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.network.ClientController;
-import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.controller.network.ClientController;
+import it.polimi.ingsw.gc42.controller.network.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
 import it.polimi.ingsw.gc42.view.Dialog.TextDialog;

@@ -35,23 +35,34 @@ class CornerTest {
         }
         assertEquals(0, coveredCornersAtFirst);
 
-        player.setStarterCard((StarterCard) card);
+        player.setTemporaryStarterCard((StarterCard) card);
+        player.setStarterCard();
 
         // Places 4 Cards in the nearby positions, so they cover the StarterCard's corners.
         PlayableCard card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
         try {
+            /*player.drawCard(game.getResourcePlayingDeck());
             player.drawCard(game.getResourcePlayingDeck());
-            player.drawCard(game.getResourcePlayingDeck());
-            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());*/
 
 
-            player.playCard(card2, 1, 0);
+            player.setHandCard(0, card2);
+            player.drawCard(game.getResourcePlayingDeck());
+            player.drawCard(game.getResourcePlayingDeck());
+            player.playCard(1, 1, 0);
+            player.drawCard(game.getResourcePlayingDeck());
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
-            player.playCard(card2, 0, 1);
+            player.setHandCard(0, card2);
+            player.playCard(1, 0, 1);
+            player.drawCard(game.getResourcePlayingDeck());
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
-            player.playCard(card2, -1, 0);
+            player.setHandCard(0, card2);
+            player.playCard(1, -1, 0);
+            player.drawCard(game.getResourcePlayingDeck());
             card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
-            player.playCard(card2, 0, -1);
+            player.setHandCard(0, card2);
+            player.playCard(1, 0, -1);
+            player.drawCard(game.getResourcePlayingDeck());
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }

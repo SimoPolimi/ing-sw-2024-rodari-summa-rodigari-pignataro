@@ -29,7 +29,8 @@ class CornerCountObjectiveTest {
         for (Card s: starters) {
             if (s.getId() == 84) {
                 s.flip();
-                p.setStarterCard((StarterCard) s);
+                p.setTemporaryStarterCard((StarterCard) s);
+                p.setStarterCard();
             }
         }
         GoldCard gold = null;
@@ -76,9 +77,16 @@ class CornerCountObjectiveTest {
             }
         }
         try {
-            p.playCard((PlayableCard) c1, 1, 0);
-            p.playCard((PlayableCard) c2, 0, 1);
-            p.playCard( gold, 1, 1);
+            p.setHandCard(0, (PlayableCard) c1);
+            p.setHandCard(1, (PlayableCard) c2);
+            p.setHandCard(2, gold);
+            p.playCard(1, 1, 0);
+            p.drawCard(g.getResourcePlayingDeck());
+            p.playCard(1,  0, 1);
+            p.drawCard(g.getResourcePlayingDeck());
+            p.playCard(1, 1, 1);
+            p.drawCard(g.getResourcePlayingDeck());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

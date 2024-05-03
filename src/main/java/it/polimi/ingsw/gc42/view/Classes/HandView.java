@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.controller.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;

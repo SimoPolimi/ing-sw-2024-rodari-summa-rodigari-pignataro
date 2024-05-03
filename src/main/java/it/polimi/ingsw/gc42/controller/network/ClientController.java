@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.network;
+package it.polimi.ingsw.gc42.controller.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;

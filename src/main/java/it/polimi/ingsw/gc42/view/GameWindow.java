@@ -1,13 +1,9 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
-import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.controller.network.NetworkController;
 import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import javafx.application.Application;
@@ -20,7 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameWindow extends Application {

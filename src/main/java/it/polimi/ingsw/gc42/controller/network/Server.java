@@ -1,8 +1,7 @@
-package it.polimi.ingsw.gc42.network;
+package it.polimi.ingsw.gc42.controller.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.fxml.FXML;

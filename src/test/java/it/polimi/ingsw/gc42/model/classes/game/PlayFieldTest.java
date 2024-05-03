@@ -22,7 +22,8 @@ class PlayFieldTest {
         // A Starter Card is flipped, so it always has 4 non-null Corners
         StarterCard starterCard = (StarterCard) game.getStarterDeck().draw();
         starterCard.flip();
-        player.setStarterCard(starterCard);
+        player.setTemporaryStarterCard(starterCard);
+        player.setStarterCard();
         assertEquals(4, player.getPlayField().getAvailablePlacements().size());
     }
 
@@ -34,7 +35,8 @@ class PlayFieldTest {
         // A Starter Card is flipped, so it always has 4 non-null Corners
         StarterCard starterCard = (StarterCard) game.getStarterDeck().draw();
         starterCard.flip();
-        player.setStarterCard(starterCard);
+        player.setTemporaryStarterCard(starterCard);
+        player.setStarterCard();
 
         try {
             player.drawCard(game.getResourcePlayingDeck());
@@ -64,7 +66,9 @@ class PlayFieldTest {
 
         for (int i = 0; i < 7; i++) {
             try {
-                player.playCard(testCards.get(i), testCoordinates.get(i).getX(), testCoordinates.get(i).getY());
+                player.setHandCard(0, testCards.get(i));
+                player.playCard(1, testCoordinates.get(i).getX(), testCoordinates.get(i).getY());
+                player.drawCard(game.getResourcePlayingDeck());
             } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
                 e.printStackTrace();
             }

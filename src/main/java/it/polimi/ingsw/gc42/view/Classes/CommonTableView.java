@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
-import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.controller.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;

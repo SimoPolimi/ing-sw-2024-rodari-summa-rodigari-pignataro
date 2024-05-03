@@ -2,11 +2,8 @@ package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.network.NetworkController;
+import it.polimi.ingsw.gc42.controller.network.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
-import it.polimi.ingsw.gc42.view.Interfaces.Flip1Listener;
-import it.polimi.ingsw.gc42.view.Interfaces.Flip2Listener;
-import it.polimi.ingsw.gc42.view.Interfaces.Flip3Listener;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.EventHandler;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.network;
+package it.polimi.ingsw.gc42.controller.network;
 
 import java.io.IOException;
 

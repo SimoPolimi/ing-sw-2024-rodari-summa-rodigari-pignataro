@@ -260,16 +260,23 @@ public class Player implements Observable, Serializable {
     }
 
     /**
-     * Plays the specified StarterCard in position [x=0,y=0]
-     *
-     * @param card The card to be played
+     * Plays the StarterCard contained in temporaryStarterCard in position [x=0,y=0]
      */
-    public void setStarterCard(StarterCard card) {
+    public void setStarterCard() {
         try {
             playCard(-1, 0, 0);
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Setter Method for temporaryStarterCard.
+     * For tests purposes.
+     * @param starter
+     */
+    public void setTemporaryStarterCard(StarterCard starter) {
+        this.temporaryStarterCard = starter;
     }
 
     public void drawSecretObjectives(PlayingDeck playingDeck) {
@@ -392,6 +399,21 @@ public class Player implements Observable, Serializable {
         } else if (slot > hand.size() - 1 && slot < 3) {
             return null;
         } else throw new IllegalArgumentException("No such Card in Hand");
+    }
+
+    /**
+     * Setter Method for a specific Card inside the Hand.
+     * PLEASE NOTE: This Overrides the current Card in that slot.
+     * Use only if needed. Usage outside of Tests is not recommended.
+     * @param slot: the slot to put the Card in
+     * @param card: the Card to put it place
+     */
+    public void setHandCard(int slot, PlayableCard card) {
+        if (hand.isEmpty()) {
+            hand.add(card);
+        } else if (slot >= 0 && slot < hand.size()) {
+            hand.set(slot, card);
+        }
     }
 
     // TODO: redo description javadoc
