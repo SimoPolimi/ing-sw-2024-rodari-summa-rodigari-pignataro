@@ -58,31 +58,31 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void drawCard(int gameID, Player player, CardType type) throws RemoteException {
+    public void drawCard(int gameID, int playerID, CardType type) throws RemoteException {
         switch (type) {
             case RESOURCECARD -> {
-                collection.get(gameID).drawCard(player, collection.get(gameID).getGame().getResourcePlayingDeck());
+                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck());
             }
             case GOLDCARD -> {
-                collection.get(gameID).drawCard(player, collection.get(gameID).getGame().getGoldPlayingDeck());
+                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck());
             }
             case OBJECTIVECARD -> {
-                collection.get(gameID).drawCard(player, collection.get(gameID).getGame().getObjectivePlayingDeck());
+                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck());
             }
         }
     }
 
     @Override
-    public void grabCard(int gameID, Player player, CardType type, int slot) throws RemoteException {
+    public void grabCard(int gameID, int playerID, CardType type, int slot) throws RemoteException {
         switch (type) {
             case RESOURCECARD -> {
-                collection.get(gameID).grabCard(player, collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
+                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
             }
             case GOLDCARD -> {
-                collection.get(gameID).grabCard(player, collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
+                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
             }
             case OBJECTIVECARD -> {
-                collection.get(gameID).grabCard(player, collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
+                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
             }
         }
     }

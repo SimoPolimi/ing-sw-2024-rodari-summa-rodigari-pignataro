@@ -195,18 +195,18 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public void drawCard(Player player, CardType type) {
+    public void drawCard(int playerID, CardType type) {
         try {
-            server.drawCard(gameID, player, type);
+            server.drawCard(gameID, playerID, type);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void grabCard(Player player, CardType type, int slot) {
+    public void grabCard(int playerID, CardType type, int slot) {
         try {
-            server.grabCard(gameID, player, type, slot);
+            server.grabCard(gameID, playerID, type, slot);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -226,7 +226,7 @@ public class RmiClient implements NetworkController, Serializable {
         try {
             server.addPlayer(gameID, player);
             this.owner = player;
-            playerID = server.getGame(gameID).getIndexOfPlayer(owner.getNickname()) + 1;
+            playerID = server.getGame(gameID).getIndexOfPlayer(owner.getNickname());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

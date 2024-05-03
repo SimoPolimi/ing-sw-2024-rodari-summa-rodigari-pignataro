@@ -236,6 +236,11 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     @Override
+    public void notifyTurnChanged() {
+        // Don't need
+    }
+
+    @Override
     public void showWaitingForServerDialog() {
         // Don't need
     }

@@ -108,9 +108,9 @@ public class GUIController implements ViewController {
     private CommonTableView commonTable;
     private int playerID;
 
-    private TableView rightTable;
-    private TableView topTable;
-    private TableView leftTable;
+    private TableView rightTable = null;
+    private TableView topTable = null;
+    private TableView leftTable = null;
 
 
     public void build() {
@@ -416,16 +416,19 @@ public class GUIController implements ViewController {
             ArrayList<Integer> alreadySeen = new ArrayList<>();
             // Players are ordered by their points
             while (alreadySeen.size() != number) {
-                int currentMax = 1;
+                int currentMax = 0;
+                int currentMaxPoints = 0;
                 for (int i = 0; i < number; i++) {
-                    if (notOrderedPlayers.get(i).getPoints() >= notOrderedPlayers.get(currentMax).getPoints() && !alreadySeen.contains(i)) {
+                    if (notOrderedPlayers.get(i).getPoints() >= currentMaxPoints && !alreadySeen.contains(i)) {
                         currentMax = i;
+                        currentMaxPoints = notOrderedPlayers.get(i).getPoints();
                     }
                 }
                 players.add(notOrderedPlayers.get(currentMax));
                 alreadySeen.add(currentMax);
             }
 
+            miniScoreboardContainer.getChildren().clear();
             for (Player player : players) {
                 if (null != player.getToken()) {
                     ImageView tokenView = null;
@@ -476,7 +479,6 @@ public class GUIController implements ViewController {
     }
 
     public void refreshScoreBoard() {
-        miniScoreboardContainer.getChildren().clear();
         Platform.runLater(() -> {
             try {
                 initMiniScoreBoard();
@@ -648,6 +650,15 @@ public class GUIController implements ViewController {
     @Override
     public void notifyCommonObjectivesChanged() {
         commonTable.refreshCommonObjectives();
+    }
+
+    @Override
+    public void notifyTurnChanged() {
+        if (controller.getGame().getPlayerTurn() == playerID) {
+            table.setCanPlayCards(true);
+        } else {
+            table.setCanPlayCards(false);
+        }
     }
 
     @Override

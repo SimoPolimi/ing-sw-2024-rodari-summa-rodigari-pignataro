@@ -14,6 +14,7 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -226,7 +227,21 @@ public class GameController implements Serializable, Observable {
     }
 
     public void nextTurn() {
-        try {
+        int turn = game.getPlayerTurn();
+        if (turn == game.getNumberOfPlayers()) {
+            turn = 1;
+        } else {
+            turn++;
+        }
+        game.setPlayerTurn(turn);
+        for (RemoteViewController view: views) {
+            try {
+                view.notifyTurnChanged();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        /*try {
             game.getPlayer(game.getPlayerTurn()).setStatus(GameStatus.NOT_MY_TURN);
             if(game.getPlayerTurn() >= game.getNumberOfPlayers()){
                 game.setPlayerTurn(1);
@@ -237,7 +252,7 @@ public class GameController implements Serializable, Observable {
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void playCard(int playerID, int handCard, int x, int y) {
@@ -248,9 +263,13 @@ public class GameController implements Serializable, Observable {
                 player.playCard(handCard, x, y);
 
                 // Don's ask to grab or draw if there are no cards to be picked
-                if(null != game.getResourcePlayingDeck().getSlot(1) || null != game.getResourcePlayingDeck().getSlot(2) || null != game.getGoldPlayingDeck().getSlot(1) || null != game.getGoldPlayingDeck().getSlot(2) || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
+                if(null != game.getResourcePlayingDeck().getSlot(1)
+                        || null != game.getResourcePlayingDeck().getSlot(2)
+                        || null != game.getGoldPlayingDeck().getSlot(1)
+                        || null != game.getGoldPlayingDeck().getSlot(2)
+                        || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
                     for (RemoteViewController view : views) {
-                        if (null != view.getOwner() && view.getOwner().equals(player)) {
+                        if (null != view.getOwner() && view.getOwner().getNickname().equals(player.getNickname())) {
                             view.askToDrawOrGrab();
                         }
                     }
@@ -289,13 +308,14 @@ public class GameController implements Serializable, Observable {
      */
     public void drawCard(Player player, PlayingDeck playingDeck){
         try {
-            if(player.equals(game.getCurrentPlayer())) {
+            if(player.getNickname().equals((game.getCurrentPlayer().getNickname()))) {
                 try {
                     player.drawCard(playingDeck);
                 }catch (IllegalArgumentException e){
                     // TODO: implement dialog
                     // Last turn and zero Cards in the decks... don't draw
                 }
+                nextTurn();
             } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
@@ -321,6 +341,7 @@ public class GameController implements Serializable, Observable {
                     // TODO: implement dialog
                     // Last turn and zero Cards on the table... don't grab
                 }
+                nextTurn();
             } else throw new IllegalActionException();
         } catch (IllegalActionException e) {
             e.printStackTrace();
@@ -429,7 +450,10 @@ public class GameController implements Serializable, Observable {
                 drawStartingHand();
                 break;
             case PLAYING:
-                game.setPlayerTurn(1);
+                for (int i = 0; i < game.getNumberOfPlayers(); i++) {
+                    game.getPlayer(i+1).setStatus(GameStatus.NOT_MY_TURN);
+                }
+                nextTurn();
             case COUNTING_POINTS:
                 break;
             case END_GAME:

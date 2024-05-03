@@ -283,8 +283,7 @@ public class TableView {
         transition.setOnFinished((e) -> {
             hand.getHandCardView(cardBeingPlayed).getImageView().setScaleX(1);
             hand.getHandCardView(cardBeingPlayed).getImageView().setScaleY(1);
-        });
-        transition.setOnFinished((e) -> {
+            hand.getHandCardView(cardBeingPlayed).removePlayingSelection(controller);
             server.playCard(cardBeingPlayed, coordinates.getX(), coordinates.getY());
         });
         transition.play();
@@ -384,15 +383,27 @@ public class TableView {
     }
 
     public void refreshHand() {
-        Platform.runLater(() -> hand.refresh(() -> {
-            try {
-                hand.getHandCardView(1).setModelCard(server.getPlayer(playerID).getHandCard(0));
-                hand.getHandCardView(2).setModelCard(server.getPlayer(playerID).getHandCard(1));
-                hand.getHandCardView(3).setModelCard(server.getPlayer(playerID).getHandCard(2));
-            } catch (IllegalArgumentException e) {
-                // The Hand is still empty (it's normal)
-            }
-        }));
+        Card card1;
+        try {
+            card1= server.getPlayer(playerID).getHandCard(0);
+        } catch (IllegalArgumentException e) {
+            card1 = null;
+        }
+        Card card2;
+        try {
+            card2= server.getPlayer(playerID).getHandCard(1);
+        } catch (IllegalArgumentException e) {
+            card2 = null;
+        }
+        Card card3;
+        try {
+            card3 = server.getPlayer(playerID).getHandCard(2);
+        } catch (IllegalArgumentException e) {
+            card3 = null;
+        }
+        hand.getHandCardView(1).setModelCard(card1);
+        hand.getHandCardView(2).setModelCard(card2);
+        hand.getHandCardView(3).setModelCard(card3);
     }
 
     public void refreshSecretObjective() {

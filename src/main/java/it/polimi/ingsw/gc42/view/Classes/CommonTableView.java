@@ -386,22 +386,22 @@ public class CommonTableView {
             if (guiController.isPlayerCanDrawOrGrab()) {
                 switch (selected) {
                     case 1 -> {
-                        controller.drawCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD);
+                        controller.drawCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD);
                     }
                     case 2 -> {
-                        controller.drawCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD);
+                        controller.drawCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD);
                     }
                     case 3 -> {
-                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD, 1);
+                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD, 1);
                     }
                     case 4 -> {
-                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.RESOURCECARD, 2);
+                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD, 2);
                     }
                     case 5 -> {
-                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD, 1);
+                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD, 1);
                     }
                     case 6 -> {
-                        controller.grabCard(controller.getGame().getCurrentPlayer(), CardType.GOLDCARD, 2);
+                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD, 2);
                     }
                 }
                 if (guiController.isCommonTableDown()) {

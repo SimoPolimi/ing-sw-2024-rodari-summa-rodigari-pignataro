@@ -443,6 +443,11 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     @Override
+    public void notifyTurnChanged() {
+
+    }
+
+    @Override
     public void showWaitingForServerDialog() {
 
     }

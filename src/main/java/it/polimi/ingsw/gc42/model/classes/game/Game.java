@@ -22,7 +22,7 @@ public class Game implements Observable, Serializable {
     private boolean isGoldDeckEmpty;
     private boolean playerHasReachedTwentyPoints;
                                                                                             //************************************
-    private int playerTurn;                                                                 // PlayerTurn goes from 1 to 4
+    private int playerTurn = 0;                                                                 // PlayerTurn goes from 1 to 4
                                                                                             //*************************************
     private final Chat chat = new Chat();
 

@@ -90,6 +90,11 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
+    public void notifyTurnChanged() throws RemoteException {
+        viewController.notifyTurnChanged();
+    }
+
+    @Override
     public void getReady() throws RemoteException {
         viewController.getReady();
     }

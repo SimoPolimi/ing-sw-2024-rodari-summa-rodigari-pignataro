@@ -138,11 +138,6 @@ public class HandCardView {
         return cardContainer;
     }
 
-    private void flipCard(int cardId) throws NoSuchCardException {
-        if (this.modelCard.getId() == cardId) {
-            card.flip();
-        } else throw new NoSuchCardException();
-    }
 
     public void flip() {
         if (!isBeingPlayed && null != modelCard) {

@@ -76,12 +76,12 @@ public class SocketClient implements NetworkController{
     }
 
     @Override
-    public void drawCard(Player player, CardType type) {
+    public void drawCard(int playerID, CardType type) {
 
     }
 
     @Override
-    public void grabCard(Player player, CardType type, int slot) {
+    public void grabCard(int playerID, CardType type, int slot) {
 
     }
 

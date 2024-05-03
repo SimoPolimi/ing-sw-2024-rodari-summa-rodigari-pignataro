@@ -32,9 +32,9 @@ public interface NetworkController {
 
     void flipCard(Card card);
 
-    void drawCard(Player player, CardType type);
+    void drawCard(int playerID, CardType type);
 
-    void grabCard(Player player, CardType type, int slot);
+    void grabCard(int playerID, CardType type, int slot);
 
     void drawSecretObjectives();
 
