@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.controller.network.SocketClient;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.controller.network.NetworkController;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
 
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -156,12 +158,19 @@ public class LoginViewController implements Observable {
                 try {
                     networkController.connect();
                     isConnected = true;
-                } catch (RemoteException | NotBoundException e) {
+                } catch (IOException | NotBoundException e) {
                     // Connection not successful
                     isConnected = false;
                 }
             } else {
                 // TODO: Socket
+                networkController = new SocketClient(getIPAddress(), getPort());
+                try {
+                    networkController.connect();
+                    isConnected = true;
+                } catch (NotBoundException | IOException e) {
+                    isConnected = false;
+                }
             }
             if (isConnected) {
                 showConnectionSuccess();

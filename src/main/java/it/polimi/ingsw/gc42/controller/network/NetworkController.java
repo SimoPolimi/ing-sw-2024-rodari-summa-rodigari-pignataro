@@ -7,12 +7,13 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 
+import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public interface NetworkController {
-    void connect() throws RemoteException, NotBoundException;
+    void connect() throws RemoteException, NotBoundException, IOException;
     void disconnect();
     boolean isConnected();
 

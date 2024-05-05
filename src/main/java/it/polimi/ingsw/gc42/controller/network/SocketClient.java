@@ -7,9 +7,13 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 public class SocketClient implements NetworkController{
     private String ipAddress;
@@ -27,8 +31,19 @@ public class SocketClient implements NetworkController{
     }
 
     @Override
-    public void connect() throws RemoteException, NotBoundException {
+    public void connect() throws IOException {
         // TODO: Implement
+        Socket socket = new Socket(ipAddress, port);
+//        System.out.println("ok");
+        isConnected = true;
+        Scanner in = new Scanner(socket.getInputStream());
+        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        for (int i = 0; i < 10; i++) {
+            out.println("a");
+            out.flush();
+        }
+        in.close();
+        out.close();
     }
 
     @Override
