@@ -22,6 +22,9 @@ public class SocketClient implements NetworkController{
     private boolean isConnected = false;
     private int playerID;
     private Player owner;
+    private Socket server;
+    private Scanner in;
+    private PrintWriter out;
 
     private ClientController clientController;
 
@@ -33,27 +36,27 @@ public class SocketClient implements NetworkController{
     @Override
     public void connect() throws IOException {
         // TODO: Implement
-        Socket socket = new Socket(ipAddress, port);
-//        System.out.println("ok");
+        server = new Socket(ipAddress, port);
         isConnected = true;
-        Scanner in = new Scanner(socket.getInputStream());
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
-        for (int i = 0; i < 10; i++) {
-            out.println("a");
-            out.flush();
-        }
-        in.close();
-        out.close();
+        in = new Scanner(server.getInputStream());
+        out = new PrintWriter(server.getOutputStream());
     }
 
     @Override
     public void disconnect() {
         // TODO: Implement
+        in.close();
+        out.close();
+        try {
+            server.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean isConnected() {
-        return false;
+        return isConnected;
     }
 
     @Override
@@ -136,7 +139,8 @@ public class SocketClient implements NetworkController{
 
     @Override
     public RemoteServer getServer() throws RemoteException {
-        return null;
+        out.println("D");
+        return new ServerManager(port);
     }
 
     @Override
