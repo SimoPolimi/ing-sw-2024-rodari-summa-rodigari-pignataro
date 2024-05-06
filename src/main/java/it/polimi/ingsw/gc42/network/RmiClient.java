@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
@@ -6,6 +6,9 @@ import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
+import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;

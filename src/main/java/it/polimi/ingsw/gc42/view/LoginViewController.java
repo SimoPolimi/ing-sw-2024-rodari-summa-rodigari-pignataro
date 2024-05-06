@@ -1,10 +1,10 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.controller.network.SocketClient;
+import it.polimi.ingsw.gc42.network.SocketClient;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
-import it.polimi.ingsw.gc42.controller.network.NetworkController;
-import it.polimi.ingsw.gc42.controller.network.RmiClient;
+import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
+import it.polimi.ingsw.gc42.network.RmiClient;
 import it.polimi.ingsw.gc42.view.Classes.NetworkMode;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;

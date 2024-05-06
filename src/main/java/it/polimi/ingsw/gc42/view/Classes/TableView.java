@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.controller.network.NetworkController;
+import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;

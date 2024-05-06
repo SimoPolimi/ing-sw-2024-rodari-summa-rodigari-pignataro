@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.network.messages.GrabCardMessage;
 import it.polimi.ingsw.gc42.view.GameTerminal;
 import it.polimi.ingsw.gc42.view.GameWindow;
 import javafx.application.Application;

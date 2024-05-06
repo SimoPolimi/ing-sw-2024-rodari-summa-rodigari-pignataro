@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.controller.network.PlayersNumberListener;
+import it.polimi.ingsw.gc42.network.interfaces.PlayersNumberListener;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;

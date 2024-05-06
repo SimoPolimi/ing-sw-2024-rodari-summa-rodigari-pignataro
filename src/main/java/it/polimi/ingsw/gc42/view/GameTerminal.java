@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
 import it.polimi.ingsw.gc42.model.interfaces.ReadyToChooseSecretObjectiveListener;
-import it.polimi.ingsw.gc42.controller.network.ClientController;
+import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;

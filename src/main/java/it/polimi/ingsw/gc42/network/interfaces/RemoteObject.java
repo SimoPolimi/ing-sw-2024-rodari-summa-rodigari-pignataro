@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network.interfaces;
 
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
@@ -12,7 +12,6 @@ import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public interface RemoteObject extends Remote, Observable {
 

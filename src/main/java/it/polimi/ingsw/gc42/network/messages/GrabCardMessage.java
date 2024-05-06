@@ -1,0 +1,35 @@
+package it.polimi.ingsw.gc42.network.messages;
+
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+
+public class GrabCardMessage extends Message {
+    private CardType type;
+    private int slot;
+
+    public GrabCardMessage(MessageType type, CardType cardType, int slot) {
+        super(type);
+        this.type = cardType;
+        this.slot = slot;
+    }
+
+    public CardType getType() {
+        return type;
+    }
+
+    public void setType(CardType type) {
+        this.type = type;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
+    @Override
+    public String toString() {
+        return type + ", " + slot;
+    }
+}

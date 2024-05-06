@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.controller.network.Server;
+import it.polimi.ingsw.gc42.network.Server;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;

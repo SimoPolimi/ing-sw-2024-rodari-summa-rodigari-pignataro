@@ -1,6 +1,7 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

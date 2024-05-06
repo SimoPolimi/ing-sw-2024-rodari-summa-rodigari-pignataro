@@ -1,4 +1,6 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network.interfaces;
+
+import it.polimi.ingsw.gc42.network.GameCollection;
 
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;

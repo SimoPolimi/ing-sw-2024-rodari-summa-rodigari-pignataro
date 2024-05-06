@@ -1,13 +1,14 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientController extends UnicastRemoteObject implements RemoteViewController{
+public class ClientController extends UnicastRemoteObject implements RemoteViewController {
     private final ViewController viewController;
 
     public ClientController(ViewController viewController) throws RemoteException {

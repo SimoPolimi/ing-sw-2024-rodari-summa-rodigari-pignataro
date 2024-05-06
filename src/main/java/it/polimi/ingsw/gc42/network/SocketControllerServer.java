@@ -1,4 +1,6 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network;
+
+import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 
 import java.io.IOException;
 import java.io.PrintWriter;

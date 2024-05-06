@@ -1,6 +1,7 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.game.Game;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteObject;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

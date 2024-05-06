@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.controller.network;
+package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 
