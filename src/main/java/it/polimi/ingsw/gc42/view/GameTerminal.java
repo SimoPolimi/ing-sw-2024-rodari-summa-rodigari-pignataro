@@ -95,7 +95,7 @@ public class GameTerminal extends Application implements ViewController {
                     case "6":
                         exit = true;
                         return;
-                    case "7":
+                    case "27":
                         // Test, will be deleted later
                         for (Card card : controller.getGame().getResourcePlayingDeck().getDeck().getCopy()) {
                             printCard((PlayableCard) card);
@@ -106,7 +106,7 @@ public class GameTerminal extends Application implements ViewController {
                             card.flip();
                         }
                         break;
-                    case "8":
+                    case "28":
                         for (Card card : controller.getGame().getGoldPlayingDeck().getDeck().getCopy()) {
                             printCard((PlayableCard) card);
                             System.out.println();
@@ -116,7 +116,7 @@ public class GameTerminal extends Application implements ViewController {
                             card.flip();
                         }
                         break;
-                    case "9":
+                    case "29":
                         for (Card card : controller.getGame().getStarterDeck().getCopy()) {
                             printCard((PlayableCard) card);
                             card.flip();
@@ -125,7 +125,7 @@ public class GameTerminal extends Application implements ViewController {
                             System.out.println();
                         }
                         break;
-                    case "10":
+                    case "30":
                         // Test placements
                         ArrayList<PlayableCard> cards = new ArrayList<>();
                         PlayableCard card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
@@ -176,6 +176,12 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
                         System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
                         break;
+                    case "7":
+                        printCard(player.getPlayField().getPlayedCards().getFirst());
+                        break;
+                    case "8":
+                        showRanking();
+                        break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         break;
@@ -195,10 +201,12 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("5) Digit 5 and write the message");
         System.out.println("6) Exit");
         // Test, will be deleted later
-        System.out.println("7) Print all Resource Cards [Test]");
-        System.out.println("8) Print all Gold Cards [Test]");
-        System.out.println("9) Print all Starter Cards [Test]");
-        System.out.println("10) Print PlayArea [Test]");
+        System.out.println("7) Print your starter card [test]");
+        System.out.println("8) Show ranking");
+        System.out.println("27) Print all Resource Cards [Test]");
+        System.out.println("28) Print all Gold Cards [Test]");
+        System.out.println("29) Print all Starter Cards [Test]");
+        System.out.println("30) Print PlayArea [Test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -235,6 +243,8 @@ public class GameTerminal extends Application implements ViewController {
                     ArrayList<Coordinates> availablePlacements = player.getPlayField().getAvailablePlacements();
                     for (Coordinates coord : availablePlacements) {
                         System.out.println(i + ") " + coord.getX() + " " + coord.getY());
+                        //stampare la starter card e poi stampare gli spazio in cui possiamo aggiungere la nuova carta
+                        printCard(player.getPlayField().getPlayedCards().getFirst());
                         i++;
                     }
                     // TODO: Handle str to int conversion exceptions or use nextInt() (there are still exceptions to be handled in this case)
@@ -790,6 +800,25 @@ public class GameTerminal extends Application implements ViewController {
             }
         }
         return false;
+    }
+    public void showRanking(){
+        ArrayList<Player> playersList = new ArrayList<>();
+        ArrayList<Integer> alreadySeen = new ArrayList<>();
+        // Players are ordered by their points
+        while (alreadySeen.size() != controller.getGame().getNumberOfPlayers()) {
+            int currentMax = 1;
+            for (int i = 1; i <= controller.getGame().getNumberOfPlayers(); i++) {
+                if (controller.getPlayer(i).getPoints() >= controller.getPlayer(currentMax).getPoints() && !alreadySeen.contains(i)) {
+                    currentMax = i;
+                }
+            }
+            playersList.add(controller.getPlayer(currentMax));
+            alreadySeen.add(currentMax);
+        }
+
+        System.out.println("Ranking");
+        for (int i = 0; i < controller.getGame().getNumberOfPlayers(); i++)
+        System.out.println(i+1 +") "+ playersList.get(i).getNickname()+": "+ playersList.get(i).getPoints());
     }
 }
 
