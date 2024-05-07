@@ -81,7 +81,7 @@ public class LoginViewController implements Observable {
                 onEnterPressed();
             }
         });
-        ipTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+        /*ipTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 connect();
@@ -92,7 +92,7 @@ public class LoginViewController implements Observable {
             public void handle(KeyEvent keyEvent) {
                 connect();
             }
-        });
+        });*/
     }
 
     public NetworkController getNetworkController() {
@@ -147,6 +147,7 @@ public class LoginViewController implements Observable {
         playButton.setStyle("-fx-background-color: grey; -fx-background-radius: 15;");
     }
 
+    @FXML
     private void connect() {
         connectionIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/connectingIcon.png"))));
         String ip = getIPAddress();
