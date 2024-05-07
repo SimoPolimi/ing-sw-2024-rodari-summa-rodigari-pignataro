@@ -12,7 +12,7 @@ public class GrabCardMessage extends PlayerMessage {
         this.slot = slot;
     }
 
-    public CardType getType() {
+    public CardType getCardType() {
         return type;
     }
 

@@ -10,6 +10,10 @@ public class Message implements Serializable {
     }
     @Override
     public String toString() {
-        return type.toString();
+        return type.toString() + ": ";
+    }
+
+    public MessageType getType() {
+        return type;
     }
 }

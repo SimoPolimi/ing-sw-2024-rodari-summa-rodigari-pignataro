@@ -162,11 +162,13 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void setName(String name) throws RemoteException {
-
+        sendMessage(new SetNameMessage(MessageType.SET_NAME, gameID, name));
     }
 
     @Override
     public Player getPlayer(int index) {
+        //TODO: return?????
+        sendMessage(new GetPlayerMessage(MessageType.GET_PLAYER, gameID, playerID));
         return null;
     }
 
@@ -177,12 +179,14 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getNumberOfPlayers() {
+        // TODO
+        sendMessage(new GameMessage(MessageType.GET_NUMBER_OF_PLAYERS, gameID));
         return 0;
     }
 
     @Override
     public void startGame() {
-
+        sendMessage(new GameMessage(MessageType.START_GAME, gameID));
     }
 
     @Override
@@ -211,8 +215,9 @@ public class SocketClient implements NetworkController {
     }
 
     public void sendMessage(Message message){
-        //TODO: write send method
         out.println(message.toString());
+        //TODO: serialize o not???
+        //out.println(message);
         out.flush();
     }
 }

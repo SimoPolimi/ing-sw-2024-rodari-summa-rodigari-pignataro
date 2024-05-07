@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.network.messages;
 
 public enum MessageType {
+    //TODO: cehck usage
     START_GAME,
     SET_PLAYER_STATUS,
     NEW_GAME,

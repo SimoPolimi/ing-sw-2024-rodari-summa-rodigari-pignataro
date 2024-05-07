@@ -1,5 +1,8 @@
 package it.polimi.ingsw.gc42.network;
 
+import it.polimi.ingsw.gc42.controller.GameStatus;
+import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 
 import java.io.IOException;
@@ -7,9 +10,14 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class SocketControllerServer implements ServerNetworkController {
     private String ipAddress;
@@ -17,10 +25,120 @@ public class SocketControllerServer implements ServerNetworkController {
     private Runnable onReady;
     private GameCollection games;
     private ServerManager server;
+    final private BlockingDeque<String> messagesQueue = new LinkedBlockingDeque<>();
+    //TODO: move BlockingQueue to game controller, it will contains lambda. I shoould add them from here after translating the message
 
-    private void translate(String message) {
+    private void receiveMessage() throws RemoteException {
         // TODO: message parsing and method calling
-        System.out.println(message + "A"); // Test
+        // ex: Message_type: arg1, arg2, ...
+        ArrayList<String> temp = new ArrayList<>(Arrays.asList(messagesQueue.poll().split(":")));
+        String command = temp.removeFirst();
+        ArrayList<String> args = new ArrayList<>(Arrays.asList(temp.getFirst().split(", ")));
+        //TODO: are thoso ok here?? variables for switch Enum
+        GameStatus gameStatus = null;
+        CardType cardType = null;
+        Token token = null;
+        /*Message temp = messagesQueue.poll();
+        switch (temp.getType().toString()) {
+            case "START_GAME":
+                if(temp instanceof GameMessage){
+                    server.getGame(((GameMessage) temp).getGameID());
+                }
+
+                break;*/
+        switch (command) {
+            case "START_GAME":
+                server.getGame(Integer.parseInt(args.removeFirst()));
+                break;
+            case "SET_PLAYER_STATUS":
+                // String to Enum
+                for(GameStatus gameStatus1 : GameStatus.values()){
+                    if(gameStatus1.toString().equals(args.getLast())){
+                        gameStatus = gameStatus1;
+                    }
+                }
+                args.removeLast();
+                server.setPlayerStatus(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), gameStatus);
+                    break;
+            case "NEW_GAME":
+                break;
+            case "GET_GAME":
+                break;
+            case "GRAB_CARD":
+                // String to Enum
+                for(CardType cardType1 : CardType.values()){
+                    if(cardType1.toString().equals(args.getLast())){
+                        cardType = cardType1;
+                    }
+                }
+                args.removeLast();
+                server.grabCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), cardType, Integer.parseInt(args.removeFirst()));
+                break;
+            case   "PLAY_CARD":
+                server.playCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()));
+                break;
+            case    "KICK_PLAYER":
+                break;
+            case    "NEXT_TURN":
+                server.nextTurn(Integer.parseInt(args.removeFirst()));
+                break;
+            case    "ADD_PLAYER":
+                break;
+            case    "DRAW_CARD":
+                // String to Enum
+                for(CardType cardType1 : CardType.values()){
+                    if(cardType1.toString().equals(args.getLast())){
+                        cardType = cardType1;
+                    }
+                }
+                args.removeLast();
+                server.drawCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), cardType);
+                break;
+            case    "GET_NUMBER_OF_PLAYERS":
+                break;
+            case    "SET_NAME":
+                server.setName(Integer.parseInt(args.removeFirst()), args.removeFirst());
+                break;
+            case    "SET_PLAYER_SECRET_OBJECTIVE":
+                server.setPlayerSecretObjective(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()));
+                break;
+            case    "SET_PLAYER_STARTER_CARD":
+                server.setPlayerStarterCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()));
+                break;
+            case    "SET_PLAYER_TOKEN":
+                // String to Enum
+                for(Token token1 : Token.values()){
+                    if(token1.toString().equals(args.getLast())){
+                        token = token1;
+                    }
+                }
+                args.removeLast();
+                server.setPlayerToken(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), token);
+                break;
+            case    "DRAW_SECRET_OBJECTIVES":
+                server.drawSecretObjectives(Integer.parseInt(args.removeFirst()));
+                break;
+            case    "FLIP_CARD":
+                server.flipCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()));
+                break;
+            case    "FLIP_STARTER_CARD":
+                server.flipStarterCard(Integer.parseInt(args.removeFirst()), Integer.parseInt(args.removeFirst()));
+                break;
+            case    "SET_CURRENT_STATUS":
+                // String to Enum
+                for(GameStatus gameStatus1 : GameStatus.values()){
+                    if(gameStatus1.toString().equals(args.getLast())){
+                        gameStatus = gameStatus1;
+                    }
+                }
+                args.removeLast();
+                server.setCurrentStatus(Integer.parseInt(args.removeFirst()), gameStatus);
+                break;
+            case    "GET_NAME":
+                break;
+            case    "GET_PLAYER":
+                break;
+        }
     }
 
     @Override
@@ -78,7 +196,10 @@ public class SocketControllerServer implements ServerNetworkController {
                                 // can be risky because there could be a chain of "order sensitive" operations.
                                 // Another approach could be putting the messages in a queue and running translate()
                                 // every time the queue is not empty
-                                pool.submit(() -> translate(line));
+
+                                //pool.submit(() -> messagesQueue.add((Message) new ObjectInputStream(socket.getInputStream()).readObject()));
+                                pool.submit(() -> messagesQueue.add(line));
+                                receiveMessage();
                             }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
