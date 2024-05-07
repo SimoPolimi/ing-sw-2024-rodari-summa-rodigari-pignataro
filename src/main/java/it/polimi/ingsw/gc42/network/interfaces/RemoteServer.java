@@ -53,7 +53,7 @@ public interface RemoteServer extends Remote {
 
     void startGame(int gameID) throws RemoteException;
 
-    void lookupClient(int gameID, String clientID) throws RemoteException, NotBoundException;
+    void lookupClient(int gameID, String ip, int port, String clientID) throws RemoteException, NotBoundException;
 
     void setPlayerStatus(int gameID, int playerID, GameStatus status) throws RemoteException;
 

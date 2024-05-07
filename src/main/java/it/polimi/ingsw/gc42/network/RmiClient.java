@@ -10,7 +10,11 @@ import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,6 +27,7 @@ public class RmiClient implements NetworkController, Serializable {
     private String ipAddress;
     private int port;
     private Registry registry;
+    private Registry localRegistry;
     //private RemoteCollection games;
     private RemoteServer server;
     private int gameID;
@@ -82,10 +87,29 @@ public class RmiClient implements NetworkController, Serializable {
         if (isConnected) {
             Random random = new Random();
             int id = random.nextInt(100000000);
-            registry.bind(String.valueOf(id), viewController);
+            int port;
+            // Temporarily creates a Socket with port 0 because it gets assigned a random available port
+            ServerSocket serverSocket = null;
             try {
-                server.lookupClient(gameID, String.valueOf(id));
+                serverSocket = new ServerSocket(0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // Use that port in the RMI connection
+            port = serverSocket.getLocalPort();
+            // Closes the socket because it's not needed anymore
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            localRegistry = LocateRegistry.createRegistry(port);
+            localRegistry.bind(String.valueOf(id), viewController);
+            try {
+                server.lookupClient(gameID, InetAddress.getLocalHost().getHostAddress(), port, String.valueOf(id));
             } catch (NotBoundException e) {
+                throw new RuntimeException(e);
+            } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
         }

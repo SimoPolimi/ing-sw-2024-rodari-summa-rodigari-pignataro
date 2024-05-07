@@ -177,8 +177,8 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void lookupClient(int gameID, String clientID) throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(port);
+    public void lookupClient(int gameID, String ip, int port, String clientID) throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry(ip, port);
         addView(gameID, (RemoteViewController) registry.lookup(clientID));
     }
 
