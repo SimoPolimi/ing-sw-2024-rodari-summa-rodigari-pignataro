@@ -5,7 +5,6 @@ package it.polimi.ingsw.gc42.model.classes.cards;
  */
 public class ObjectiveCard extends Card {
     // Attributes
-    private int points;
     private Objective objective;
 
     // Constructor Method

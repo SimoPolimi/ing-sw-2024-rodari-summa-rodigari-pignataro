@@ -5,7 +5,8 @@ public class PlayCardMessage extends Message {
     private int x;
     private int y;
 
-    public PlayCardMessage(int handCard, int y, int x) {
+    public PlayCardMessage(MessageType type, int handCard, int y, int x) {
+        super(type);
         this.handCard = handCard;
         this.y = y;
         this.x = x;

@@ -239,18 +239,6 @@ public class GameController implements Serializable, Observable {
                 throw new RuntimeException(e);
             }
         }
-        /*try {
-            game.getPlayer(game.getPlayerTurn()).setStatus(GameStatus.NOT_MY_TURN);
-            if(game.getPlayerTurn() >= game.getNumberOfPlayers()){
-                game.setPlayerTurn(1);
-                game.getPlayer(1).setStatus(GameStatus.MY_TURN);
-            }else{
-                game.getPlayer(game.getPlayerTurn()+1).setStatus(GameStatus.MY_TURN);
-                game.setPlayerTurn(game.getPlayerTurn() + 1);
-            }
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void playCard(int playerID, int handCard, int x, int y) {
@@ -466,12 +454,6 @@ public class GameController implements Serializable, Observable {
             default:
                 break;
         }
-    }
-
-    //TODO: remove after test
-    public String test(int a) throws RemoteException{
-        System.out.println("Metodo chiamato dal client");
-        return "Sono il GameController";
     }
 
     @Override

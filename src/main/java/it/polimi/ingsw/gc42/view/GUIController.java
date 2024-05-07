@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
 import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
 import it.polimi.ingsw.gc42.view.Dialog.TextDialog;
+import it.polimi.ingsw.gc42.view.Interfaces.CardPickerListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
