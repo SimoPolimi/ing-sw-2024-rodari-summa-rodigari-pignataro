@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
+import it.polimi.ingsw.gc42.network.messages.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,57 +68,64 @@ public class SocketClient implements NetworkController {
         if (isConnected) {
             this.clientController = viewController;
             // TODO: Send message to do addView() to SocketControllerServer
+
+
         }
     }
 
     @Override
     public Game getGame() {
+        sendMessage(new Message(MessageType.GET_GAME));
+        //TODO: return?????
         return null;
     }
 
     @Override
     public boolean kickPlayer(Player player) {
+        //TODO: kick player
+        sendMessage(new GameMessage(MessageType.KICK_PLAYER, gameID));
         return false;
     }
 
     @Override
     public void nextTurn() {
-
+        sendMessage(new GameMessage(MessageType.NEXT_TURN, gameID));
     }
 
     @Override
     public void playCard(int handCard, int x, int y) {
-
+        sendMessage(new PlayCardMessage(MessageType.PLAY_CARD, gameID, playerID, handCard, x, y));
     }
 
     @Override
     public void flipCard(int playerID, int cardID) {
-
+        sendMessage(new FlipCardMessage(MessageType.FLIP_CARD, gameID, playerID, cardID));
     }
 
     @Override
     public void drawCard(int playerID, CardType type) {
-
+        sendMessage(new DrawCardMessage(MessageType.DRAW_CARD, gameID, playerID, type));
     }
 
     @Override
     public void grabCard(int playerID, CardType type, int slot) {
-
+        sendMessage(new GrabCardMessage(MessageType.GRAB_CARD, gameID, playerID, type, slot));
     }
 
     @Override
     public void drawSecretObjectives() {
-
+        //TODO: no playerID???????
+        sendMessage(new GameMessage(MessageType.DRAW_SECRET_OBJECTIVES, gameID));
     }
 
     @Override
     public void addPlayer(Player player) {
-
+        sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
     }
 
     @Override
     public void setCurrentStatus(GameStatus status) {
-
+        sendMessage(new Message(MessageType.SET_CURRENT_STATUS));
     }
 
     @Override
@@ -143,6 +151,7 @@ public class SocketClient implements NetworkController {
     @Override
     public RemoteServer getServer() throws RemoteException {
         out.println("D");
+        out.flush();
         return new ServerManager(port);
     }
 
@@ -178,26 +187,32 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void setPlayerStatus(int playerID, GameStatus status) {
-
+        sendMessage(new SetPlayerStatusMessage(MessageType.SET_PLAYER_STATUS, gameID, playerID, status));
     }
 
     @Override
     public void setPlayerToken(int playerID, Token token) {
-
+        sendMessage(new SetPlayerTokenMessage(MessageType.SET_PLAYER_TOKEN, gameID, playerID, token));
     }
 
     @Override
     public void setPlayerSecretObjective(int playerID, int pickedCard) {
-
+        sendMessage(new SetPlayerSecretObjectiveMessage(MessageType.SET_PLAYER_SECRET_OBJECTIVE, gameID, playerID, pickedCard));
     }
 
     @Override
     public void setPlayerStarterCard(int playerID) {
-
+        sendMessage(new PlayerMessage(MessageType.SET_PLAYER_STARTER_CARD, gameID, playerID));
     }
 
     @Override
     public void flipStarterCard(int playerID) {
+        sendMessage(new PlayerMessage(MessageType.FLIP_STARTER_CARD, gameID, playerID));
+    }
 
+    public void sendMessage(Message message){
+        //TODO: write send method
+        out.println(message.toString());
+        out.flush();
     }
 }

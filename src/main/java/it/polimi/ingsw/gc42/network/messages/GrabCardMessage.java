@@ -2,12 +2,12 @@ package it.polimi.ingsw.gc42.network.messages;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 
-public class GrabCardMessage extends Message {
+public class GrabCardMessage extends PlayerMessage {
     private CardType type;
     private int slot;
 
-    public GrabCardMessage(MessageType type, CardType cardType, int slot) {
-        super(type);
+    public GrabCardMessage(MessageType type, int gameID, int playerID, CardType cardType, int slot) {
+        super(type, gameID, playerID);
         this.type = cardType;
         this.slot = slot;
     }

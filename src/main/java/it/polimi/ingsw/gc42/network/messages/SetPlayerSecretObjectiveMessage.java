@@ -3,22 +3,22 @@ package it.polimi.ingsw.gc42.network.messages;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 
 public class SetPlayerSecretObjectiveMessage extends PlayerMessage{
-    private Token token;
+    private int pickedCard;
 
-    public SetPlayerSecretObjectiveMessage(MessageType type, int gameID, int playerID, Token token) {
+    public SetPlayerSecretObjectiveMessage(MessageType type, int gameID, int playerID, int pickedCard) {
         super(type, gameID, playerID);
-        this.token = token;
+        this.pickedCard = pickedCard;
     }
 
-    public Token getToken() {
-        return token;
+    public int getToken() {
+        return pickedCard;
     }
 
-    public void setToken(Token token) {
-        this.token = token;
+    public void setToken(int token) {
+        this.pickedCard = token;
     }
 
     public String toString(){
-        return super.toString() + ", " + token;
+        return super.toString() + ", " + pickedCard;
     }
 }

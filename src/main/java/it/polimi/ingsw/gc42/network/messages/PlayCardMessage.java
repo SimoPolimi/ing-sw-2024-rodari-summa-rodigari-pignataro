@@ -1,12 +1,12 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-public class PlayCardMessage extends Message {
+public class PlayCardMessage extends PlayerMessage {
     private int handCard;
     private int x;
     private int y;
 
-    public PlayCardMessage(MessageType type, int handCard, int y, int x) {
-        super(type);
+    public PlayCardMessage(MessageType type, int gameID, int playerID, int handCard, int y, int x) {
+        super(type, gameID, playerID);
         this.handCard = handCard;
         this.y = y;
         this.x = x;
