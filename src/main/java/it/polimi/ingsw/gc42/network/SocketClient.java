@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -17,6 +19,8 @@ import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class SocketClient implements NetworkController {
@@ -71,13 +75,6 @@ public class SocketClient implements NetworkController {
 
 
         }
-    }
-
-    @Override
-    public Game getGame() {
-        sendMessage(new Message(MessageType.GET_GAME));
-        //TODO: return?????
-        return null;
     }
 
     @Override
@@ -166,13 +163,6 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public Player getPlayer(int index) {
-        //TODO: return?????
-        sendMessage(new GetPlayerMessage(MessageType.GET_PLAYER, gameID, playerID));
-        return null;
-    }
-
-    @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
         return 0;
     }
@@ -219,5 +209,102 @@ public class SocketClient implements NetworkController {
         //TODO: serialize o not???
         //out.println(message);
         out.flush();
+    }
+
+    //TODO: Implement all
+
+    @Override
+    public ArrayList<String> getDeckTextures(CardType type) {
+        return null;
+    }
+
+    @Override
+    public String getSlotCardTexture(CardType type, int slot) {
+        return "";
+    }
+
+    @Override
+    public String getSecretObjectiveName(int playerID) {
+        return "";
+    }
+
+    @Override
+    public String getSecretObjectiveDescription(int playerID) {
+        return "";
+    }
+
+    @Override
+    public String getCommonObjectiveName(int slot) {
+        return "";
+    }
+
+    @Override
+    public String getCommonObjectiveDescription(int slot) {
+        return "";
+    }
+
+    @Override
+    public int getPlayerTurn() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, String> getTemporaryStarterCardTextures(int playerID) {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, String> getSecretObjectiveTextures(int playerID) {
+        return null;
+    }
+
+    @Override
+    public GameStatus getPlayerStatus(int playerID) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getPlayersInfo() {
+        return null;
+    }
+
+    @Override
+    public int getPlayersHandSize(int playerID) {
+        return 0;
+    }
+
+    @Override
+    public boolean isPlayerFirst(int playerID) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Coordinates> getAvailablePlacements(int playerID) {
+        return null;
+    }
+
+    @Override
+    public boolean canCardBePlayed(int playerID, int cardID) {
+        return false;
+    }
+
+    @Override
+    public Token getPlayerToken(int playerID) {
+        return null;
+    }
+
+    @Override
+    public PlayableCard getPlayersLastPlayedCard(int playerID) {
+        return null;
+    }
+
+    @Override
+    public PlayableCard getPlayersHandCard(int playerID, int cardID) {
+        return null;
     }
 }

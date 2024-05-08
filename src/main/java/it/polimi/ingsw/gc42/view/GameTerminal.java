@@ -19,6 +19,7 @@ public class GameTerminal extends Application implements ViewController {
     private GameController controller;
     private Player player;
     private Scanner scanner = new Scanner(System.in);
+    private int playerID;
 
     private String color(String str, UiColors color) {
         return color + str + UiColors.RESET;
@@ -389,8 +390,8 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     @Override
-    public Player getOwner() {
-        return player;
+    public int getOwner() {
+        return playerID;
     }
 
     @Override

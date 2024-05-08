@@ -385,25 +385,25 @@ public class CommonTableView {
             if (guiController.isPlayerCanDrawOrGrab()) {
                 switch (selected) {
                     case 1 -> {
-                        controller.drawCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD);
+                        controller.drawCard(guiController.getOwner(), CardType.RESOURCECARD);
                     }
                     case 2 -> {
-                        controller.drawCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD);
+                        controller.drawCard(guiController.getOwner(), CardType.GOLDCARD);
                     }
                     case 3 -> {
-                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD, 1);
+                        controller.grabCard(guiController.getOwner(), CardType.RESOURCECARD, 1);
                     }
                     case 4 -> {
-                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.RESOURCECARD, 2);
+                        controller.grabCard(guiController.getOwner(), CardType.RESOURCECARD, 2);
                     }
                     case 5 -> {
-                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD, 1);
+                        controller.grabCard(guiController.getOwner(), CardType.GOLDCARD, 1);
                     }
                     case 6 -> {
-                        controller.grabCard(controller.getIndexOfPlayer(guiController.getOwner().getNickname()), CardType.GOLDCARD, 2);
+                        controller.grabCard(guiController.getOwner(), CardType.GOLDCARD, 2);
                     }
                 }
-                if (guiController.isCommonTableDown()) {
+                if (selected >= 1 && selected <= 6 && guiController.isCommonTableDown() && !guiController.isShowingGlobalMap()) {
                     guiController.bringCommonTableUp();
                 }
                 if (isShowingInfo != 0) {
@@ -435,22 +435,22 @@ public class CommonTableView {
     }
 
     public void refreshResourceDeck() {
-        ArrayList<Card> deck = controller.getGame().getResourcePlayingDeck().getDeck().getCopy();
+        ArrayList<String> deck = controller.getDeckTextures(CardType.RESOURCECARD);
         Platform.runLater(() -> resourceDeck.refresh(deck));
     }
 
     public void refreshGoldDeck() {
-        ArrayList<Card> deck = controller.getGame().getGoldPlayingDeck().getDeck().getCopy();
+        ArrayList<String> deck = controller.getDeckTextures(CardType.GOLDCARD);
         Platform.runLater(() -> goldDeck.refresh(deck));
     }
 
     public void refreshResourceSlot(int slot) {
         switch (slot) {
             case 1 -> {
-                Card card = null;
-                card = controller.getGame().getResourcePlayingDeck().getSlot(1);
-                if (null != card) {
-                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                String card = "";
+                card = controller.getSlotCardTexture(CardType.RESOURCECARD, 1);
+                if (!card.isEmpty()) {
+                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     resourceDown1.setVisible(false);
                 }
@@ -459,10 +459,10 @@ public class CommonTableView {
                 }
             }
             case 2 -> {
-                Card card = null;
-                card = controller.getGame().getResourcePlayingDeck().getSlot(2);
-                if (null != card) {
-                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                String  card = "";
+                card = controller.getSlotCardTexture(CardType.RESOURCECARD, 2);
+                if (!card.isEmpty()) {
+                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     resourceDown2.setVisible(false);
                 }
@@ -476,10 +476,10 @@ public class CommonTableView {
     public void refreshGoldSlot(int slot) {
         switch (slot) {
             case 1 -> {
-                Card card = null;
-                card = controller.getGame().getGoldPlayingDeck().getSlot(1);
-                if (null != card) {
-                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                String card = null;
+                card = controller.getSlotCardTexture(CardType.GOLDCARD, 1);
+                if (!card.isEmpty()) {
+                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     goldDown1.setVisible(false);
                 }
@@ -488,10 +488,10 @@ public class CommonTableView {
                 }
             }
             case 2 -> {
-                Card card = null;
-                card = controller.getGame().getGoldPlayingDeck().getSlot(2);
-                if (null != card) {
-                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+                String card = null;
+                card = controller.getSlotCardTexture(CardType.GOLDCARD, 2);
+                if (!card.isEmpty()) {
+                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     goldDown2.setVisible(false);
                 }
@@ -504,14 +504,12 @@ public class CommonTableView {
 
     public void refreshCommonObjectives() {
         commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getObjectivePlayingDeck().getSlot(1).getFrontImage()))));
-        objName1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getName());
-        objDescr1.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1)).getObjective().getDescription());
+                .getSlotCardTexture(CardType.OBJECTIVECARD, 1)))));
+        objName1.setText(controller.getCommonObjectiveName(1));
+        objDescr1.setText(controller.getCommonObjectiveDescription(1));
         commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getGame().getObjectivePlayingDeck().getSlot(2).getFrontImage()))));
-        objName2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
-                .getSlot(2)).getObjective().getName());
-        objDescr2.setText(((ObjectiveCard) controller.getGame().getObjectivePlayingDeck()
-                .getSlot(2)).getObjective().getDescription());
+                .getSlotCardTexture(CardType.OBJECTIVECARD, 2)))));
+        objName2.setText((controller.getCommonObjectiveName(2)));
+        objDescr2.setText((controller.getCommonObjectiveDescription(2)));
     }
 }

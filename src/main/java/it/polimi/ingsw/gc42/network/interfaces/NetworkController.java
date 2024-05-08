@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface NetworkController {
     void connect() throws RemoteException, NotBoundException, IOException;
@@ -19,8 +23,6 @@ public interface NetworkController {
     boolean isConnected();
 
     void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException;
-
-    Game getGame();
 
     boolean kickPlayer(Player player);
 
@@ -54,8 +56,6 @@ public interface NetworkController {
 
     void setName(String name) throws RemoteException;
 
-    Player getPlayer(int index);
-
     int getIndexOfPlayer(String nickName) throws RemoteException;
 
     int getNumberOfPlayers();
@@ -72,4 +72,25 @@ public interface NetworkController {
 
     void flipStarterCard(int playerID);
 
+
+    ArrayList<String> getDeckTextures(CardType type);
+    String getSlotCardTexture(CardType type, int slot);
+    String getSecretObjectiveName(int playerID);
+    String getSecretObjectiveDescription(int playerID);
+    String getCommonObjectiveName(int slot);
+    String getCommonObjectiveDescription(int slot);
+    int getPlayerTurn();
+
+    ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID);
+    HashMap<String, String> getTemporaryStarterCardTextures(int playerID);
+    HashMap<String, String> getSecretObjectiveTextures(int playerID);
+    GameStatus getPlayerStatus(int playerID);
+    ArrayList<HashMap<String, String>> getPlayersInfo();
+    int getPlayersHandSize(int playerID);
+    boolean isPlayerFirst(int playerID);
+    ArrayList<Coordinates> getAvailablePlacements(int playerID);
+    boolean canCardBePlayed(int playerID, int cardID);
+    Token getPlayerToken(int playerID);
+    PlayableCard getPlayersLastPlayedCard(int playerID);
+    PlayableCard getPlayersHandCard(int playerID, int cardID);
 }

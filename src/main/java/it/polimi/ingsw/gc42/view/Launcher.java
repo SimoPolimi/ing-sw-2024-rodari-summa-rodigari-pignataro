@@ -1,19 +1,9 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.network.messages.GrabCardMessage;
-import it.polimi.ingsw.gc42.view.GameTerminal;
-import it.polimi.ingsw.gc42.view.GameWindow;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;

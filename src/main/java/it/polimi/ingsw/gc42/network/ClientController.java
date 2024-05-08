@@ -31,7 +31,7 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
-    public Player getOwner() throws RemoteException {
+    public int getOwner() throws RemoteException {
         return viewController.getOwner();
     }
 

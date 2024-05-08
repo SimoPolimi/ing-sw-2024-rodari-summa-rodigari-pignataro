@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
@@ -37,6 +38,7 @@ import javafx.util.Duration;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class GUIController implements ViewController {
@@ -153,8 +155,8 @@ public class GUIController implements ViewController {
         return root;
     }
 
-    public void setPlayer(Player player) throws RemoteException {
-        this.playerID = controller.getIndexOfPlayer(player.getNickname());
+    public void setPlayer(int playerID) throws RemoteException {
+        this.playerID = playerID;
         table.setPlayer(playerID);
     }
 
@@ -163,7 +165,7 @@ public class GUIController implements ViewController {
         boolean isTopTableEmpty = true;
         boolean isLeftTableEmpty = true;
         ArrayList<Integer> players = new ArrayList<>();
-        int numberOfPlayers = controller.getGame().getNumberOfPlayers();
+        int numberOfPlayers = controller.getNumberOfPlayers();
         for (int i = 1; i <= numberOfPlayers; i++) {
             if (i != playerID && !players.contains(i)) {
                 players.add(i);
@@ -343,8 +345,12 @@ public class GUIController implements ViewController {
     @Override
     public void showSecretObjectivesSelectionDialog() {
         CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
-        ArrayList<ObjectiveCard> cards = controller.getPlayer(playerID).getTemporaryObjectiveCards();
-        for (ObjectiveCard card : cards) {
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<HashMap<String, String>> textures = controller.getTemporaryObjectiveTextures(playerID);
+        for (HashMap<String, String> texture : textures) {
+            cards.add(new Card(true, 0, texture.get("Front"), texture.get("Back")));
+        }
+        for (Card card : cards) {
             dialog.addCard(card);
         }
         dialog.setListener(new CardPickerListener() {
@@ -362,7 +368,8 @@ public class GUIController implements ViewController {
     public void showStarterCardSelectionDialog() {
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
                 , true, this);
-        dialog.addCard(controller.getPlayer(playerID).getTemporaryStarterCard());
+        HashMap<String, String> texture = controller.getTemporaryStarterCardTextures(playerID);
+        dialog.addCard(new Card(true, 0, texture.get("Front"), texture.get("Back")));
         dialog.setListener(new CardPickerListener() {
             @Override
             public void onEvent() {
@@ -394,7 +401,7 @@ public class GUIController implements ViewController {
 
     public void onEnterPressed() {
         if (!isCommonTableDown) {
-            if (controller.getPlayer(playerID).getStatus() == GameStatus.MY_TURN) {
+            if (controller.getPlayerStatus(playerID) == GameStatus.MY_TURN) {
                 table.playCard();
             }
         } else if (!isShowingGlobalMap){
@@ -409,8 +416,19 @@ public class GUIController implements ViewController {
     private void initMiniScoreBoard() throws RemoteException {
         ArrayList<Player> notOrderedPlayers = new ArrayList<>();
         int number = controller.getNumberOfPlayers();
-        for (int i = 1; i <= number; i++) {
-            notOrderedPlayers.add(controller.getPlayer(i));
+        ArrayList<HashMap<String, String>> allPlayers = controller.getPlayersInfo();
+        for (HashMap<String, String> player: allPlayers) {
+            Player newPlayer = new Player(player.get("Nickname"));
+            newPlayer.setPoints(Integer.parseInt(player.get("Points")));
+            Token token = null;
+            switch (player.get("Token")) {
+                case "Blue" -> token = Token.BLUE;
+                case "Red" -> token = Token.RED;
+                case "Yellow" -> token = Token.YELLOW;
+                case "Green" -> token = Token.GREEN;
+            }
+            newPlayer.setToken(token);
+            notOrderedPlayers.add(newPlayer);
         }
         Platform.runLater(() -> {
             ArrayList<Player> players = new ArrayList<>();
@@ -553,8 +571,8 @@ public class GUIController implements ViewController {
     }
 
     @Override
-    public Player getOwner(){
-        return controller.getPlayer(playerID);
+    public int getOwner(){
+        return playerID;
     }
 
     @Override
@@ -662,7 +680,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyTurnChanged() {
-        if (controller.getGame().getPlayerTurn() == playerID) {
+        if (controller.getPlayerTurn() == playerID) {
             table.setCanPlayCards(true);
         } else {
             table.setCanPlayCards(false);

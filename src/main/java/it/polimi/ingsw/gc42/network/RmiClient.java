@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -21,6 +23,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class RmiClient implements NetworkController, Serializable {
@@ -59,6 +62,69 @@ public class RmiClient implements NetworkController, Serializable {
     public void flipStarterCard(int playerID) {
         try {
             server.flipStarterCard(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getDeckTextures(CardType type) {
+        try {
+            return server.getDeckTextures(gameID, type);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getSlotCardTexture(CardType type, int slot) {
+        try {
+            return server.getSlotCardTexture(gameID, type, slot);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getSecretObjectiveName(int playerID) {
+        try {
+            return server.getSecretObjectiveName(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getSecretObjectiveDescription(int playerID) {
+        try {
+            return server.getSecretObjectiveDescription(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getCommonObjectiveName(int slot) {
+        try {
+            return server.getCommonObjectiveName(gameID, slot);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getCommonObjectiveDescription(int slot) {
+        try {
+            return server.getCommonObjectiveDescription(gameID, slot);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getPlayerTurn() {
+        try {
+            return server.getPlayerTurn(gameID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -123,24 +189,6 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public boolean isConnected() {
         return isConnected;
-    }
-
-    @Override
-    public Game getGame() {
-        try {
-            return server.getGame(gameID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Player getPlayer(int index) {
-        try {
-            return server.getPlayer(gameID, index);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -242,6 +290,114 @@ public class RmiClient implements NetworkController, Serializable {
     public void drawSecretObjectives() {
         try {
             server.drawSecretObjectives(gameID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
+        try {
+            return server.getTemporaryObjectiveTextures(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public HashMap<String, String> getTemporaryStarterCardTextures(int playerID) {
+        try {
+            return server.getTemporaryStarterCardTextures(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public HashMap<String, String> getSecretObjectiveTextures(int playerID) {
+        try {
+            return server.getSecretObjectiveTextures(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public GameStatus getPlayerStatus(int playerID) {
+        try {
+            return server.getPlayerStatus(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getPlayersInfo() {
+        try {
+            return server.getPlayersInfo(gameID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getPlayersHandSize(int playerID) {
+        try {
+            return server.getPlayersHandSize(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean isPlayerFirst(int playerID) {
+        try {
+            return server.isPlayerFirst(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Coordinates> getAvailablePlacements(int playerID) {
+        try {
+            return server.getAvailablePlacements(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean canCardBePlayed(int playerID, int cardID) {
+        try {
+            return server.canCardBePlayed(gameID, playerID, cardID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Token getPlayerToken(int playerID) {
+        try {
+            return server.getPlayerToken(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public PlayableCard getPlayersLastPlayedCard(int playerID) {
+        try {
+            return server.getPlayersLastPlayedCard(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public PlayableCard getPlayersHandCard(int playerID, int cardID) {
+        try {
+            return server.getPlayersHandCard(gameID, playerID, cardID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

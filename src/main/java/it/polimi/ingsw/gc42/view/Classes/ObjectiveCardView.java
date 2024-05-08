@@ -33,8 +33,6 @@ public class ObjectiveCardView {
     private Text hint;
     private ImageView hintImage;
     private boolean isShowingDetails;
-    private ObjectiveCard modelCard;
-    private Listener listener;
     private Text title;
     private Text description;
     private StackPane objDescriptionBox;
@@ -104,15 +102,11 @@ public class ObjectiveCardView {
         this.description = description;
     }
 
-    public void setModelCard(ObjectiveCard modelCard) {
-        if (null != modelCard && null != listener) {
-            modelCard.removeListener(listener);
-        }
-        this.modelCard = modelCard;
+    public void setModelCard(String front, String back, String name, String descr) {
         if (!isPrivacyModeEnabled) {
-            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getFrontImage()))));
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(front))));
         } else {
-            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getBackImage()))));
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
         }
         imageView.setVisible(true);
         show();
@@ -136,8 +130,8 @@ public class ObjectiveCardView {
                 }
             });
         }
-        title.setText(modelCard.getObjective().getName());
-        description.setText(modelCard.getObjective().getDescription());
+        title.setText(name);
+        description.setText(descr);
     }
 
     public void rotate() {

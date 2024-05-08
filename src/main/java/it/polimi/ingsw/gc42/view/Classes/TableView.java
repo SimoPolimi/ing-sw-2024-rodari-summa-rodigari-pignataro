@@ -22,6 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class TableView {
@@ -71,7 +72,7 @@ public class TableView {
 
     public void setPlayer(int playerID) {
         this.playerID = playerID;
-        if (server.getPlayer(playerID).isFirst()) {
+        if (server.isPlayerFirst(playerID)) {
             blackToken.setVisible(true);
         }
         hand.setPlayer(playerID);
@@ -89,8 +90,8 @@ public class TableView {
         isPrivacyModeEnabled = privacyModeEnabled;
     }
 
-    public void setSecretObjective(ObjectiveCard card) {
-       secretObjective.setModelCard(card);
+    public void setSecretObjective(String front, String back, String name, String descr) {
+       secretObjective.setModelCard(front, back, name, descr);
     }
 
     // Methods:
@@ -204,7 +205,7 @@ public class TableView {
 
     private void showAvailablePlacements() {
         if (!isShowingPlacements) {
-            ArrayList<Coordinates> placements = server.getPlayer(playerID).getPlayField().getAvailablePlacements();
+            ArrayList<Coordinates> placements = server.getAvailablePlacements(playerID);
             for (Coordinates placement : placements) {
                 ImageView spotView = initImageView(new Image(
                                 Objects.requireNonNull(getClass().getResourceAsStream("/availableSpot.png"))),
@@ -234,10 +235,7 @@ public class TableView {
                 cardBeingPlayed = hand.getSelectedCard();
             }
             if (cardBeingPlayed > 0) {
-                boolean canBePlayed = true;
-                if (hand.getHandCardView(cardBeingPlayed).getModelCard() instanceof GoldCard) {
-                    canBePlayed = ((GoldCard) hand.getHandCardView(cardBeingPlayed).getModelCard()).canBePlaced(server.getPlayer(playerID).getPlayField().getPlayedCards());
-                }
+                boolean canBePlayed = server.canCardBePlayed(playerID, cardBeingPlayed-1);
                 if (canBePlayed) {
                     hand.setPlayingOverlay(cardBeingPlayed, true);
                     showAvailablePlacements();
@@ -350,15 +348,16 @@ public class TableView {
     }
 
     public void refreshToken() {
-        if (null != server.getPlayer(playerID).getToken()) {
-            setPlayerToken(server.getPlayer(playerID).getToken());
+        Token token = server.getPlayerToken(playerID);
+        if (null != token) {
+            setPlayerToken(token);
             Platform.runLater(() -> controller.refreshScoreBoard());
         }
     }
 
     public void refreshPlayArea() {
         Platform.runLater(() -> {
-            PlayableCard card = server.getPlayer(playerID).getPlayField().getLastPlayedCard();
+            PlayableCard card = server.getPlayersLastPlayedCard(playerID);
             addToPlayArea(card, card.getX(), card.getY());
         });
     }
@@ -366,19 +365,19 @@ public class TableView {
     public void refreshHand() {
         Card card1;
         try {
-            card1= server.getPlayer(playerID).getHandCard(0);
+            card1= server.getPlayersHandCard(playerID, 0);
         } catch (IllegalArgumentException e) {
             card1 = null;
         }
         Card card2;
         try {
-            card2= server.getPlayer(playerID).getHandCard(1);
+            card2= server.getPlayersHandCard(playerID, 1);
         } catch (IllegalArgumentException e) {
             card2 = null;
         }
         Card card3;
         try {
-            card3 = server.getPlayer(playerID).getHandCard(2);
+            card3 = server.getPlayersHandCard(playerID, 2);
         } catch (IllegalArgumentException e) {
             card3 = null;
         }
@@ -388,6 +387,8 @@ public class TableView {
     }
 
     public void refreshSecretObjective() {
-        setSecretObjective(server.getPlayer(playerID).getSecretObjective());
+        HashMap<String, String> card = server.getSecretObjectiveTextures(playerID);
+        setSecretObjective(card.get("Front"), card.get("Back"),
+                server.getSecretObjectiveName(playerID), server.getSecretObjectiveDescription(playerID));
     }
 }

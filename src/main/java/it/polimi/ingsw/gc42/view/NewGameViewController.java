@@ -26,6 +26,7 @@ import javafx.scene.text.TextAlignment;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewGameViewController implements Observable, ViewController {
     @FXML
@@ -84,7 +85,7 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     public void refresh() throws RemoteException {
-        players = controller.getGame().getNumberOfPlayers();
+        players = controller.getNumberOfPlayers();
         if (players >= 2) {
             // Doesn't start automatically, but allows to manually start the Game
             enableStartButton();
@@ -93,14 +94,15 @@ public class NewGameViewController implements Observable, ViewController {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        for (int i = 1; i <= controller.getNumberOfPlayers(); i++) {
-            content.getChildren().add(getNewListItem(controller.getPlayer(i)));
+        ArrayList<HashMap<String, String>> players = controller.getPlayersInfo();
+        for (HashMap<String, String> player : players) {
+            content.getChildren().add(getNewListItem(player.get("Nickname")));
         }
 
         playersList.setContent(content);
     }
 
-    private Pane getNewListItem(Player player) {
+    private Pane getNewListItem(String playerName) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
         newListItem.setAlignment(Pos.CENTER_LEFT);
@@ -108,7 +110,7 @@ public class NewGameViewController implements Observable, ViewController {
         newListItem.setMaxHeight(50);
 
         Text name;
-        name = new Text(player.getNickname());
+        name = new Text(playerName);
         name.setFont(Font.font("Tahoma Regular", 11));
         name.setTextAlignment(TextAlignment.LEFT);
 
@@ -168,9 +170,9 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     @Override
-    public Player getOwner() {
+    public int getOwner() {
         // Don't need
-        return null;
+        return -1;
     }
 
     @Override

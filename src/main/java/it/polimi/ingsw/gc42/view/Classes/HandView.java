@@ -369,7 +369,7 @@ public class HandView {
             t3.setByX(distance);
             t1.setOnFinished((e) -> {
                 controller.unlockInput();
-                if (null != server && server.getPlayer(playerID).getHandSize() == 3) {
+                if (null != server && server.getPlayersHandSize(playerID) == 3) {
                     controller.setPlayerCanDrawOrGrab(false);
                 }
             });

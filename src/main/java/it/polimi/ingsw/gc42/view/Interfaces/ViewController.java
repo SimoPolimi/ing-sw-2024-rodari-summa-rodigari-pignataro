@@ -9,7 +9,7 @@ public interface ViewController extends Serializable {
     void showSecretObjectivesSelectionDialog();
     void showStarterCardSelectionDialog();
     void showTokenSelectionDialog();
-    Player getOwner();
+    int getOwner();
     void askToDrawOrGrab();
     void notifyGameIsStarting();
     void notifyDeckChanged(CardType type);

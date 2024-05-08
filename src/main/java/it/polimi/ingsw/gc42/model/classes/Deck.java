@@ -103,7 +103,7 @@ public class Deck implements Observable, Serializable {
                     permRes.add(item);
                     deck.cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, permRes, points, frontImage, backImage));
+                            true, id, permRes, points, "/cards/"+frontImage, "/cards/"+backImage));
                 }
                 break;
             case GOLDCARD:
@@ -142,7 +142,7 @@ public class Deck implements Observable, Serializable {
                                     getCorner(bottomRightBack)),
                             true, id, permRes,
                             plantCost, animalCost, fungiCost,
-                            insectCost, objective, points, frontImage, backImage));
+                            insectCost, objective, points, "/cards/"+frontImage, "/cards/"+backImage));
                 }
                 break;
             case STARTERCARD:
@@ -188,7 +188,7 @@ public class Deck implements Observable, Serializable {
                     }
                     deck.cards.add(new StarterCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, resList, 0, frontImage, backImage));
+                            true, id, resList, 0, "/cards/"+frontImage, "/cards/"+backImage));
                 }
                 break;
             case OBJECTIVECARD:
@@ -212,7 +212,7 @@ public class Deck implements Observable, Serializable {
                         isLeftToRight = false;
                     }
                     Objective objective = getObjective(points, condition, isLeftToRight, name, description);
-                    deck.cards.add(new ObjectiveCard(id, objective, frontImage, backImage));
+                    deck.cards.add(new ObjectiveCard(id, objective, "/cards/"+frontImage, "/cards/"+backImage));
                 }
         }
         deck.shuffle();

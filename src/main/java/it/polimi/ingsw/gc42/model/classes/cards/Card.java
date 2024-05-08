@@ -35,8 +35,8 @@ public class Card implements Observable, Serializable {
     public Card(boolean isFrontFacing, int id, String frontImage, String backImage) {
         this.isFrontFacing = isFrontFacing;
         this.id = id;
-        this.frontImage = "/cards/" + frontImage;
-        this.backImage = "/cards/" + backImage;
+        this.frontImage = frontImage;
+        this.backImage = backImage;
         listeners = new ArrayList<>();
     }
 

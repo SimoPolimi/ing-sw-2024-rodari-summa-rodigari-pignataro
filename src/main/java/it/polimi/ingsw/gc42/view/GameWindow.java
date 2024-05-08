@@ -138,7 +138,7 @@ public class GameWindow extends Application {
 
         controller.setGameController(gameController, gameController.getIndex());
         controller.build();
-        controller.setPlayer(gameController.getPlayer(gameController.getIndexOfPlayer(nickName)));
+        controller.setPlayer(gameController.getIndexOfPlayer(nickName));
 
         if (startGame) {
             gameController.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
