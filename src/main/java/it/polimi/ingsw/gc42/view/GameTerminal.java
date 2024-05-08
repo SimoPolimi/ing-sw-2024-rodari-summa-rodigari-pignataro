@@ -20,6 +20,7 @@ public class GameTerminal extends Application implements ViewController {
     private Player player;
     private Scanner scanner = new Scanner(System.in);
     private int playerID;
+    private boolean isYourTurn = false;
 
     private String color(String str, UiColors color) {
         return color + str + UiColors.RESET;
@@ -34,8 +35,9 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Welcome to Codex Naturalis!");
         String input = "";
         while (!exit) {
-            System.out.println();
-            System.out.println("--- Insert Nickname ---");
+            //System.out.println();
+            //System.out.println("--- Insert Nickname ---");
+            login();
             input = scanner.next();
             switch (input) {
                 case "":
@@ -80,7 +82,7 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                     case "3":
                         System.out.println(player.getSecretObjective().getObjective().getDescription());
-                        // TODO: add common objectives
+                        printSecretObjective(player.getSecretObjective());
                         System.out.println();
                         break;
                     case "4":
@@ -177,11 +179,15 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
                         System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));
                         break;
-                    case "7":
+                    case "26":
                         printCard(player.getPlayField().getPlayedCards().getFirst());
                         break;
-                    case "8":
+                    case "7":
                         showRanking();
+                        break;
+                    case "8":
+                        printCommonObjective();
+                        System.out.println();
                         break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
@@ -202,8 +208,9 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("5) Digit 5 and write the message");
         System.out.println("6) Exit");
         // Test, will be deleted later
-        System.out.println("7) Print your starter card [test]");
-        System.out.println("8) Show ranking");
+        System.out.println("7) Show ranking");
+        System.out.println("8) Digit to show common objective");
+        System.out.println("26) Print your starter card [test]");
         System.out.println("27) Print all Resource Cards [Test]");
         System.out.println("28) Print all Gold Cards [Test]");
         System.out.println("29) Print all Starter Cards [Test]");
@@ -212,9 +219,9 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println();
     }
 
-    private void printPlayer(){
+    private void printPlayer() {
         System.out.println("Player n° " + controller.getGame().getPlayerTurn());
-        System.out.println("Nickname: "+ controller.getGame().getCurrentPlayer().getNickname());
+        System.out.println("Nickname: " + controller.getGame().getCurrentPlayer().getNickname());
         String string = "  ";
         if (null != player.getToken()) {
             switch (player.getToken()) {
@@ -224,8 +231,8 @@ public class GameTerminal extends Application implements ViewController {
                 case Token.YELLOW -> string = "🟡";
             }
         }
-        System.out.println("Token: "+ string);
-        System.out.println("Point: "+ controller.getGame().getCurrentPlayer().getPoints());
+        System.out.println("Token: " + string);
+        System.out.println("Point: " + controller.getGame().getCurrentPlayer().getPoints());
         //TODO set the secretObjective
         if (null != player.getSecretObjective()) {
             System.out.println("Secret objective: " + controller.getGame().getCurrentPlayer().getSecretObjective().getObjective().getName());
@@ -259,7 +266,8 @@ public class GameTerminal extends Application implements ViewController {
                     }
                 }
             }
-            case "0" -> {} // do nothing and exit
+            case "0" -> {
+            } // do nothing and exit
             default -> System.out.println(color("Invalid choice!", UiColors.RED));
         }
     }
@@ -273,13 +281,13 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("--- Choose your secret objective ---");
         System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
         System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
-        //TODO: print card
+        printSecretObjective(player.getTemporaryObjectiveCards().get(0));
         System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
         System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
-        //TODO: print card
-        String input = "";askToDrawOrGrab();
+        printSecretObjective(player.getTemporaryObjectiveCards().get(1));
+        String input = "";
         boolean exit = false;
-        while(!exit) {
+        while (!exit) {
             input = scanner.next();
             switch (input) {
                 case "1":
@@ -295,10 +303,11 @@ public class GameTerminal extends Application implements ViewController {
                     exit = false;
                     System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
                     System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
-                    //TODO: print card
+                    printSecretObjective(player.getTemporaryObjectiveCards().get(0));
                     //System.out.println("Secret objective 2");
                     System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
                     System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
+                    printSecretObjective(player.getTemporaryObjectiveCards().get(1));
                     break;
             }
         }
@@ -308,7 +317,7 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void showStarterCardSelectionDialog() {
         System.out.println("--- Choose the side of your starter card ---");
-        Card starterCard  = player.getTemporaryStarterCard();
+        Card starterCard = player.getTemporaryStarterCard();
         System.out.println("Digit f to choose front side");
         printCard((PlayableCard) starterCard);
         starterCard.flip();
@@ -329,7 +338,7 @@ public class GameTerminal extends Application implements ViewController {
                     starterCard.flip();
                     player.setTemporaryStarterCard((StarterCard) starterCard);
                     player.setStarterCard();
-                    exit  = true;
+                    exit = true;
                     break;
                 default:
                     System.out.println(color("Invalid choice! Retry...", UiColors.RED));
@@ -357,7 +366,7 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Digit 4 to choose: 🟡");
         String input = "";
         boolean exit = false;
-        while(!exit){
+        while (!exit) {
             input = scanner.next();
             switch (input) {
                 case "1":
@@ -396,7 +405,24 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void askToDrawOrGrab() {
-
+        for (int line = 1; line < 6; line++) {
+            System.out.println(getPrintCardLine((PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().getTopCard(), line, true, null) +
+                    "\t" + (getPrintCardLine((PlayableCard) controller.getGame().getGoldPlayingDeck().getDeck().getTopCard(), line, true, null)));
+        }
+        System.out.println();
+        for (int slot = 1; slot < 3; slot++) {
+            for (int line = 1; line < 6; line++) {
+                System.out.println(getPrintCardLine((PlayableCard) controller.getGame().getResourcePlayingDeck().getSlot(slot), line, true, null) +
+                        "\t" + (getPrintCardLine((PlayableCard) controller.getGame().getGoldPlayingDeck().getSlot(slot), line, true, null)));
+            }
+            System.out.println();
+        }
+        System.out.println("Digit gr to grab a card from resource deck");
+        System.out.println("Digit gg to grab a card from gold deck");
+        System.out.println("Digit 1r to choose first resource card");
+        System.out.println("Digit 1g to choose first gold card");
+        System.out.println("Digit 2r to choose second resource card");
+        System.out.println("Digit 2g to choose second gold card");
     }
 
     @Override
@@ -406,17 +432,17 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyDeckChanged(CardType type) {
-
+        //Unnecessary
     }
 
     @Override
     public void notifySlotCardChanged(CardType type, int slot) {
-
+        //Unnecessary
     }
 
     @Override
     public void notifyPlayersPointsChanged() {
-
+        showRanking();
     }
 
     @Override
@@ -426,42 +452,64 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersTokenChanged(int playerID) {
-
+        if (null != controller.getPlayer(playerID).getToken()) {
+            switch (controller.getPlayer(playerID).getToken()) {
+                case Token.RED -> System.out.println(controller.getPlayer(playerID).getNickname() + " choose: 🔴");
+                case Token.BLUE -> System.out.println(controller.getPlayer(playerID).getNickname() + " choose: 🔵");
+                case Token.GREEN -> System.out.println(controller.getPlayer(playerID).getNickname() + " choose: 🟢");
+                case Token.YELLOW -> System.out.println(controller.getPlayer(playerID).getNickname() + " choose: 🟡");
+            }
+        }
     }
 
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
-
+        if (playerID == this.playerID) {
+            printPlayArea();
+        }
     }
 
     @Override
     public void notifyPlayersHandChanged(int playerID) {
-
+        for (int i = 0; i < controller.getGame().getPlayer(playerID).getHandSize(); i++) {
+            printCard(controller.getGame().getPlayer(playerID).getHandCard(i));
+        }
     }
 
     @Override
     public void notifyHandCardWasFlipped(int playedID, int cardID) {
-
+        if (playedID == this.playerID) {
+            for (int i = 0; i < controller.getGame().getPlayer(playedID).getHandSize(); i++) {
+                printCard(controller.getGame().getPlayer(playedID).getHandCard(i));
+            }
+        }
     }
 
     @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
-
+        System.out.println("Objective chosen: " + player.getSecretObjective().getObjective().getName());
     }
 
     @Override
     public void notifyCommonObjectivesChanged() {
-
+        for (int i = 0; i < 2; i++) {
+            //TODO: implement print objective card
+            //printCard( controller.getGame().getObjectivePlayingDeck().getSlot(i));
+        }
     }
 
     @Override
     public void notifyTurnChanged() {
-
+        if (playerID == controller.getGame().getPlayerTurn()) {
+            this.isYourTurn = true;
+        } else {
+            this.isYourTurn = false;
+        }
     }
 
     @Override
     public void showWaitingForServerDialog() {
-
+        System.out.println("Server Waiting...");
     }
 
     @Override
@@ -696,7 +744,9 @@ public class GameTerminal extends Application implements ViewController {
             case Resource.FEATHER -> string = "🪶";
             case Resource.POTION -> string = "🍷";
             case Resource.SCROLL -> string = "📜";
-            default -> {string = "  ";}
+            default -> {
+                string = "  ";
+            }
         }
         return string;
     }
@@ -708,11 +758,12 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println(getPrintCardLine(card, 4, true, null));
         System.out.println(getPrintCardLine(card, 5, true, null));
     }
+
     private String getCardColor(PlayableCard card) {
         String string = "";
         if (card instanceof ResourceCard || card instanceof GoldCard) {
             switch (card.getPermanentResources().getFirst()) {
-                case KingdomResource.PLANT -> string ="🟩";
+                case KingdomResource.PLANT -> string = "🟩";
                 case KingdomResource.ANIMAL -> string = "🟦";
                 case KingdomResource.FUNGI -> string = "🟥";
                 case KingdomResource.INSECT -> string = "🟪";
@@ -763,7 +814,7 @@ public class GameTerminal extends Application implements ViewController {
                             if (null != matrix[i][k]) {
                                 string += getPrintCardLine(matrix[i][k], 1, false, cards);
                             } else {
-                                string += getPrintCardLine(matrix[i-1][k], 5, false, cards);
+                                string += getPrintCardLine(matrix[i - 1][k], 5, false, cards);
                             }
                         } /*else if (j == 5) {
                             if (null == matrix[i][k] && null != matrix[i+1][k]) {
@@ -772,11 +823,11 @@ public class GameTerminal extends Application implements ViewController {
                                 //string += getPrintCardLine(matrix[i][k], j, false, cards);
                             }
                         }*/ else {
-                            if (k > 0 && null != matrix[i][k-1]) {
+                            if (k > 0 && null != matrix[i][k - 1]) {
                                 string += " ";
                             }
                             string += " ";
-                            if (k < matrix.length-1 && null != matrix[i][k+1]) {
+                            if (k < matrix.length - 1 && null != matrix[i][k + 1]) {
                                 string += " ";
                             }
                             string += getPrintCardLine(matrix[i][k], j, false, cards);
@@ -802,7 +853,8 @@ public class GameTerminal extends Application implements ViewController {
         }
         return false;
     }
-    public void showRanking(){
+
+    public void showRanking() {
         ArrayList<Player> playersList = new ArrayList<>();
         ArrayList<Integer> alreadySeen = new ArrayList<>();
         // Players are ordered by their points
@@ -819,7 +871,299 @@ public class GameTerminal extends Application implements ViewController {
 
         System.out.println("Ranking");
         for (int i = 0; i < controller.getGame().getNumberOfPlayers(); i++)
-        System.out.println(i+1 +") "+ playersList.get(i).getNickname()+": "+ playersList.get(i).getPoints());
+            System.out.println(i + 1 + ") " + playersList.get(i).getNickname() + ": " + playersList.get(i).getPoints());
+    }
+
+    public void login() {
+
+        //System.out.println("Welcome to Codex Naturalis");
+        System.out.println("Select connection mode");
+        System.out.println("Digit r to choose RMI");
+        System.out.println("Digit s to choose Socket");
+        scanner.next();
+        System.out.println("Digit IP Address: ");
+        scanner.next();
+        System.out.println("Digit Port: ");
+        scanner.next();
+        System.out.println("--- Insert Nickname ---");
+
+
+    }
+
+    private String printObjectiveLine(ObjectiveCard card, int line) {
+        String string = "";
+        switch (card.getId()) {
+            case 87:
+                switch (line) {
+                    case 1, 5:
+                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜2️⃣⬜🟥⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🟥⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🟥⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 88:
+                switch (line){
+                    case 1, 5:
+                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜🟩⬜2️⃣⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🟩⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜🟩⬜⬜🟨";
+                        break;
+
+                }
+                break;
+            case 89:
+                switch (line){
+                    case 1, 5:
+                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜2️⃣⬜🟦⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🟦⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🟦⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 90:
+                switch (line){
+                    case 1, 5:
+                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜🟪⬜2️⃣⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🟪⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜🟪⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 91:
+                switch (line){
+                    case 1, 5:
+                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜🟥⬜3️⃣⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜🟥⬜⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜🟩⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 92:
+                switch (line){
+                    case 1, 5:
+                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜3️⃣⬜🟩⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜⬜🟩⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜🟪⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 93:
+                switch (line){
+                    case 1, 5:
+                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜🟦⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜🟦⬜⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🟦⬜3️⃣⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 94:
+                switch (line){
+                    case 1,5:
+                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
+                    break;
+                    case 2:
+                        string = "🟨⬜⬜⬜🟦⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜⬜🟪⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜3️⃣⬜🟪⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 95:
+                switch (line){
+                    case 1, 5:
+                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🍄⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🍄⬜🍄⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 96:
+                switch (line){
+                    case 1, 5:
+                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🌳⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🌳⬜🌳⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 97:
+                switch (line){
+                    case 1, 5:
+                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🐺⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🐺⬜🐺⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 98:
+                switch (line){
+                    case 1, 5:
+                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜⬜🦋⬜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜🦋⬜🦋⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 99:
+                switch (line){
+                    case 1, 5:
+                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜3️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜📜🍷0⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 100:
+                switch (line){
+                    case 1, 5:
+                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜📜⬜📜⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 101:
+                switch (line){
+                    case 1, 5:
+                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜🍷⬜🍷⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+            case 102:
+                switch (line){
+                    case 1, 5:
+                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        break;
+                    case 2:
+                        string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
+                        break;
+                    case 3:
+                        string = "🟨⬜⬜0⬜0⬜⬜🟨";
+                        break;
+                    case 4:
+                        string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
+                        break;
+                }
+                break;
+        }
+        return string;
+    }
+
+    private void printSecretObjective(ObjectiveCard card){
+        for (int line = 1; line < 6; line++) {
+            System.out.println(printObjectiveLine(card, line));
+        }
+    }
+    private void printCommonObjective(){
+        for (int line = 1; line < 6; line++) {
+            System.out.println(printObjectiveLine((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1), line) +
+                    "\t"+printObjectiveLine((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(2), line) );
+        }
     }
 }
 
