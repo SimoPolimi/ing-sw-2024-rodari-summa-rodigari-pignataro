@@ -37,8 +37,36 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public RemoteCollection getGames() throws RemoteException {
-        return collection;
+    public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
+        ArrayList<HashMap<String, String>> availableGames = new ArrayList<>();
+        for (int i = 0; i < collection.size(); i++) {
+            GameController game = collection.get(i);
+            HashMap<String, String> gameInfo = new HashMap<>();
+            gameInfo.put("Name", game.getName());
+            gameInfo.put("NumberOfPlayers", String.valueOf(game.getGame().getNumberOfPlayers()));
+            GameStatus status = game.getCurrentStatus();
+            String string = "";
+            switch (status) {
+                case WAITING_FOR_PLAYERS -> string = "Waiting for players";
+                case PLAYING -> string = "Playing";
+                case READY -> string = "Ready";
+                case READY_TO_CHOOSE_TOKEN -> string = "Ready to choose Token";
+                case NOT_IN_GAME -> string = "Not in game";
+                case READY_TO_CHOOSE_STARTER_CARD -> string = "Ready to choose Starter Card";
+                case READY_TO_CHOOSE_SECRET_OBJECTIVE -> string = "Ready to choose Secret Objective";
+                case WAITING_FOR_SERVER -> string = "Waiting for server";
+                case READY_TO_DRAW_STARTING_HAND -> string = "Ready to Draw Starting Hand";
+                case END_GAME -> string = "End Game";
+                case CONNECTING -> string = "Connecting";
+                case LAST_TURN -> string = "Last Turn";
+                case MY_TURN -> string = "My Turn";
+                case NOT_MY_TURN -> string = "Not My Turn";
+                case COUNTING_POINTS -> string = "Counting Points";
+            }
+            gameInfo.put("Status", string);
+            availableGames.add(gameInfo);
+        }
+        return availableGames;
     }
 
     @Override

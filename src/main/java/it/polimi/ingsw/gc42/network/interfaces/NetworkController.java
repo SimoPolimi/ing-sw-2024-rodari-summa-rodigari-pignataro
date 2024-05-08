@@ -42,7 +42,7 @@ public interface NetworkController {
 
     void setCurrentStatus(GameStatus status);
 
-    RemoteCollection getAvailableGames() throws RemoteException;
+    ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException;
 
     void pickGame(int index) throws RemoteException;
 

@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public interface RemoteServer extends Remote {
     int addGame(GameController game) throws RemoteException;
-    RemoteCollection getGames() throws RemoteException;
+    ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException;
 
 
 

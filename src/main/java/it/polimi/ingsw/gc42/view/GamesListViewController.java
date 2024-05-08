@@ -25,6 +25,7 @@ import javafx.util.Duration;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GamesListViewController {
     @FXML
@@ -59,9 +60,11 @@ public class GamesListViewController {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        for (int i = 0; i < server.getAvailableGames().size(); i++) {
-            if (server.getAvailableGames().get(i).getCurrentStatus() == GameStatus.WAITING_FOR_PLAYERS) {
-                Pane newListItem = getNewListItem(server.getAvailableGames().get(i), i);
+        ArrayList<HashMap<String, String>> availableGames = server.getAvailableGames();
+        for (int i = 0; i < availableGames.size(); i++) {
+            if (availableGames.get(i).get("Status").equals("Waiting for players")) {
+                Pane newListItem = getNewListItem(availableGames.get(i).get("Name"), availableGames
+                        .get(i).get("NumberOfPlayers"), availableGames.get(i).get("Status"),i);
                 int finalI = i;
                 newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -74,7 +77,7 @@ public class GamesListViewController {
             }
         }
 
-        if (server.getAvailableGames().size() == 0) {
+        if (availableGames.isEmpty()) {
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER);
 
@@ -93,7 +96,7 @@ public class GamesListViewController {
         gamesList.setContent(content);
     }
 
-    private Pane getNewListItem(GameController obj, int gameID) {
+    private Pane getNewListItem(String gameName, String gameNumber, String gameStatus, int gameID) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
         newListItem.setAlignment(Pos.CENTER_LEFT);
@@ -103,20 +106,15 @@ public class GamesListViewController {
         Text name;
         Text number;
         Text status;
-        try {
-            name = new Text(obj.getName());
-            name.setFont(Font.font("Tahoma Regular", 11));
-            name.setTextAlignment(TextAlignment.LEFT);
+        name = new Text(gameName);
+        name.setFont(Font.font("Tahoma Regular", 11));
+        name.setTextAlignment(TextAlignment.LEFT);
 
-            number = new Text(String.valueOf(obj.getGame().getNumberOfPlayers()));
-            number.setFont(Font.font("Tahoma Bold", 11));
+        number = new Text(gameNumber);
+        number.setFont(Font.font("Tahoma Bold", 11));
 
-            status = new Text(statusToString(obj.getCurrentStatus()));
-            status.setFont(Font.font("Tahoma Bold", 11));
-
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        status = new Text(gameStatus);
+        status.setFont(Font.font("Tahoma Bold", 11));
 
         HBox joinButton = new HBox();
         joinButton.setSpacing(15);
@@ -153,16 +151,6 @@ public class GamesListViewController {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    private String statusToString(GameStatus status) {
-        String string = "Unknown";
-        switch (status) {
-            case WAITING_FOR_PLAYERS -> {
-                string = "Waiting for players";
-            }
-        }
-        return string;
     }
 
     @FXML

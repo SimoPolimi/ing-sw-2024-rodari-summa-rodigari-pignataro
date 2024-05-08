@@ -4,12 +4,10 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
-import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 
 import java.io.IOException;
@@ -424,8 +422,8 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public RemoteCollection getAvailableGames() throws RemoteException {
-        return server.getGames();
+    public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
+        return server.getAvailableGames();
     }
 
     public void pickGame(int index) throws RemoteException {

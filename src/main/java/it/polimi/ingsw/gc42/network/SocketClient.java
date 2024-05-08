@@ -126,7 +126,7 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public RemoteCollection getAvailableGames() throws RemoteException {
+    public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
         return null;
     }
 
