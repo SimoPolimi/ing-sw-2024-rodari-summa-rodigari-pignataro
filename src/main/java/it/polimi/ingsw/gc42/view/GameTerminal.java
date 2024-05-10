@@ -469,7 +469,7 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
         if (playerID == this.playerID) {
-            printPlayArea();
+            //printPlayArea();
         }
     }
 
@@ -795,6 +795,107 @@ public class GameTerminal extends Application implements ViewController {
         coordinates.setY(y);
         return coordinates;
     }
+    private Coordinates convertMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
+        int shiftX = (matrixSizeX - 1) / 2;
+        int shiftY = (matrixSizeY - 1) / 2;
+        int x = coordinates.getX() + shiftX;
+        int y = shiftY - coordinates.getY();
+        coordinates.setX(x);
+        coordinates.setY(y);
+        return coordinates;
+    }
+
+    private char[][] createCardMatrix(StarterCard starter){
+        char[][] playArea = new char[801][1441];
+        String line = getPrintCardLine(starter,1, true,null);
+        int firstColumn = 717;
+        int firstLine = 399;
+        for (int j = 0; j < 6; j++) {
+            for (int i = 0; i < line.length(); i++) {
+                playArea[firstColumn][firstLine] = line.charAt(i);
+                firstColumn++;
+            }
+            firstLine++;
+            firstColumn = 717;
+        }
+        return playArea;
+    }
+    private char[][] updateCardMatrix(char[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards){
+        Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 801,1441);
+        //card down sx
+        if(isThereACardIn(card.getX()-1,card.getY(), cards)){
+            int centerX = coordinates.getX() + 8;
+            int centerY = coordinates.getY() - 5;
+            String line = getPrintCardLine(card,1, true,null);
+            int firstColumn = centerX - 4;
+            int firstLine = centerY -2;
+            for (int j = 0; j < 6; j++) {
+                for (int i = 0; i < line.length(); i++) {
+                    matrix[firstColumn][firstLine] = line.charAt(i);
+                    firstColumn++;
+                }
+                firstLine++;
+                firstColumn = centerX - 4;
+            }
+
+            return matrix;
+        }
+        //card up dx
+        if(isThereACardIn(card.getX()+1,card.getY(), cards)){
+            int centerX = coordinates.getX() - 8;
+            int centerY = coordinates.getY() + 5;
+            String line = getPrintCardLine(card,1, true,null);
+            int firstColumn = centerX - 4;
+            int firstLine = centerY - 2;
+            for (int j = 0; j < 6; j++) {
+                for (int i = 0; i < line.length(); i++) {
+                    matrix[firstColumn][firstLine] = line.charAt(i);
+                    firstColumn++;
+                }
+                firstLine++;
+                firstColumn = centerX - 4;
+            }
+            return matrix;
+        }
+        //card down dx
+        if(isThereACardIn(card.getX(),card.getY()-1, cards)){
+            int centerX = coordinates.getX() + 8;
+            int centerY = coordinates.getY() + 5;
+            String line = getPrintCardLine(card,1, true,null);
+            int firstColumn = centerX - 4;
+            int firstLine = centerY -2;
+            for (int j = 0; j < 6; j++) {
+                for (int i = 0; i < line.length(); i++) {
+                    matrix[firstColumn][firstLine] = line.charAt(i);
+                    firstColumn++;
+                }
+                firstLine++;
+                firstColumn = centerX - 4;
+            }
+            return matrix;
+        }
+        //card up sx
+        if(isThereACardIn(card.getX(),card.getY()+1, cards)){
+            int centerX = coordinates.getX() - 8;
+            int centerY = coordinates.getY() - 5;
+            String line = getPrintCardLine(card,1, true,null);
+            int firstColumn = centerX - 4;
+            int firstLine = centerY -2;
+            for (int j = 0; j < 6; j++) {
+                for (int i = 0; i < line.length(); i++) {
+                    matrix[firstColumn][firstLine] = line.charAt(i);
+                    firstColumn++;
+                }
+                firstLine++;
+                firstColumn = centerX - 4;
+            }
+            return matrix;
+        }
+        return matrix;
+    }
+    private void printPlayArea(char[][] playArea){
+
+    }
 
     private PlayableCard[][] getMatrix(ArrayList<PlayableCard> playedCards) {
         int size = (2 * playedCards.size()) + 1;
@@ -809,11 +910,11 @@ public class GameTerminal extends Application implements ViewController {
 
     private void printCardMatrix(PlayableCard[][] matrix, ArrayList<PlayableCard> cards) {
         for (int i = 0; i < matrix.length; i++) {
-            for (int j = 1; j < 5; j++) {
+            for (int j = 1; j <= 5; j++) {
                 // It takes 5 prints to completely print a Card
                 String string = "";
                 for (int k = 0; k < matrix[i].length; k++) {
-                    if (i > 0 && i < matrix.length - 1) {
+                    /*if (i > 0 && i < matrix.length - 1) {
                         if (j == 1) {
                             if (null != matrix[i][k]) {
                                 string += getPrintCardLine(matrix[i][k], 1, false, cards);
@@ -826,7 +927,7 @@ public class GameTerminal extends Application implements ViewController {
                             } else {
                                 //string += getPrintCardLine(matrix[i][k], j, false, cards);
                             }
-                        }*/ else {
+                        }*/ /*else {
                             if (k > 0 && null != matrix[i][k - 1]) {
                                 string += " ";
                             }
@@ -835,19 +936,19 @@ public class GameTerminal extends Application implements ViewController {
                                 string += " ";
                             }
                             string += getPrintCardLine(matrix[i][k], j, false, cards);
-                        }
-                    } else {
-                        string += getPrintCardLine(matrix[i][k], j, false, cards);
-                    }
+                        }*/
+
+                        string += getPrintCardLine(matrix[i][k], j, true, cards);
+
                 }
                 System.out.println(string);
             }
         }
     }
 
-    private void printPlayArea() {
+    /*private void printPlayArea() {
         printCardMatrix(getMatrix(player.getPlayField().getPlayedCards()), player.getPlayField().getPlayedCards());
-    }
+    }*/
 
     private boolean isThereACardIn(int x, int y, ArrayList<PlayableCard> cards) {
         for (PlayableCard card : cards) {
