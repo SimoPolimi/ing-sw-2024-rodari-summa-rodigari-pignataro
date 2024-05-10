@@ -22,8 +22,12 @@ public class GameTerminal extends Application implements ViewController {
     private int playerID;
     private boolean isYourTurn = false;
 
-    private String color(String str, UiColors color) {
-        return color + str + UiColors.RESET;
+    private String color(String str, UiColors fg) {
+        return fg.toString() + str + UiColors.RESET;
+    }
+
+    private String color(String str, UiColors fg, UiColors bg) {
+        return fg.toString() + bg.toString() + str + UiColors.RESET;
     }
 
     @Override
