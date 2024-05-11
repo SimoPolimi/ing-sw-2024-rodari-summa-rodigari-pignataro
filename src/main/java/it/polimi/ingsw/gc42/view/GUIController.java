@@ -47,13 +47,10 @@ public class GUIController implements ViewController {
     private StackPane root;
     @FXML
     private AnchorPane mainArea;
-    //private StackPane mainArea;
     @FXML
     private VBox dialog;
     @FXML
     private VBox miniScoreboardContainer;
-    @FXML
-    private StackPane commonTableContainer;
     @FXML
     private AnchorPane playerTableContainer;
     @FXML
@@ -498,13 +495,11 @@ public class GUIController implements ViewController {
     }
 
     public void refreshScoreBoard() {
-        Platform.runLater(() -> {
-            try {
-                initMiniScoreBoard();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        try {
+            initMiniScoreBoard();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -542,32 +537,33 @@ public class GUIController implements ViewController {
     }
 
     public void bringCommonTableUp() {
-        blockInput();
-        isCommonTableDown = false;
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
-        scaleTransition.setFromX(1);
-        scaleTransition.setFromY(1);
-        scaleTransition.setToX(0);
-        scaleTransition.setToY(0);
-        scaleTransition.setOnFinished((e) -> {
-            fullTableButton.setVisible(false);
-            fullTableButton.setScaleX(1);
-            fullTableButton.setScaleY(1);
-        });
-        scaleTransition.play();
+        if (!isShowingGlobalMap) {
+            blockInput();
+            isCommonTableDown = false;
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
+            scaleTransition.setFromX(1);
+            scaleTransition.setFromY(1);
+            scaleTransition.setToX(0);
+            scaleTransition.setToY(0);
+            scaleTransition.setOnFinished((e) -> {
+                fullTableButton.setVisible(false);
+                fullTableButton.setScaleX(1);
+                fullTableButton.setScaleY(1);
+            });
+            scaleTransition.play();
 
-        TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
-        transition.setByY(-(mainArea.getHeight()+500)/2);
-        transition.setOnFinished((e) -> {
-            unlockInput();
-            commonTableTxt.setText("See the Common Table");
-            if (null != table.getHand().getHandCardView(1).getModelCard()
-                    && null != table.getHand().getHandCardView(2).getModelCard()
-                    && null != table.getHand().getHandCardView(3).getModelCard()) {
-            }
-        });
-        transition.play();
-
+            TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
+            transition.setByY(-(mainArea.getHeight() + 500) / 2);
+            transition.setOnFinished((e) -> {
+                unlockInput();
+                commonTableTxt.setText("See the Common Table");
+                if (null != table.getHand().getHandCardView(1).getModelCard()
+                        && null != table.getHand().getHandCardView(2).getModelCard()
+                        && null != table.getHand().getHandCardView(3).getModelCard()) {
+                }
+            });
+            transition.play();
+        }
     }
 
     @Override
@@ -606,7 +602,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyPlayersPointsChanged() {
-        Platform.runLater(this::refreshScoreBoard);
+        refreshScoreBoard();
     }
 
     @Override
@@ -709,10 +705,6 @@ public class GUIController implements ViewController {
         controller.setPlayerStatus(playerID, GameStatus.READY);
     }
 
-    public void setPlayerCanPlayCards(boolean value) {
-        table.setCanPlayCards(value);
-    }
-
     @FXML
     public void toggleGlobalMap() {
         if (canReadInput && isCommonTableDown) {
@@ -726,6 +718,7 @@ public class GUIController implements ViewController {
 
     private void showGlobalMap() {
         if (!table.getHand().isHidden()) {
+            table.getHand().deselectAllCards(false);
             table.getHand().hide();
         }
         if (table.getSecretObjective().isShowingDetails()) {

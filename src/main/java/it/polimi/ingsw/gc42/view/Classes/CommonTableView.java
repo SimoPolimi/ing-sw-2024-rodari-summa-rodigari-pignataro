@@ -405,6 +405,7 @@ public class CommonTableView {
                 }
                 if (selected >= 1 && selected <= 6 && guiController.isCommonTableDown() && !guiController.isShowingGlobalMap()) {
                     guiController.bringCommonTableUp();
+                    guiController.setPlayerCanDrawOrGrab(false);
                 }
                 if (isShowingInfo != 0) {
                     commonObjDescriptiionBox1.setVisible(false);
@@ -454,9 +455,6 @@ public class CommonTableView {
                 } else {
                     resourceDown1.setVisible(false);
                 }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
             }
             case 2 -> {
                 String  card = "";
@@ -465,9 +463,6 @@ public class CommonTableView {
                     resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     resourceDown2.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
                 }
             }
         }
@@ -483,9 +478,6 @@ public class CommonTableView {
                 } else {
                     goldDown1.setVisible(false);
                 }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
-                }
             }
             case 2 -> {
                 String card = null;
@@ -494,9 +486,6 @@ public class CommonTableView {
                     goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
                 } else {
                     goldDown2.setVisible(false);
-                }
-                if (guiController.isCommonTableDown()) {
-                    guiController.bringCommonTableUp();
                 }
             }
         }
