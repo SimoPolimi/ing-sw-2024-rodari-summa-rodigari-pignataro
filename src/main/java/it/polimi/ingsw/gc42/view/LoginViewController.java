@@ -56,11 +56,7 @@ public class LoginViewController implements Observable {
             @Override
             public void handle(KeyEvent keyEvent) {
                 nickName = nickNameTextArea.getText();
-                if (null != nickName && !nickName.isEmpty() && isConnected) {
-                    enablePlayButton();
-                } else {
-                    disablePlayButton();
-                }
+                checkIfCanEnableButton(nickName);
             }
         });
         rmiMode.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -81,18 +77,6 @@ public class LoginViewController implements Observable {
                 onEnterPressed();
             }
         });
-        /*ipTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                connect();
-            }
-        });
-        portTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                connect();
-            }
-        });*/
     }
 
     public NetworkController getNetworkController() {
@@ -204,7 +188,15 @@ public class LoginViewController implements Observable {
             isConnected = true;
         });
         delay.play();
-        enablePlayButton();
+        checkIfCanEnableButton(nickNameTextArea.getText());
+    }
+
+    private void checkIfCanEnableButton(String nickName) {
+        if (null != nickName && !nickName.isEmpty() && isConnected) {
+            enablePlayButton();
+        } else {
+            disablePlayButton();
+        }
     }
 
     @Override
