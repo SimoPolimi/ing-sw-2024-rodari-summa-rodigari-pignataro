@@ -176,7 +176,24 @@
                                     <cursor>
                                         <Cursor fx:constant="TEXT" />
                                     </cursor></TextField>
-                        <Button mnemonicParsing="false" text="Connect" onMouseClicked="#connect" />
+                        <Button mnemonicParsing="false" onMouseClicked="#connect" style="-fx-background-color: lightgreen;" text="Connect">
+                            <effect>
+                                <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                    <bumpInput>
+                                        <Shadow blurType="GAUSSIAN" />
+                                    </bumpInput>
+                                    <light>
+                                        <Light.Distant />
+                                    </light>
+                                </Lighting>
+                            </effect>
+                           <font>
+                              <Font name="Tahoma Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
                                 <ImageView fx:id="connectionIcon" fitWidth="20" preserveRatio="true" smooth="true">
                                     <image>
                                         <Image url="@connectionErrorIcon.png" />
