@@ -725,6 +725,13 @@ public class GUIController implements ViewController {
     }
 
     private void showGlobalMap() {
+        if (!table.getHand().isHidden()) {
+            table.getHand().hide();
+        }
+        if (table.getSecretObjective().isShowingDetails()) {
+            table.getSecretObjective().rotate();
+        }
+
         blockInput();
         ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
         transition.setFromX(1);

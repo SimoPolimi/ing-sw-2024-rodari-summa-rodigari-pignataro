@@ -58,6 +58,10 @@ public class TableView {
     // Getters and Setters
 
 
+    public ObjectiveCardView getSecretObjective() {
+        return secretObjective;
+    }
+
     public boolean isCanPlayCards() {
         return canPlayCards;
     }

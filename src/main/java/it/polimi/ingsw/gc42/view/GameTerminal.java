@@ -1200,7 +1200,7 @@ public class GameTerminal extends Application implements ViewController {
                         string = "🟨⬜⬜⬜3️⃣⬜⬜⬜🟨";
                         break;
                     case 3:
-                        string = "🟨⬜⬜📜🍷0⬜⬜🟨";
+                        string = "🟨⬜⬜📜🍷🪶⬜⬜🟨";
                         break;
                     case 4:
                         string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
@@ -1248,7 +1248,7 @@ public class GameTerminal extends Application implements ViewController {
                         string = "🟨⬜⬜⬜2️⃣⬜⬜⬜🟨";
                         break;
                     case 3:
-                        string = "🟨⬜⬜0⬜0⬜⬜🟨";
+                        string = "🟨⬜⬜🪶⬜🪶⬜⬜🟨";
                         break;
                     case 4:
                         string = "🟨⬜⬜⬜⬜⬜⬜⬜🟨";
