@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.network;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
@@ -110,12 +111,6 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public void drawSecretObjectives() {
-        //TODO: no playerID???????
-        sendMessage(new GameMessage(MessageType.DRAW_SECRET_OBJECTIVES, gameID));
-    }
-
-    @Override
     public void addPlayer(Player player) {
         sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
     }
@@ -205,7 +200,8 @@ public class SocketClient implements NetworkController {
     }
 
     public void sendMessage(Message message){
-        out.println(message.toString());
+        out.println(new Gson().toJson(message));
+        //out.println(message.toString());
         //TODO: serialize o not???
         //out.println(message);
         out.flush();

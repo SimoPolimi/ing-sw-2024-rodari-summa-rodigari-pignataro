@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Chat implements Serializable {
-    private final ArrayList<Message> messages = new ArrayList<>();
+    private final ArrayList<ChatMessage> messages = new ArrayList<>();
 
-    public void sendMessage(Message mes){
+    public void sendMessage(ChatMessage mes){
         this.messages.add(mes);
     }
-    public Message getLastMessage(){
+    public ChatMessage getLastMessage(){
         return messages.getLast();
     }
-    public Message getMessage(int index) throws IllegalArgumentException {
+    public ChatMessage getMessage(int index) throws IllegalArgumentException {
         if (index > 0 && index < messages.size()) {
             return messages.get(index);
         } else throw new IllegalArgumentException();

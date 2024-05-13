@@ -120,11 +120,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public void drawSecretObjectives(int gameID) throws RemoteException {
-        collection.get(gameID).drawSecretObjectives();
-    }
-
-    @Override
     public Game getGame(int gameID) throws RemoteException {
         return collection.get(gameID).getGame();
     }

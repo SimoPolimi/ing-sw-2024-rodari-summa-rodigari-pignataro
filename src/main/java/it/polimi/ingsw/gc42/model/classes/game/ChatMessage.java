@@ -2,12 +2,12 @@ package it.polimi.ingsw.gc42.model.classes.game;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class ChatMessage {
     private Player sender;
     private String text;
     private LocalDateTime dateTime;
 
-    public Message(String mess, Player player){
+    public ChatMessage(String mess, Player player){
         this.text = mess;
         this.sender = player;
         this.dateTime = LocalDateTime.now();

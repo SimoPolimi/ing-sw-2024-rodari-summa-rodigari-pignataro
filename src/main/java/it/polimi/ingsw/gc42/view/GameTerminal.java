@@ -91,12 +91,12 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                     case "4":
                         for (int index = 0; index < chat.getChatSize(); index++) {
-                            Message message = chat.getMessage(index);
+                            ChatMessage message = chat.getMessage(index);
                             System.out.println(message.getSender().getNickname() + ": " + message.getText() + "/* " + message.getDateTime().toString());
                         }
                         break;
                     case "5":
-                        Message message = new Message(scanner.next(), player);
+                        ChatMessage message = new ChatMessage(scanner.next(), player);
                         chat.sendMessage(message);
                         break;
                     case "6":

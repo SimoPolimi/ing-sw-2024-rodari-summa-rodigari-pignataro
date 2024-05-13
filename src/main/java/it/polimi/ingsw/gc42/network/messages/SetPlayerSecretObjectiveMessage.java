@@ -10,12 +10,12 @@ public class SetPlayerSecretObjectiveMessage extends PlayerMessage{
         this.pickedCard = pickedCard;
     }
 
-    public int getToken() {
+    public int getPickedCard() {
         return pickedCard;
     }
 
-    public void setToken(int token) {
-        this.pickedCard = token;
+    public void setPickedCard(int pickedCard) {
+        this.pickedCard = pickedCard;
     }
 
     public String toString(){

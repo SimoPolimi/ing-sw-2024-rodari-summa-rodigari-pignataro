@@ -285,15 +285,6 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public void drawSecretObjectives() {
-        try {
-            server.drawSecretObjectives(gameID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
         try {
             return server.getTemporaryObjectiveTextures(gameID, playerID);

@@ -36,8 +36,6 @@ public interface NetworkController {
 
     void grabCard(int playerID, CardType type, int slot);
 
-    void drawSecretObjectives();
-
     void addPlayer(Player player);
 
     void setCurrentStatus(GameStatus status);

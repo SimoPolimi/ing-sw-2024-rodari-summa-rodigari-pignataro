@@ -1,9 +1,12 @@
 package it.polimi.ingsw.gc42.network;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
+import it.polimi.ingsw.gc42.network.messages.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,27 +28,20 @@ public class SocketControllerServer implements ServerNetworkController {
     private Runnable onReady;
     private GameCollection games;
     private ServerManager server;
-    final private BlockingDeque<String> messagesQueue = new LinkedBlockingDeque<>();
+    final private BlockingDeque<Message> messagesQueue = new LinkedBlockingDeque<>();
     //TODO: move BlockingQueue to game controller, it will contains lambda. I shoould add them from here after translating the message
 
     private void receiveMessage() throws RemoteException {
         // TODO: message parsing and method calling
         // ex: Message_type: arg1, arg2, ...
-        ArrayList<String> temp = new ArrayList<>(Arrays.asList(messagesQueue.poll().split(":")));
+        /*ArrayList<String> temp = new ArrayList<>(Arrays.asList(messagesQueue.poll().split(":")));
         String command = temp.removeFirst();
         ArrayList<String> args = new ArrayList<>(Arrays.asList(temp.getFirst().split(", ")));
         //TODO: are thoso ok here?? variables for switch Enum
         GameStatus gameStatus = null;
         CardType cardType = null;
         Token token = null;
-        /*Message temp = messagesQueue.poll();
-        switch (temp.getType().toString()) {
-            case "START_GAME":
-                if(temp instanceof GameMessage){
-                    server.getGame(((GameMessage) temp).getGameID());
-                }
 
-                break;*/
         switch (command) {
             case "START_GAME":
                 server.getGame(Integer.parseInt(args.removeFirst()));
@@ -138,7 +134,63 @@ public class SocketControllerServer implements ServerNetworkController {
                 break;
             case    "GET_PLAYER":
                 break;
+        }*/
+        Message temp = messagesQueue.poll();
+        switch (temp.getType()){
+            case START_GAME:
+                server.startGame((((GameMessage)temp).getGameID()));
+                break;
+            case SET_PLAYER_STATUS:
+                server.setPlayerStatus((((SetPlayerStatusMessage)temp).getGameID()), (((SetPlayerStatusMessage)temp).getPlayerID()), (((SetPlayerStatusMessage)temp).getStatus()));
+                break;
+            case NEW_GAME:
+                break;
+            case GET_GAME:
+                break;
+            case GRAB_CARD:
+                server.grabCard(((GrabCardMessage)temp).getGameID(), ((GrabCardMessage)temp).getPlayerID(), ((GrabCardMessage)temp).getCardType(), ((GrabCardMessage)temp).getSlot());
+                break;
+            case PLAY_CARD:
+                server.playCard(((PlayCardMessage)temp).getGameID(), ((PlayCardMessage)temp).getPlayerID(), ((PlayCardMessage)temp).getHandCard(), ((PlayCardMessage)temp).getX(), ((PlayCardMessage)temp).getY());
+                break;
+            case KICK_PLAYER:
+                break;
+            case NEXT_TURN:
+                server.nextTurn(((GameMessage)temp).getGameID());
+                break;
+            case ADD_PLAYER:
+                break;
+            case DRAW_CARD:
+                server.drawCard(((DrawCardMessage)temp).getGameID(), ((DrawCardMessage)temp).getPlayerID(), ((DrawCardMessage)temp).getCardType());
+                break;
+            case GET_NUMBER_OF_PLAYERS:
+                break;
+            case SET_NAME:
+                server.setName(((SetNameMessage)temp).getGameID(), ((SetNameMessage)temp).getName());
+                break;
+            case SET_PLAYER_SECRET_OBJECTIVE:
+                server.setPlayerSecretObjective(((SetPlayerSecretObjectiveMessage)temp).getGameID(), ((SetPlayerSecretObjectiveMessage)temp).getPlayerID(), ((SetPlayerSecretObjectiveMessage)temp).getPickedCard());
+                break;
+            case SET_PLAYER_STARTER_CARD:
+                server.setPlayerStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
+                break;
+            case SET_PLAYER_TOKEN:
+                server.setPlayerToken(((SetPlayerTokenMessage) temp).getGameID(), ((SetPlayerTokenMessage) temp).getPlayerID(), ((SetPlayerTokenMessage) temp).getToken());
+                break;
+            case FLIP_CARD:
+                server.flipCard(((FlipCardMessage) temp).getGameID(), ((FlipCardMessage) temp).getPlayerID(), ((FlipCardMessage) temp).getCardID());
+                break;
+            case FLIP_STARTER_CARD:
+                server.flipStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
+                break;
+            case SET_CURRENT_STATUS:
+                server.setCurrentStatus(((SetCurrentStatusMessage) temp).getGameID(), ((SetCurrentStatusMessage) temp).getStatus());
+                break;
+            case GET_NAME:
+            case GET_PLAYER:
+
         }
+
     }
 
     @Override
@@ -197,8 +249,7 @@ public class SocketControllerServer implements ServerNetworkController {
                                 // Another approach could be putting the messages in a queue and running translate()
                                 // every time the queue is not empty
 
-                                //pool.submit(() -> messagesQueue.add((Message) new ObjectInputStream(socket.getInputStream()).readObject()));
-                                pool.submit(() -> messagesQueue.add(line));
+                                pool.submit(() -> messagesQueue.add(new Gson().fromJson(line, Message.class)));
                                 receiveMessage();
                             }
                         } catch (IOException e) {

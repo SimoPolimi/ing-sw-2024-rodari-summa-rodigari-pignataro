@@ -34,8 +34,6 @@ public interface RemoteServer extends Remote {
 
     void grabCard(int gameID, int playerID, CardType type, int slot) throws RemoteException;
 
-    void drawSecretObjectives(int gameID) throws RemoteException;
-
     Game getGame(int gameID) throws RemoteException;
 
     void addView(int gameID, RemoteViewController viewController) throws RemoteException;
