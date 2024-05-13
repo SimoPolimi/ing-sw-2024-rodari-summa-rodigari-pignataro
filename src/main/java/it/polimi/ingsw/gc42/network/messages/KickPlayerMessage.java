@@ -1,23 +1,25 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-public class KickPlayerMessage extends GameMessage{
-    private int playerId;
+import it.polimi.ingsw.gc42.model.classes.game.Player;
 
-    public KickPlayerMessage(MessageType type, int gameID, int playerId) {
+public class KickPlayerMessage extends GameMessage{
+    private Player player;
+
+    public KickPlayerMessage(MessageType type, int gameID, Player player) {
         super(type, gameID);
-        this.playerId = playerId;
+        this.player = player;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    public Player getPlayer() {
+        return player;
     }
 
     public void setPlayerId(int playerId) {
-        this.playerId = playerId;
+        this.player = player;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", " + playerId;
+        return super.toString() + ", " + player;
     }
 }

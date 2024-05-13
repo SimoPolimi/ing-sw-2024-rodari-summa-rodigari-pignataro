@@ -29,6 +29,8 @@ public class SocketControllerServer implements ServerNetworkController {
     private GameCollection games;
     private ServerManager server;
     final private BlockingDeque<Message> messagesQueue = new LinkedBlockingDeque<>();
+    private Scanner in;
+    private PrintWriter out;
     //TODO: move BlockingQueue to game controller, it will contains lambda. I shoould add them from here after translating the message
 
     private void receiveMessage() throws RemoteException {
@@ -144,8 +146,8 @@ public class SocketControllerServer implements ServerNetworkController {
                 server.setPlayerStatus((((SetPlayerStatusMessage)temp).getGameID()), (((SetPlayerStatusMessage)temp).getPlayerID()), (((SetPlayerStatusMessage)temp).getStatus()));
                 break;
             case NEW_GAME:
-                break;
-            case GET_GAME:
+                // Send GameID to client
+                sendMessage(new GameMessage(MessageType.NEW_GAME, server.newGame()));
                 break;
             case GRAB_CARD:
                 server.grabCard(((GrabCardMessage)temp).getGameID(), ((GrabCardMessage)temp).getPlayerID(), ((GrabCardMessage)temp).getCardType(), ((GrabCardMessage)temp).getSlot());
@@ -154,16 +156,20 @@ public class SocketControllerServer implements ServerNetworkController {
                 server.playCard(((PlayCardMessage)temp).getGameID(), ((PlayCardMessage)temp).getPlayerID(), ((PlayCardMessage)temp).getHandCard(), ((PlayCardMessage)temp).getX(), ((PlayCardMessage)temp).getY());
                 break;
             case KICK_PLAYER:
+                server.kickPlayer(((KickPlayerMessage)temp).getGameID(), ((KickPlayerMessage)temp).getPlayer());
                 break;
             case NEXT_TURN:
                 server.nextTurn(((GameMessage)temp).getGameID());
                 break;
             case ADD_PLAYER:
+                server.addPlayer(((AddPlayerMessage)temp).getGameID(), ((AddPlayerMessage)temp).getPlayer());
                 break;
             case DRAW_CARD:
                 server.drawCard(((DrawCardMessage)temp).getGameID(), ((DrawCardMessage)temp).getPlayerID(), ((DrawCardMessage)temp).getCardType());
                 break;
             case GET_NUMBER_OF_PLAYERS:
+                // Send Number of players to client
+                sendMessage(new StringMessage((MessageType.GET_NUMBER_OF_PLAYERS), String.valueOf(server.getNumberOfPlayers(((GameMessage)temp).getGameID()))));
                 break;
             case SET_NAME:
                 server.setName(((SetNameMessage)temp).getGameID(), ((SetNameMessage)temp).getName());
@@ -186,9 +192,14 @@ public class SocketControllerServer implements ServerNetworkController {
             case SET_CURRENT_STATUS:
                 server.setCurrentStatus(((SetCurrentStatusMessage) temp).getGameID(), ((SetCurrentStatusMessage) temp).getStatus());
                 break;
-            case GET_NAME:
-            case GET_PLAYER:
+            case GET_DECK_TEXTURES:
+                // Send Controller's name to client
+                //TODO: sendMessage(new StringMessage((MessageType.GET_DECK_TEXTURES), server.getDeckTextures(((GameMessage)temp).getGameID()), ));
+                break;
 
+            default:
+                //TODO
+                break;
         }
 
     }
@@ -239,8 +250,8 @@ public class SocketControllerServer implements ServerNetworkController {
                     System.out.println("Received a connection");
                     pool.submit(() -> {
                         try {
-                            Scanner in = new Scanner(socket.getInputStream());
-                            PrintWriter out = new PrintWriter(socket.getOutputStream()); // May not be necessary
+                            in = new Scanner(socket.getInputStream());
+                            out = new PrintWriter(socket.getOutputStream()); // May not be necessary
                             while (true) {
                                 String line = in.nextLine();
                                 // By creating a thread it is possible to receive and translate a new message
@@ -272,6 +283,11 @@ public class SocketControllerServer implements ServerNetworkController {
     @Override
     public void setCollection(GameCollection collection) {
         this.games = collection;
+    }
+
+    private void sendMessage(Message message){
+        out.println(new Gson().toJson(message));
+        out.flush();
     }
 
     // TODO: Write Socket Methods to send and receive messages.

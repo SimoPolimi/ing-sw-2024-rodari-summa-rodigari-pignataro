@@ -23,6 +23,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SocketClient implements NetworkController {
     private String ipAddress;
@@ -34,6 +36,8 @@ public class SocketClient implements NetworkController {
     private Socket server;
     private Scanner in;
     private PrintWriter out;
+    private Message pendingMessage = null;
+    private boolean responseReceived = false;
 
     private ClientController clientController;
 
@@ -49,6 +53,7 @@ public class SocketClient implements NetworkController {
         isConnected = true;
         in = new Scanner(server.getInputStream());
         out = new PrintWriter(server.getOutputStream());
+
     }
 
     @Override
@@ -60,6 +65,67 @@ public class SocketClient implements NetworkController {
             server.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void receiveMessage(){
+        ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
+        pool.submit(() -> {
+            while (true) {
+                pool.submit(() -> {
+                    try {
+                        Scanner in = new Scanner(server.getInputStream());
+                        PrintWriter out = new PrintWriter(server.getOutputStream()); // May not be necessary
+                        while (true) {
+                            String line = in.nextLine();
+                            // By creating a thread it is possible to receive and translate a new message
+                            // even if the previous translation isn't finished, though this approach
+                            // can be risky because there could be a chain of "order sensitive" operations.
+                            // Another approach could be putting the messages in a queue and running translate()
+                            // every time the queue is not empty
+
+                            pool.submit(() -> {
+                                try {
+                                    translate(new Gson().fromJson(line, Message.class));
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+        });
+    }
+
+    private void translate(Message message) throws RemoteException {
+        switch (message.getType()){
+            case NEW_GAME -> this.gameID = ((GameMessage)message).getGameID();
+            case GET_NUMBER_OF_PLAYERS  -> {
+                pendingMessage = message;
+                responseReceived = true;
+                //TODO
+            }
+
+
+            case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
+            case SHOW_STARTER_CARD_SELECTION_DIALOG -> clientController.showStarterCardSelectionDialog();
+            case SHOW_TOKEN_SELECTION_DIALOG -> clientController.showTokenSelectionDialog();
+            case GET_OWNER -> {}//TODO: Return owner
+            case ASK_TO_DRAW_OR_GRAB -> clientController.askToDrawOrGrab();
+            case NOTIFY_GAME_IS_STARTING -> clientController.notifyGameIsStarting();
+            case NOTIFY_DECK_CHANGED -> clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
+            case NOTIFY_SLOT_CARD_CHANGED -> clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
+            case NOTIFY_NUMBER_OF_PLAYERS_CHANGED -> clientController.notifyNumberOfPlayersChanged();
+            case NOTIFY_PLAYERS_TOKEN_CHANGED -> clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_PLAYERS_PLAY_AREA_CHANGED -> clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_PLAYERS_HAND_CHANGED -> clientController.notifyPlayersHandChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_HAND_CARD_WAS_FLIPPED -> clientController.notifyHandCardWasFlipped(((HandCardMessage) message).getPlayerID(), ((HandCardMessage) message).getSlot());
+            case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
+            case GET_READY -> clientController.getReady();
         }
     }
 
@@ -201,9 +267,6 @@ public class SocketClient implements NetworkController {
 
     public void sendMessage(Message message){
         out.println(new Gson().toJson(message));
-        //out.println(message.toString());
-        //TODO: serialize o not???
-        //out.println(message);
         out.flush();
     }
 
