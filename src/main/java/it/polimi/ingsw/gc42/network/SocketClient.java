@@ -104,7 +104,7 @@ public class SocketClient implements NetworkController {
 
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
-            case GET_AVAILABLE_GAMES, NEW_GAME  -> {
+            case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS  -> {
                 // Response from server
                 queue.add(message);
             }
@@ -245,9 +245,14 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getNumberOfPlayers() {
-        // TODO
         sendMessage(new GameMessage(MessageType.GET_NUMBER_OF_PLAYERS, gameID));
-        return 0;
+        StringMessage temp = null;
+        try{
+            temp = (StringMessage) queue.take();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return new Gson().fromJson(String.valueOf(Integer.valueOf(temp.getString())), Integer.class);
     }
 
     @Override
