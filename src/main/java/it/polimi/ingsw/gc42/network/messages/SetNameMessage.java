@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
+
 public class SetNameMessage extends GameMessage{
+    @Expose
     private String name;
 
     public SetNameMessage(MessageType type, int gameID, String name) {

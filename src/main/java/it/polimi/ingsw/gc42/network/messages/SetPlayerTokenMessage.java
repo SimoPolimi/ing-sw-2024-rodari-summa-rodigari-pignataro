@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 
 public class SetPlayerTokenMessage extends PlayerMessage{
+    @Expose
     private Token token;
 
     public SetPlayerTokenMessage(MessageType type, int gameID, int playerID, Token token) {

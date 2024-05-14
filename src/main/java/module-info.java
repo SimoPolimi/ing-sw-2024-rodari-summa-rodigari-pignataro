@@ -8,7 +8,8 @@ module it.polimi.ingsw.gc42 {
     requires java.naming;
     requires java.rmi;
 
-    //TODO: test
+    // Messages to Gson
+    opens it.polimi.ingsw.gc42.network.messages to com.google.gson;
     exports it.polimi.ingsw.gc42.model.classes;
     opens it.polimi.ingsw.gc42.model.classes to javafx.fxml;
     exports it.polimi.ingsw.gc42.model.classes.cards;

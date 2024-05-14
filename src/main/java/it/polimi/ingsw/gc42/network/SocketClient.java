@@ -50,6 +50,7 @@ public class SocketClient implements NetworkController {
         isConnected = true;
         in = new Scanner(server.getInputStream());
         out = new PrintWriter(server.getOutputStream());
+        receiveMessage();
 
     }
 
@@ -80,14 +81,15 @@ public class SocketClient implements NetworkController {
                             // can be risky because there could be a chain of "order sensitive" operations.
                             // Another approach could be putting the messages in a queue and running translate()
                             // every time the queue is not empty
-
+                            if(!line.isEmpty()){
+                                System.out.println(new Gson().fromJson(line, Message.class));
                             pool.submit(() -> {
                                 try {
                                     translate(new Gson().fromJson(line, Message.class));
                                 } catch (RemoteException e) {
                                     throw new RuntimeException(e);
                                 }
-                            });
+                            });}
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -100,11 +102,10 @@ public class SocketClient implements NetworkController {
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
             case NEW_GAME -> this.gameID = ((GameMessage)message).getGameID();
-            case GET_NUMBER_OF_PLAYERS  -> {
+            case GET_AVAILABLE_GAMES, GET_NUMBER_OF_PLAYERS  -> {
                 // Response from server
                 pendingMessage = message;
                 responseLock = true;
-                //TODO
             }
 
 
@@ -186,9 +187,10 @@ public class SocketClient implements NetworkController {
 
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
-
+        sendMessage(new Message(MessageType.GET_AVAILABLE_GAMES));
         responseLock = false;
-        return null;
+        while (!responseLock) {}
+        return new Gson().fromJson(((StringMessage)pendingMessage).getString(), ArrayList.class);
     }
 
     @Override

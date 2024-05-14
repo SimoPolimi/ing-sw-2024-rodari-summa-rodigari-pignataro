@@ -1,8 +1,13 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
+
 public class PlayCardMessage extends PlayerMessage {
+    @Expose
     private int handCard;
+    @Expose
     private int x;
+    @Expose
     private int y;
 
     public PlayCardMessage(MessageType type, int gameID, int playerID, int handCard, int y, int x) {

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
+
 public class FlipCardMessage extends PlayerMessage{
+    @Expose
     private int cardID;
 
     public FlipCardMessage(MessageType type, int gameID, int playerID, int cardID) {

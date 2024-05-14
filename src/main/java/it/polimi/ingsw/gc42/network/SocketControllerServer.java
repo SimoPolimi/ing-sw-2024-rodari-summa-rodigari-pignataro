@@ -189,7 +189,8 @@ public class SocketControllerServer implements ServerNetworkController {
                 break;
                 // Responses
             case GET_AVAILABLE_GAMES:
-                sendMessage(new StringMessage((MessageType.GET_AVAILABLE_GAMES), new Gson().toJson(server.getAvailableGames())));
+                StringMessage a = new StringMessage((MessageType.GET_AVAILABLE_GAMES), new Gson().toJson(server.getAvailableGames()));
+                sendMessage(a);
                 break;
             case GET_DECK_TEXTURES:
                 // Send Controller's name to client
@@ -262,8 +263,14 @@ public class SocketControllerServer implements ServerNetworkController {
                                 // Another approach could be putting the messages in a queue and running translate()
                                 // every time the queue is not empty
 
-                                pool.submit(() -> messagesQueue.add(new Gson().fromJson(line, Message.class)));
-                                receiveMessage();
+                                pool.submit(() -> {
+                                    messagesQueue.add(new Gson().fromJson(line, Message.class));
+                                    try {
+                                        receiveMessage();
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
                             }
                         } catch (IOException e) {
                             throw new RuntimeException(e);

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 public class KickPlayerMessage extends GameMessage{
+    @Expose
     private Player player;
 
     public KickPlayerMessage(MessageType type, int gameID, Player player) {

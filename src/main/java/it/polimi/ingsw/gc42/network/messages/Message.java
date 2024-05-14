@@ -1,11 +1,14 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private final MessageType type;
+    @Expose
+    private MessageType type;
 
-    public Message(final MessageType type) {
+    public Message(MessageType type) {
         this.type = type;
     }
     @Override
@@ -15,5 +18,9 @@ public class Message implements Serializable {
 
     public MessageType getType() {
         return type;
+    }
+
+    public void setType(MessageType type) {
+        this.type = type;
     }
 }

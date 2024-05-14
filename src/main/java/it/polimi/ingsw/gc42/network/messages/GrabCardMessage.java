@@ -1,9 +1,12 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 
 public class GrabCardMessage extends PlayerMessage {
+    @Expose
     private CardType type;
+    @Expose
     private int slot;
 
     public GrabCardMessage(MessageType type, int gameID, int playerID, CardType cardType, int slot) {

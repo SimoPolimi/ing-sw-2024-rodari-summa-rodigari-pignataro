@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+import com.google.gson.annotations.Expose;
+
 public class GetPlayerMessage extends GameMessage{
+    @Expose
     private int playerID;
 
     public GetPlayerMessage(MessageType type, int gameID, int playerID) {
