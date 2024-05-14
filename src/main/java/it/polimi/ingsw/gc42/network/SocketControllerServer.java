@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -26,6 +28,8 @@ public class SocketControllerServer implements ServerNetworkController {
     final private BlockingDeque<Message> messagesQueue = new LinkedBlockingDeque<>();
     private Scanner in;
     private PrintWriter out;
+    private ObjectInputStream streamIn;
+    private ObjectOutputStream streamOut;
     //TODO: move BlockingQueue to game controller, it will contains lambda. I shoould add them from here after translating the message
 
     private void receiveMessage() throws RemoteException {
@@ -253,18 +257,30 @@ public class SocketControllerServer implements ServerNetworkController {
                     System.out.println("Received a connection");
                     pool.submit(() -> {
                         try {
-                            in = new Scanner(socket.getInputStream());
-                            out = new PrintWriter(socket.getOutputStream()); // May not be necessary
+                            //in = new Scanner(socket.getInputStream());
+                            //out = new PrintWriter(socket.getOutputStream()); // May not be necessary
+                            streamIn = new ObjectInputStream(socket.getInputStream());
+                            streamOut = new ObjectOutputStream(socket.getOutputStream());
+                            streamOut.flush();
                             while (true) {
-                                String line = in.nextLine();
+                                //String line = in.nextLine();
+                                Message message = (Message)streamIn.readObject();
                                 // By creating a thread it is possible to receive and translate a new message
                                 // even if the previous translation isn't finished, though this approach
                                 // can be risky because there could be a chain of "order sensitive" operations.
                                 // Another approach could be putting the messages in a queue and running translate()
                                 // every time the queue is not empty
 
-                                pool.submit(() -> {
+                                /*pool.submit(() -> {
                                     messagesQueue.add(new Gson().fromJson(line, Message.class));
+                                    try {
+                                        receiveMessage();
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });*/
+                                pool.submit(() -> {
+                                    messagesQueue.add(message);
                                     try {
                                         receiveMessage();
                                     } catch (RemoteException e) {
@@ -295,8 +311,14 @@ public class SocketControllerServer implements ServerNetworkController {
     }
 
     private void sendMessage(Message message){
-        out.println(new Gson().toJson(message));
-        out.flush();
+        //out.println(new Gson().toJson(message));
+        try{
+            streamOut.writeObject(message);
+            streamOut.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        //out.flush();
     }
 
     // TODO: Write Socket Methods to send and receive messages.

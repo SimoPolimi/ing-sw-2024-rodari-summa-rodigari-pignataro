@@ -13,6 +13,8 @@ import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 import it.polimi.ingsw.gc42.network.messages.*;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
@@ -20,8 +22,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class SocketClient implements NetworkController {
     private String ipAddress;
@@ -33,8 +37,10 @@ public class SocketClient implements NetworkController {
     private Socket server;
     private Scanner in;
     private PrintWriter out;
+    private ObjectInputStream streamIn;
+    private ObjectOutputStream streamOut;
     private Message pendingMessage = null;
-    private boolean responseLock = false;
+    private BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
 
     private ClientController clientController;
 
@@ -48,8 +54,12 @@ public class SocketClient implements NetworkController {
         // TODO: Implement
         server = new Socket(ipAddress, port);
         isConnected = true;
-        in = new Scanner(server.getInputStream());
-        out = new PrintWriter(server.getOutputStream());
+        //in = new Scanner(server.getInputStream());
+        //out = new PrintWriter(server.getOutputStream());
+
+        streamOut = new ObjectOutputStream(server.getOutputStream());
+        streamOut.flush();
+        streamIn = new ObjectInputStream(server.getInputStream());
         receiveMessage();
 
     }
@@ -69,43 +79,34 @@ public class SocketClient implements NetworkController {
     private void receiveMessage(){
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
         pool.submit(() -> {
+
             while (true) {
-                pool.submit(() -> {
+
                     try {
-                        Scanner in = new Scanner(server.getInputStream());
-                        PrintWriter out = new PrintWriter(server.getOutputStream()); // May not be necessary
-                        while (true) {
-                            String line = in.nextLine();
-                            // By creating a thread it is possible to receive and translate a new message
-                            // even if the previous translation isn't finished, though this approach
-                            // can be risky because there could be a chain of "order sensitive" operations.
-                            // Another approach could be putting the messages in a queue and running translate()
-                            // every time the queue is not empty
-                            if(!line.isEmpty()){
-                                System.out.println(new Gson().fromJson(line, Message.class));
+
+                            Message message = (Message)streamIn.readObject();
                             pool.submit(() -> {
                                 try {
-                                    translate(new Gson().fromJson(line, Message.class));
+                                    translate(message);
                                 } catch (RemoteException e) {
                                     throw new RuntimeException(e);
                                 }
-                            });}
-                        }
+                            });
+
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                });
+
             }
         });
     }
 
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
-            case NEW_GAME -> this.gameID = ((GameMessage)message).getGameID();
-            case GET_AVAILABLE_GAMES, GET_NUMBER_OF_PLAYERS  -> {
+            case GET_AVAILABLE_GAMES, NEW_GAME  -> {
                 // Response from server
-                pendingMessage = message;
-                responseLock = true;
+                queue.add(message);
             }
 
 
@@ -188,9 +189,13 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
         sendMessage(new Message(MessageType.GET_AVAILABLE_GAMES));
-        responseLock = false;
-        while (!responseLock) {}
-        return new Gson().fromJson(((StringMessage)pendingMessage).getString(), ArrayList.class);
+        StringMessage temp = null;
+        try{
+            temp = (StringMessage) queue.take();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return new Gson().fromJson(((StringMessage)temp).getString(), ArrayList.class);
     }
 
     @Override
@@ -200,7 +205,14 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void getNewGameController() throws RemoteException {
-
+        sendMessage(new Message(MessageType.NEW_GAME));
+        GameMessage temp = null;
+        try{
+            temp = (GameMessage) queue.take();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        gameID = new Gson().fromJson(String.valueOf(Integer.valueOf(temp.getGameID())), Integer.class);
     }
 
     @Override
@@ -268,9 +280,16 @@ public class SocketClient implements NetworkController {
         sendMessage(new PlayerMessage(MessageType.FLIP_STARTER_CARD, gameID, playerID));
     }
 
-    public void sendMessage(Message message){
-        out.println(new Gson().toJson(message));
-        out.flush();
+    public void sendMessage(Message message) {
+        //out.println(new Gson().toJson(message));
+        try{
+            streamOut.writeObject(message);
+            streamOut.flush();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //out.flush();
     }
 
     //TODO: Implement all
