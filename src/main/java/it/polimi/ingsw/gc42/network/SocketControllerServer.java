@@ -195,6 +195,9 @@ public class SocketControllerServer implements ServerNetworkController {
                 // Send Controller's name to client
                 sendMessage(new StringMessage((MessageType.GET_DECK_TEXTURES), new Gson().toJson(server.getDeckTextures(((GameMessage)temp).getGameID(), new Gson().fromJson(((StringMessage)temp).getString(), CardType.class)))));
                 break;
+            case GET_PLAYER_TURN:
+
+                break;
 
             default:
                 //TODO
