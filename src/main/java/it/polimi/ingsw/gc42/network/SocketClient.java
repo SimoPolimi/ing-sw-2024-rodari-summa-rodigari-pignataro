@@ -5,12 +5,10 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
-import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 import it.polimi.ingsw.gc42.network.messages.*;
 
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +34,7 @@ public class SocketClient implements NetworkController {
     private Scanner in;
     private PrintWriter out;
     private Message pendingMessage = null;
-    private boolean responseReceived = false;
+    private boolean responseLock = false;
 
     private ClientController clientController;
 
@@ -104,8 +101,9 @@ public class SocketClient implements NetworkController {
         switch (message.getType()){
             case NEW_GAME -> this.gameID = ((GameMessage)message).getGameID();
             case GET_NUMBER_OF_PLAYERS  -> {
+                // Response from server
                 pendingMessage = message;
-                responseReceived = true;
+                responseLock = true;
                 //TODO
             }
 
@@ -188,6 +186,8 @@ public class SocketClient implements NetworkController {
 
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
+
+        responseLock = false;
         return null;
     }
 
@@ -203,6 +203,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getIndex() throws RemoteException {
+        // Lock until response
         return 0;
     }
 
@@ -274,6 +275,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public ArrayList<String> getDeckTextures(CardType type) {
+        sendMessage(new StringMessage(MessageType.GET_DECK_TEXTURES, new Gson().toJson(type)));
         return null;
     }
 

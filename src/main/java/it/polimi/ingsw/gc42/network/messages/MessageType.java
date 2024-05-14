@@ -19,7 +19,8 @@ public enum MessageType {
     FLIP_STARTER_CARD,
     SET_CURRENT_STATUS,
 
-
+    // Simo
+    GET_AVAILABLE_GAMES,
     GET_DECK_TEXTURES,
     GET_PLAYER_TURN,
     GET_NUMBER_OF_PLAYERS,
@@ -47,6 +48,7 @@ public enum MessageType {
     GET_OWNER,
     ASK_TO_DRAW_OR_GRAB,
 
+    // Gabri
     NOTIFY_GAME_IS_STARTING,
     NOTIFY_DECK_CHANGED,
     NOTIFY_SLOT_CARD_CHANGED,

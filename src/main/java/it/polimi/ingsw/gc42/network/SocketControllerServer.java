@@ -1,10 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
 
@@ -14,8 +11,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
@@ -192,9 +187,13 @@ public class SocketControllerServer implements ServerNetworkController {
             case SET_CURRENT_STATUS:
                 server.setCurrentStatus(((SetCurrentStatusMessage) temp).getGameID(), ((SetCurrentStatusMessage) temp).getStatus());
                 break;
+                // Responses
+            case GET_AVAILABLE_GAMES:
+                sendMessage(new StringMessage((MessageType.GET_AVAILABLE_GAMES), new Gson().toJson(server.getAvailableGames())));
+                break;
             case GET_DECK_TEXTURES:
                 // Send Controller's name to client
-                //TODO: sendMessage(new StringMessage((MessageType.GET_DECK_TEXTURES), server.getDeckTextures(((GameMessage)temp).getGameID()), ));
+                sendMessage(new StringMessage((MessageType.GET_DECK_TEXTURES), new Gson().toJson(server.getDeckTextures(((GameMessage)temp).getGameID(), new Gson().fromJson(((StringMessage)temp).getString(), CardType.class)))));
                 break;
 
             default:
