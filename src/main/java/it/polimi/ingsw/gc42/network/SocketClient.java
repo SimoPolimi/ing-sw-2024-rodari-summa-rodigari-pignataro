@@ -104,7 +104,7 @@ public class SocketClient implements NetworkController {
 
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
-            case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS  -> {
+            case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS, ADD_PLAYER  -> {
                 // Response from server
                 queue.add(message);
             }
@@ -179,6 +179,14 @@ public class SocketClient implements NetworkController {
     @Override
     public void addPlayer(Player player) {
         sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
+        this.owner = player;
+        StringMessage temp = null;
+        try{
+            temp = (StringMessage) queue.take();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        playerID = Integer.parseInt(temp.getString());
     }
 
     @Override

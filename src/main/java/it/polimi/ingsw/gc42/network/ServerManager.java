@@ -80,6 +80,11 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
+    public int getIndexOfPlayer(int gameID, String nickname) throws RemoteException {
+        return collection.get(gameID).getGame().getIndexOfPlayer(nickname);
+    }
+
+    @Override
     public void playCard(int gameID, int playerID,  int cardID, int x, int y) throws RemoteException {
         collection.get(gameID).playCard(playerID, cardID, x, y);
     }

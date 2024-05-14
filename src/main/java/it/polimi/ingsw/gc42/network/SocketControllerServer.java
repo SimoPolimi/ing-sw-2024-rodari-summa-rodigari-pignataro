@@ -59,6 +59,9 @@ public class SocketControllerServer implements ServerNetworkController {
                     break;
                 case ADD_PLAYER:
                     server.addPlayer(((AddPlayerMessage) temp).getGameID(), ((AddPlayerMessage) temp).getPlayer());
+                    sendMessage(new StringMessage(MessageType.ADD_PLAYER,
+                            String.valueOf(server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(),
+                            (((AddPlayerMessage) temp).getPlayer().getNickname())))));
                     break;
                 case DRAW_CARD:
                     server.drawCard(((DrawCardMessage) temp).getGameID(), ((DrawCardMessage) temp).getPlayerID(), ((DrawCardMessage) temp).getCardType());
