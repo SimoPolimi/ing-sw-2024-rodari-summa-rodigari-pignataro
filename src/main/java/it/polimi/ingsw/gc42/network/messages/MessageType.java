@@ -62,6 +62,9 @@ public enum MessageType {
     NOTIFY_TURN_CHANGED,
     GET_READY,
 
+    //new???
+    GET_INDEX_OF_PLAYER
+
 
 
 }

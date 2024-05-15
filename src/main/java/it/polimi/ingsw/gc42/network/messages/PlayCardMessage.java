@@ -43,6 +43,6 @@ public class PlayCardMessage extends PlayerMessage {
 
     @Override
     public String toString() {
-        return handCard + ", " + x + ", " + y;
+        return super.toString() + ", " + handCard + ", " + x + ", " + y;
     }
 }

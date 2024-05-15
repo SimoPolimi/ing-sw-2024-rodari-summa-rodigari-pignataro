@@ -18,4 +18,8 @@ public class HandCardMessage extends PlayerMessage {
     public void setSlot(int slot) {
         this.slot = slot;
     }
+
+    public String toString() {
+        return super.toString() + ", " + slot;
+    }
 }

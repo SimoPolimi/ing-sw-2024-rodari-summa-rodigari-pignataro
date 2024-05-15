@@ -54,9 +54,6 @@ public class SocketClient implements NetworkController {
         // TODO: Implement
         server = new Socket(ipAddress, port);
         isConnected = true;
-        //in = new Scanner(server.getInputStream());
-        //out = new PrintWriter(server.getOutputStream());
-
         streamOut = new ObjectOutputStream(server.getOutputStream());
         streamOut.flush();
         streamIn = new ObjectInputStream(server.getInputStream());
@@ -79,11 +76,8 @@ public class SocketClient implements NetworkController {
     private void receiveMessage(){
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
         pool.submit(() -> {
-
             while (true) {
-
                     try {
-
                             Message message = (Message)streamIn.readObject();
                             pool.submit(() -> {
                                 try {
@@ -92,22 +86,20 @@ public class SocketClient implements NetworkController {
                                     throw new RuntimeException(e);
                                 }
                             });
-
-
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
             }
         });
     }
 
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
-            case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS, ADD_PLAYER  -> {
+            // Moved in default
+            /*case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS, ADD_PLAYER, GET_PLAYER_TURN, GET_SECRET_OBJECTIVE_NAME, GET_SECRET_OBJECTIVE_DESCRIPTION, GET_COMMON_OBJECTIVE_NAME, GET_COMMON_OBJECTIVE_DESCRIPTION, GET_TEMPORARY_OBJECTIVE_TEXTURES, GET_TEMPORARY_STARTER_CARD_TEXTURES, GET_SECRET_OBJECTIVE_TEXTURES, GET_PLAYER_STATUS, GET_PLAYERS_INFO, GET_PLAYERS_HAND_SIZE, IS_PLAYER_FIRST, GET_AVAILABLE_PLACEMENT, CAN_CARD_BE_PLAYED, GET_PLAYER_TOKEN, GET_PLAYERS_LAST_PLAYED_CARD, GET_PLAYERS_HAND_CARD  -> {
                 // Response from server
                 queue.add(message);
-            }
+            }*/
 
 
             case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
@@ -126,6 +118,27 @@ public class SocketClient implements NetworkController {
             case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
             case GET_READY -> clientController.getReady();
+            // Response from server
+            default -> queue.add(message);
+        }
+    }
+
+    private String waitStringResponse(){
+        StringMessage temp = null;
+        try{
+            temp = (StringMessage) queue.take();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return temp.getString();
+    }
+
+    public void sendMessage(Message message) {
+        try{
+            streamOut.writeObject(message);
+            streamOut.flush();
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -140,8 +153,15 @@ public class SocketClient implements NetworkController {
             this.clientController = viewController;
             // TODO: Send message to do addView() to SocketControllerServer
 
-
         }
+    }
+
+    @Override
+    public void addPlayer(Player player) {
+        sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
+        // Set owner
+        this.owner = player;
+        playerID = Integer.parseInt(waitStringResponse());
     }
 
     @Override
@@ -177,19 +197,6 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public void addPlayer(Player player) {
-        sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
-        this.owner = player;
-        StringMessage temp = null;
-        try{
-            temp = (StringMessage) queue.take();
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        playerID = Integer.parseInt(temp.getString());
-    }
-
-    @Override
     public void setCurrentStatus(GameStatus status) {
         sendMessage(new Message(MessageType.SET_CURRENT_STATUS));
     }
@@ -197,18 +204,12 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
         sendMessage(new Message(MessageType.GET_AVAILABLE_GAMES));
-        StringMessage temp = null;
-        try{
-            temp = (StringMessage) queue.take();
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return new Gson().fromJson(((StringMessage)temp).getString(), ArrayList.class);
+        return new Gson().fromJson(waitStringResponse(), ArrayList.class);
     }
 
     @Override
     public void pickGame(int index) throws RemoteException {
-
+    //TODO
     }
 
     @Override
@@ -220,13 +221,14 @@ public class SocketClient implements NetworkController {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        gameID = new Gson().fromJson(String.valueOf(Integer.valueOf(temp.getGameID())), Integer.class);
+        gameID = new Gson().fromJson(String.valueOf(temp.getGameID()), Integer.class);
     }
 
     @Override
     public int getIndex() throws RemoteException {
+        //TODO: IMPLEMENT
         // Lock until response
-        return 0;
+        return gameID;
     }
 
     @Override
@@ -238,7 +240,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void removeListener(int playerID, int cardID, Listener listener) throws RemoteException {
-
+//TODO
     }
 
     @Override
@@ -248,19 +250,14 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
-        return 0;
+        sendMessage(new StringMessage(MessageType.GET_INDEX_OF_PLAYER, nickName));
+        return new Gson().fromJson(waitStringResponse(), Integer.class);
     }
 
     @Override
     public int getNumberOfPlayers() {
         sendMessage(new GameMessage(MessageType.GET_NUMBER_OF_PLAYERS, gameID));
-        StringMessage temp = null;
-        try{
-            temp = (StringMessage) queue.take();
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        return new Gson().fromJson(String.valueOf(Integer.valueOf(temp.getString())), Integer.class);
+        return new Gson().fromJson(String.valueOf(Integer.valueOf(waitStringResponse())), Integer.class);
     }
 
     @Override
@@ -293,20 +290,6 @@ public class SocketClient implements NetworkController {
         sendMessage(new PlayerMessage(MessageType.FLIP_STARTER_CARD, gameID, playerID));
     }
 
-    public void sendMessage(Message message) {
-        //out.println(new Gson().toJson(message));
-        try{
-            streamOut.writeObject(message);
-            streamOut.flush();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //out.flush();
-    }
-
-    //TODO: Implement all
-
     @Override
     public ArrayList<String> getDeckTextures(CardType type) {
         sendMessage(new StringMessage(MessageType.GET_DECK_TEXTURES, new Gson().toJson(type)));
@@ -315,91 +298,109 @@ public class SocketClient implements NetworkController {
 
     @Override
     public String getSlotCardTexture(CardType type, int slot) {
-        return "";
+        sendMessage(new GetSlotCardTextMessage(MessageType.GET_SLOT_CARD_TEXTURE, type, slot));
+        return new Gson().fromJson(waitStringResponse(), String.class);
     }
 
     @Override
     public String getSecretObjectiveName(int playerID) {
-        return "";
+        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_NAME, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), String.class);
     }
 
     @Override
     public String getSecretObjectiveDescription(int playerID) {
-        return "";
+        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), String.class);
     }
 
     @Override
     public String getCommonObjectiveName(int slot) {
-        return "";
+        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_NAME, slot));
+        return new Gson().fromJson(waitStringResponse(), String.class);
     }
 
     @Override
     public String getCommonObjectiveDescription(int slot) {
-        return "";
+        sendMessage(new PlayerMessage(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), String.class);
     }
 
     @Override
     public int getPlayerTurn() {
-        return 0;
+        sendMessage(new GameMessage(MessageType.GET_PLAYER_TURN, gameID));
+        return new Gson().fromJson(String.valueOf(Integer.valueOf(waitStringResponse())), Integer.class);
     }
 
     @Override
     public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), ArrayList.class);
     }
 
     @Override
     public HashMap<String, String> getTemporaryStarterCardTextures(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), HashMap.class);
     }
 
     @Override
     public HashMap<String, String> getSecretObjectiveTextures(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), HashMap.class);
     }
 
     @Override
     public GameStatus getPlayerStatus(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYER_STATUS, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), GameStatus.class);
     }
 
     @Override
     public ArrayList<HashMap<String, String>> getPlayersInfo() {
-        return null;
+        sendMessage(new GameMessage(MessageType.GET_PLAYERS_INFO, gameID));
+        return new Gson().fromJson(waitStringResponse(), ArrayList.class);
     }
 
     @Override
     public int getPlayersHandSize(int playerID) {
-        return 0;
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_HAND_SIZE, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), Integer.class);
     }
 
     @Override
     public boolean isPlayerFirst(int playerID) {
-        return false;
+        sendMessage(new PlayerMessage(MessageType.IS_PLAYER_FIRST, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), Boolean.class);
     }
 
     @Override
     public ArrayList<Coordinates> getAvailablePlacements(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_AVAILABLE_PLACEMENT, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), ArrayList.class);
     }
 
     @Override
     public boolean canCardBePlayed(int playerID, int cardID) {
-        return false;
+        sendMessage(new CanCardBePlayedMessage(MessageType.CAN_CARD_BE_PLAYED, gameID, playerID, cardID));
+        return new Gson().fromJson(waitStringResponse(), Boolean.class);
     }
 
     @Override
     public Token getPlayerToken(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYER_TOKEN, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), Token.class);
     }
 
     @Override
     public PlayableCard getPlayersLastPlayedCard(int playerID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), PlayableCard.class);
     }
 
     @Override
     public PlayableCard getPlayersHandCard(int playerID, int cardID) {
-        return null;
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_HAND_CARD, gameID, playerID));
+        return new Gson().fromJson(waitStringResponse(), PlayableCard.class);
     }
 }

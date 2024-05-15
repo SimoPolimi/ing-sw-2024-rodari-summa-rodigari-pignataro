@@ -18,4 +18,8 @@ public class NumberMessage extends Message {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public String toString() {
+        return super.toString() + ", " + number;
+    }
 }

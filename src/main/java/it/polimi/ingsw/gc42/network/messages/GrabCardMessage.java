@@ -33,6 +33,6 @@ public class GrabCardMessage extends PlayerMessage {
 
     @Override
     public String toString() {
-        return type + ", " + slot;
+        return super.toString() + type + ", " + slot;
     }
 }
