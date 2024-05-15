@@ -2,8 +2,10 @@ package it.polimi.ingsw.gc42.network;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
@@ -153,6 +156,103 @@ public class SocketControllerServer implements ServerNetworkController {
                 case GET_PLAYERS_HAND_CARD:
                     sendMessage(new StringMessage((MessageType.GET_PLAYERS_HAND_CARD), new Gson().toJson(server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), (((GetPlayersHandCardMessage) temp).getPlayerID()), ((GetPlayersHandCardMessage)temp).getCardID()))));
                     break;
+                case ADD_VIEW:
+                    // Creates a Virtual View and hooks it to the specific Game the user is playing
+                    server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {
+                        // The Virtual View (or Remote View) implements the same methods as a regular View, but inside
+                        // of them has the code to SEND MESSAGES via Socket
+
+                        @Override
+                        public void showSecretObjectivesSelectionDialog() {
+                            sendMessage(new Message(MessageType.SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG));
+                        }
+
+                        @Override
+                        public void showStarterCardSelectionDialog() {
+                            sendMessage(new Message(MessageType.SHOW_STARTER_CARD_SELECTION_DIALOG));
+                        }
+
+                        @Override
+                        public void showTokenSelectionDialog() {
+                            sendMessage(new Message(MessageType.SHOW_TOKEN_SELECTION_DIALOG));
+                        }
+
+                        @Override
+                        public int getOwner() {
+                            // Returns the playerID of the Player who owns the SocketClient to which this RemoteView is connected
+                            return ((PlayerMessage) temp).getPlayerID();
+                        }
+
+                        @Override
+                        public void askToDrawOrGrab() {
+                            sendMessage(new Message(MessageType.ASK_TO_DRAW_OR_GRAB));
+                        }
+
+                        @Override
+                        public void notifyGameIsStarting() {
+                            sendMessage(new Message(MessageType.NOTIFY_GAME_IS_STARTING));
+                        }
+
+                        @Override
+                        public void notifyDeckChanged(CardType type) {
+                            sendMessage(new DeckChangedMessage(MessageType.NOTIFY_DECK_CHANGED, type));
+                        }
+
+                        @Override
+                        public void notifySlotCardChanged(CardType type, int slot) {
+                            sendMessage(new SlotCardMessage(MessageType.NOTIFY_SLOT_CARD_CHANGED, type, slot));
+                        }
+
+                        @Override
+                        public void notifyPlayersPointsChanged() {
+                            sendMessage(new Message(MessageType.NOTIFY_PLAYERS_POINTS_CHANGED));
+                        }
+
+                        @Override
+                        public void notifyNumberOfPlayersChanged() {
+                            sendMessage(new Message(MessageType.NOTIFY_NUMBER_OF_PLAYERS_CHANGED));
+                        }
+
+                        @Override
+                        public void notifyPlayersTokenChanged(int playerID) {
+                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_TOKEN_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                        }
+
+                        @Override
+                        public void notifyPlayersPlayAreaChanged(int playerID) {
+                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_PLAY_AREA_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                        }
+
+                        @Override
+                        public void notifyPlayersHandChanged(int playerID) {
+                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_HAND_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                        }
+
+                        @Override
+                        public void notifyHandCardWasFlipped(int playedID, int cardID) {
+                            sendMessage(new FlipCardMessage(MessageType.NOTIFY_HAND_CARD_WAS_FLIPPED, ((PlayerMessage) temp).getGameID(), playedID, cardID));
+                        }
+
+                        @Override
+                        public void notifyPlayersObjectiveChanged(int playerID) {
+                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_OBJECTIVE_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                        }
+
+                        @Override
+                        public void notifyCommonObjectivesChanged() {
+                            sendMessage(new Message(MessageType.NOTIFY_COMMON_OBJECTIVES_CHANGED));
+                        }
+
+                        @Override
+                        public void notifyTurnChanged() {
+                            sendMessage(new Message(MessageType.NOTIFY_TURN_CHANGED));
+                        }
+
+                        @Override
+                        public void getReady() {
+                            sendMessage(new Message(MessageType.GET_READY));
+                        }
+                    });
                 default:
                     //TODO
                     break;

@@ -105,17 +105,18 @@ public class SocketClient implements NetworkController {
             case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
             case SHOW_STARTER_CARD_SELECTION_DIALOG -> clientController.showStarterCardSelectionDialog();
             case SHOW_TOKEN_SELECTION_DIALOG -> clientController.showTokenSelectionDialog();
-            case GET_OWNER -> {}//TODO: Return owner
             case ASK_TO_DRAW_OR_GRAB -> clientController.askToDrawOrGrab();
             case NOTIFY_GAME_IS_STARTING -> clientController.notifyGameIsStarting();
             case NOTIFY_DECK_CHANGED -> clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
             case NOTIFY_SLOT_CARD_CHANGED -> clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
+            case NOTIFY_PLAYERS_POINTS_CHANGED -> clientController.notifyPlayersPointsChanged();
             case NOTIFY_NUMBER_OF_PLAYERS_CHANGED -> clientController.notifyNumberOfPlayersChanged();
             case NOTIFY_PLAYERS_TOKEN_CHANGED -> clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_PLAYERS_PLAY_AREA_CHANGED -> clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_PLAYERS_HAND_CHANGED -> clientController.notifyPlayersHandChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_HAND_CARD_WAS_FLIPPED -> clientController.notifyHandCardWasFlipped(((HandCardMessage) message).getPlayerID(), ((HandCardMessage) message).getSlot());
             case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_COMMON_OBJECTIVES_CHANGED -> clientController.notifyCommonObjectivesChanged();
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
             case GET_READY -> clientController.getReady();
             // Response from server

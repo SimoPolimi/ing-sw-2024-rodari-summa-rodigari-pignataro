@@ -63,8 +63,10 @@ public enum MessageType {
     GET_READY,
 
     //new???
-    GET_INDEX_OF_PLAYER
+    GET_INDEX_OF_PLAYER,
 
+    ADD_VIEW,
+    NOTIFY_PLAYERS_POINTS_CHANGED
 
 
 }

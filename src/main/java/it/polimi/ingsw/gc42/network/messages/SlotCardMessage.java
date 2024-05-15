@@ -9,7 +9,7 @@ public class SlotCardMessage extends Message {
     @Expose
     private int slot;
 
-    SlotCardMessage(MessageType type, CardType cardType, int slot) {
+    public SlotCardMessage(MessageType type, CardType cardType, int slot) {
         super(type);
         this.cardType = cardType;
         this.slot = slot;
