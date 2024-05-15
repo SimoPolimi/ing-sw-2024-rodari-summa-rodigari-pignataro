@@ -31,13 +31,10 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
-    public int getOwner() throws RemoteException {
-        return viewController.getOwner();
-    }
-
-    @Override
-    public void askToDrawOrGrab() throws RemoteException {
-        viewController.askToDrawOrGrab();
+    public void askToDrawOrGrab(int playerID) throws RemoteException {
+        if (playerID == viewController.getOwner()) {
+            viewController.askToDrawOrGrab();
+        }
     }
 
     @Override

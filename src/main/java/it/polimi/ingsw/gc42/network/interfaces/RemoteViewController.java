@@ -12,8 +12,7 @@ public interface RemoteViewController extends Remote {
     void showSecretObjectivesSelectionDialog() throws RemoteException;
     void showStarterCardSelectionDialog() throws RemoteException;
     void showTokenSelectionDialog() throws RemoteException;
-    int getOwner() throws RemoteException;
-    void askToDrawOrGrab() throws RemoteException;
+    void askToDrawOrGrab(int playerID) throws RemoteException;
 
     void notifyGameIsStarting() throws RemoteException;
     void notifyDeckChanged(CardType type) throws RemoteException;

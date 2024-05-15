@@ -178,14 +178,8 @@ public class SocketControllerServer implements ServerNetworkController {
                         }
 
                         @Override
-                        public int getOwner() {
-                            // Returns the playerID of the Player who owns the SocketClient to which this RemoteView is connected
-                            return ((PlayerMessage) temp).getPlayerID();
-                        }
-
-                        @Override
-                        public void askToDrawOrGrab() {
-                            sendMessage(new Message(MessageType.ASK_TO_DRAW_OR_GRAB));
+                        public void askToDrawOrGrab(int playerID) {
+                            sendMessage(new PlayerMessage(MessageType.ASK_TO_DRAW_OR_GRAB, ((PlayerMessage)temp).getGameID(), playerID));
                         }
 
                         @Override

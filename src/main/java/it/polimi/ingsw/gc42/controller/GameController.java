@@ -255,9 +255,7 @@ public class GameController implements Serializable, Observable {
                         || null != game.getGoldPlayingDeck().getSlot(2)
                         || !game.isResourceDeckEmpty() || !game.isGoldDeckEmpty()){
                     for (RemoteViewController view : views) {
-                        if (-1 != view.getOwner() && game.getPlayer(view.getOwner()).getNickname().equals(player.getNickname())) {
-                            view.askToDrawOrGrab();
-                        }
+                        view.askToDrawOrGrab(playerID);
                     }
                 } else {
                     nextTurn();

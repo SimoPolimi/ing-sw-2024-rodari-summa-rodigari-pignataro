@@ -105,7 +105,7 @@ public class SocketClient implements NetworkController {
             case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
             case SHOW_STARTER_CARD_SELECTION_DIALOG -> clientController.showStarterCardSelectionDialog();
             case SHOW_TOKEN_SELECTION_DIALOG -> clientController.showTokenSelectionDialog();
-            case ASK_TO_DRAW_OR_GRAB -> clientController.askToDrawOrGrab();
+            case ASK_TO_DRAW_OR_GRAB -> clientController.askToDrawOrGrab(((PlayerMessage) message).getPlayerID());
             case NOTIFY_GAME_IS_STARTING -> clientController.notifyGameIsStarting();
             case NOTIFY_DECK_CHANGED -> clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
             case NOTIFY_SLOT_CARD_CHANGED -> clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
@@ -152,8 +152,7 @@ public class SocketClient implements NetworkController {
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
             this.clientController = viewController;
-            // TODO: Send message to do addView() to SocketControllerServer
-
+            sendMessage(new GameMessage(MessageType.ADD_VIEW, gameID));
         }
     }
 
