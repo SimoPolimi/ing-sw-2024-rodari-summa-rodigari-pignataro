@@ -38,4 +38,5 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.network to javafx.fxml;
     exports it.polimi.ingsw.gc42.network.interfaces;
     opens it.polimi.ingsw.gc42.network.interfaces to javafx.fxml;
+    opens it.polimi.ingsw.gc42.network.messages.responses to com.google.gson;
 }
