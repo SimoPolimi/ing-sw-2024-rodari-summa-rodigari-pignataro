@@ -210,7 +210,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void pickGame(int index) throws RemoteException {
-    //TODO
+        gameID = index;
     }
 
     @Override
@@ -221,8 +221,6 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getIndex() throws RemoteException {
-        //TODO: IMPLEMENT
-        // Lock until response
         return gameID;
     }
 
@@ -245,7 +243,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
-        sendMessage(new StringMessage(MessageType.GET_INDEX_OF_PLAYER, nickName));
+        sendMessage(new GetNameMessage(MessageType.GET_INDEX_OF_PLAYER, gameID, nickName));
         return ((IntResponse) waitResponse()).getResponse();
     }
 
