@@ -2,12 +2,12 @@ package it.polimi.ingsw.gc42.network.messages;
 
 import com.google.gson.annotations.Expose;
 
-public class NumberMessage extends Message {
+public class NumberMessage extends GameMessage {
     @Expose
     private int number;
 
-    public NumberMessage(MessageType type, int number) {
-        super(type);
+    public NumberMessage(MessageType type, int gameID, int number) {
+        super(type, gameID);
         this.number = number;
     }
 

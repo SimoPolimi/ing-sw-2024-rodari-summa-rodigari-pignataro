@@ -47,7 +47,7 @@ public class GameTerminal extends Application implements ViewController {
             //System.out.println("--- Insert Nickname ---");
             login();
             input = scanner.next();
-            switch (input) {
+                switch (input) {
                 case "":
                     break;
                 default:

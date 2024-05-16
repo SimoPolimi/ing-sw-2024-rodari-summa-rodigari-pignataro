@@ -287,13 +287,13 @@ public class SocketClient implements NetworkController {
 
     @Override
     public ArrayList<String> getDeckTextures(CardType type) {
-        sendMessage(new GetDeckTextures(MessageType.GET_DECK_TEXTURES, type));
+        sendMessage(new GetDeckTexturesMessage(MessageType.GET_DECK_TEXTURES, gameID, type));
         return ((ListStrResponse) waitResponse()).getResponse();
     }
 
     @Override
     public String getSlotCardTexture(CardType type, int slot) {
-        sendMessage(new GetSlotCardTexture(MessageType.GET_SLOT_CARD_TEXTURE, type, slot));
+        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_SLOT_CARD_TEXTURE, gameID, type, slot));
         return ((StrResponse) waitResponse()).getResponse();
     }
 
@@ -311,7 +311,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public String getCommonObjectiveName(int slot) {
-        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_NAME, slot));
+        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_NAME, gameID, slot));
         return ((StrResponse) waitResponse()).getResponse();
     }
 
@@ -395,7 +395,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public PlayableCard getPlayersHandCard(int playerID, int cardID) {
-        sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_HAND_CARD, gameID, playerID));
+        sendMessage(new GetPlayersHandCardMessage(MessageType.GET_PLAYERS_HAND_CARD, gameID, playerID, cardID));
         return ((PlayableCardResponse) waitResponse()).getResponse();
     }
 }

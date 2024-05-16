@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
+import it.polimi.ingsw.gc42.network.messages.responses.*;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.io.IOException;
@@ -40,9 +41,7 @@ public class SocketControllerServer implements ServerNetworkController {
             switch (temp.getType()) {
                 case ADD_PLAYER:
                     server.addPlayer(((AddPlayerMessage) temp).getGameID(), ((AddPlayerMessage) temp).getPlayer());
-                    sendMessage(new StringMessage(MessageType.ADD_PLAYER,
-                            String.valueOf(server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(),
-                                    (((AddPlayerMessage) temp).getPlayer().getNickname())))));
+                    sendMessage(new IntResponse(MessageType.ADD_PLAYER, server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(), (((AddPlayerMessage) temp).getPlayer().getNickname()))));
                     break;
                 case KICK_PLAYER:
                     server.kickPlayer(((KickPlayerMessage) temp).getGameID(), ((KickPlayerMessage) temp).getPlayer());
@@ -66,11 +65,11 @@ public class SocketControllerServer implements ServerNetworkController {
                     server.setCurrentStatus(((SetCurrentStatusMessage) temp).getGameID(), ((SetCurrentStatusMessage) temp).getStatus());
                     break;
                 case GET_AVAILABLE_GAMES:
-                    sendMessage(new StringMessage((MessageType.GET_AVAILABLE_GAMES), new Gson().toJson(server.getAvailableGames())));
+                    sendMessage(new ListMapStrStrResponse(MessageType.GET_AVAILABLE_GAMES, server.getAvailableGames()));
                     break;
                 case NEW_GAME:
                     // Send GameID to client
-                    sendMessage(new GameMessage(MessageType.NEW_GAME, server.newGame()));
+                    sendMessage(new IntResponse(MessageType.NEW_GAME, server.newGame()));
                     break;
                 case SET_NAME:
                     server.setName(((SetNameMessage) temp).getGameID(), ((SetNameMessage) temp).getName());
@@ -79,7 +78,7 @@ public class SocketControllerServer implements ServerNetworkController {
                     //TODO
                      break;
                 case GET_NUMBER_OF_PLAYERS:
-                    sendMessage(new StringMessage((MessageType.GET_NUMBER_OF_PLAYERS), String.valueOf(server.getNumberOfPlayers(((GameMessage) temp).getGameID()))));
+                    sendMessage(new IntResponse(MessageType.GET_NUMBER_OF_PLAYERS, server.getNumberOfPlayers(((GameMessage) temp).getGameID())));
                     break;
                 case START_GAME:
                     server.startGame((((GameMessage) temp).getGameID()));
@@ -100,61 +99,61 @@ public class SocketControllerServer implements ServerNetworkController {
                     server.flipStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
                 case GET_DECK_TEXTURES:
-                    sendMessage(new StringMessage((MessageType.GET_DECK_TEXTURES), new Gson().toJson(server.getDeckTextures(((GameMessage) temp).getGameID(), new Gson().fromJson(((StringMessage) temp).getString(), CardType.class)))));
+                    sendMessage(new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
                     break;
                 case GET_SLOT_CARD_TEXTURE:
-                    sendMessage(new StringMessage((MessageType.GET_SLOT_CARD_TEXTURE), new Gson().toJson(server.getSlotCardTexture(((GameMessage) temp).getGameID(), new Gson().fromJson(String.valueOf(((GetSlotCardTextMessage) temp).getCardType()), CardType.class), new Gson().fromJson(String.valueOf(((GetSlotCardTextMessage) temp).getSlot()), Integer.class)))));
+                    sendMessage(new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GameMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
                     break;
                 case GET_SECRET_OBJECTIVE_NAME:
-                    sendMessage(new StringMessage((MessageType.GET_SECRET_OBJECTIVE_NAME), new Gson().toJson(server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_SECRET_OBJECTIVE_DESCRIPTION:
-                    sendMessage(new StringMessage((MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION), new Gson().toJson(server.getSecretObjectiveDescription(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new StrResponse(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, server.getSecretObjectiveDescription(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_COMMON_OBJECTIVE_NAME:
-                    sendMessage(new StringMessage((MessageType.GET_COMMON_OBJECTIVE_NAME), new Gson().toJson(server.getCommonObjectiveName(((PlayerMessage)temp).getGameID(), ((NumberMessage)temp).getNumber()))));
+                    sendMessage(new StrResponse(MessageType.GET_COMMON_OBJECTIVE_NAME, server.getCommonObjectiveName(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
                     break;
                 case GET_COMMON_OBJECTIVE_DESCRIPTION:
-                    sendMessage(new StringMessage((MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION), new Gson().toJson(server.getCommonObjectiveDescription(((PlayerMessage)temp).getGameID(), ((NumberMessage)temp).getNumber()))));
+                    sendMessage(new StrResponse(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, server.getCommonObjectiveDescription(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
                     break;
                 case GET_PLAYER_TURN:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYER_TURN), new Gson().toJson(server.getPlayerTurn(((GameMessage) temp).getGameID()))));
+                    sendMessage(new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
                     break;
                 case GET_TEMPORARY_OBJECTIVE_TEXTURES:
-                    sendMessage(new StringMessage((MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES), new Gson().toJson(server.getTemporaryObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new ListMapStrStrResponse(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, server.getTemporaryObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_TEMPORARY_STARTER_CARD_TEXTURES:
-                    sendMessage(new StringMessage((MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES), new Gson().toJson(server.getTemporaryStarterCardTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new MapStrStrResponse(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, server.getTemporaryStarterCardTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_SECRET_OBJECTIVE_TEXTURES:
-                    sendMessage(new StringMessage((MessageType.GET_SECRET_OBJECTIVE_TEXTURES), new Gson().toJson(server.getSecretObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new MapStrStrResponse(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, server.getSecretObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYER_STATUS:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYER_STATUS), new Gson().toJson(server.getPlayerStatus(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new GameStatusResponse(MessageType.GET_PLAYER_STATUS, server.getPlayerStatus(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYERS_INFO:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYERS_INFO), new Gson().toJson(server.getPlayersInfo(((GameMessage)temp).getGameID()))));
+                    sendMessage(new ListMapStrStrResponse(MessageType.GET_PLAYERS_INFO, server.getPlayersInfo(((GameMessage)temp).getGameID())));
                     break;
                 case GET_PLAYERS_HAND_SIZE:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYERS_HAND_SIZE), new Gson().toJson(server.getPlayersHandSize(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new IntResponse(MessageType.GET_PLAYERS_HAND_SIZE, server.getPlayersHandSize(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case IS_PLAYER_FIRST:
-                    sendMessage(new StringMessage((MessageType.IS_PLAYER_FIRST), new Gson().toJson(server.isPlayerFirst(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new BoolResponse(MessageType.IS_PLAYER_FIRST, server.isPlayerFirst(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_AVAILABLE_PLACEMENT:
-                    sendMessage(new StringMessage((MessageType.GET_AVAILABLE_PLACEMENT), new Gson().toJson(server.getAvailablePlacements(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID()))));
+                    sendMessage(new ListCoordResponse(MessageType.GET_AVAILABLE_PLACEMENT, server.getAvailablePlacements(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case CAN_CARD_BE_PLAYED:
-                    sendMessage(new StringMessage((MessageType.CAN_CARD_BE_PLAYED), new Gson().toJson(server.canCardBePlayed(((CanCardBePlayedMessage)temp).getGameID(), ((CanCardBePlayedMessage)temp).getPlayerID(), ((CanCardBePlayedMessage)temp).getCardID()))));
+                    sendMessage(new BoolResponse(MessageType.CAN_CARD_BE_PLAYED, server.canCardBePlayed(((CanCardBePlayedMessage)temp).getGameID(), ((CanCardBePlayedMessage)temp).getPlayerID(), ((CanCardBePlayedMessage)temp).getCardID())));
                     break;
                 case GET_PLAYER_TOKEN:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYER_TOKEN), new Gson().toJson(server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID()))))));
+                    sendMessage(new TokenResponse(MessageType.GET_PLAYER_TOKEN, server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
                 case GET_PLAYERS_LAST_PLAYED_CARD:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYERS_LAST_PLAYED_CARD), new Gson().toJson(server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID()))))));
+                    sendMessage(new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
                 case GET_PLAYERS_HAND_CARD:
-                    sendMessage(new StringMessage((MessageType.GET_PLAYERS_HAND_CARD), new Gson().toJson(server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), (((GetPlayersHandCardMessage) temp).getPlayerID()), ((GetPlayersHandCardMessage)temp).getCardID()))));
+                    sendMessage(new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID())));
                     break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
