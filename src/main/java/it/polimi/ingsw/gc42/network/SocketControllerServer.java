@@ -1,12 +1,10 @@
 package it.polimi.ingsw.gc42.network;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
 import it.polimi.ingsw.gc42.network.messages.responses.*;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,8 +13,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
@@ -29,19 +27,19 @@ public class SocketControllerServer implements ServerNetworkController {
     private Runnable onReady;
     private GameCollection games;
     private ServerManager server;
-    final private BlockingDeque<Message> messagesQueue = new LinkedBlockingDeque<>();
+    final private HashMap<Socket, BlockingDeque<Message>> messagesQueue = new HashMap<>();
     private Scanner in;
     private PrintWriter out;
-    private ObjectInputStream streamIn;
-    private ObjectOutputStream streamOut;
+    private HashMap<Socket, ObjectInputStream> inMap = new HashMap<>();
+    private HashMap<Socket, ObjectOutputStream> outMap = new HashMap<>();
 
-    private synchronized void receiveMessage() throws RemoteException {
+    private synchronized void receiveMessage(Socket socket) throws RemoteException {
         try {
-            Message temp = messagesQueue.take();
+            Message temp = messagesQueue.get(socket).take();
             switch (temp.getType()) {
                 case ADD_PLAYER:
                     server.addPlayer(((AddPlayerMessage) temp).getGameID(), ((AddPlayerMessage) temp).getPlayer());
-                    sendMessage(new IntResponse(MessageType.ADD_PLAYER, server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(), (((AddPlayerMessage) temp).getPlayer().getNickname()))));
+                    sendMessage(socket, new IntResponse(MessageType.ADD_PLAYER, server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(), (((AddPlayerMessage) temp).getPlayer().getNickname()))));
                     break;
                 case KICK_PLAYER:
                     server.kickPlayer(((KickPlayerMessage) temp).getGameID(), ((KickPlayerMessage) temp).getPlayer());
@@ -65,20 +63,20 @@ public class SocketControllerServer implements ServerNetworkController {
                     server.setCurrentStatus(((SetCurrentStatusMessage) temp).getGameID(), ((SetCurrentStatusMessage) temp).getStatus());
                     break;
                 case GET_AVAILABLE_GAMES:
-                    sendMessage(new ListMapStrStrResponse(MessageType.GET_AVAILABLE_GAMES, server.getAvailableGames()));
+                    sendMessage(socket, new ListMapStrStrResponse(MessageType.GET_AVAILABLE_GAMES, server.getAvailableGames()));
                     break;
                 case NEW_GAME:
                     // Send GameID to client
-                    sendMessage(new IntResponse(MessageType.NEW_GAME, server.newGame()));
+                    sendMessage(socket, new IntResponse(MessageType.NEW_GAME, server.newGame()));
                     break;
                 case SET_NAME:
                     server.setName(((SetNameMessage) temp).getGameID(), ((SetNameMessage) temp).getName());
                     break;
                 case GET_INDEX_OF_PLAYER:
-                    sendMessage(new IntResponse(MessageType.GET_INDEX_OF_PLAYER, server.getIndexOfPlayer(((GetNameMessage) temp).getGameID(), ((GetNameMessage) temp).getName())));
+                    sendMessage(socket, new IntResponse(MessageType.GET_INDEX_OF_PLAYER, server.getIndexOfPlayer(((GetNameMessage) temp).getGameID(), ((GetNameMessage) temp).getName())));
                      break;
                 case GET_NUMBER_OF_PLAYERS:
-                    sendMessage(new IntResponse(MessageType.GET_NUMBER_OF_PLAYERS, server.getNumberOfPlayers(((GameMessage) temp).getGameID())));
+                    sendMessage(socket, new IntResponse(MessageType.GET_NUMBER_OF_PLAYERS, server.getNumberOfPlayers(((GameMessage) temp).getGameID())));
                     break;
                 case START_GAME:
                     server.startGame((((GameMessage) temp).getGameID()));
@@ -99,61 +97,61 @@ public class SocketControllerServer implements ServerNetworkController {
                     server.flipStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
                 case GET_DECK_TEXTURES:
-                    sendMessage(new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
+                    sendMessage(socket, new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
                     break;
                 case GET_SLOT_CARD_TEXTURE:
-                    sendMessage(new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GameMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GameMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
                     break;
                 case GET_SECRET_OBJECTIVE_NAME:
-                    sendMessage(new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_SECRET_OBJECTIVE_DESCRIPTION:
-                    sendMessage(new StrResponse(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, server.getSecretObjectiveDescription(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, server.getSecretObjectiveDescription(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_COMMON_OBJECTIVE_NAME:
-                    sendMessage(new StrResponse(MessageType.GET_COMMON_OBJECTIVE_NAME, server.getCommonObjectiveName(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_COMMON_OBJECTIVE_NAME, server.getCommonObjectiveName(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
                     break;
                 case GET_COMMON_OBJECTIVE_DESCRIPTION:
-                    sendMessage(new StrResponse(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, server.getCommonObjectiveDescription(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, server.getCommonObjectiveDescription(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
                     break;
                 case GET_PLAYER_TURN:
-                    sendMessage(new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
+                    sendMessage(socket, new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
                     break;
                 case GET_TEMPORARY_OBJECTIVE_TEXTURES:
-                    sendMessage(new ListMapStrStrResponse(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, server.getTemporaryObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new ListMapStrStrResponse(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, server.getTemporaryObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_TEMPORARY_STARTER_CARD_TEXTURES:
-                    sendMessage(new MapStrStrResponse(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, server.getTemporaryStarterCardTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new MapStrStrResponse(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, server.getTemporaryStarterCardTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_SECRET_OBJECTIVE_TEXTURES:
-                    sendMessage(new MapStrStrResponse(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, server.getSecretObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new MapStrStrResponse(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, server.getSecretObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYER_STATUS:
-                    sendMessage(new GameStatusResponse(MessageType.GET_PLAYER_STATUS, server.getPlayerStatus(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new GameStatusResponse(MessageType.GET_PLAYER_STATUS, server.getPlayerStatus(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYERS_INFO:
-                    sendMessage(new ListMapStrStrResponse(MessageType.GET_PLAYERS_INFO, server.getPlayersInfo(((GameMessage)temp).getGameID())));
+                    sendMessage(socket, new ListMapStrStrResponse(MessageType.GET_PLAYERS_INFO, server.getPlayersInfo(((GameMessage)temp).getGameID())));
                     break;
                 case GET_PLAYERS_HAND_SIZE:
-                    sendMessage(new IntResponse(MessageType.GET_PLAYERS_HAND_SIZE, server.getPlayersHandSize(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new IntResponse(MessageType.GET_PLAYERS_HAND_SIZE, server.getPlayersHandSize(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case IS_PLAYER_FIRST:
-                    sendMessage(new BoolResponse(MessageType.IS_PLAYER_FIRST, server.isPlayerFirst(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new BoolResponse(MessageType.IS_PLAYER_FIRST, server.isPlayerFirst(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_AVAILABLE_PLACEMENT:
-                    sendMessage(new ListCoordResponse(MessageType.GET_AVAILABLE_PLACEMENT, server.getAvailablePlacements(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                    sendMessage(socket, new ListCoordResponse(MessageType.GET_AVAILABLE_PLACEMENT, server.getAvailablePlacements(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case CAN_CARD_BE_PLAYED:
-                    sendMessage(new BoolResponse(MessageType.CAN_CARD_BE_PLAYED, server.canCardBePlayed(((CanCardBePlayedMessage)temp).getGameID(), ((CanCardBePlayedMessage)temp).getPlayerID(), ((CanCardBePlayedMessage)temp).getCardID())));
+                    sendMessage(socket, new BoolResponse(MessageType.CAN_CARD_BE_PLAYED, server.canCardBePlayed(((CanCardBePlayedMessage)temp).getGameID(), ((CanCardBePlayedMessage)temp).getPlayerID(), ((CanCardBePlayedMessage)temp).getCardID())));
                     break;
                 case GET_PLAYER_TOKEN:
-                    sendMessage(new TokenResponse(MessageType.GET_PLAYER_TOKEN, server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
+                    sendMessage(socket, new TokenResponse(MessageType.GET_PLAYER_TOKEN, server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
                 case GET_PLAYERS_LAST_PLAYED_CARD:
-                    sendMessage(new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
+                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
                 case GET_PLAYERS_HAND_CARD:
-                    sendMessage(new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID())));
+                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID())));
                     break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
@@ -163,87 +161,87 @@ public class SocketControllerServer implements ServerNetworkController {
 
                         @Override
                         public void showSecretObjectivesSelectionDialog() {
-                            sendMessage(new Message(MessageType.SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG));
+                            sendMessage(socket, new Message(MessageType.SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG));
                         }
 
                         @Override
                         public void showStarterCardSelectionDialog() {
-                            sendMessage(new Message(MessageType.SHOW_STARTER_CARD_SELECTION_DIALOG));
+                            sendMessage(socket, new Message(MessageType.SHOW_STARTER_CARD_SELECTION_DIALOG));
                         }
 
                         @Override
                         public void showTokenSelectionDialog() {
-                            sendMessage(new Message(MessageType.SHOW_TOKEN_SELECTION_DIALOG));
+                            sendMessage(socket, new Message(MessageType.SHOW_TOKEN_SELECTION_DIALOG));
                         }
 
                         @Override
                         public void askToDrawOrGrab(int playerID) {
-                            sendMessage(new PlayerMessage(MessageType.ASK_TO_DRAW_OR_GRAB, ((PlayerMessage)temp).getGameID(), playerID));
+                            sendMessage(socket, new PlayerMessage(MessageType.ASK_TO_DRAW_OR_GRAB, ((PlayerMessage)temp).getGameID(), playerID));
                         }
 
                         @Override
                         public void notifyGameIsStarting() {
-                            sendMessage(new Message(MessageType.NOTIFY_GAME_IS_STARTING));
+                            sendMessage(socket, new Message(MessageType.NOTIFY_GAME_IS_STARTING));
                         }
 
                         @Override
                         public void notifyDeckChanged(CardType type) {
-                            sendMessage(new DeckChangedMessage(MessageType.NOTIFY_DECK_CHANGED, type));
+                            sendMessage(socket, new DeckChangedMessage(MessageType.NOTIFY_DECK_CHANGED, type));
                         }
 
                         @Override
                         public void notifySlotCardChanged(CardType type, int slot) {
-                            sendMessage(new SlotCardMessage(MessageType.NOTIFY_SLOT_CARD_CHANGED, type, slot));
+                            sendMessage(socket, new SlotCardMessage(MessageType.NOTIFY_SLOT_CARD_CHANGED, type, slot));
                         }
 
                         @Override
                         public void notifyPlayersPointsChanged() {
-                            sendMessage(new Message(MessageType.NOTIFY_PLAYERS_POINTS_CHANGED));
+                            sendMessage(socket, new Message(MessageType.NOTIFY_PLAYERS_POINTS_CHANGED));
                         }
 
                         @Override
                         public void notifyNumberOfPlayersChanged() {
-                            sendMessage(new Message(MessageType.NOTIFY_NUMBER_OF_PLAYERS_CHANGED));
+                            sendMessage(socket, new Message(MessageType.NOTIFY_NUMBER_OF_PLAYERS_CHANGED));
                         }
 
                         @Override
                         public void notifyPlayersTokenChanged(int playerID) {
-                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_TOKEN_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                            sendMessage(socket, new PlayerMessage(MessageType.NOTIFY_PLAYERS_TOKEN_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
                         }
 
                         @Override
                         public void notifyPlayersPlayAreaChanged(int playerID) {
-                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_PLAY_AREA_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                            sendMessage(socket, new PlayerMessage(MessageType.NOTIFY_PLAYERS_PLAY_AREA_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
                         }
 
                         @Override
                         public void notifyPlayersHandChanged(int playerID) {
-                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_HAND_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                            sendMessage(socket, new PlayerMessage(MessageType.NOTIFY_PLAYERS_HAND_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
                         }
 
                         @Override
                         public void notifyHandCardWasFlipped(int playedID, int cardID) {
-                            sendMessage(new FlipCardMessage(MessageType.NOTIFY_HAND_CARD_WAS_FLIPPED, ((PlayerMessage) temp).getGameID(), playedID, cardID));
+                            sendMessage(socket, new FlipCardMessage(MessageType.NOTIFY_HAND_CARD_WAS_FLIPPED, ((PlayerMessage) temp).getGameID(), playedID, cardID));
                         }
 
                         @Override
                         public void notifyPlayersObjectiveChanged(int playerID) {
-                            sendMessage(new PlayerMessage(MessageType.NOTIFY_PLAYERS_OBJECTIVE_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
+                            sendMessage(socket, new PlayerMessage(MessageType.NOTIFY_PLAYERS_OBJECTIVE_CHANGED, ((PlayerMessage) temp).getGameID(), playerID));
                         }
 
                         @Override
                         public void notifyCommonObjectivesChanged() {
-                            sendMessage(new Message(MessageType.NOTIFY_COMMON_OBJECTIVES_CHANGED));
+                            sendMessage(socket, new Message(MessageType.NOTIFY_COMMON_OBJECTIVES_CHANGED));
                         }
 
                         @Override
                         public void notifyTurnChanged() {
-                            sendMessage(new Message(MessageType.NOTIFY_TURN_CHANGED));
+                            sendMessage(socket, new Message(MessageType.NOTIFY_TURN_CHANGED));
                         }
 
                         @Override
                         public void getReady() {
-                            sendMessage(new Message(MessageType.GET_READY));
+                            sendMessage(socket, new Message(MessageType.GET_READY));
                         }
                     });
                 default:
@@ -304,12 +302,13 @@ public class SocketControllerServer implements ServerNetworkController {
                         try {
                             //in = new Scanner(socket.getInputStream());
                             //out = new PrintWriter(socket.getOutputStream()); // May not be necessary
-                            streamIn = new ObjectInputStream(socket.getInputStream());
-                            streamOut = new ObjectOutputStream(socket.getOutputStream());
-                            streamOut.flush();
+                            messagesQueue.put(socket, new LinkedBlockingDeque<>());
+                            inMap.put(socket, new ObjectInputStream(socket.getInputStream()));
+                            outMap.put(socket, new ObjectOutputStream(socket.getOutputStream()));
+                            outMap.get(socket).flush();
                             while (true) {
                                 //String line = in.nextLine();
-                                Message message = (Message)streamIn.readObject();
+                                Message message = (Message) inMap.get(socket).readObject();
                                 // By creating a thread it is possible to receive and translate a new message
                                 // even if the previous translation isn't finished, though this approach
                                 // can be risky because there could be a chain of "order sensitive" operations.
@@ -325,9 +324,9 @@ public class SocketControllerServer implements ServerNetworkController {
                                     }
                                 });*/
                                 pool.submit(() -> {
-                                    messagesQueue.add(message);
+                                    messagesQueue.get(socket).add(message);
                                     try {
-                                        receiveMessage();
+                                        receiveMessage(socket);
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -355,11 +354,11 @@ public class SocketControllerServer implements ServerNetworkController {
         this.games = collection;
     }
 
-    private void sendMessage(Message message){
+    private void sendMessage(Socket socket, Message message){
         //out.println(new Gson().toJson(message));
         try{
-            streamOut.writeObject(message);
-            streamOut.flush();
+            outMap.get(socket).writeObject(message);
+            outMap.get(socket).flush();
         }catch (IOException e){
             e.printStackTrace();
         }
