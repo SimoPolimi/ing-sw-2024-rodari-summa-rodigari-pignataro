@@ -75,7 +75,7 @@ public class SocketControllerServer implements ServerNetworkController {
                     server.setName(((SetNameMessage) temp).getGameID(), ((SetNameMessage) temp).getName());
                     break;
                 case GET_INDEX_OF_PLAYER:
-                    //TODO
+                    sendMessage(new IntResponse(MessageType.GET_INDEX_OF_PLAYER, server.getIndexOfPlayer(((GetNameMessage) temp).getGameID(), ((GetNameMessage) temp).getName())));
                      break;
                 case GET_NUMBER_OF_PLAYERS:
                     sendMessage(new IntResponse(MessageType.GET_NUMBER_OF_PLAYERS, server.getNumberOfPlayers(((GameMessage) temp).getGameID())));
