@@ -69,10 +69,10 @@ public class NewGameViewController implements Observable, ViewController {
 
     public void setPlayer(Player player) {
         try {
+            controller.pickGame(gameID);
             controller.setViewController( new ClientController(this));
             controller.addPlayer(player);
             refresh();
-            controller.pickGame(gameID);
         } catch (RemoteException e) {
 
         } catch (AlreadyBoundException e) {

@@ -153,7 +153,7 @@ public class SocketClient implements NetworkController {
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
             this.clientController = viewController;
-            sendMessage(new GameMessage(MessageType.ADD_VIEW, gameID));
+            sendMessage(new PlayerMessage(MessageType.ADD_VIEW, gameID, playerID));
         }
     }
 
@@ -199,7 +199,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void setCurrentStatus(GameStatus status) {
-        sendMessage(new Message(MessageType.SET_CURRENT_STATUS));
+        sendMessage(new SetCurrentStatusMessage(MessageType.SET_CURRENT_STATUS, gameID, status));
     }
 
     @Override
