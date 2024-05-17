@@ -357,7 +357,7 @@ public class SocketControllerServer implements ServerNetworkController {
         this.games = collection;
     }
 
-    private void sendMessage(Socket socket, Message message){
+    private synchronized void sendMessage(Socket socket, Message message){
         //out.println(new Gson().toJson(message));
         try{
             outMap.get(socket).writeObject(message);

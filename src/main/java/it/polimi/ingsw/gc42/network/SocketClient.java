@@ -136,7 +136,7 @@ public class SocketClient implements NetworkController {
         return temp;
     }
 
-    public void sendMessage(Message message) {
+    public synchronized void sendMessage(Message message) {
         try{
             streamOut.writeObject(message);
             streamOut.flush();

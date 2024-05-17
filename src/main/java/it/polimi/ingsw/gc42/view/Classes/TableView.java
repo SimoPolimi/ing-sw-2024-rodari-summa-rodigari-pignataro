@@ -360,8 +360,8 @@ public class TableView {
     }
 
     public void refreshPlayArea() {
+        PlayableCard card = server.getPlayersLastPlayedCard(playerID);
         Platform.runLater(() -> {
-            PlayableCard card = server.getPlayersLastPlayedCard(playerID);
             addToPlayArea(card, card.getX(), card.getY());
         });
     }
