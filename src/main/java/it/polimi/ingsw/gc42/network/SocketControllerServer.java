@@ -100,7 +100,7 @@ public class SocketControllerServer implements ServerNetworkController {
                     sendMessage(socket, new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
                     break;
                 case GET_SLOT_CARD_TEXTURE:
-                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GameMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
+                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
                     break;
                 case GET_SECRET_OBJECTIVE_NAME:
                     sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
@@ -328,16 +328,16 @@ public class SocketControllerServer implements ServerNetworkController {
                                     try {
                                         receiveMessage(socket);
                                     } catch (RemoteException e) {
-                                        throw new RuntimeException(e);
+                                        e.printStackTrace();
                                     }
                                 });
                             }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
                         }
                     });
                 } catch (IOException e) {
-                    System.err.println(e.getMessage());
+                    e.printStackTrace();
                     break; // Server is closed
                 }
             }
