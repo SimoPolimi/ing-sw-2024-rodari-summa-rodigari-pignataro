@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class RmiControllerServer implements ServerNetworkController, Serializable {
     private String ipAddress;
-    private int port;
+    private int port = 23689;
     private ArrayList<Player> users;
     private Runnable onReady;
     private Registry registry;
@@ -42,11 +42,11 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
 
         System.out.println("Binding Server Implementation to registry...");
         // Temporarily creates a Socket with port 0 because it gets assigned a random available port
-        ServerSocket serverSocket = new ServerSocket(0);
+        //ServerSocket serverSocket = new ServerSocket(0);
         // Use that port in the RMI connection
-        port = serverSocket.getLocalPort();
+        //port = serverSocket.getLocalPort();
         // Closes the socket because it's not needed anymore
-        serverSocket.close();
+        //serverSocket.close();
         // Uses that port in combination with the current IP Address to create an RMI Registry
         registry = LocateRegistry.createRegistry(port);
         server = new ServerManager(port);

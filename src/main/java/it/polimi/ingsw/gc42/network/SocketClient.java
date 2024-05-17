@@ -30,7 +30,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class SocketClient implements NetworkController {
     private String ipAddress;
-    private int port;
+    private int port = 23690;
     private int gameID;
     private boolean isConnected = false;
     private int playerID;
@@ -45,9 +45,8 @@ public class SocketClient implements NetworkController {
 
     private ClientController clientController;
 
-    public SocketClient(String ipAddress, int port) {
+    public SocketClient(String ipAddress) {
         this.ipAddress = ipAddress;
-        this.port = port;
     }
 
     @Override

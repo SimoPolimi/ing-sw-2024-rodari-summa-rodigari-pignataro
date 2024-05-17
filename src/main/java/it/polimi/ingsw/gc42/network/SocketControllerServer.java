@@ -23,7 +23,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class SocketControllerServer implements ServerNetworkController {
     private String ipAddress;
-    private int port;
+    private int port = 23690;
     private Runnable onReady;
     private GameCollection games;
     private ServerManager server;
@@ -274,13 +274,14 @@ public class SocketControllerServer implements ServerNetworkController {
         // TODO: Create connection
         ServerSocket serverSocket;
         try {
-            serverSocket = new ServerSocket(0);
+            //serverSocket = new ServerSocket(0);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
         ipAddress = InetAddress.getLocalHost().getHostAddress();
-        port = serverSocket.getLocalPort();
+        //port = serverSocket.getLocalPort();
         System.out.println("Server socket created");
 
         // Creates its own ServerManager

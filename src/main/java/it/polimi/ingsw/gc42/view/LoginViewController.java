@@ -118,6 +118,7 @@ public class LoginViewController implements Observable {
                 rightTransition.play();
             }
             this.selectedNetworkMode = selectedNetworkMode;
+            connect();
         }
     }
 
@@ -135,11 +136,10 @@ public class LoginViewController implements Observable {
     private void connect() {
         connectionIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/connectingIcon.png"))));
         String ip = getIPAddress();
-        int port = getPort();
-        if (ip != null && !ip.isEmpty() && port != -1) {
+        if (ip != null && !ip.isEmpty()) {
             //TODO: Connect to Server
             if (selectedNetworkMode == NetworkMode.RMI) {
-                networkController = new RmiClient(getIPAddress(), getPort());
+                networkController = new RmiClient(getIPAddress());
                 try {
                     networkController.connect();
                     isConnected = true;
@@ -149,7 +149,7 @@ public class LoginViewController implements Observable {
                 }
             } else {
                 // TODO: Socket
-                networkController = new SocketClient(getIPAddress(), getPort());
+                networkController = new SocketClient(getIPAddress());
                 try {
                     networkController.connect();
                     isConnected = true;

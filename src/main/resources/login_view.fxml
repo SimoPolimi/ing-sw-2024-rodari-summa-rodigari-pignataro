@@ -172,10 +172,6 @@
                                     <cursor>
                                         <Cursor fx:constant="TEXT" />
                                     </cursor></TextField>
-                                <TextField fx:id="portTextField" prefWidth="50" promptText="Port">
-                                    <cursor>
-                                        <Cursor fx:constant="TEXT" />
-                                    </cursor></TextField>
                         <Button mnemonicParsing="false" onMouseClicked="#connect" style="-fx-background-color: lightgreen;" text="Connect">
                             <effect>
                                 <Lighting diffuseConstant="1.5" specularConstant="0.4">

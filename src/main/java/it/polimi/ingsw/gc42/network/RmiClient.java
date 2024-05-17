@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class RmiClient implements NetworkController, Serializable {
     private String ipAddress;
-    private int port;
+    private int port = 23689;
     private Registry registry;
     private Registry localRegistry;
     //private RemoteCollection games;
@@ -43,9 +43,8 @@ public class RmiClient implements NetworkController, Serializable {
     private ClientController clientController;
     private transient ArrayList<Listener> viewListeners = new ArrayList<>();
 
-    public RmiClient(String ipAddress, int port) {
+    public RmiClient(String ipAddress) {
         this.ipAddress = ipAddress;
-        this.port = port;
     }
 
     @Override
