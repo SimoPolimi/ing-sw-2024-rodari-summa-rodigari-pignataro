@@ -252,7 +252,7 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     @Override
-    public void getReady() {
+    public void getReady(int numberOfPlayers) {
         // Don't need
     }
 }

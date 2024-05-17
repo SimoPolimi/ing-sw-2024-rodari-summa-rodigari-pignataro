@@ -26,5 +26,5 @@ public interface RemoteViewController extends Remote {
     void notifyPlayersObjectiveChanged(int playerID) throws RemoteException;
     void notifyCommonObjectivesChanged() throws RemoteException;
     void notifyTurnChanged() throws RemoteException;
-    void getReady() throws RemoteException;
+    void getReady(int numberOfPlayers) throws RemoteException;
 }

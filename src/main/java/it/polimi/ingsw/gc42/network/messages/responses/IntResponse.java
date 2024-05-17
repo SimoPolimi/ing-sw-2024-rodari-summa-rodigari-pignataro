@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc42.network.messages.responses;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.network.messages.Message;
 import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 public class IntResponse extends Message {
+    @Expose
     private int response;
 
     public IntResponse(MessageType type, int response) {

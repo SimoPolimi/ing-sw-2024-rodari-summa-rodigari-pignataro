@@ -398,7 +398,7 @@ public class GameController implements Serializable, Observable {
     private void setupViews() {
         for (RemoteViewController view: views) {
             try {
-                view.getReady();
+                view.getReady(getGame().getNumberOfPlayers());
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

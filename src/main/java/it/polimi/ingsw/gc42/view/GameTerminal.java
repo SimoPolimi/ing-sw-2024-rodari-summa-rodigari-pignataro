@@ -570,7 +570,7 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     @Override
-    public void getReady() {
+    public void getReady(int numberOfPlayers) {
 
     }
 

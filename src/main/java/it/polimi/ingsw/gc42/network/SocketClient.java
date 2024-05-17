@@ -42,6 +42,7 @@ public class SocketClient implements NetworkController {
     private ObjectOutputStream streamOut;
     private Message pendingMessage = null;
     private BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
+    private boolean alreadySetRemoteView = false;
 
     private ClientController clientController;
 
@@ -79,6 +80,7 @@ public class SocketClient implements NetworkController {
             while (true) {
                     try {
                             Message message = (Message)streamIn.readObject();
+                        System.out.println(message);
                             pool.submit(() -> {
                                 try {
                                     translate(message);
@@ -118,7 +120,7 @@ public class SocketClient implements NetworkController {
             case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_COMMON_OBJECTIVES_CHANGED -> clientController.notifyCommonObjectivesChanged();
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
-            case GET_READY -> clientController.getReady();
+            case GET_READY -> clientController.getReady(((IntResponse) message).getResponse());
             // Response from server
             default -> queue.add(message);
         }
@@ -152,7 +154,10 @@ public class SocketClient implements NetworkController {
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
             this.clientController = viewController;
-            sendMessage(new PlayerMessage(MessageType.ADD_VIEW, gameID, playerID));
+            if (!alreadySetRemoteView) {
+                sendMessage(new PlayerMessage(MessageType.ADD_VIEW, gameID, playerID));
+                alreadySetRemoteView = true;
+            }
         }
     }
 
@@ -314,7 +319,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public String getCommonObjectiveDescription(int slot) {
-        sendMessage(new PlayerMessage(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, gameID, playerID));
+        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, gameID, playerID));
         return ((StrResponse) waitResponse()).getResponse();
     }
 

@@ -100,7 +100,8 @@ public class SocketControllerServer implements ServerNetworkController {
                     sendMessage(socket, new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
                     break;
                 case GET_SLOT_CARD_TEXTURE:
-                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, server.getSlotCardTexture(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextMessage) temp).getSlot())));
+                    String response = server.getSlotCardTexture(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextureMessage) temp).getSlot());
+                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, response));
                     break;
                 case GET_SECRET_OBJECTIVE_NAME:
                     sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
@@ -240,8 +241,8 @@ public class SocketControllerServer implements ServerNetworkController {
                         }
 
                         @Override
-                        public void getReady() {
-                            sendMessage(socket, new Message(MessageType.GET_READY));
+                        public void getReady(int numberOfPlayers) {
+                            sendMessage(socket, new IntResponse(MessageType.GET_READY, numberOfPlayers));
                         }
                     });
                 default:
@@ -310,6 +311,7 @@ public class SocketControllerServer implements ServerNetworkController {
                             while (true) {
                                 //String line = in.nextLine();
                                 Message message = (Message) inMap.get(socket).readObject();
+                                System.out.println(message);
                                 // By creating a thread it is possible to receive and translate a new message
                                 // even if the previous translation isn't finished, though this approach
                                 // can be risky because there could be a chain of "order sensitive" operations.

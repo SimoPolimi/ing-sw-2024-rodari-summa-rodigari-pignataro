@@ -24,5 +24,5 @@ public interface ViewController extends Serializable {
     void notifyCommonObjectivesChanged();
     void notifyTurnChanged();
     void showWaitingForServerDialog();
-    void getReady();
+    void getReady(int numberOfPlayers);
 }

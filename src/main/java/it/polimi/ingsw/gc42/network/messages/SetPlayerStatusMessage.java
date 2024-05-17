@@ -20,6 +20,7 @@ public class SetPlayerStatusMessage extends PlayerMessage{
         this.status = status;
     }
 
+    @Override
     public String toString(){
         return super.toString() + ", " + status;
     }

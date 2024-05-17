@@ -157,12 +157,11 @@ public class GUIController implements ViewController {
         table.setPlayer(playerID);
     }
 
-    private void setOtherPlayers() throws RemoteException {
+    private void setOtherPlayers(int numberOfPlayers) throws RemoteException {
         boolean isRightTableEmpty = true;
         boolean isTopTableEmpty = true;
         boolean isLeftTableEmpty = true;
         ArrayList<Integer> players = new ArrayList<>();
-        int numberOfPlayers = controller.getNumberOfPlayers();
         for (int i = 1; i <= numberOfPlayers; i++) {
             if (i != playerID && !players.contains(i)) {
                 players.add(i);
@@ -691,13 +690,13 @@ public class GUIController implements ViewController {
     }
 
     @Override
-    public void getReady() {
+    public void getReady(int numberOfPlayers) {
         if (isShowingDialog) {
             hideDialog();
         }
         Platform.runLater(() -> {
             try {
-                setOtherPlayers();
+                setOtherPlayers(numberOfPlayers);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

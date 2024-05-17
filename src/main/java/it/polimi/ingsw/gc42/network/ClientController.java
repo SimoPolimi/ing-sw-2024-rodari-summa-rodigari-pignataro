@@ -98,7 +98,7 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
-    public void getReady() throws RemoteException {
-        viewController.getReady();
+    public void getReady(int numberOfPlayers) throws RemoteException {
+        viewController.getReady(numberOfPlayers);
     }
 }
