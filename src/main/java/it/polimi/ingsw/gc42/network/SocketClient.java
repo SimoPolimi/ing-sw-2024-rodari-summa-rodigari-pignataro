@@ -74,7 +74,7 @@ public class SocketClient implements NetworkController {
         }
     }
 
-    private void receiveMessage(){
+    private synchronized void receiveMessage(){
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
         pool.submit(() -> {
             while (true) {
@@ -126,7 +126,7 @@ public class SocketClient implements NetworkController {
         }
     }
 
-    private Message waitResponse() {
+    private synchronized Message waitResponse() {
         Message temp = null;
         try{
             temp = queue.take();
