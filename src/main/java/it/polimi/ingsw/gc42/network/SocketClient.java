@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42.network;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
@@ -23,10 +22,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 
 public class SocketClient implements NetworkController {
     private String ipAddress;
@@ -43,6 +39,7 @@ public class SocketClient implements NetworkController {
     private Message pendingMessage = null;
     private BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
     private boolean alreadySetRemoteView = false;
+    private boolean alive = true;
 
     private ClientController clientController;
 
@@ -58,6 +55,10 @@ public class SocketClient implements NetworkController {
         streamOut = new ObjectOutputStream(server.getOutputStream());
         streamOut.flush();
         streamIn = new ObjectInputStream(server.getInputStream());
+        ScheduledExecutorService sendAlive = Executors.newScheduledThreadPool(2);
+        sendAlive.scheduleAtFixedRate(() -> sendMessage(new ClientStateMessage(MessageType.CLIENT_STATE, ClientState.ALIVE)), 0, 500, TimeUnit.MILLISECONDS);
+        // TODO: implement unresponsiveness handling
+        sendAlive.scheduleAtFixedRate(() -> {if (alive) alive = false; else System.out.println("BBBBBB")/*send UNRESPONSIVE*/;}, 10, 5, TimeUnit.SECONDS);
         receiveMessage();
 
     }
@@ -78,32 +79,25 @@ public class SocketClient implements NetworkController {
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
         pool.submit(() -> {
             while (true) {
-                    try {
-                            Message message = (Message)streamIn.readObject();
-                        System.out.println(message);
-                            pool.submit(() -> {
-                                try {
-                                    translate(message);
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                try {
+                    Message message = (Message) streamIn.readObject();
+                    System.out.println(message);
+                    pool.submit(() -> {
+                        try {
+                            translate(message);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
     private void translate(Message message) throws RemoteException {
         switch (message.getType()){
-            // Moved in default
-            /*case GET_AVAILABLE_GAMES, NEW_GAME, GET_NUMBER_OF_PLAYERS, ADD_PLAYER, GET_PLAYER_TURN, GET_SECRET_OBJECTIVE_NAME, GET_SECRET_OBJECTIVE_DESCRIPTION, GET_COMMON_OBJECTIVE_NAME, GET_COMMON_OBJECTIVE_DESCRIPTION, GET_TEMPORARY_OBJECTIVE_TEXTURES, GET_TEMPORARY_STARTER_CARD_TEXTURES, GET_SECRET_OBJECTIVE_TEXTURES, GET_PLAYER_STATUS, GET_PLAYERS_INFO, GET_PLAYERS_HAND_SIZE, IS_PLAYER_FIRST, GET_AVAILABLE_PLACEMENT, CAN_CARD_BE_PLAYED, GET_PLAYER_TOKEN, GET_PLAYERS_LAST_PLAYED_CARD, GET_PLAYERS_HAND_CARD  -> {
-                // Response from server
-                queue.add(message);
-            }*/
-
-
             case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
             case SHOW_STARTER_CARD_SELECTION_DIALOG -> clientController.showStarterCardSelectionDialog();
             case SHOW_TOKEN_SELECTION_DIALOG -> clientController.showTokenSelectionDialog();
@@ -143,6 +137,7 @@ public class SocketClient implements NetworkController {
         }catch (IOException e) {
             e.printStackTrace();
         }
+        if (message.getType() != MessageType.CLIENT_STATE) alive = true;
     }
 
     @Override

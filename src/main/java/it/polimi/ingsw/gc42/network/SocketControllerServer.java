@@ -17,10 +17,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 
 public class SocketControllerServer implements ServerNetworkController {
     private String ipAddress;
@@ -33,6 +30,7 @@ public class SocketControllerServer implements ServerNetworkController {
     private PrintWriter out;
     private HashMap<Socket, ObjectInputStream> inMap = new HashMap<>();
     private HashMap<Socket, ObjectOutputStream> outMap = new HashMap<>();
+    private HashMap<Socket, KeepAliveTimer> aliveSockets = new HashMap<>();
 
     private synchronized void receiveMessage(Socket socket) throws RemoteException {
         try {
@@ -252,6 +250,9 @@ public class SocketControllerServer implements ServerNetworkController {
                             sendMessage(socket, new IntResponse(MessageType.GET_READY, numberOfPlayers));
                         }
                     });
+                case CLIENT_STATE:
+                    aliveSockets.get(socket).setAlive(ClientState.ALIVE);
+                    break;
                 default:
                     //TODO
                     break;
@@ -315,24 +316,16 @@ public class SocketControllerServer implements ServerNetworkController {
                             inMap.put(socket, new ObjectInputStream(socket.getInputStream()));
                             outMap.put(socket, new ObjectOutputStream(socket.getOutputStream()));
                             outMap.get(socket).flush();
+                            aliveSockets.put(socket, new KeepAliveTimer());
+                            ScheduledExecutorService checkAlive = Executors.newSingleThreadScheduledExecutor();
+                            checkAlive.scheduleAtFixedRate(aliveSockets.get(socket), 5, 1, TimeUnit.SECONDS);
                             while (true) {
-                                //String line = in.nextLine();
                                 Message message = (Message) inMap.get(socket).readObject();
-                                System.out.println(message);
                                 // By creating a thread it is possible to receive and translate a new message
                                 // even if the previous translation isn't finished, though this approach
                                 // can be risky because there could be a chain of "order sensitive" operations.
                                 // Another approach could be putting the messages in a queue and running translate()
                                 // every time the queue is not empty
-
-                                /*pool.submit(() -> {
-                                    messagesQueue.add(new Gson().fromJson(line, Message.class));
-                                    try {
-                                        receiveMessage();
-                                    } catch (RemoteException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });*/
                                 pool.submit(() -> {
                                     messagesQueue.get(socket).add(message);
                                     try {
