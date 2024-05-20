@@ -392,7 +392,11 @@ public class SocketClient implements NetworkController {
     @Override
     public PlayableCard getPlayersLastPlayedCard(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, gameID, playerID));
-        return ((PlayableCardResponse) waitResponse()).getResponse();
+        PlayableCardResponse temp = (PlayableCardResponse) waitResponse();
+        PlayableCard card = temp.getResponse();
+        card.setX(temp.getX());
+        card.setY(temp.getY());
+        return card;
     }
 
     @Override

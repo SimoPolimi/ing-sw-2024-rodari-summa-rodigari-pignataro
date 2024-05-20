@@ -10,7 +10,7 @@ public class PlayCardMessage extends PlayerMessage {
     @Expose
     private int y;
 
-    public PlayCardMessage(MessageType type, int gameID, int playerID, int handCard, int y, int x) {
+    public PlayCardMessage(MessageType type, int gameID, int playerID, int handCard, int x, int y) {
         super(type, gameID, playerID);
         this.handCard = handCard;
         this.y = y;

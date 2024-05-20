@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
@@ -149,10 +150,11 @@ public class SocketControllerServer implements ServerNetworkController {
                     sendMessage(socket, new TokenResponse(MessageType.GET_PLAYER_TOKEN, server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
                 case GET_PLAYERS_LAST_PLAYED_CARD:
-                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
+                    PlayableCard card = server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())));
+                            sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, card, card.getX(), card.getY()));
                     break;
                 case GET_PLAYERS_HAND_CARD:
-                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID())));
+                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID()), 0, 0));
                     break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
