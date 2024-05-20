@@ -344,10 +344,8 @@ public class Player implements Observable, Serializable {
                 } else throw new PlacementConditionNotMetException();
             }else throw new IllegalActionException();
         } catch (IllegalPlacementException e) {
-            card.setX(0);
-            card.setY(0);
             // Handle exception
-            //throw new IllegalPlacementException();
+            throw new IllegalPlacementException();
         }
         hand.remove(card);
         notifyListeners("Hand Updated");
