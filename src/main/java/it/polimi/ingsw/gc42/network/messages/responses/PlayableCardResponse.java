@@ -9,16 +9,23 @@ public class PlayableCardResponse extends Message {
     private PlayableCard response;
     private int x;
     private int y;
+    private boolean isFrontFacing;
     
-    public PlayableCardResponse(MessageType type, PlayableCard response, int x, int y) {
+    public PlayableCardResponse(MessageType type, PlayableCard response, int x, int y, boolean isFrontFacing) {
         super(type);
         this.response = response;
         this.x = x;
         this.y = y;
+        this.isFrontFacing = isFrontFacing;
     }
     
     public PlayableCard getResponse() {return response;}
 
     public int getX() {return x;}
+
     public int getY() {return y;}
+
+    public boolean isFrontFacing() {
+        return isFrontFacing;
+    }
 }

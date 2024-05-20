@@ -116,7 +116,7 @@ public class SocketClient implements NetworkController {
             case NOTIFY_PLAYERS_TOKEN_CHANGED -> clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_PLAYERS_PLAY_AREA_CHANGED -> clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_PLAYERS_HAND_CHANGED -> clientController.notifyPlayersHandChanged(((PlayerMessage) message).getPlayerID());
-            case NOTIFY_HAND_CARD_WAS_FLIPPED -> clientController.notifyHandCardWasFlipped(((HandCardMessage) message).getPlayerID(), ((HandCardMessage) message).getSlot());
+            case NOTIFY_HAND_CARD_WAS_FLIPPED -> clientController.notifyHandCardWasFlipped(((FlipCardMessage) message).getPlayerID(), ((FlipCardMessage) message).getCardID());
             case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_COMMON_OBJECTIVES_CHANGED -> clientController.notifyCommonObjectivesChanged();
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
@@ -394,8 +394,13 @@ public class SocketClient implements NetworkController {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, gameID, playerID));
         PlayableCardResponse temp = (PlayableCardResponse) waitResponse();
         PlayableCard card = temp.getResponse();
-        card.setX(temp.getX());
-        card.setY(temp.getY());
+        if (null != card) {
+            card.setX(temp.getX());
+            card.setY(temp.getY());
+            if (card.isFrontFacing() != temp.isFrontFacing()) {
+                card.flip();
+            }
+        }
         return card;
     }
 

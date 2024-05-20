@@ -151,10 +151,15 @@ public class SocketControllerServer implements ServerNetworkController {
                     break;
                 case GET_PLAYERS_LAST_PLAYED_CARD:
                     PlayableCard card = server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())));
-                            sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, card, card.getX(), card.getY()));
+                            sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, card, card.getX(), card.getY(), card.isFrontFacing()));
                     break;
                 case GET_PLAYERS_HAND_CARD:
-                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID()), 0, 0));
+                    PlayableCard tempCard = server.getPlayersHandCard(((GetPlayersHandCardMessage) temp).getGameID(), ((GetPlayersHandCardMessage) temp).getPlayerID(), ((GetPlayersHandCardMessage) temp).getCardID());
+                    boolean isFrontFacing = true;
+                    if (null != tempCard) {
+                        isFrontFacing = tempCard.isFrontFacing();
+                    }
+                    sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, tempCard, 0, 0, isFrontFacing));
                     break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
