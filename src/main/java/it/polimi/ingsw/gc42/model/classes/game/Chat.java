@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class Chat implements Serializable {
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
 
-    public void sendMessage(ChatMessage mes){
-        this.messages.add(mes);
+    public void sendMessage(ChatMessage message){
+        this.messages.add(message);
     }
-    public ChatMessage getLastMessage(){
+    public ChatMessage getLastChatMessage(){
         return messages.getLast();
     }
-    public ChatMessage getMessage(int index) throws IllegalArgumentException {
-        if (index > 0 && index < messages.size()) {
+    public ChatMessage getChatMessage(int index) throws IllegalArgumentException {
+        if (index >= 0 && index < messages.size()) {
             return messages.get(index);
         } else throw new IllegalArgumentException();
     }

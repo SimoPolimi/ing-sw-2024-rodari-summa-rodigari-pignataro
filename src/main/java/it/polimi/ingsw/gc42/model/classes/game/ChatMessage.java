@@ -7,8 +7,8 @@ public class ChatMessage {
     private String text;
     private LocalDateTime dateTime;
 
-    public ChatMessage(String mess, Player player){
-        this.text = mess;
+    public ChatMessage(String text, Player player){
+        this.text = text;
         this.sender = player;
         this.dateTime = LocalDateTime.now();
     }

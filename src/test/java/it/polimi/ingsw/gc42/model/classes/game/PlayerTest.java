@@ -1,6 +1,5 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.model.classes.game.*;
-import org.junit.jupiter.api.function.Executable;
 
 
 import java.util.ArrayList;
@@ -60,7 +57,6 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        PlayField playField = new PlayField((StarterCard) game.getStarterDeck().draw());
         Player player = new Player(null, true, 0, null, null, game);
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
         player.drawTemporaryStarterCard(game.getStarterDeck());
@@ -130,7 +126,7 @@ class PlayerTest {
         // new game because it initializes the decks
         Game game = new Game();
         Player player = new Player(null, true, 0, null, null, game);
-        Card topCard = null;
+        Card topCard;
         try {
             player.drawCard(game.getResourcePlayingDeck());
             player.drawCard(game.getResourcePlayingDeck());
@@ -141,12 +137,7 @@ class PlayerTest {
 
         topCard = game.getResourcePlayingDeck().getDeck().getTopCard();
         // when and then
-        assertThrowsExactly(IllegalActionException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                player.drawCard(game.getResourcePlayingDeck());
-            }
-        });
+        assertThrowsExactly(IllegalActionException.class, () -> player.drawCard(game.getResourcePlayingDeck()));
         assertEquals(game.getResourcePlayingDeck().getDeck().getTopCard(), topCard);
 
         // TODO: boh
@@ -170,9 +161,7 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
 
-        int DeckSize = game.getResourcePlayingDeck().getDeck().getNumberOfCards();
         while (game.getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
             game.getResourcePlayingDeck().getDeck().draw();
         }
@@ -269,6 +258,7 @@ class PlayerTest {
                 }
             }
         }
+
         starterCard.flip();
         player.setTemporaryStarterCard(starterCard);
         player.setStarterCard();
@@ -282,12 +272,7 @@ class PlayerTest {
         }
 
         player.setHandCard(0, goldCard);
-        assertThrowsExactly(PlacementConditionNotMetException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                player.playCard(1, 1, 0);
-            }
-        });
+        assertThrowsExactly(PlacementConditionNotMetException.class, () -> player.playCard(1, 1, 0));
     }
 
     @Test
@@ -303,19 +288,15 @@ class PlayerTest {
             throw new RuntimeException(e);
         }
 
-        assertThrowsExactly(IllegalActionException.class, () -> {
-            player.playCard(1, 0, 0);
-        });
+        assertThrowsExactly(IllegalActionException.class, () -> player.playCard(1, 0, 0));
     }
 
     @Test
     void playCard_illegalPlacement() {
         Game game = new Game();
-        Player player = new Player("");
+        Player player = new Player("a");
 
         player.setHandCard(0, (PlayableCard) game.getStarterDeck().draw());
-        assertThrowsExactly(IllegalPlacementException.class, () -> {
-            player.playCard( 1, 1, 3);
-        });
+        assertThrowsExactly(IllegalPlacementException.class, () -> player.playCard( 1, 1, 3));
     }
 }

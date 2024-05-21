@@ -1,14 +1,11 @@
 package it.polimi.ingsw.gc42.controller;
 
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.rmi.RemoteException;
 
@@ -17,15 +14,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameControllerTest {
 
     @Test
-    void startGame() {
+    void startGame() throws RemoteException {
+        GameController controller = new GameController("test");
+        controller.startGame();
+
+        assertEquals(controller.getCurrentStatus(), GameStatus.READY);
     }
 
     @Test
-    void addPlayer() {
+    void addPlayer() throws RemoteException {
+        GameController controller = new GameController("test");
+        Player player = new Player("bot");
+        controller.addPlayer(player);
+
+        assertEquals(controller.getPlayer(controller.getGame().getNumberOfPlayers()), player);
     }
 
     @Test
-    void kickPlayer() {
+    void kickPlayer() throws RemoteException {
+        GameController controller = new GameController("test");
+        Player player = new Player("bot");
+        controller.addPlayer(player);
+
+        boolean kicked = controller.kickPlayer(player);
+
+        assertEquals(controller.getGame().getNumberOfPlayers(), 0);
+        assert(kicked);
     }
 
     @Test
@@ -45,9 +59,9 @@ class GameControllerTest {
     }
 
     @Test
-    void testIsPutDownAfterGrabCard() {
+    void testIsPutDownResourceAfterGrabCard() {
         // given
-        GameController controller = null;
+        GameController controller;
         try {
             controller = new GameController("Test");
         } catch (RemoteException e) {
@@ -66,9 +80,29 @@ class GameControllerTest {
     }
 
     @Test
+    void testIsPutDownGoldAfterGrabCard() {
+        // given
+        GameController controller;
+        try {
+            controller = new GameController("Test");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        Player player = new Player(Token.BLUE);
+        controller.getGame().addPlayer(player);
+
+        // when
+        controller.grabCard(player, controller.getGame().getGoldPlayingDeck(), 1);
+
+        // then
+        assertNotNull(controller.getGame().getGoldPlayingDeck().getSlot(1));
+        assertNotEquals(player.getHandCard(0), controller.getGame().getGoldPlayingDeck().getSlot(1));
+    }
+
+    @Test
     void testCannotGrabCardEmptySlot() {
         // given
-        GameController controller = null;
+        GameController controller;
         try {
             controller = new GameController("Test");
         } catch (RemoteException e) {

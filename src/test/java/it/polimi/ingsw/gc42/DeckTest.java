@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42;
 
-import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import org.junit.jupiter.api.Test;

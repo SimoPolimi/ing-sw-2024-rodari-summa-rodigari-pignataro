@@ -377,7 +377,6 @@ public class Player implements Observable, Serializable {
             if (playingDeck.getSlot(slot) != null) {
                     hand.add((PlayableCard) playingDeck.getSlot(slot));
                     notifyListeners("Hand Updated");
-                return;
             } else {
                 throw new IllegalArgumentException("Empty slot");
             }
@@ -423,14 +422,5 @@ public class Player implements Observable, Serializable {
      */
     public int getHandSize() {
         return hand.size();
-    }
-
-    /**
-     * Adds the specified card to the hand
-     *
-     * @param card The PlayableCard added to the Hand
-     */
-    public void addHandCard(PlayableCard card) {
-        hand.add(card);
     }
 }
