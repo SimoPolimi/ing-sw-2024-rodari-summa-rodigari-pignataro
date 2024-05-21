@@ -99,11 +99,12 @@ public class Deck implements Observable, Serializable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    KingdomResource kingdom = (KingdomResource) getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsString());
                     ArrayList<Item> permRes = new ArrayList<>();
                     permRes.add(item);
                     deck.cards.add(new ResourceCard(new CardSide(getCorner(upperLeftFront), getCorner(upperRightFront), getCorner(bottomLeftFront), getCorner(bottomRightFront)),
                             new CardSide(getCorner(upperLeftBack), getCorner(upperRightBack), getCorner(bottomLeftBack), getCorner(bottomRightBack)),
-                            true, id, permRes, points, "/cards/"+frontImage, "/cards/"+backImage));
+                            true, id, permRes, points, "/cards/"+frontImage, "/cards/"+backImage, kingdom));
                 }
                 break;
             case GOLDCARD:
@@ -128,6 +129,7 @@ public class Deck implements Observable, Serializable {
                     String upperRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("UpperRightCorner").getAsJsonPrimitive().getAsString();
                     String bottomLeftBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomLeftCorner").getAsJsonPrimitive().getAsString();
                     String bottomRightBack = list.get(i).getAsJsonObject().getAsJsonObject("BackSide").get("BottomRightCorner").getAsJsonPrimitive().getAsString();
+                    KingdomResource kingdom = (KingdomResource) getKingdom(list.get(i).getAsJsonObject().get("Kingdom").getAsString());
                     ArrayList<Item> permRes = new ArrayList<>();
                     permRes.add(item);
                     Objective objective = getObjective(points, condition, true, null, null);
@@ -142,7 +144,7 @@ public class Deck implements Observable, Serializable {
                                     getCorner(bottomRightBack)),
                             true, id, permRes,
                             plantCost, animalCost, fungiCost,
-                            insectCost, objective, points, "/cards/"+frontImage, "/cards/"+backImage));
+                            insectCost, objective, points, "/cards/"+frontImage, "/cards/"+backImage, kingdom));
                 }
                 break;
             case STARTERCARD:

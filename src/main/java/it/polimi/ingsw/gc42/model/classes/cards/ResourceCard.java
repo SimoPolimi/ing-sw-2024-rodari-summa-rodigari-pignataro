@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
-import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 
 /**
@@ -19,37 +17,41 @@ public class ResourceCard extends PlayableCard{
     /**
      * Constructor Method with x and y coordinates.
      * USE THIS ONLY if you need to specify the Card's coordinates.
-     * @param frontSide: CardSide to be used as the front side of the Card
-     * @param backSide: CardSide to be used as the front side of the Card
-     * @param isFrontFacing: boolean to specify which side of the Card is visible ( True -> front, False -> back )
-     * @param id: unique identifier for the specific Card
-     * @param x: horizontal coordinate for the Card's position on the table (null if not placed)
-     * @param y: vertical coordinate for the Card's position on the table (null if not placed)
-     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
-     * @param earnedPoints: number of points obtained for placing the card
-     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
-     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
+     *
+     * @param frontSide          : CardSide to be used as the front side of the Card
+     * @param backSide           : CardSide to be used as the front side of the Card
+     * @param isFrontFacing      : boolean to specify which side of the Card is visible ( True -> front, False -> back )
+     * @param id                 : unique identifier for the specific Card
+     * @param x                  : horizontal coordinate for the Card's position on the table (null if not placed)
+     * @param y                  : vertical coordinate for the Card's position on the table (null if not placed)
+     * @param permanentResources : ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
+     * @param earnedPoints       : number of points obtained for placing the card
+     * @param frontImage         : a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage          : a String containing the Description of the Objective, displayed in the GUI.
+     * @param kingdom            : the kingdom the card belongs to
      */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
-                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
+                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage, KingdomResource kingdom) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage, kingdom);
     }
 
     /**
      * Constructor Method without x and y coordinates.
      * USE THIS.
-     * @param frontSide: CardSide to be used as the front side of the Card
-     * @param backSide: CardSide to be used as the front side of the Card
-     * @param isFrontFacing: boolean to specify which side of the Card is visible ( True -> front, False -> back )
-     * @param id: unique identifier for the specific Card
-     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
-     * @param earnedPoints: number of points obtained for placing the card
-     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
-     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
+     *
+     * @param frontSide          : CardSide to be used as the front side of the Card
+     * @param backSide           : CardSide to be used as the front side of the Card
+     * @param isFrontFacing      : boolean to specify which side of the Card is visible ( True -> front, False -> back )
+     * @param id                 : unique identifier for the specific Card
+     * @param permanentResources : ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
+     * @param earnedPoints       : number of points obtained for placing the card
+     * @param frontImage         : a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage          : a String containing the Description of the Objective, displayed in the GUI.
+     * @param kingdom            : the kingdom the card belongs to
      */
     public ResourceCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
-                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage);
+                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage, KingdomResource kingdom) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage, kingdom);
     }
 
     @Override

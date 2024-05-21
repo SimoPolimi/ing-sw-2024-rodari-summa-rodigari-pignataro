@@ -14,27 +14,29 @@ public class GoldCard extends PlayableCard{
     // Constructor Methods
     /**
      * Constructor Method with the x and y coordinates
-     * @param frontSide: Side shown on the front of the Card
-     * @param backSide: Side shown on the back of the Card
-     * @param isFrontFacing: true if the frontSide is shown, false otherwise
-     * @param id: unique identifier for the specific Gold Card
-     * @param x: horizontal coordinate for the Card's position on the table
-     * @param y: vertical coordinate for the Card's position on the table
-     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
-     * @param plantKingdomPoints: Plant Type points necessary to place the Card on the table (0 if not necessary)
-     * @param animalKingdomPoints: Animal Type points necessary to place the Card on the table (0 if not necessary)
-     * @param fungiKingdomPoints: Fungi Type points necessary to place the Card on the table (0 if not necessary)
-     * @param insectKingdomPoints: Insect Type points necessary to place the Card on the table (0 if not necessary)
-     * @param objective: the Condition used to calculate how many points the player earns.
-     * @param earnedPoints: points the card gives once it's placed (0 if it doesn't give points)
-     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
-     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
+     *
+     * @param frontSide           : Side shown on the front of the Card
+     * @param backSide            : Side shown on the back of the Card
+     * @param isFrontFacing       : true if the frontSide is shown, false otherwise
+     * @param id                  : unique identifier for the specific Gold Card
+     * @param x                   : horizontal coordinate for the Card's position on the table
+     * @param y                   : vertical coordinate for the Card's position on the table
+     * @param permanentResources  : ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
+     * @param plantKingdomPoints  : Plant Type points necessary to place the Card on the table (0 if not necessary)
+     * @param animalKingdomPoints : Animal Type points necessary to place the Card on the table (0 if not necessary)
+     * @param fungiKingdomPoints  : Fungi Type points necessary to place the Card on the table (0 if not necessary)
+     * @param insectKingdomPoints : Insect Type points necessary to place the Card on the table (0 if not necessary)
+     * @param objective           : the Condition used to calculate how many points the player earns.
+     * @param earnedPoints        : points the card gives once it's placed (0 if it doesn't give points)
+     * @param frontImage          : a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage           : a String containing the Description of the Objective, displayed in the GUI.
+     * @param kingdom             : the kingdom the card belongs to
      */
     public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
                     ArrayList<Item> permanentResources, int plantKingdomPoints,
                     int animalKingdomPoints, int fungiKingdomPoints, int insectKingdomPoints, Objective objective,
-                    int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
+                    int earnedPoints, String frontImage, String backImage, KingdomResource kingdom) {
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage, kingdom);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);
@@ -45,25 +47,27 @@ public class GoldCard extends PlayableCard{
 
     /**
      * Constructor Method with the x and y coordinates
-     * @param frontSide: Side shown on the front of the Card
-     * @param backSide: Side shown on the back of the Card
-     * @param isFrontFacing: true if the frontSide is shown, false otherwise
-     * @param id: unique identifier for the specific Gold Card
-     * @param permanentResources: ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
-     * @param plantKingdomPoints: Plant Type points necessary to place the Card on the table (0 if not necessary)
-     * @param animalKingdomPoints: Animal Type points necessary to place the Card on the table (0 if not necessary)
-     * @param fungiKingdomPoints: Fungi Type points necessary to place the Card on the table (0 if not necessary)
-     * @param insectKingdomPoints: Insect Type points necessary to place the Card on the table (0 if not necessary)
-     * @param objective: the Condition used to calculate how many points the player earns.
-     * @param earnedPoints: points the card gives once it's placed (0 if it doesn't give points)
-     * @param frontImage: a String containing the Description of the Objective, displayed in the GUI.
-     * @param backImage: a String containing the Description of the Objective, displayed in the GUI.
+     *
+     * @param frontSide           : Side shown on the front of the Card
+     * @param backSide            : Side shown on the back of the Card
+     * @param isFrontFacing       : true if the frontSide is shown, false otherwise
+     * @param id                  : unique identifier for the specific Gold Card
+     * @param permanentResources  : ArrayList of Items containing the Permanent Resource(s) shown on the back side of the Card
+     * @param plantKingdomPoints  : Plant Type points necessary to place the Card on the table (0 if not necessary)
+     * @param animalKingdomPoints : Animal Type points necessary to place the Card on the table (0 if not necessary)
+     * @param fungiKingdomPoints  : Fungi Type points necessary to place the Card on the table (0 if not necessary)
+     * @param insectKingdomPoints : Insect Type points necessary to place the Card on the table (0 if not necessary)
+     * @param objective           : the Condition used to calculate how many points the player earns.
+     * @param earnedPoints        : points the card gives once it's placed (0 if it doesn't give points)
+     * @param frontImage          : a String containing the Description of the Objective, displayed in the GUI.
+     * @param backImage           : a String containing the Description of the Objective, displayed in the GUI.
+     * @param kingdom             : the kingdom the card belongs to
      */
     public GoldCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
                     ArrayList<Item> permanentResources, int plantKingdomPoints, int animalKingdomPoints,
                     int fungiKingdomPoints, int insectKingdomPoints, Objective objective, int earnedPoints,
-                    String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources,earnedPoints, id, frontImage, backImage);
+                    String frontImage, String backImage, KingdomResource kingdom) {
+        super(frontSide, backSide, isFrontFacing, permanentResources,earnedPoints, id, frontImage, backImage, kingdom);
         initMap();
         setCost(KingdomResource.FUNGI, fungiKingdomPoints);
         setCost(KingdomResource.PLANT, plantKingdomPoints);

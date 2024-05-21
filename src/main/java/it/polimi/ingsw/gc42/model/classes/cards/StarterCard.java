@@ -22,7 +22,7 @@ public class StarterCard extends PlayableCard{
     // Constructor Method
     public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id, int x, int y,
                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage);
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, x, y, frontImage, backImage, null);
 
     }
     /**
@@ -36,7 +36,7 @@ public class StarterCard extends PlayableCard{
      */
     public StarterCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing, int id,
                        ArrayList<Item> permanentResources, int earnedPoints, String frontImage, String backImage) {
-        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage);
+        super(frontSide, backSide, isFrontFacing, permanentResources, earnedPoints, id, frontImage, backImage, null);
     }
 
     @Override

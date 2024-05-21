@@ -7,6 +7,7 @@ public abstract class PlayableCard extends Card {
     private CardSide frontSide;
     private CardSide backSide;
     private final Coordinates coordinates = new Coordinates();
+    private KingdomResource kingdom;
     private final ArrayList<Item> permanentResources = new ArrayList<>();
     private int earnedPoints;
 
@@ -14,17 +15,18 @@ public abstract class PlayableCard extends Card {
     /**
      * Constructor Method
      *
-     * @param frontSide:     group of Corners that make the front Side of the card
-     * @param backSide:      group of empty Corners that make the back Side of the card, plus other features like permanent resources
-     * @param isFrontFacing: true if the Card is showing the front Side, false if it is showing the back Side
-     * @param id:            unique identifier for the specific Card
-     * @param x:             horizontal coordinate for the Card's position on the table (0 if not placed)
-     * @param y:             vertical coordinate for the Card's position on the table (0 if not placed)
-     * @param frontImage:    String containing the name (+ extension) of the Image resource to display on the GUI
-     * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param frontSide     :     group of Corners that make the front Side of the card
+     * @param backSide      :      group of empty Corners that make the back Side of the card, plus other features like permanent resources
+     * @param isFrontFacing : true if the Card is showing the front Side, false if it is showing the back Side
+     * @param id            :            unique identifier for the specific Card
+     * @param x             :             horizontal coordinate for the Card's position on the table (0 if not placed)
+     * @param y             :             vertical coordinate for the Card's position on the table (0 if not placed)
+     * @param frontImage    :    String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param backImage     :     String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param kingdom       : the kingdom the card belongs to
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        ArrayList<Item> permanentResources, int earnedPoints, int id, int x, int y, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int earnedPoints, int id, int x, int y, String frontImage, String backImage, KingdomResource kingdom) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
@@ -32,25 +34,28 @@ public abstract class PlayableCard extends Card {
         coordinates.setY(y);
         this.permanentResources.addAll(permanentResources);
         this.earnedPoints = earnedPoints;
+        this.kingdom = kingdom;
     }
 
     /**
      * Class Constructor without the x and y parameters, to generate Cards without having to place them already
      *
-     * @param frontSide:     group of Corners that make the front Side of the card
-     * @param backSide:      group of empty Corners that make the back Side of the card, plus other features like permanent resources
-     * @param isFrontFacing: true if the Card is showing the front Side, false if it is showing the back Side
-     * @param id:            unique identifier for the specific Card
-     * @param frontImage:    String containing the name (+ extension) of the Image resource to display on the GUI
-     * @param backImage:     String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param frontSide     :     group of Corners that make the front Side of the card
+     * @param backSide      :      group of empty Corners that make the back Side of the card, plus other features like permanent resources
+     * @param isFrontFacing : true if the Card is showing the front Side, false if it is showing the back Side
+     * @param id            :            unique identifier for the specific Card
+     * @param frontImage    :    String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param backImage     :     String containing the name (+ extension) of the Image resource to display on the GUI
+     * @param kingdom       : the kingdom the card belongs to
      */
     public PlayableCard(CardSide frontSide, CardSide backSide, boolean isFrontFacing,
-                        ArrayList<Item> permanentResources, int earnedPoints, int id, String frontImage, String backImage) {
+                        ArrayList<Item> permanentResources, int earnedPoints, int id, String frontImage, String backImage, KingdomResource kingdom) {
         super(isFrontFacing, id, frontImage, backImage);
         this.frontSide = frontSide;
         this.backSide = backSide;
         this.permanentResources.addAll(permanentResources);
         this.earnedPoints = earnedPoints;
+        this.kingdom = kingdom;
     }
 
     // Getters and Setters
@@ -171,6 +176,15 @@ public abstract class PlayableCard extends Card {
      */
     public void setY(int y) {
         coordinates.setY(y);
+    }
+
+    /**
+     * Getter Method for kingdom
+     *
+     * @return kingdom : the kingdom the card belongs to
+     */
+    public KingdomResource getKingdom() {
+        return kingdom;
     }
 
     public abstract boolean canBePlaced(ArrayList<PlayableCard> playedCards);
