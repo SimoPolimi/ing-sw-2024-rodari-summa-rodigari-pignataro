@@ -1,13 +1,10 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 
 public class SlotCardMessage extends Message {
-    @Expose
-    private CardType cardType;
-    @Expose
-    private int slot;
+    private final CardType cardType;
+    private final int slot;
 
     public SlotCardMessage(MessageType type, CardType cardType, int slot) {
         super(type);
@@ -19,19 +16,7 @@ public class SlotCardMessage extends Message {
         return cardType;
     }
 
-    public void setCardType(CardType type) {
-        this.cardType = type;
-    }
-
     public int getSlot() {
         return slot;
-    }
-
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
-
-    public String toString() {
-        return super.toString() + ", " + cardType + ", " + slot;
     }
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc42.network.messages.Message;
 import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 public class GameStatusResponse extends Message {
-    private GameStatus response;
+    private final GameStatus response;
 
     public GameStatusResponse(MessageType type, GameStatus response) {
         super(type);

@@ -7,7 +7,7 @@ import it.polimi.ingsw.gc42.network.messages.MessageType;
 import java.util.ArrayList;
 
 public class ListCoordResponse extends Message {
-    private ArrayList<Coordinates> response;
+    private final ArrayList<Coordinates> response;
 
     public ListCoordResponse(MessageType type, ArrayList<Coordinates> response) {
         super(type);

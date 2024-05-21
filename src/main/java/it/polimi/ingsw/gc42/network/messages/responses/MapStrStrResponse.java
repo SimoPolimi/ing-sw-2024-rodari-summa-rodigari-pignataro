@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc42.network.messages.MessageType;
 import java.util.HashMap;
 
 public class MapStrStrResponse extends Message {
-    private HashMap<String,String> response;
+    private final HashMap<String,String> response;
 
     public MapStrStrResponse(MessageType type, HashMap<String,String> response) {
         super(type);

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-import com.google.gson.annotations.Expose;
-
 public class GetPlayerMessage extends GameMessage{
-    @Expose
     private int playerID;
 
     public GetPlayerMessage(MessageType type, int gameID, int playerID) {
@@ -17,10 +14,5 @@ public class GetPlayerMessage extends GameMessage{
 
     public void setPlayerID(int playerID) {
         this.playerID = playerID;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", " + playerID;
     }
 }

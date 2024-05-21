@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc42.network.messages.Message;
 import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 public class TokenResponse extends Message {
-    private Token response;
+    private final Token response;
     public TokenResponse(MessageType type, Token response) {
         super(type);
         this.response = response;

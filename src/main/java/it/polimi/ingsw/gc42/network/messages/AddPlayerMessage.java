@@ -19,9 +19,4 @@ public class AddPlayerMessage extends GameMessage{
     public void setPlayer(Player player) {
         this.player = player;
     }
-
-    @Override
-    public String toString(){
-        return super.toString() + ", " + player.getNickname();
-    }
 }

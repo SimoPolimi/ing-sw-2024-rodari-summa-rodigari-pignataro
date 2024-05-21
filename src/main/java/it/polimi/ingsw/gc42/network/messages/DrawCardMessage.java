@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 
 public class DrawCardMessage extends PlayerMessage{
-    @Expose
     private CardType cardType;
 
     public DrawCardMessage(MessageType type, int gameID, int playerID, CardType cardType) {
@@ -18,10 +16,5 @@ public class DrawCardMessage extends PlayerMessage{
 
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", " + cardType;
     }
 }

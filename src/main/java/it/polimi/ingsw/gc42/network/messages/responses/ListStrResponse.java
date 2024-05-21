@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc42.network.messages.MessageType;
 import java.util.ArrayList;
 
 public class ListStrResponse extends Message {
-    private ArrayList<String> response;
+    private final ArrayList<String> response;
 
     public ListStrResponse(MessageType type, ArrayList<String> response) {
         super(type);

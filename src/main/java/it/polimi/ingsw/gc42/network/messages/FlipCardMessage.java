@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gc42.network.messages;
 
-import com.google.gson.annotations.Expose;
-
 public class FlipCardMessage extends PlayerMessage{
-    @Expose
     private int cardID;
 
     public FlipCardMessage(MessageType type, int gameID, int playerID, int cardID) {
@@ -17,10 +14,5 @@ public class FlipCardMessage extends PlayerMessage{
 
     public void setCardID(int cardID) {
         this.cardID = cardID;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", " + cardID;
     }
 }

@@ -5,8 +5,7 @@ import it.polimi.ingsw.gc42.network.messages.Message;
 import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 public class IntResponse extends Message {
-    @Expose
-    private int response;
+    private final int response;
 
     public IntResponse(MessageType type, int response) {
         super(type);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ListMapStrStrResponse extends Message {
-    private ArrayList<HashMap<String, String>> response;
+    private final ArrayList<HashMap<String, String>> response;
 
     public ListMapStrStrResponse(MessageType type, ArrayList<HashMap<String, String>> response) {
         super(type);
