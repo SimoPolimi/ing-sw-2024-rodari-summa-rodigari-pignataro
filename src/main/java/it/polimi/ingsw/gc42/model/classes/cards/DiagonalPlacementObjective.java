@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Model implementation of a specific type of Condition/Objective, that requires the Cards to be placed
@@ -21,7 +24,7 @@ public class DiagonalPlacementObjective extends PlacementObjective {
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
     public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight, String name, String description) {
-        super(points,name, description, primaryType);
+        super(points, name, description, primaryType);
         this.isLeftToRight = isLeftToRight;
     }
 
@@ -55,7 +58,40 @@ public class DiagonalPlacementObjective extends PlacementObjective {
      */
     @Override
     protected int check(ArrayList<PlayableCard> playArea) {
-        //TODO: Implement
-        return 0;
+        int count = 0;
+        HashMap<Integer, ArrayList<PlayableCard>> rows = new HashMap<>();
+        if (isLeftToRight) {
+            for (PlayableCard card : playArea) {
+                rows.putIfAbsent(card.getX(), new ArrayList<>());
+                rows.get(card.getX()).add(card);
+            }
+            for (ArrayList<PlayableCard> list : rows.values()) {
+                list.sort((a, b) -> a.getY() < b.getY() ? 1 : -1);
+                // i is the index of the center card in the tentative sequence of three cards
+                for (int i = 1; i < list.size() - 1; i++) {
+                    if (list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
+                        count++;
+                        // Since every Card can be part only of one sequence,
+                        // the next two Cards won't be considered as center
+                        i += 2;
+                    }
+                }
+            }
+        } else {
+            for (PlayableCard card : playArea) {
+                rows.putIfAbsent(card.getY(), new ArrayList<>());
+                rows.get(card.getY()).add(card);
+            }
+            for (ArrayList<PlayableCard> list : rows.values()) {
+                list.sort((a, b) -> a.getX() < b.getX() ? 1 : -1);
+                for (int i = 1; i < list.size() - 1; i++) {
+                    if (list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
+                        count++;
+                        i += 2;
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
