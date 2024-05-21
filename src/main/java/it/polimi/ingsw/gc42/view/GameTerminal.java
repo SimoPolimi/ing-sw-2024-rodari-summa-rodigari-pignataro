@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
-import it.polimi.ingsw.gc42.model.interfaces.ReadyToChooseSecretObjectiveListener;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.RmiClient;
 import it.polimi.ingsw.gc42.network.SocketClient;
@@ -21,7 +19,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Timer;
 
 public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;

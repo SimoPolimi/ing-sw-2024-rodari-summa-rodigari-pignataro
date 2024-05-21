@@ -190,7 +190,7 @@ public class RmiClient implements NetworkController, Serializable {
 
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
-        return server.getGame(gameID).getIndexOfPlayer(nickName);
+        return server.getIndexOfPlayer(gameID, nickName);
     }
 
     @Override
