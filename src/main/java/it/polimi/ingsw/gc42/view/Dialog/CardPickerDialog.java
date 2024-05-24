@@ -36,6 +36,7 @@ public class CardPickerDialog extends Dialog implements Observable {
     int pickedCardNumber;
     private int lastSelected = -1;
     private int selectedCard = -1;
+    private boolean canClick = true;
 
     // Constructor Methods
     public CardPickerDialog(String title, boolean isDismissible, boolean cardsCanBeFlipped, GUIController controller) {
@@ -109,7 +110,7 @@ public class CardPickerDialog extends Dialog implements Observable {
                     if( cardsCanBeFlipped && event.getButton() == MouseButton.SECONDARY){
                         handCardView.flip();
                         handCardView.visualFlip(controller);
-                    } else if (event.getButton() == MouseButton.PRIMARY) {
+                    } else if (event.getButton() == MouseButton.PRIMARY && canClick) {
                         pickCard(cards.indexOf(handCardView));
                     }
                 }
@@ -211,6 +212,7 @@ public class CardPickerDialog extends Dialog implements Observable {
             pickedCard = cards.get(number).getModelCard();
             pickedCardNumber = number;
             notifyListeners("Card has been picked");
+            canClick = false;
         }
     }
 

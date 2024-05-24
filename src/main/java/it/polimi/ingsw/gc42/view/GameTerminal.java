@@ -19,6 +19,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;
@@ -33,6 +35,8 @@ public class GameTerminal extends Application implements ViewController {
     private int extremeDOWN;
 
     private boolean isShowingGameCreationScreen = false;
+    private boolean isWaiting = false;
+    private boolean isGameCreator = false;
 
     private String color(String str, UiColors fg) {
         return fg.toString() + str + UiColors.RESET;
@@ -44,49 +48,57 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("Welcome to Codex Naturalis!");
-        String input = "";
-        while (!exit) {
-            login();
-            System.out.println("--- Insert Nickname ---");
-            input = scanner.next();
-                switch (input) {
-                    case "":
-                        break;
-                    default:
-                        player = new Player(input);
+        try {
+            System.out.println("Welcome to Codex Naturalis!");
+            String input = "";
+            while (!exit) {
+                if (!isWaiting) {
+                    login();
+                    System.out.println("--- Insert Nickname ---");
+                    input = scanner.next();
+                    switch (input) {
+                        case "":
+                            break;
+                        default:
+                            player = new Player(input);
 
-                        ArrayList<HashMap<String, String>> games = controller.getAvailableGames();
-                        if (games.isEmpty()) {
-                            createNewGame();
-                        } else {
-                            boolean exitGameList = false;
-                            while (!exitGameList) {
-                                System.out.println("Games available:");
-                                for (HashMap<String, String> game : games) {
-                                    int gameID = games.indexOf(game) + 1;
-                                    System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
-                                }
-                                System.out.println("\nPress c to create a new one");
-                                input = scanner.next();
-                                if (input.equals("c")) {
-                                    createNewGame();
-                                } else {
-                                    try {
-                                        int gameID = Integer.parseInt(input);
-                                        controller.pickGame(gameID - 1);
-                                        controller.addPlayer(player);
-                                        playerID = controller.getIndexOfPlayer(player.getNickname());
-                                        exitGameList = true;
-                                    } catch (NumberFormatException e) {
-                                        System.out.println("Invalid number. Try again!");
+                            ArrayList<HashMap<String, String>> games = controller.getAvailableGames();
+                            if (games.isEmpty()) {
+                                createNewGame();
+                            } else {
+                                boolean exitGameList = false;
+                                while (!exitGameList) {
+                                    System.out.println("Games available:");
+                                    for (HashMap<String, String> game : games) {
+                                        int gameID = games.indexOf(game) + 1;
+                                        System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
+                                    }
+                                    System.out.println("\nPress c to create a new one");
+                                    input = scanner.next();
+                                    if (input.equals("c")) {
+                                        createNewGame();
+                                    } else {
+                                        try {
+                                            exitGameList = true;
+                                            int gameID = Integer.parseInt(input);
+                                            controller.pickGame(gameID - 1);
+                                            controller.setViewController(new ClientController(this));
+                                            controller.addPlayer(player);
+                                            playerID = controller.getIndexOfPlayer(player.getNickname());
+                                            controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+                                            System.out.println("Waiting...");
+                                            isWaiting = true;
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Invalid number. Try again!");
+                                        }
                                     }
                                 }
                             }
-                        }
-                        exit = true;
-                        break;
+                         }
+                    }
                 }
+            } catch (RemoteException | AlreadyBoundException e) {
+                e.printStackTrace();
             }
         }
 
@@ -102,6 +114,7 @@ public class GameTerminal extends Application implements ViewController {
                 controller.addPlayer(player);
                 playerID = controller.getIndexOfPlayer(player.getNickname());
                 controller.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
+                isGameCreator = true;
                 exit = true;
             } else {
                 System.out.println("Invalid input!");
@@ -484,24 +497,27 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyNumberOfPlayersChanged() {
-        System.out.println("Players:");
-        ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
-        for (HashMap<String, String> player: info) {
-            System.out.println(player.get("Nickname"));
-        }
-        if (info.size() > 1) {
-            System.out.println("Press s to start the game.");
-            Thread thread = new Thread(() -> {
-                try {
-                    String input = scanner.next();
-                    if (input.equals("s")) {
-                        controller.startGame();
+        if (isGameCreator) {
+            System.out.println("Players:");
+            ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
+            for (HashMap<String, String> player : info) {
+                System.out.println(player.get("Nickname"));
+            }
+            if (info.size() > 1) {
+                System.out.println("Press s to start the game.");
+                Thread thread = new Thread(() -> {
+                    try {
+                        String input = scanner.next();
+                        if (input.equals("s")) {
+                            controller.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
+                            controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        // Ignore
                     }
-                } catch (IndexOutOfBoundsException e) {
-                    // Ignore
-                }
-            });
-            thread.start();
+                });
+                thread.start();
+            }
         }
     }
 
@@ -571,6 +587,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void getReady(int numberOfPlayers) {
+        isWaiting = false;
         controller.setCurrentStatus(GameStatus.READY);
         try {
             play();
