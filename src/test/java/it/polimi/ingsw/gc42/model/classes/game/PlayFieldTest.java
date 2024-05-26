@@ -1,11 +1,10 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
+import it.polimi.ingsw.gc42.model.exceptions.RemovingFromZeroException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +12,29 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayFieldTest {
+
+    @Test
+    void generalTesting(){
+        // given
+        Game game = new Game();
+        StarterCard starterCard = (StarterCard) game.getStarterDeck().draw();
+        PlayField playField = new PlayField(starterCard);
+        playField.add(Resource.POTION);
+
+        // when
+        playField.add(Resource.FEATHER);
+        try {
+            playField.remove(Resource.POTION);
+        }catch (RemovingFromZeroException e){
+            // TODO: make with lambda and assertDoesNotThrow
+            e.printStackTrace();
+        }
+
+        // then
+        assertEquals(playField.getLastPlayedCard(), starterCard);
+        assertEquals(playField.getNumberOf(Resource.FEATHER), 1);
+        assertEquals(playField.getNumberOf(Resource.POTION), 0);
+    }
 
     @Test
     void getAvailablePlacements_StarterCard_Only() {

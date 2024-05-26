@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
+import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
@@ -17,11 +18,54 @@ import java.util.NoSuchElementException;
 class PlayerTest {
 
     @Test
-    void drawStarterCard() {
+    void generalTesting(){
+        // given
+        Game game = new Game();
+        Player player = new Player(null, true, 0, null, null, game);
+        String nickname = "pippo";
+        Token token = Token.BLUE;
+        int points = 20;
+        boolean isFirst = true;
+        // TODO: redo with mechanics???
+        ObjectiveCard objectiveCard = new ObjectiveCard(0, null, null, null);
+        GameStatus status = GameStatus.READY;
+        // TODO: error if i do new StarterCard and ArrayList is null
+        StarterCard starterCard = (StarterCard) game.getStarterDeck().draw();
+
+        // given
+        player.setNickname(nickname);
+        player.setToken(token);
+        player.setPoints(points);
+        player.setFirst(isFirst);
+
+        player.setSecretObjective(objectiveCard);
+
+        player.setStatus(status);
+        player.setTemporaryStarterCard(starterCard);
+
+
+        // then
+        assertEquals(player.getNickname(), nickname);
+        assertEquals(player.getToken(), token);
+        assertEquals(player.getPoints(), points);
+        assert(player.isFirst());
+        assertEquals(player.getSecretObjective(), objectiveCard);
+        assertEquals(player.getStatus(), status);
+        assertEquals(player.getTemporaryStarterCard(), starterCard);
     }
 
     @Test
     void drawSecretObjectives() {
+        // given
+        Game game = new Game();
+        Player player = new Player(null, true, 0, null, null, game);
+
+        // when
+        player.drawSecretObjectives(game.getObjectivePlayingDeck());
+
+        // then
+        assertEquals(player.getTemporaryObjectiveCards().size(), 2);
+
     }
 
     @Test
