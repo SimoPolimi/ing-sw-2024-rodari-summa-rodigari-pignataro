@@ -2,9 +2,7 @@ package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -67,25 +65,19 @@ public interface RemoteServer extends Remote {
 
     void flipStarterCard(int gameID, int playerID) throws RemoteException;
 
-    ArrayList<String> getDeckTextures(int gameID, CardType type) throws RemoteException;
+    ArrayList<Card> getDeck(int gameID, CardType type) throws RemoteException;
 
-    String getSlotCardTexture(int gameID, CardType type, int slot) throws RemoteException;
+    Card getSlotCard(int gameID, CardType type, int slot) throws RemoteException;
 
-    String getSecretObjectiveName(int gameID, int playerID) throws RemoteException;
+    ObjectiveCard getSecretObjective(int gameID, int playerID) throws RemoteException;
 
-    String getSecretObjectiveDescription(int gameID, int playerID) throws RemoteException;
-
-    String getCommonObjectiveName(int gameID, int slot) throws RemoteException;
-
-    String getCommonObjectiveDescription(int gameID, int slot) throws RemoteException;
+    ObjectiveCard getCommonObjective(int gameID, int slot) throws RemoteException;
 
     int getPlayerTurn(int gameID) throws RemoteException;
 
-    ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int gameID, int playerID) throws RemoteException;
+    ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int gameID, int playerID) throws RemoteException;
 
-    HashMap<String, String> getTemporaryStarterCardTextures(int gameID, int playerID) throws RemoteException;
-
-    HashMap<String, String> getSecretObjectiveTextures(int gameID, int playerID) throws RemoteException;
+    StarterCard getTemporaryStarterCard(int gameID, int playerID) throws RemoteException;
 
     GameStatus getPlayerStatus(int gameID, int playerID) throws RemoteException;
 

@@ -102,11 +102,11 @@ public class ObjectiveCardView {
         this.description = description;
     }
 
-    public void setModelCard(String front, String back, String name, String descr) {
+    public void setModelCard(ObjectiveCard card) {
         if (!isPrivacyModeEnabled) {
-            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(front))));
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
         } else {
-            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(back))));
+            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getBackImage()))));
         }
         imageView.setVisible(true);
         show();
@@ -130,8 +130,8 @@ public class ObjectiveCardView {
                 }
             });
         }
-        title.setText(name);
-        description.setText(descr);
+        title.setText(card.getObjective().getName());
+        description.setText(card.getObjective().getDescription());
     }
 
     public void rotate() {

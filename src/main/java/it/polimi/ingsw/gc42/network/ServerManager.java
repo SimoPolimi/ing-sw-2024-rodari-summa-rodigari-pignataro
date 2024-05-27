@@ -2,13 +2,11 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 
@@ -20,7 +18,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ServerManager extends UnicastRemoteObject implements RemoteServer, Serializable {
     private GameCollection collection;
@@ -219,7 +216,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public ArrayList<String> getDeckTextures(int gameID, CardType type) throws RemoteException {
+    public ArrayList<Card> getDeck(int gameID, CardType type) throws RemoteException {
         ArrayList<String> deckTextures = new ArrayList<>();
         ArrayList<Card> deck = null;
         switch (type) {
@@ -227,62 +224,35 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
             case GOLDCARD -> deck = collection.get(gameID).getGame().getGoldPlayingDeck().getDeck().getCopy();
             case OBJECTIVECARD -> deck = collection.get(gameID).getGame().getObjectivePlayingDeck().getDeck().getCopy();
         }
-        if (null != deck) {
-            for (Card card: deck) {
-                deckTextures.add(card.getBackImage());
-            }
-        }
         // If the Deck is empty, it returns an empty ArrayList
-        return deckTextures;
+        return deck;
     }
 
     @Override
-    public String getSlotCardTexture(int gameID, CardType type, int slot) throws RemoteException {
-        String string = "";
+    public Card getSlotCard(int gameID, CardType type, int slot) throws RemoteException {
+        Card card = null;
         switch (type) {
             case RESOURCECARD -> {
-                string = collection.get(gameID).getGame().getResourcePlayingDeck().getSlot(slot).getFrontImage();
+                card = collection.get(gameID).getGame().getResourcePlayingDeck().getSlot(slot);
             }
             case GOLDCARD -> {
-                string = collection.get(gameID).getGame().getGoldPlayingDeck().getSlot(slot).getFrontImage();
+                card = collection.get(gameID).getGame().getGoldPlayingDeck().getSlot(slot);
             }
             case OBJECTIVECARD -> {
-                string = collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot).getFrontImage();
+                card = collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
             }
         }
-        return string;
+        return card;
     }
 
     @Override
-    public String getSecretObjectiveName(int gameID, int playerID) throws RemoteException {
-        ObjectiveCard card = collection.get(gameID).getPlayer(playerID).getSecretObjective();
-        if (null != card) {
-            return card.getObjective().getName();
-        } else return "";
+    public ObjectiveCard getSecretObjective(int gameID, int playerID) throws RemoteException {
+        return collection.get(gameID).getPlayer(playerID).getSecretObjective();
     }
 
     @Override
-    public String getSecretObjectiveDescription(int gameID, int playerID) throws RemoteException {
-        ObjectiveCard card = collection.get(gameID).getPlayer(playerID).getSecretObjective();
-        if (null != card) {
-            return card.getObjective().getDescription();
-        } else return "";
-    }
-
-    @Override
-    public String getCommonObjectiveName(int gameID, int slot) throws RemoteException {
-        ObjectiveCard card = (ObjectiveCard) collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
-        if (null != card) {
-            return card.getObjective().getName();
-        } else return "";
-    }
-
-    @Override
-    public String getCommonObjectiveDescription(int gameID, int slot) throws RemoteException {
-        ObjectiveCard card = (ObjectiveCard) collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
-        if (null != card) {
-            return card.getObjective().getDescription();
-        } else return "";
+    public ObjectiveCard getCommonObjective(int gameID, int slot) throws RemoteException {
+        return (ObjectiveCard) collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
     }
 
     @Override
@@ -291,36 +261,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     @Override
-    public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int gameID, int playerID) throws RemoteException {
-        ArrayList<HashMap<String, String>> temporaryObjectives = new ArrayList<>();
-        ArrayList<ObjectiveCard> temporaryCards = collection.get(gameID).getPlayer(playerID).getTemporaryObjectiveCards();
-        for (ObjectiveCard card: temporaryCards) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("Front", card.getFrontImage());
-            map.put("Back", card.getBackImage());
-            map.put("Name", card.getObjective().getName());
-            map.put("Description", card.getObjective().getDescription());
-            temporaryObjectives.add(map);
-        }
-        return temporaryObjectives;
+    public ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int gameID, int playerID) throws RemoteException {
+        return collection.get(gameID).getPlayer(playerID).getTemporaryObjectiveCards();
     }
 
     @Override
-    public HashMap<String, String> getTemporaryStarterCardTextures(int gameID, int playerID) throws RemoteException {
-        HashMap<String, String> map = new HashMap<>();
-        StarterCard card = collection.get(gameID).getPlayer(playerID).getTemporaryStarterCard();
-        map.put("Front", card.getFrontImage());
-        map.put("Back", card.getBackImage());
-        return map;
+    public StarterCard getTemporaryStarterCard(int gameID, int playerID) throws RemoteException {
+        return collection.get(gameID).getPlayer(playerID).getTemporaryStarterCard();
     }
-
-    @Override
-    public HashMap<String, String> getSecretObjectiveTextures(int gameID, int playerID) throws RemoteException {
-        HashMap<String, String> map = new HashMap<>();
-        ObjectiveCard card = collection.get(gameID).getPlayer(playerID).getSecretObjective();
-        map.put("Front", card.getFrontImage());
-        map.put("Back", card.getBackImage());
-        return map;    }
 
     @Override
     public GameStatus getPlayerStatus(int gameID, int playerID) throws RemoteException {

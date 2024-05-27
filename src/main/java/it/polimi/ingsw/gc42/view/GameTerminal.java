@@ -192,7 +192,7 @@ public class GameTerminal extends Application implements ViewController {
                     flipCard(scanner.next());
                     break;
                 case "3":
-                    System.out.println(controller.getSecretObjectiveName(playerID));
+                    System.out.println(controller.getSecretObjective(playerID).getObjective().getName());
                     //printSecretObjective(controller.getSecret);
                     System.out.println();
                     break;
@@ -374,7 +374,7 @@ public class GameTerminal extends Application implements ViewController {
     public void showSecretObjectivesSelectionDialog() {
         System.out.println("--- Choose your secret objective ---");
         //TODO: Add methods
-        System.out.println("Digit 1 to choose: " + controller.getSecretObjectiveName(playerID));
+        System.out.println("Digit 1 to choose: " + controller.getSecretObjective(playerID).getObjective().getName());
         //System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
         //printSecretObjective(player.getTemporaryObjectiveCards().get(0));
         //System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
@@ -603,7 +603,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
-        System.out.println("Objective chosen: " + controller.getSecretObjectiveName(playerID));
+        System.out.println("Objective chosen: " + controller.getSecretObjective(playerID).getObjective().getName());
     }
 
     @Override

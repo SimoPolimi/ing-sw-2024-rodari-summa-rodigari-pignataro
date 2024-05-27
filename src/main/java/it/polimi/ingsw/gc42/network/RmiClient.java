@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
@@ -65,54 +63,27 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public ArrayList<String> getDeckTextures(CardType type) {
+    public ArrayList<Card> getDeck(CardType type) {
         try {
-            return server.getDeckTextures(gameID, type);
+            return server.getDeck(gameID, type);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public String getSlotCardTexture(CardType type, int slot) {
+    public Card getSlotCard(CardType type, int slot) {
         try {
-            return server.getSlotCardTexture(gameID, type, slot);
+            return server.getSlotCard(gameID, type, slot);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public String getSecretObjectiveName(int playerID) {
+    public ObjectiveCard getSecretObjective(int playerID) {
         try {
-            return server.getSecretObjectiveName(gameID, playerID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String getSecretObjectiveDescription(int playerID) {
-        try {
-            return server.getSecretObjectiveDescription(gameID, playerID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String getCommonObjectiveName(int slot) {
-        try {
-            return server.getCommonObjectiveName(gameID, slot);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String getCommonObjectiveDescription(int slot) {
-        try {
-            return server.getCommonObjectiveDescription(gameID, slot);
+            return server.getSecretObjective(gameID, playerID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -284,27 +255,18 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
-    public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
+    public ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int playerID) {
         try {
-            return server.getTemporaryObjectiveTextures(gameID, playerID);
+            return server.getTemporaryObjectiveCards(gameID, playerID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public HashMap<String, String> getTemporaryStarterCardTextures(int playerID) {
+    public StarterCard getTemporaryStarterCard(int playerID) {
         try {
-            return server.getTemporaryStarterCardTextures(gameID, playerID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public HashMap<String, String> getSecretObjectiveTextures(int playerID) {
-        try {
-            return server.getSecretObjectiveTextures(gameID, playerID);
+            return server.getTemporaryStarterCard(gameID, playerID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

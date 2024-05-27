@@ -436,31 +436,31 @@ public class CommonTableView {
     }
 
     public void refreshResourceDeck() {
-        ArrayList<String> deck = controller.getDeckTextures(CardType.RESOURCECARD);
+        ArrayList<Card> deck = controller.getDeck(CardType.RESOURCECARD);
         Platform.runLater(() -> resourceDeck.refresh(deck));
     }
 
     public void refreshGoldDeck() {
-        ArrayList<String> deck = controller.getDeckTextures(CardType.GOLDCARD);
+        ArrayList<Card> deck = controller.getDeck(CardType.GOLDCARD);
         Platform.runLater(() -> goldDeck.refresh(deck));
     }
 
     public void refreshResourceSlot(int slot) {
         switch (slot) {
             case 1 -> {
-                String card = "";
-                card = controller.getSlotCardTexture(CardType.RESOURCECARD, 1);
-                if (!card.isEmpty()) {
-                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
+                Card card = null;
+                card = controller.getSlotCard(CardType.RESOURCECARD, 1);
+                if (null != card) {
+                    resourceDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     resourceDown1.setVisible(false);
                 }
             }
             case 2 -> {
-                String  card = "";
-                card = controller.getSlotCardTexture(CardType.RESOURCECARD, 2);
-                if (!card.isEmpty()) {
-                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
+                Card  card = null;
+                card = controller.getSlotCard(CardType.RESOURCECARD, 2);
+                if (null != card) {
+                    resourceDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     resourceDown2.setVisible(false);
                 }
@@ -471,19 +471,19 @@ public class CommonTableView {
     public void refreshGoldSlot(int slot) {
         switch (slot) {
             case 1 -> {
-                String card = null;
-                card = controller.getSlotCardTexture(CardType.GOLDCARD, 1);
-                if (!card.isEmpty()) {
-                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
+                Card card = null;
+                card = controller.getSlotCard(CardType.GOLDCARD, 1);
+                if (null != card) {
+                    goldDown1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     goldDown1.setVisible(false);
                 }
             }
             case 2 -> {
-                String card = null;
-                card = controller.getSlotCardTexture(CardType.GOLDCARD, 2);
-                if (!card.isEmpty()) {
-                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card))));
+                Card card = null;
+                card = controller.getSlotCard(CardType.GOLDCARD, 2);
+                if (null != card) {
+                    goldDown2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
                 } else {
                     goldDown2.setVisible(false);
                 }
@@ -492,13 +492,13 @@ public class CommonTableView {
     }
 
     public void refreshCommonObjectives() {
-        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getSlotCardTexture(CardType.OBJECTIVECARD, 1)))));
-        objName1.setText(controller.getCommonObjectiveName(1));
-        objDescr1.setText(controller.getCommonObjectiveDescription(1));
-        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(controller
-                .getSlotCardTexture(CardType.OBJECTIVECARD, 2)))));
-        objName2.setText((controller.getCommonObjectiveName(2)));
-        objDescr2.setText((controller.getCommonObjectiveDescription(2)));
+        ObjectiveCard card = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 1);
+        commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+        objName1.setText(card.getObjective().getName());
+        objDescr1.setText(card.getObjective().getDescription());
+        card = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 2);
+        commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
+        objName2.setText((card.getObjective().getName()));
+        objDescr2.setText((card.getObjective().getDescription()));
     }
 }

@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -133,7 +131,7 @@ public class SocketClient implements NetworkController {
     public synchronized void sendMessage(Message message) {
         try{
             streamOut.writeObject(message);
-            streamOut.flush();
+            streamOut.reset();
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -283,39 +281,21 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public ArrayList<String> getDeckTextures(CardType type) {
-        sendMessage(new GetDeckTexturesMessage(MessageType.GET_DECK_TEXTURES, gameID, type));
-        return ((ListStrResponse) waitResponse()).getResponse();
+    public ArrayList<Card> getDeck(CardType type) {
+        sendMessage(new GetDeckTexturesMessage(MessageType.GET_DECK, gameID, type));
+        return ((DeckResponse) waitResponse()).getResponse();
     }
 
     @Override
-    public String getSlotCardTexture(CardType type, int slot) {
-        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_SLOT_CARD_TEXTURE, gameID, type, slot));
-        return ((StrResponse) waitResponse()).getResponse();
+    public Card getSlotCard(CardType type, int slot) {
+        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_SLOT_CARD, gameID, type, slot));
+        return ((CardResponse) waitResponse()).getResponse();
     }
 
     @Override
-    public String getSecretObjectiveName(int playerID) {
-        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_NAME, gameID, playerID));
-        return ((StrResponse) waitResponse()).getResponse();
-    }
-
-    @Override
-    public String getSecretObjectiveDescription(int playerID) {
-        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, gameID, playerID));
-        return ((StrResponse) waitResponse()).getResponse();
-    }
-
-    @Override
-    public String getCommonObjectiveName(int slot) {
-        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_NAME, gameID, slot));
-        return ((StrResponse) waitResponse()).getResponse();
-    }
-
-    @Override
-    public String getCommonObjectiveDescription(int slot) {
-        sendMessage(new NumberMessage(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, gameID, playerID));
-        return ((StrResponse) waitResponse()).getResponse();
+    public ObjectiveCard getSecretObjective(int playerID) {
+        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE, gameID, playerID));
+        return ((ObjectiveCardResponse) waitResponse()).getResponse();
     }
 
     @Override
@@ -325,21 +305,15 @@ public class SocketClient implements NetworkController {
     }
 
     @Override
-    public ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID) {
-        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, gameID, playerID));
-        return ((ListMapStrStrResponse) waitResponse()).getResponse();
+    public ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int playerID) {
+        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS, gameID, playerID));
+        return ((ObjCardListResponse) waitResponse()).getResponse();
     }
 
     @Override
-    public HashMap<String, String> getTemporaryStarterCardTextures(int playerID) {
-        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, gameID, playerID));
-        return ((MapStrStrResponse) waitResponse()).getResponse();
-    }
-
-    @Override
-    public HashMap<String, String> getSecretObjectiveTextures(int playerID) {
-        sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, gameID, playerID));
-        return ((MapStrStrResponse) waitResponse()).getResponse();
+    public StarterCard getTemporaryStarterCard(int playerID) {
+        sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_STARTER_CARD, gameID, playerID));
+        return ((StarterCardResponse) waitResponse()).getResponse();
     }
 
     @Override

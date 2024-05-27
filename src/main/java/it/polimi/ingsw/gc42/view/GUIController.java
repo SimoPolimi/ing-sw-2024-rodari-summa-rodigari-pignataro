@@ -341,12 +341,8 @@ public class GUIController implements ViewController {
     @Override
     public void showSecretObjectivesSelectionDialog() {
         CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
-        ArrayList<Card> cards = new ArrayList<>();
-        ArrayList<HashMap<String, String>> textures = controller.getTemporaryObjectiveTextures(playerID);
-        for (HashMap<String, String> texture : textures) {
-            cards.add(new Card(true, 0, texture.get("Front"), texture.get("Back")));
-        }
-        for (Card card : cards) {
+        ArrayList<ObjectiveCard> cards = controller.getTemporaryObjectiveCards(playerID);
+        for (ObjectiveCard card : cards) {
             dialog.addCard(card);
         }
         dialog.setListener(new CardPickerListener() {
@@ -364,8 +360,8 @@ public class GUIController implements ViewController {
     public void showStarterCardSelectionDialog() {
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
                 , true, this);
-        HashMap<String, String> texture = controller.getTemporaryStarterCardTextures(playerID);
-        dialog.addCard(new Card(true, 0, texture.get("Front"), texture.get("Back")));
+        StarterCard card = controller.getTemporaryStarterCard(playerID);
+        dialog.addCard(card);
         dialog.setListener(new CardPickerListener() {
             @Override
             public void onEvent() {

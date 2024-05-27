@@ -23,11 +23,11 @@ public class DeckView {
         return container;
     }
 
-    public void refresh(ArrayList<String> cards) {
+    public void refresh(ArrayList<Card> cards) {
         container.getChildren().clear();
         if (!cards.isEmpty()) {
             for (int i = cards.size()-1; i >= 0; i--) {
-                ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(cards.get(i)))));
+                ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(cards.get(i).getBackImage()))));
                 view.setPreserveRatio(true);
                 view.setFitWidth(160);
                 DropShadow effect = new DropShadow();

@@ -94,8 +94,8 @@ public class TableView {
         isPrivacyModeEnabled = privacyModeEnabled;
     }
 
-    public void setSecretObjective(String front, String back, String name, String descr) {
-       secretObjective.setModelCard(front, back, name, descr);
+    public void setSecretObjective(ObjectiveCard card) {
+       secretObjective.setModelCard(card);
     }
 
     // Methods:
@@ -391,8 +391,7 @@ public class TableView {
     }
 
     public void refreshSecretObjective() {
-        HashMap<String, String> card = server.getSecretObjectiveTextures(playerID);
-        setSecretObjective(card.get("Front"), card.get("Back"),
-                server.getSecretObjectiveName(playerID), server.getSecretObjectiveDescription(playerID));
+        ObjectiveCard card = server.getSecretObjective(playerID);
+        setSecretObjective(card);
     }
 }

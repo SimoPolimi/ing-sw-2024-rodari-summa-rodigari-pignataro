@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42.network.messages.responses;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.network.messages.Message;
 import it.polimi.ingsw.gc42.network.messages.MessageType;

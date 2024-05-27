@@ -1,10 +1,7 @@
 package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
-import it.polimi.ingsw.gc42.model.classes.cards.CardType;
-import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
-import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -71,17 +68,13 @@ public interface NetworkController {
     void flipStarterCard(int playerID);
 
 
-    ArrayList<String> getDeckTextures(CardType type);
-    String getSlotCardTexture(CardType type, int slot);
-    String getSecretObjectiveName(int playerID);
-    String getSecretObjectiveDescription(int playerID);
-    String getCommonObjectiveName(int slot);
-    String getCommonObjectiveDescription(int slot);
+    ArrayList<Card> getDeck(CardType type);
+    Card getSlotCard(CardType type, int slot);
+    ObjectiveCard getSecretObjective(int playerID);
     int getPlayerTurn();
 
-    ArrayList<HashMap<String, String>> getTemporaryObjectiveTextures(int playerID);
-    HashMap<String, String> getTemporaryStarterCardTextures(int playerID);
-    HashMap<String, String> getSecretObjectiveTextures(int playerID);
+    ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int playerID);
+    StarterCard getTemporaryStarterCard(int playerID);
     GameStatus getPlayerStatus(int playerID);
     ArrayList<HashMap<String, String>> getPlayersInfo();
     int getPlayersHandSize(int playerID);

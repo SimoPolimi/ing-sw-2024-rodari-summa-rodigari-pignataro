@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc42.network;
 
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
@@ -95,36 +96,24 @@ public class SocketControllerServer implements ServerNetworkController {
                 case FLIP_STARTER_CARD:
                     server.flipStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
-                case GET_DECK_TEXTURES:
-                    sendMessage(socket, new ListStrResponse(MessageType.GET_DECK_TEXTURES, server.getDeckTextures(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
+                case GET_DECK:
+                    sendMessage(socket, new DeckResponse(MessageType.GET_DECK, server.getDeck(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
                     break;
-                case GET_SLOT_CARD_TEXTURE:
-                    String response = server.getSlotCardTexture(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextureMessage) temp).getSlot());
-                    sendMessage(socket, new StrResponse(MessageType.GET_SLOT_CARD_TEXTURE, response));
+                case GET_SLOT_CARD:
+                    Card response = server.getSlotCard(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextureMessage) temp).getSlot());
+                    sendMessage(socket, new CardResponse(MessageType.GET_SLOT_CARD, response, response.isFrontFacing()));
                     break;
-                case GET_SECRET_OBJECTIVE_NAME:
-                    sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_NAME, server.getSecretObjectiveName(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
-                    break;
-                case GET_SECRET_OBJECTIVE_DESCRIPTION:
-                    sendMessage(socket, new StrResponse(MessageType.GET_SECRET_OBJECTIVE_DESCRIPTION, server.getSecretObjectiveDescription(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
-                    break;
-                case GET_COMMON_OBJECTIVE_NAME:
-                    sendMessage(socket, new StrResponse(MessageType.GET_COMMON_OBJECTIVE_NAME, server.getCommonObjectiveName(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
-                    break;
-                case GET_COMMON_OBJECTIVE_DESCRIPTION:
-                    sendMessage(socket, new StrResponse(MessageType.GET_COMMON_OBJECTIVE_DESCRIPTION, server.getCommonObjectiveDescription(((NumberMessage)temp).getGameID(), ((NumberMessage)temp).getNumber())));
+                case GET_SECRET_OBJECTIVE:
+                    sendMessage(socket, new ObjectiveCardResponse(MessageType.GET_SECRET_OBJECTIVE, server.getSecretObjective(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYER_TURN:
                     sendMessage(socket, new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
                     break;
-                case GET_TEMPORARY_OBJECTIVE_TEXTURES:
-                    sendMessage(socket, new ListMapStrStrResponse(MessageType.GET_TEMPORARY_OBJECTIVE_TEXTURES, server.getTemporaryObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                case GET_TEMPORARY_OBJECTIVE_CARDS:
+                    sendMessage(socket, new ObjCardListResponse(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS, server.getTemporaryObjectiveCards(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
-                case GET_TEMPORARY_STARTER_CARD_TEXTURES:
-                    sendMessage(socket, new MapStrStrResponse(MessageType.GET_TEMPORARY_STARTER_CARD_TEXTURES, server.getTemporaryStarterCardTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
-                    break;
-                case GET_SECRET_OBJECTIVE_TEXTURES:
-                    sendMessage(socket, new MapStrStrResponse(MessageType.GET_SECRET_OBJECTIVE_TEXTURES, server.getSecretObjectiveTextures(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
+                case GET_TEMPORARY_STARTER_CARD:
+                    sendMessage(socket, new StarterCardResponse(MessageType.GET_TEMPORARY_STARTER_CARD, server.getTemporaryStarterCard(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;
                 case GET_PLAYER_STATUS:
                     sendMessage(socket, new GameStatusResponse(MessageType.GET_PLAYER_STATUS, server.getPlayerStatus(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
@@ -361,7 +350,7 @@ public class SocketControllerServer implements ServerNetworkController {
         //out.println(new Gson().toJson(message));
         try{
             outMap.get(socket).writeObject(message);
-            outMap.get(socket).flush();
+            outMap.get(socket).reset();
         }catch (IOException e){
             e.printStackTrace();
         }
