@@ -84,4 +84,6 @@ public interface NetworkController {
     Token getPlayerToken(int playerID);
     PlayableCard getPlayersLastPlayedCard(int playerID);
     PlayableCard getPlayersHandCard(int playerID, int cardID);
+
+    ArrayList<PlayableCard> getPlayersPlayfield(int playerID);
 }

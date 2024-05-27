@@ -118,6 +118,12 @@ public class SocketClient implements NetworkController {
         }
     }
 
+    @Override
+    public ArrayList<PlayableCard> getPlayersPlayfield(int playerID) {
+        sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_PLAY_FIELD, gameID, playerID));
+        return ((PlayableCardListResponse) waitResponse()).getResponse();
+    }
+
     private synchronized Message waitResponse() {
         Message temp = null;
         try{

@@ -98,4 +98,6 @@ public interface RemoteServer extends Remote {
     PlayableCard getPlayersHandCard(int gameID, int playerID, int cardID) throws RemoteException;
 
     int getIndexOfPlayer(int gameID, String nickname) throws RemoteException;
+
+    ArrayList<PlayableCard> getPlayersPlayfield(int gameID, int playerID) throws RemoteException;
 }

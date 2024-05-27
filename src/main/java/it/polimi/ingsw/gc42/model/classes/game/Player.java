@@ -365,7 +365,11 @@ public class Player implements Observable, Serializable {
         if(hand.size() <= 2 ) {
             if(playingDeck.getDeck().getNumberOfCards() >= 0) {
                 hand.add((PlayableCard) playingDeck.getDeck().draw());
-                notifyListeners("Hand Updated");
+                if (status != GameStatus.READY_TO_DRAW_STARTING_HAND) {
+                    notifyListeners("Hand Updated");
+                } else if (hand.size() == 3) {
+                    notifyListeners("Hand Updated");
+                }
             }else throw new IllegalArgumentException("Empty deck");
         } else throw new IllegalActionException();
     }

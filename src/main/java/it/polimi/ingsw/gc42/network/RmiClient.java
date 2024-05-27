@@ -336,6 +336,15 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
+    public ArrayList<PlayableCard> getPlayersPlayfield(int playerID) {
+        try {
+            return server.getPlayersPlayfield(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public PlayableCard getPlayersLastPlayedCard(int playerID) {
         try {
             return server.getPlayersLastPlayedCard(gameID, playerID);

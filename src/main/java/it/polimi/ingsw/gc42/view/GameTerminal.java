@@ -327,10 +327,10 @@ public class GameTerminal extends Application implements ViewController {
         }
         System.out.println("Token: " + string);
         System.out.println("Point: " + info.get(playerID).get("Points"));
-        //TODO Do the Secret Objective
-        /*if (null != player.getSecretObjective()) {
-            System.out.println("Secret objective: " + controller.getGame().getCurrentPlayer().getSecretObjective().getObjective().getName());
-        }*/
+        ObjectiveCard card = controller.getSecretObjective(playerID);
+        if (null != card) {
+            System.out.println("Secret objective: " + card.getObjective().getName());
+        }
         System.out.println("Digit I to open the inventory");
     }
 
@@ -372,15 +372,14 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
+        ArrayList<ObjectiveCard> cards = controller.getTemporaryObjectiveCards(playerID);
         System.out.println("--- Choose your secret objective ---");
-        //TODO: Add methods
-        System.out.println("Digit 1 to choose: " + controller.getSecretObjective(playerID).getObjective().getName());
-        //System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
-        //printSecretObjective(player.getTemporaryObjectiveCards().get(0));
-        //System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
-        //System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
-        //printSecretObjective(player.getTemporaryObjectiveCards().get(1));
-        String input = "";
+        System.out.println("Digit 1 to choose: " + cards.get(0).getObjective().getName());
+        System.out.println("ℹ\uFE0F " + cards.get(0).getObjective().getDescription());
+        printSecretObjective(cards.get(0));
+        System.out.println("Digit 2 to choose: " + cards.get(1).getObjective().getName());
+        System.out.println("ℹ\uFE0F " + cards.get(1).getObjective().getDescription());
+        printSecretObjective(cards.get(1));
         inputHandler.listen(new TerminalListener() {
             @Override
             public void onEvent(String input) {
@@ -396,13 +395,6 @@ public class GameTerminal extends Application implements ViewController {
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
                         inputHandler.listen(this);
-                    /*System.out.println("Digit 1 to choose: " + player.getTemporaryObjectiveCards().get(0).getObjective().getName());
-                    System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(0).getObjective().getDescription());
-                    printSecretObjective(player.getTemporaryObjectiveCards().get(0));
-                    //System.out.println("Secret objective 2");
-                    System.out.println("Digit 2 to choose: " + player.getTemporaryObjectiveCards().get(1).getObjective().getName());
-                    System.out.println("ℹ\uFE0F " + player.getTemporaryObjectiveCards().get(1).getObjective().getDescription());
-                    printSecretObjective(player.getTemporaryObjectiveCards().get(1));*/
                         break;
                 }
             }
@@ -412,42 +404,33 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void showStarterCardSelectionDialog() {
         System.out.println("--- Choose the side of your starter card ---");
-        // TODO: Add methodd
-        //Card starterCard = player.getTemporaryStarterCard();
+        StarterCard starterCard = controller.getTemporaryStarterCard(playerID);
         System.out.println("Digit f to choose front side");
-        //printCard((PlayableCard) starterCard);
-        //starterCard.flip();
+        printCard(starterCard);
+        starterCard.flip();
         System.out.println("Digit b to choose back side");
-        //printCard((PlayableCard) starterCard);
+        printCard(starterCard);
 
-        String input = "";
-        boolean exit = false;
-        while (!exit) {
-            input = scanner.next();
-            switch (input) {
-                case "b":
-                    controller.flipStarterCard(playerID);
-                    controller.setPlayerStarterCard(playerID);
-                    exit = true;
-                    break;
-                case "f":
-                    controller.setPlayerStarterCard(playerID);
-                    exit = true;
-                    break;
-                default:
-                    System.out.println(color("Invalid choice! Retry...", UiColors.RED));
-                    exit = false;
-                    /*System.out.println("--- Choose the side of your starter card ---");
-                    starterCard.flip();
-                    System.out.println("Digit f to choose front side");
-                    printCard((PlayableCard) starterCard);
-                    starterCard.flip();
-                    System.out.println("Digit b to choose back side");
-                    printCard((PlayableCard) starterCard);*/
-                    break;
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                switch (input) {
+                    case "b":
+                        controller.flipStarterCard(playerID);
+                        controller.setPlayerStarterCard(playerID);
+                        controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        break;
+                    case "f":
+                        controller.setPlayerStarterCard(playerID);
+                        controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        break;
+                    default:
+                        System.out.println(color("Invalid choice! Retry...", UiColors.RED));
+                        inputHandler.listen(this);
+                        break;
+                }
             }
-        }
-        controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+        });
     }
 
     @Override
@@ -494,17 +477,20 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void askToDrawOrGrab() {
+        Card card1, card2;
+        card1 = controller.getDeck(CardType.RESOURCECARD).getFirst();
+        card2 = controller.getDeck(CardType.GOLDCARD).getFirst();
         for (int line = 1; line < 6; line++) {
-            // TODO: Add Method
-            /*System.out.println(getPrintCardLine((PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().getTopCard(), line, true, null) +
-                    "\t" + (getPrintCardLine((PlayableCard) controller.getGame().getGoldPlayingDeck().getDeck().getTopCard(), line, true, null)));*/
+            System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
+                    "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
         }
         System.out.println();
         for (int slot = 1; slot < 3; slot++) {
+            card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
+            card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
             for (int line = 1; line < 6; line++) {
-                // TODO: Add Method
-                /*System.out.println(getPrintCardLine((PlayableCard) controller.getGame().getResourcePlayingDeck().getSlot(slot), line, true, null) +
-                        "\t" + (getPrintCardLine((PlayableCard) controller.getGame().getGoldPlayingDeck().getSlot(slot), line, true, null)));*/
+                System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
+                        "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
             }
             System.out.println();
         }
@@ -587,8 +573,17 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersHandChanged(int playerID) {
-        for (int i = 0; i < controller.getPlayersHandSize(playerID); i++) {
-            printCard(controller.getPlayersHandCard(playerID, i));
+        if (this.playerID == playerID) {
+            // Only shows the User's one (the others should be secret!)
+            int handSize = controller.getPlayersHandSize(playerID);
+            if (handSize == 3) {
+                System.out.println("Your Hand:");
+                // Only shows the updated Hand in meaningful situations
+                for (int i = 0; i < controller.getPlayersHandSize(playerID); i++) {
+                    printCard(controller.getPlayersHandCard(playerID, i));
+                    System.out.println();
+                }
+            }
         }
     }
 
@@ -603,14 +598,16 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
-        System.out.println("Objective chosen: " + controller.getSecretObjective(playerID).getObjective().getName());
+        if (this.playerID == playerID) {
+            // Only shows the User's one, not the others (it should be secret!)
+            System.out.println("Objective chosen: " + controller.getSecretObjective(playerID).getObjective().getName());
+        }
     }
 
     @Override
     public void notifyCommonObjectivesChanged() {
         for (int i = 0; i < 2; i++) {
-            //TODO: implement print objective card
-            //printCard( controller.getGame().getObjectivePlayingDeck().getSlot(i));
+            printCard( (PlayableCard) controller.getSlotCard(CardType.OBJECTIVECARD, i));
         }
     }
 
@@ -647,8 +644,6 @@ public class GameTerminal extends Application implements ViewController {
 
     private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners, ArrayList<PlayableCard> cards) {
         String string = "";
-        //TODO: Add method
-        //PlayField field = player.getPlayField();
         if (null != card) {
             switch (line) {
                 case 1 -> {
@@ -697,7 +692,7 @@ public class GameTerminal extends Application implements ViewController {
                     for (int i = 0; i < 3; i++) {
                         string += getCardColor(card);
                     }
-                    if (!card.isFrontFacing() || (card.isFrontFacing() && card instanceof StarterCard)) {
+                    if ((!(card instanceof StarterCard) && !card.isFrontFacing()) || (card.isFrontFacing() && card instanceof StarterCard)) {
                         switch (card.getPermanentResources().size()) {
                             case 1 -> {
                                 string += getCardColor(card) + getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card);
@@ -1548,7 +1543,6 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println(getPrintCardLine(controller.getPlayersHandCard(playerID, 0), line, true, null) +
                     "\t" + getPrintCardLine(controller.getPlayersHandCard(playerID, 1), line, true, null) +
                     "\t" + getPrintCardLine(controller.getPlayersHandCard(playerID, 2), line, true, null));
-            System.out.println("entrato");
         }
     }
 }

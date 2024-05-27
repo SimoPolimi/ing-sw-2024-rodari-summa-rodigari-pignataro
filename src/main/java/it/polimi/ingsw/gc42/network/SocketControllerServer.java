@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
@@ -148,6 +149,9 @@ public class SocketControllerServer implements ServerNetworkController {
                     }
                     sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_HAND_CARD, tempCard, 0, 0, isFrontFacing));
                     break;
+                case GET_PLAYERS_PLAY_FIELD:
+                    ArrayList<PlayableCard> cards = server.getPlayersPlayfield(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
+                    sendMessage(socket, new PlayableCardListResponse(MessageType.GET_PLAYERS_PLAY_FIELD, cards));
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
                     server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {

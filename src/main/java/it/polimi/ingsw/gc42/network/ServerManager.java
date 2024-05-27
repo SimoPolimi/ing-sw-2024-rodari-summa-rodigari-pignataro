@@ -333,4 +333,9 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     public PlayableCard getPlayersHandCard(int gameID, int playerID, int cardID) throws RemoteException {
         return collection.get(gameID).getPlayer(playerID).getHandCard(cardID);
     }
+
+    @Override
+    public ArrayList<PlayableCard> getPlayersPlayfield(int gameID, int playerID) throws RemoteException {
+        return collection.get(gameID).getPlayer(playerID).getPlayField().getPlayedCards();
+    }
 }
