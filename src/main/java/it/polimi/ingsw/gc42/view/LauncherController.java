@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.network.Server;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -55,6 +56,8 @@ public class LauncherController {
         transition.setCycleCount(2);
         transition.setOnFinished((e) -> {
             GameTerminal tui = new GameTerminal();
+            Platform.setImplicitExit(false);
+
             guiIcon.getScene().getWindow().hide();
             try {
                 tui.start(new Stage());

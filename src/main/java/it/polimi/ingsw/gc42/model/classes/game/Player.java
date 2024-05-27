@@ -96,8 +96,13 @@ public class Player implements Observable, Serializable {
      */
     public void setToken(Token token) {
         this.token = token;
-        setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
         notifyListeners("Token Updated");
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
     }
 
     /**
