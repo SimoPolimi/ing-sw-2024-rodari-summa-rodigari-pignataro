@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Model implementation of a specific type of Condition/Objective, that requires the Cards to be placed
@@ -71,7 +72,14 @@ public class LShapedPlacementObjective extends PlacementObjective {
      */
     @Override
     protected int check(ArrayList<PlayableCard> playArea) {
-        // TODO: Implement
+        for (PlayableCard baseCard : playArea) {
+            AtomicBoolean validCornerCard = new AtomicBoolean(false);
+            boolean validAlignedCard = false;
+            playArea.stream()
+                    .filter(c -> c.getX() == baseCard.getX() + positionCornerCard.getXOffset() && c.getY() == baseCard.getY() + positionCornerCard.getYOffset() && c.getKingdom().equals(secondaryType))
+                    .findAny()
+                    .ifPresentOrElse(c -> validCornerCard.set(true), () -> validCornerCard.set(false));
+        }
         return 0;
     }
 }
