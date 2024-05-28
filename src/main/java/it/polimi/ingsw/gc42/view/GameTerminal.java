@@ -54,70 +54,10 @@ public class GameTerminal extends Application implements ViewController {
     public void start(Stage stage) throws Exception {
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
+        pool.submit(inputHandler);
         actions.add(() -> {
-            try {
-                System.out.println("Welcome to Codex Naturalis!");
-                String input = "";
-                while (!exit) {
-                    if (!isWaiting) {
-                        login();
-                        System.out.println("--- Insert Nickname ---");
-                        input = scanner.next();
-                        switch (input) {
-                            case "":
-                                break;
-                            default:
-                                player = new Player(input);
-                                ArrayList<HashMap<String, String>> games = controller.getAvailableGames();
-                                if (games.isEmpty()) {
-                                    createNewGame();
-                                    isWaiting = true;
-                                    // Setups the User's Input Handler
-                                    pool.submit(inputHandler);
-                                } else {
-                                    boolean exitGameList = false;
-                                    while (!exitGameList) {
-                                        System.out.println("Games available:");
-                                        for (HashMap<String, String> game : games) {
-                                            int gameID = games.indexOf(game) + 1;
-                                            System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
-                                        }
-                                        System.out.println("\nPress c to create a new one");
-                                        input = scanner.next();
-                                        if (input.equals("c")) {
-                                            createNewGame();
-                                            exitGameList = true;
-                                            exit = true;
-                                            isWaiting = true;
-                                            // Setups the User's Input Handler
-                                            pool.submit(inputHandler);
-                                        } else {
-                                            try {
-                                                exitGameList = true;
-                                                int gameID = Integer.parseInt(input);
-                                                controller.pickGame(gameID - 1);
-                                                setViewController();
-                                                controller.addPlayer(player);
-                                                playerID = controller.getIndexOfPlayer(player.getNickname());
-                                                controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
-                                                System.out.println("Waiting...");
-                                                isWaiting = true;
-                                                exit = true;
-                                                // Setups the User's Input Handler
-                                                pool.submit(inputHandler);
-                                            } catch (NumberFormatException e) {
-                                                System.out.println("Invalid number. Try again!");
-                                            }
-                                        }
-                                    }
-                                }
-                        }
-                    }
-
-                }
-            } catch (RemoteException | AlreadyBoundException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Welcome to Codex Naturalis!");
+            login();
         });
 
         pool.submit(() -> {
@@ -125,7 +65,8 @@ public class GameTerminal extends Application implements ViewController {
             while (!exit) {
                 try {
                     Runnable runnable = actions.take();
-                    pool.submit(runnable);
+                    //pool.submit(runnable);
+                    runnable.run();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -177,43 +118,58 @@ public class GameTerminal extends Application implements ViewController {
     private void play() throws IOException, InterruptedException {
         //Chat chat = controller.getChat();
 
-        if (controller.getPlayerStatus(playerID) == GameStatus.PLAYING) {
-            printPlayer();
-            printMenu();
-            printCard(controller.getPlayersHandCard(playerID, 1));
-            printHandCards();
-            switch (scanner.next()) {
-                case "1":
-                    System.out.println("Select the number of the card you want to play (0 to cancel)");
-                    playCard(scanner.next());
-                    break;
-                case "2":
-                    System.out.println("Select the number of the card you want to flip (0 to cancel)");
-                    flipCard(scanner.next());
-                    break;
-                case "3":
-                    System.out.println(controller.getSecretObjective(playerID).getObjective().getName());
-                    //printSecretObjective(controller.getSecret);
-                    System.out.println();
-                    break;
-                case "4":
+        printPlayer();
+        printMenu();
+        printHandCards();
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                switch (input) {
+                    case "1":
+                        System.out.println("Select the number of the card you want to play (0 to cancel)");
+                        playCard(scanner.next());
+                        break;
+                    case "2":
+                        System.out.println("Select the number of the card you want to flip (0 to cancel)");
+                        flipCard(scanner.next());
+                        break;
+                    case "3":
+                        System.out.println(controller.getSecretObjective(playerID).getObjective().getName());
+                        //printSecretObjective(controller.getSecret);
+                        System.out.println();
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    case "4":
                         /*for (int index = 0; index < chat.getChatSize(); index++) {
                             ChatMessage message = chat.getMessage(index);
                             System.out.println(message.getSender().getNickname() + ": " + message.getText() + "/* " + message.getDateTime().toString());
                         }*/
-                    break;
-                case "5":
-                    //ChatMessage message = new ChatMessage(scanner.next(), player);
-                    //chat.sendMessage(message);
-                    break;
-                case "6":
-                    exit = true;
-                    break;
-                case "i":
-                    System.out.println("Inventory");
-                    System.out.println("Kingdom resource");
-                    // Missing methods, will add later
-                    // TODO: Add methods
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    case "5":
+                        //ChatMessage message = new ChatMessage(scanner.next(), player);
+                        //chat.sendMessage(message);
+                        break;
+                    case "6":
+                        exit = true;
+                        break;
+                    case "i":
+                        System.out.println("Inventory");
+                        System.out.println("Kingdom resource");
+                        // Missing methods, will add later
+                        // TODO: Add methods
                         /*System.out.println(("Animal:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.ANIMAL)));
                         System.out.println(("Plant:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.PLANT)));
                         System.out.println(("Fungi:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.FUNGI)));
@@ -222,18 +178,39 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(("Feather:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.FEATHER)));
                         System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
                         System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));*/
-                    break;
-                case "7":
-                    showRanking();
-                    break;
-                case "8":
-                    printCommonObjective();
-                    System.out.println();
-                    break;
-                case "9":
-                    printScoreboard(createScoreboard());
-                    break;
-                case "31":
+                        break;
+                    case "7":
+                        showRanking();
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    case "8":
+                        printCommonObjective();
+                        System.out.println();
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    case "9":
+                        printScoreboard(createScoreboard());
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    case "31":
                         /*ArrayList<PlayableCard> cards = new ArrayList<>();
                         PlayableCard card = (PlayableCard) controller.getGame().getStarterDeck().draw();
                         card.setX(0);
@@ -276,14 +253,30 @@ public class GameTerminal extends Application implements ViewController {
                         printPlayArea(matrix);
                         //printCardMatrix(getMatrix(cards), cards);
                         //printPlayArea();*/
-                    break;
-                default:
-                    System.out.println(color("Unknown command", UiColors.RED));
-                    break;
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                    default:
+                        System.out.println(color("Unknown command", UiColors.RED));
+                        actions.add(() -> {
+                            try {
+                                play();
+                            } catch (IOException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        break;
+                }
+                inputHandler.unlisten(this);
+                System.out.print("\n\n\n");
+                System.out.println("-------------------------------------------------------------------------------");
             }
-            System.out.print("\n\n\n");
-            System.out.println("-------------------------------------------------------------------------------");
-        }
+        });
 
         /*actions.add(() -> {
             try {
@@ -314,7 +307,7 @@ public class GameTerminal extends Application implements ViewController {
     private void printPlayer() {
         System.out.println("Player n° " + controller.getPlayerTurn());
         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
-        System.out.println("Nickname: " + info.get(playerID).get("Nickname"));
+        System.out.println("Nickname: " + info.get(playerID-1).get("Nickname"));
         String string = "  ";
         Token token = controller.getPlayerToken(playerID);
         if (null != token) {
@@ -326,7 +319,7 @@ public class GameTerminal extends Application implements ViewController {
             }
         }
         System.out.println("Token: " + string);
-        System.out.println("Point: " + info.get(playerID).get("Points"));
+        System.out.println("Point: " + info.get(playerID-1).get("Points"));
         ObjectiveCard card = controller.getSecretObjective(playerID);
         if (null != card) {
             System.out.println("Secret objective: " + card.getObjective().getName());
@@ -387,14 +380,15 @@ public class GameTerminal extends Application implements ViewController {
                     case "1":
                         controller.setPlayerSecretObjective(playerID, 0);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+                        inputHandler.unlisten(this);
                         break;
                     case "2":
                         controller.setPlayerSecretObjective(playerID, 1);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+                        inputHandler.unlisten(this);
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
-                        inputHandler.listen(this);
                         break;
                 }
             }
@@ -419,14 +413,15 @@ public class GameTerminal extends Application implements ViewController {
                         controller.flipStarterCard(playerID);
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        inputHandler.unlisten(this);
                         break;
                     case "f":
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        inputHandler.unlisten(this);
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
-                        inputHandler.listen(this);
                         break;
                 }
             }
@@ -448,22 +443,25 @@ public class GameTerminal extends Application implements ViewController {
                     case "1":
                         System.out.println("You chose 🔴");
                         controller.setPlayerToken(playerID, Token.RED);
+                        inputHandler.unlisten(this);
                         break;
                     case "2":
                         System.out.println("You chose 🔵");
                         controller.setPlayerToken(playerID, Token.BLUE);
+                        inputHandler.unlisten(this);
                         break;
                     case "3":
                         System.out.println("You chose 🟢");
                         controller.setPlayerToken(playerID, Token.GREEN);
+                        inputHandler.unlisten(this);
                         break;
                     case "4":
                         System.out.println("You chose 🟡");
                         controller.setPlayerToken(playerID, Token.YELLOW);
+                        inputHandler.unlisten(this);
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
-                        inputHandler.listen(this);
                         break;
                 }
             }
@@ -539,6 +537,7 @@ public class GameTerminal extends Application implements ViewController {
                             actions.add(() -> {
                                 controller.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
                                 controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+                                inputHandler.unlisten(this);
                             });
                     }
                 }
@@ -1223,44 +1222,119 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     public void login() {
-        boolean exit = false;
-        NetworkMode selectedMode = null;
-        while (!exit) {
-            System.out.println("Select connection mode");
-            System.out.println("Digit r to choose RMI");
-            System.out.println("Digit s to choose Socket");
-            String string = scanner.next();
-            if (string.equals("r")) {
-                selectedMode = NetworkMode.RMI;
-                exit = true;
-            } else if (string.equals("s")) {
-                selectedMode = NetworkMode.SOCKET;
-                exit = true;
-            } else {
-                System.out.println("Invalid input: try again!");
-            }
-        }
-
-        exit = false;
-        while (!exit) {
-            System.out.println("Digit IP Address: ");
-            String ip = scanner.next();
-            if (!ip.isEmpty() && null != selectedMode) {
-                try {
-                    if (selectedMode == NetworkMode.RMI) {
-                        controller = new RmiClient(ip);
-                    } else {
-                        controller = new SocketClient(ip);
-                    }
-                    controller.connect();
-                    exit = true;
-                } catch (NotBoundException | IOException e) {
-                    System.out.println("Invalid IP Address: try again!");
+        System.out.println("Select connection mode");
+        System.out.println("Digit r to choose RMI");
+        System.out.println("Digit s to choose Socket");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if (input.equals("r")) {
+                    inputHandler.unlisten(this);
+                    askForIPAddress(NetworkMode.RMI);
+                } else if (input.equals("s")) {
+                    inputHandler.unlisten(this);
+                    askForIPAddress(NetworkMode.SOCKET);
+                } else {
+                    System.out.println("Invalid input: try again!");
                 }
             }
+        });
+
+
+    }
+
+    private void askForIPAddress(NetworkMode selectedMode) {
+        System.out.println("Digit IP Address: ");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if (!input.isEmpty() && null != selectedMode) {
+                    try {
+                        if (selectedMode == NetworkMode.RMI) {
+                            controller = new RmiClient(input);
+                        } else {
+                            controller = new SocketClient(input);
+                        }
+                        controller.connect();
+                        inputHandler.unlisten(this);
+                        actions.add(() -> askForNickName());
+                    } catch (NotBoundException | IOException e) {
+                        System.out.println("Invalid IP Address: try again!");
+                    }
+                }
+            }
+        });
+    }
+
+    private void askForNickName() {
+        System.out.println("--- Insert Nickname ---");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                switch (input) {
+                    case "":
+                        break;
+                    default:
+                        player = new Player(input);
+                        ArrayList<HashMap<String, String>> games = null;
+                        try {
+                            games = controller.getAvailableGames();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if (games.isEmpty()) {
+                            try {
+                                createNewGame();
+                            } catch (RemoteException | AlreadyBoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                            isWaiting = true;
+                            // Setups the User's Input Handler
+                        } else {
+                            ArrayList<HashMap<String, String>> finalGames = games;
+                            actions.add(() -> askToJoinGame(finalGames));
+                        }
+                }
+            }
+        });
+    }
+
+    private void askToJoinGame(ArrayList<HashMap<String, String>> games) {
+        System.out.println("Games available:");
+        for (HashMap<String, String> game : games) {
+            int gameID = games.indexOf(game) + 1;
+            System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
         }
-
-
+        System.out.println("\nPress c to create a new one");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if (input.equals("c")) {
+                    try {
+                        createNewGame();
+                    } catch (RemoteException | AlreadyBoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    isWaiting = true;
+                } else {
+                    try {
+                        int gameID = Integer.parseInt(input);
+                        controller.pickGame(gameID - 1);
+                        setViewController();
+                        controller.addPlayer(player);
+                        playerID = controller.getIndexOfPlayer(player.getNickname());
+                        controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+                        System.out.println("Waiting...");
+                        isWaiting = true;
+                        inputHandler.unlisten(this);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number. Try again!");
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
     }
 
     private String printObjectiveLine(ObjectiveCard card, int line) {
@@ -1369,7 +1443,7 @@ public class GameTerminal extends Application implements ViewController {
                         string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
                         break;
                     case 2:
-                        string = "🟨⬜⬜⬜🟦⬜⬜⬜🟨";
+                        string = "🟨⬜⬜⬜🟥⬜⬜⬜🟨";
                         break;
                     case 3:
                         string = "🟨⬜⬜🟦⬜⬜⬜⬜🟨";

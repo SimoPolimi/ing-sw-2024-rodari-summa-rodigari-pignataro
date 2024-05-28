@@ -46,6 +46,5 @@ public class TerminalInputHandler implements Runnable, TerminalObservable {
         if (null != listener) {
             listener.onEvent(input);
         }
-        listener = null;
     }
 }
