@@ -299,13 +299,13 @@ public class Deck implements Observable, Serializable {
             case "diagonalPlacingPurple":
                 return new DiagonalPlacementObjective(points, KingdomResource.INSECT, isLeftToRight, name, description);
             case "LShapedPlacingRed":
-                return new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, CornerPosition.BOTTOM_RIGHT, name, description);
+                return new LShapedPlacementObjective(points, KingdomResource.FUNGI, KingdomResource.PLANT, LPlacementOffset.BOTTOM_RIGHT, name, description);
             case "LShapedPlacingGreen":
-                return new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, CornerPosition.BOTTOM_LEFT, name, description);
+                return new LShapedPlacementObjective(points, KingdomResource.PLANT, KingdomResource.INSECT, LPlacementOffset.BOTTOM_LEFT, name, description);
             case "LShapedPlacingBlue":
-                return new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, CornerPosition.BOTTOM_RIGHT, name, description);
+                return new LShapedPlacementObjective(points, KingdomResource.ANIMAL, KingdomResource.FUNGI, LPlacementOffset.BOTTOM_RIGHT, name, description);
             case "LShapedPlacingPurple":
-                return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, CornerPosition.TOP_LEFT, name, description);
+                return new LShapedPlacementObjective(points, KingdomResource.INSECT, KingdomResource.ANIMAL, LPlacementOffset.TOP_LEFT, name, description);
             case "forEach3KingdomResourcesFungi":
                 return new ItemCountObjective(points, 3, KingdomResource.FUNGI, name, description);
             case "forEach3KingdomResourcesPlant":
