@@ -55,10 +55,9 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
                 case READY_TO_DRAW_STARTING_HAND -> string = "Ready to Draw Starting Hand";
                 case END_GAME -> string = "End Game";
                 case CONNECTING -> string = "Connecting";
-                case LAST_TURN -> string = "Last Turn";
+                case SEMI_LAST_TURN -> string = "Semi Last Turn";
                 case MY_TURN -> string = "My Turn";
                 case NOT_MY_TURN -> string = "Not My Turn";
-                case COUNTING_POINTS -> string = "Counting Points";
             }
             gameInfo.put("Status", string);
             availableGames.add(gameInfo);

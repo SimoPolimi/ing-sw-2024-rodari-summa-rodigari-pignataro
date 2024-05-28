@@ -5,12 +5,14 @@ import it.polimi.ingsw.gc42.model.classes.Deck;
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.interfaces.PlayersNumberListener;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game implements Observable, Serializable {
     private PlayingDeck resourcePlayingDeck;
@@ -56,19 +58,14 @@ public class Game implements Observable, Serializable {
         this.playerTurn = 1;
     }
 
-    public void startGame() {
 
-    }
-
-    // TODO: remove
     public void endGame() {
-
+        notifyListeners("End Game");
     }
 
     private void checkEndGame() {
         if ((isResourceDeckEmpty && isGoldDeckEmpty) || playerHasReachedTwentyPoints) {
-            notifyListeners("End game");
-            endGame();
+            notifyListeners("Semi Last Turn");
         }
     }
 
@@ -307,6 +304,23 @@ public class Game implements Observable, Serializable {
         return index + 1;
     }
 
+    public ArrayList<HashMap<String, String>> countPoints(){
+        ArrayList<HashMap<String, String>> points = new ArrayList<>();
+        for (Player player : players) {
+            HashMap<String, String> playerPoints = new HashMap<>();
+            playerPoints.put("Nickname", player.getNickname());
+            int secretObjectivePoints = player.getSecretObjective().getObjective().calculatePoints(player.getPlayField().getPlayedCards());
+            int commonObjective1Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(1)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
+            int commonObjective2Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(2)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
+            playerPoints.put("SecretObjectivePoints", String.valueOf(secretObjectivePoints));
+            playerPoints.put("CommonObjective1Points", String.valueOf(commonObjective1Points));
+            playerPoints.put("CommonObjective2Points", String.valueOf(commonObjective2Points));
+            playerPoints.put("TotalPoints", String.valueOf(secretObjectivePoints + commonObjective1Points + commonObjective2Points));
+            points.add(playerPoints);
+        }
+        return points;
+    }
+
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
@@ -362,10 +376,9 @@ public class Game implements Observable, Serializable {
                     }
                 }
             }
-            // TODO: check uses
-            case "End game" ->{
+            case "Semi Last Turn" ->{
                 for (Listener l: listeners) {
-                    if(l instanceof LastTurnListener){
+                    if(l instanceof SemiLastTurnListener){
                         l.onEvent();
                     }
                 }

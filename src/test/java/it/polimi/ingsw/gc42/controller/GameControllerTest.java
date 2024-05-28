@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc42.controller;
 
+import it.polimi.ingsw.gc42.model.classes.cards.Card;
+import it.polimi.ingsw.gc42.model.classes.cards.CardSide;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
@@ -43,11 +45,67 @@ class GameControllerTest {
     }
 
     @Test
-    void playCard() {
+    void playCard() throws RemoteException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot");
+        controller.addPlayer(player);
+        player.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+        player.setStarterCard();
+        player.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+        Card cardToBePlayed = player.getHandCard(0);
+
+        // when
+        controller.playCard(controller.getGame().getIndexOfPlayer("bot"), 1, 0, 1);
+
+        // then
+        assertEquals(player.getPlayField().getLastPlayedCard(), cardToBePlayed);
+    }
+
+    void dontGrabCardIfSlotsAreEmpty() throws RemoteException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot");
+        controller.addPlayer(player);
+        player.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+        player.setStarterCard();
+        player.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+        // Empty decks and empty slots
+        while (controller.getGame().getResourcePlayingDeck().getDeck().getNumberOfCards() > 0) {
+            controller.getGame().getResourcePlayingDeck().getDeck().draw();
+        }
+        while (controller.getGame().getGoldPlayingDeck().getDeck().getNumberOfCards() > 0) {
+            controller.getGame().getGoldPlayingDeck().getDeck().draw();
+        }
+        controller.getGame().getResourcePlayingDeck().setSlot(null, 1);
+        controller.getGame().getResourcePlayingDeck().setSlot(null, 2);
+        controller.getGame().getGoldPlayingDeck().setSlot(null, 1);
+        controller.getGame().getGoldPlayingDeck().setSlot(null, 2);
+
+        // when
+        controller.playCard(controller.getGame().getIndexOfPlayer("bot"), 1, 0, 1);
+
+        // then
+        assertEquals(player.getHandSize(), 2);
     }
 
     @Test
-    void flipCard() {
+    void flipCard() throws RemoteException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot");
+        controller.addPlayer(player);
+        player.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+        player.setStarterCard();
+        player.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+        CardSide cardSide = player.getHandCard(0).getShowingSide();
+
+        // when
+        controller.flipCard(controller.getGame().getIndexOfPlayer("bot"), 0);
+
+        // then
+        assertNotEquals(player.getHandCard(0).getShowingSide(), cardSide);
+
     }
 
     @Test

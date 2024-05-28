@@ -52,11 +52,17 @@ public class GameController implements Serializable, Observable {
         this.name = name;
         this.game = new Game();
         currentStatus = GameStatus.NOT_IN_GAME;
-        // Check last turn for drawing and playing mechanics
         game.setListener(new LastTurnListener() {
             @Override
             public void onEvent() {
                 currentStatus = GameStatus.LAST_TURN;
+            }
+        });
+        // Check last turn for drawing and playing mechanics
+        game.setListener(new SemiLastTurnListener() {
+            @Override
+            public void onEvent() {
+                currentStatus = GameStatus.SEMI_LAST_TURN;
             }
         });
         game.getResourcePlayingDeck().getDeck().setListener(new DeckViewListener() {
@@ -226,6 +232,28 @@ public class GameController implements Serializable, Observable {
 
     public void nextTurn() {
         int turn = game.getPlayerTurn();
+        if(getPlayer(turn).isFirst()) {
+            if(currentStatus.equals(GameStatus.SEMI_LAST_TURN)){
+                setCurrentStatus(GameStatus.LAST_TURN);
+                for (RemoteViewController view: views) {
+                    /*try {
+                        //TODO: view.notifyLastTurn();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }*/
+                }
+            }else if (currentStatus.equals(GameStatus.LAST_TURN)){
+                setCurrentStatus(GameStatus.END_GAME);
+                for (RemoteViewController view: views) {
+                    /*try {
+                        // TODO view.notifyEndGame(game.countPoints());
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }*/
+                }
+            }
+        }
+
         if (turn == game.getNumberOfPlayers()) {
             turn = 1;
         } else {
@@ -445,8 +473,6 @@ public class GameController implements Serializable, Observable {
                     game.getPlayer(i+1).setStatus(GameStatus.NOT_MY_TURN);
                 }
                 nextTurn();
-            case COUNTING_POINTS:
-                break;
             case END_GAME:
                 break;
             default:
