@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc42.view.Dialog;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
-import it.polimi.ingsw.gc42.view.Classes.HandCardView;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
@@ -70,14 +69,33 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         availableTokens.remove(tokens.get(number));
     }
 
+    // Makes the Card grey when another Player has picked it.
+    public void greyToken(Token token) {
+        switch (token) {
+            case BLUE -> greyToken(0);
+            case RED -> greyToken(1);
+            case YELLOW -> greyToken(2);
+            case GREEN -> greyToken(3);
+        }
+    }
+
     // Makes the Card colored again.
-    public void ungreyCard(int number) {
+    public void ungreyToken(int number) {
         DropShadow effect = new DropShadow();
         effect.setWidth(50);
         effect.setHeight(50);
         effect.setBlurType(BlurType.GAUSSIAN);
         views.get(number).setEffect(effect);
         availableTokens.add(tokens.get(number));
+    }
+
+    public void ungreyToken(Token token) {
+        switch (token) {
+            case BLUE -> ungreyToken(0);
+            case RED -> ungreyToken(1);
+            case YELLOW -> ungreyToken(2);
+            case GREEN -> ungreyToken(3);
+        }
     }
 
     @Override
@@ -177,8 +195,6 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
     }
 
     private void moveLeft() {
-        deselectTokenNumber(lastSelected);
-        lastSelected = selectedToken;
         if (selectedToken == -1) {
             selectedToken = 0;
         } else if (selectedToken == 0) {
@@ -186,12 +202,18 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         } else {
             selectedToken--;
         }
-        selectTokenNumber(selectedToken);
+        if (!availableTokens.contains(tokens.get(selectedToken))) {
+            moveLeft();
+        } else {
+            if (lastSelected != -1 && availableTokens.contains(tokens.get(lastSelected))) {
+                deselectTokenNumber(lastSelected);
+            }
+            lastSelected = selectedToken;
+            selectTokenNumber(selectedToken);
+        }
     }
 
     private void moveRight() {
-        deselectTokenNumber(lastSelected);
-        lastSelected = selectedToken;
         if (selectedToken == -1) {
             selectedToken = 0;
         } else if(selectedToken == tokens.size() - 1) {
@@ -199,8 +221,15 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         } else {
             selectedToken++;
         }
-        selectTokenNumber(selectedToken);
-    }
+        if (!availableTokens.contains(tokens.get(selectedToken))) {
+            moveRight();
+        } else {
+            if (lastSelected != -1 && availableTokens.contains(tokens.get(lastSelected))) {
+                deselectTokenNumber(lastSelected);
+            }
+            lastSelected = selectedToken;
+            selectTokenNumber(selectedToken);
+        }    }
 
     private void deselectAllTokens() {
         if (selectedToken > 0 && selectedToken < tokens.size()) {
@@ -224,18 +253,20 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
     }
 
     private void pickToken(int number) {
-        if (number != -1) {
+        if (number != -1 && availableTokens.contains(tokens.get(number))) {
             pickedToken = tokens.get(number);
             notifyListeners("Token has been picked");
         }
     }
 
     private void selectToken(Token token) {
-        if (selectedToken >= 0 && selectedToken < tokens.size()) {
-            deselectToken(tokens.get(selectedToken));
+        if (availableTokens.contains(token)) {
+            if (selectedToken >= 0 && selectedToken < tokens.size()) {
+                deselectToken(tokens.get(selectedToken));
+            }
+            selectView(views.get(tokens.indexOf(token)));
+            selectedToken = tokens.indexOf(token);
         }
-        selectView(views.get(tokens.indexOf(token)));
-        selectedToken = tokens.indexOf(token);
     }
 
     private void deselectToken(Token token) {
@@ -306,10 +337,14 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
                 effect.setBlurType(BlurType.GAUSSIAN);
                 view.setEffect(effect);
                 view.setOnMouseEntered((e) -> {
-                    selectToken(token);
+                    if (availableTokens.contains(token)) {
+                        selectToken(token);
+                    }
                 });
                 view.setOnMouseExited((e) -> {
-                    deselectToken(token);
+                    if (availableTokens.contains(token)) {
+                        deselectToken(token);
+                    }
                 });
                 view.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override

@@ -578,10 +578,7 @@ public class GameTerminal extends Application implements ViewController {
             if (handSize == 3) {
                 System.out.println("Your Hand:");
                 // Only shows the updated Hand in meaningful situations
-                for (int i = 0; i < controller.getPlayersHandSize(playerID); i++) {
-                    printCard(controller.getPlayersHandCard(playerID, i));
-                    System.out.println();
-                }
+               printHandCards();
             }
         }
     }
@@ -1620,4 +1617,3 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 }
-

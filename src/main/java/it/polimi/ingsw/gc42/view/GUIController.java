@@ -616,6 +616,9 @@ public class GUIController implements ViewController {
         } else if (null != leftTable && playerID == leftTable.getPlayer()) {
             leftTable.refreshToken();
         }
+        if (this.playerID != playerID && isShowingDialog && showingDialog instanceof SharedTokenPickerDialog) {
+            ((SharedTokenPickerDialog) showingDialog).greyToken(controller.getPlayerToken(playerID));
+        }
     }
 
     @Override
