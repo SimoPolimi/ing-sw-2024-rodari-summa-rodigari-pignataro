@@ -69,6 +69,9 @@ public enum MessageType {
     NOTIFY_TURN_CHANGED,
     GET_READY,
 
+    NOTIFY_LAST_TURN,
+    NOTIFY_END_GAME,
+
     //new???
     GET_INDEX_OF_PLAYER,
 

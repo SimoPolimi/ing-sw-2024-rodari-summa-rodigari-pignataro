@@ -255,4 +255,14 @@ public class NewGameViewController implements Observable, ViewController {
     public void getReady(int numberOfPlayers) {
         // Don't need
     }
+
+    @Override
+    public void notifyLastTurn() throws RemoteException {
+        // Don't need
+    }
+
+    @Override
+    public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        // Don't need
+    }
 }

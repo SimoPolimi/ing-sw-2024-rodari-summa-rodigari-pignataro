@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface RemoteViewController extends Remote {
 
@@ -27,4 +29,7 @@ public interface RemoteViewController extends Remote {
     void notifyCommonObjectivesChanged() throws RemoteException;
     void notifyTurnChanged() throws RemoteException;
     void getReady(int numberOfPlayers) throws RemoteException;
+
+    void notifyLastTurn() throws RemoteException;
+    void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException;
 }

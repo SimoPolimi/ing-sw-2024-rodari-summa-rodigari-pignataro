@@ -753,4 +753,14 @@ public class GUIController implements ViewController {
     public boolean isShowingGlobalMap() {
         return isShowingGlobalMap;
     }
+
+    @Override
+    public void notifyLastTurn() throws RemoteException {
+        // TODO: Implement
+    }
+
+    @Override
+    public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        // TODO: Implement
+    }
 }

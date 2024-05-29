@@ -1616,4 +1616,14 @@ public class GameTerminal extends Application implements ViewController {
                     "\t" + getPrintCardLine(controller.getPlayersHandCard(playerID, 2), line, true, null));
         }
     }
+
+    @Override
+    public void notifyLastTurn() throws RemoteException {
+        // TODO: Implement
+    }
+
+    @Override
+    public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        // TODO: Implement
+    }
 }

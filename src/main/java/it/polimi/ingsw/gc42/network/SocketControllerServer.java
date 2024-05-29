@@ -242,6 +242,16 @@ public class SocketControllerServer implements ServerNetworkController {
                         public void getReady(int numberOfPlayers) {
                             sendMessage(socket, new IntResponse(MessageType.GET_READY, numberOfPlayers));
                         }
+
+                        @Override
+                        public void notifyLastTurn() throws RemoteException {
+                            sendMessage(socket, new Message(MessageType.NOTIFY_LAST_TURN));
+                        }
+
+                        @Override
+                        public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+                            sendMessage(socket, new ListMapStrStrResponse(MessageType.NOTIFY_END_GAME, points));
+                        }
                     });
                 case CLIENT_STATE:
                     aliveSockets.get(socket).setAlive(ClientState.ALIVE);

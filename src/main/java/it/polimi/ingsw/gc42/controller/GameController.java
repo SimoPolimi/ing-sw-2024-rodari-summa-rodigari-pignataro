@@ -236,20 +236,20 @@ public class GameController implements Serializable, Observable {
             if(currentStatus.equals(GameStatus.SEMI_LAST_TURN)){
                 setCurrentStatus(GameStatus.LAST_TURN);
                 for (RemoteViewController view: views) {
-                    /*try {
-                        //TODO: view.notifyLastTurn();
+                    try {
+                        view.notifyLastTurn();
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
-                    }*/
+                    }
                 }
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
                 setCurrentStatus(GameStatus.END_GAME);
                 for (RemoteViewController view: views) {
-                    /*try {
-                        // TODO view.notifyEndGame(game.countPoints());
+                    try {
+                        view.notifyEndGame(game.countPoints());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
-                    }*/
+                    }
                 }
             }
         }

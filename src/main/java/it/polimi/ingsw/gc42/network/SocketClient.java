@@ -113,6 +113,8 @@ public class SocketClient implements NetworkController {
             case NOTIFY_COMMON_OBJECTIVES_CHANGED -> clientController.notifyCommonObjectivesChanged();
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
             case GET_READY -> clientController.getReady(((IntResponse) message).getResponse());
+            case NOTIFY_LAST_TURN -> clientController.notifyLastTurn();
+            case NOTIFY_END_GAME -> clientController.notifyEndGame(((ListMapStrStrResponse) message).getResponse());
             // Response from server
             default -> queue.add(message);
         }

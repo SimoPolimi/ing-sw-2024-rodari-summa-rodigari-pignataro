@@ -4,6 +4,9 @@ import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface ViewController extends Serializable {
     void showSecretObjectivesSelectionDialog();
@@ -25,4 +28,6 @@ public interface ViewController extends Serializable {
     void notifyTurnChanged();
     void showWaitingForServerDialog();
     void getReady(int numberOfPlayers);
+    void notifyLastTurn() throws RemoteException;
+    void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException;
 }
