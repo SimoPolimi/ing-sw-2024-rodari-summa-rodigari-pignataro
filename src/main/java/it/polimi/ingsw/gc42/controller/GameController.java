@@ -203,7 +203,7 @@ public class GameController implements Serializable, Observable {
             public void onEvent() {
                 for (RemoteViewController view : views) {
                     try {
-                        view.notifyPlayersPointsChanged();
+                        view.notifyPlayersPointsChanged(player.getToken(), player.getPoints());
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.network.ClientController;
@@ -196,7 +197,7 @@ public class NewGameViewController implements Observable, ViewController {
     }
 
     @Override
-    public void notifyPlayersPointsChanged() {
+    public void notifyPlayersPointsChanged(Token token, int newPoints) {
         // Don't need
     }
 

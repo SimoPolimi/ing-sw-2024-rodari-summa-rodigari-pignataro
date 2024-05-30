@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.network;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
@@ -194,8 +195,8 @@ public class SocketControllerServer implements ServerNetworkController {
                         }
 
                         @Override
-                        public void notifyPlayersPointsChanged() {
-                            sendMessage(socket, new Message(MessageType.NOTIFY_PLAYERS_POINTS_CHANGED));
+                        public void notifyPlayersPointsChanged(Token token, int newPoints) {
+                            sendMessage(socket, new PlayersPointsChangedMessage(MessageType.NOTIFY_PLAYERS_POINTS_CHANGED, token, newPoints));
                         }
 
                         @Override

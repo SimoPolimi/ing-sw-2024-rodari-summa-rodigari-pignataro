@@ -34,9 +34,9 @@
                                                         <Cursor fx:constant="HAND" />
                                                     </cursor>
                                                 </ImageView>
-                                                <StackPane fx:id="tokensContainer" disable="true" translateX="-60" translateY="215">
+                                                <StackPane fx:id="tokensContainer" disable="true">
                                                     <children>
-                                                        <ImageView fx:id="blueToken" disable="true" fitWidth="50" preserveRatio="true" visible="true">
+                                                        <ImageView fx:id="blueToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="215.0" visible="false">
                                                             <image>
                                                                 <Image url="@blueToken.png" />
                                                             </image>
@@ -44,7 +44,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="redToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-5" visible="true">
+                                                        <ImageView fx:id="redToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="210.0" visible="false">
                                                             <image>
                                                                 <Image url="@redToken.png" />
                                                             </image>
@@ -52,7 +52,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="greenToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-10" visible="true">
+                                                        <ImageView fx:id="greenToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="205.0" visible="false">
                                                             <image>
                                                                 <Image url="@greenToken.png" />
                                                             </image>
@@ -60,7 +60,7 @@
                                                                 <DropShadow />
                                                             </effect>
                                                         </ImageView>
-                                                        <ImageView fx:id="yellowToken" disable="true" fitWidth="50" preserveRatio="true" translateY="-15" visible="true">
+                                                        <ImageView fx:id="yellowToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="200.0" visible="false">
                                                             <image>
                                                                 <Image url="@yellowToken.png" />
                                                             </image>
@@ -71,8 +71,8 @@
                                                     </children>
                                                 </StackPane>
                                                 <StackPane fx:id="resourceDeckContainer" maxHeight="120" maxWidth="160" rotate="25" translateX="-400" translateY="-350">
-                                       <effect>
-                                          <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                            <effect>
+                                                <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
                                        </effect></StackPane>
                                                 <StackPane fx:id="goldDeckContainer" maxHeight="120" maxWidth="160" rotate="-25" translateX="400" translateY="-350">
                                        <effect>

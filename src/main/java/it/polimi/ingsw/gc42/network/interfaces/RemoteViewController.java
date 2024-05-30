@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -19,7 +20,7 @@ public interface RemoteViewController extends Remote {
     void notifyGameIsStarting() throws RemoteException;
     void notifyDeckChanged(CardType type) throws RemoteException;
     void notifySlotCardChanged(CardType type, int slot) throws RemoteException;
-    void notifyPlayersPointsChanged() throws RemoteException;
+    void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException;
     void notifyNumberOfPlayersChanged() throws RemoteException;
     void notifyPlayersTokenChanged(int playerID) throws RemoteException;
     void notifyPlayersPlayAreaChanged(int playerID) throws RemoteException;

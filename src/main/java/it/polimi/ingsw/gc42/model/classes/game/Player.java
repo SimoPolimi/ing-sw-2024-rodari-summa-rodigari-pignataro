@@ -330,12 +330,13 @@ public class Player implements Observable, Serializable {
             card = hand.get(handCard - 1);
         }
         try {
+            int points = 0;
             if(hand.size() == 3 || card instanceof StarterCard){
                 card.setX(x);
                 card.setY(y);
                 if (card.canBePlaced(playField.getPlayedCards())) {
                     if (card.isFrontFacing()) {
-                        setPoints(getPoints() + card.getEarnedPoints());
+                        points += card.getEarnedPoints();
                     }
                     playField.addCard(card, x, y);
                     if (card instanceof GoldCard) {
@@ -343,9 +344,10 @@ public class Player implements Observable, Serializable {
                             if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
                                 ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));
                             }
-                            setPoints(getPoints() + ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards()));
+                            points += ((GoldCard) card).getObjective().calculatePoints(playField.getPlayedCards());
                         }
                     }
+                    setPoints(getPoints() + points);
                 } else throw new PlacementConditionNotMetException();
             }else throw new IllegalActionException();
         } catch (IllegalPlacementException e) {

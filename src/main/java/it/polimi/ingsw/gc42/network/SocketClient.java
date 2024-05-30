@@ -103,7 +103,7 @@ public class SocketClient implements NetworkController {
             case NOTIFY_GAME_IS_STARTING -> clientController.notifyGameIsStarting();
             case NOTIFY_DECK_CHANGED -> clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
             case NOTIFY_SLOT_CARD_CHANGED -> clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
-            case NOTIFY_PLAYERS_POINTS_CHANGED -> clientController.notifyPlayersPointsChanged();
+            case NOTIFY_PLAYERS_POINTS_CHANGED -> clientController.notifyPlayersPointsChanged(((PlayersPointsChangedMessage) message).getToken(), ((PlayersPointsChangedMessage) message).getNewPoints());
             case NOTIFY_NUMBER_OF_PLAYERS_CHANGED -> clientController.notifyNumberOfPlayersChanged();
             case NOTIFY_PLAYERS_TOKEN_CHANGED -> clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_PLAYERS_PLAY_AREA_CHANGED -> clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());

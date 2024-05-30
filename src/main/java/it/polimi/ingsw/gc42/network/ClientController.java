@@ -2,11 +2,14 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ClientController extends UnicastRemoteObject implements RemoteViewController {
     private final ViewController viewController;
@@ -53,8 +56,8 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
-    public void notifyPlayersPointsChanged() throws RemoteException {
-        viewController.notifyPlayersPointsChanged();
+    public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {
+        viewController.notifyPlayersPointsChanged(token, newPoints);
     }
 
     @Override
@@ -100,5 +103,15 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     @Override
     public void getReady(int numberOfPlayers) throws RemoteException {
         viewController.getReady(numberOfPlayers);
+    }
+
+    @Override
+    public void notifyLastTurn() throws RemoteException {
+        viewController.notifyLastTurn();
+    }
+
+    @Override
+    public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        viewController.notifyEndGame(points);
     }
 }

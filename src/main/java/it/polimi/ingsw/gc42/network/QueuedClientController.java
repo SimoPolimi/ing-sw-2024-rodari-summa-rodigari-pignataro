@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.view.GameTerminal;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 
@@ -51,8 +52,8 @@ public class QueuedClientController extends ClientController {
     }
 
     @Override
-    public void notifyPlayersPointsChanged() throws RemoteException {
-        terminal.addToActionQueue(() -> terminal.notifyPlayersPointsChanged());
+    public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {
+        terminal.addToActionQueue(() -> terminal.notifyPlayersPointsChanged(token, newPoints));
     }
 
     @Override

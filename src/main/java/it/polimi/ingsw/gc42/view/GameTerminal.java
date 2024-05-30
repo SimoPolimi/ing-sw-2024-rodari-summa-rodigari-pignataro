@@ -516,7 +516,7 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     @Override
-    public void notifyPlayersPointsChanged() {
+    public void notifyPlayersPointsChanged(Token token, int newPoints) {
         showRanking();
     }
 

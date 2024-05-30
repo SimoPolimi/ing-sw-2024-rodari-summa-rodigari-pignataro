@@ -93,6 +93,14 @@ public class GUIController implements ViewController {
     private StackPane commonObjDescriptiionBox2;
     @FXML
     private ImageView fullTableButton;
+    @FXML
+    private ImageView redToken;
+    @FXML
+    private ImageView blueToken;
+    @FXML
+    private ImageView yellowToken;
+    @FXML
+    private ImageView greenToken;
 
     // Attributes
     private Dialog showingDialog;
@@ -112,6 +120,8 @@ public class GUIController implements ViewController {
     private TableView topTable = null;
     private TableView leftTable = null;
 
+    private ScoreBoardView scoreBoard;
+
 
     public void build() {
         table = new TableView(false, this, controller);
@@ -130,6 +140,8 @@ public class GUIController implements ViewController {
                 new DeckView(resourceDeckContainer), new DeckView(goldDeckContainer), resourceDown1,
                 resourceDown2, goldDown1, goldDown2, commonObjective1, commonObjective2, objName1, objDescr1,
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
+
+        scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
     }
 
     public NetworkController getNetworkController() {
@@ -596,8 +608,9 @@ public class GUIController implements ViewController {
     }
 
     @Override
-    public void notifyPlayersPointsChanged() {
+    public void notifyPlayersPointsChanged(Token token, int newPoints) {
         refreshScoreBoard();
+        Platform.runLater(() -> scoreBoard.animatePath(token, newPoints));
     }
 
     @Override
@@ -616,9 +629,11 @@ public class GUIController implements ViewController {
         } else if (null != leftTable && playerID == leftTable.getPlayer()) {
             leftTable.refreshToken();
         }
+        Token token = controller.getPlayerToken(playerID);
         if (this.playerID != playerID && isShowingDialog && showingDialog instanceof SharedTokenPickerDialog) {
-            ((SharedTokenPickerDialog) showingDialog).greyToken(controller.getPlayerToken(playerID));
+            ((SharedTokenPickerDialog) showingDialog).greyToken(token);
         }
+        scoreBoard.setTokenInPosition(token, 0);
     }
 
     @Override

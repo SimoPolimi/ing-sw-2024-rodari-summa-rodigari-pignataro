@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view.Interfaces;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -17,7 +18,7 @@ public interface ViewController extends Serializable {
     void notifyGameIsStarting();
     void notifyDeckChanged(CardType type);
     void notifySlotCardChanged(CardType type, int slot);
-    void notifyPlayersPointsChanged();
+    void notifyPlayersPointsChanged(Token token, int newPoints);
     void notifyNumberOfPlayersChanged();
     void notifyPlayersTokenChanged(int playerID);
     void notifyPlayersPlayAreaChanged(int playerID);
