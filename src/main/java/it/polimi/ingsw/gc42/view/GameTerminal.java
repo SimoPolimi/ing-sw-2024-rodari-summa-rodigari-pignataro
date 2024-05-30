@@ -11,6 +11,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -52,6 +54,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void start(Stage stage) throws Exception {
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_16));
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
         pool.submit(inputHandler);

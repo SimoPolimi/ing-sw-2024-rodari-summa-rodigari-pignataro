@@ -8,9 +8,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -80,7 +78,9 @@ public class Deck implements Observable, Serializable {
         Deck deck = new Deck(type);
         int num;
         List<JsonElement> list;
-        JsonObject object = JsonParser.parseReader(new JsonReader(new FileReader("src/main/resources/data.json"))).getAsJsonObject();
+        InputStream inputStream = Objects.requireNonNull(Deck.class.getResourceAsStream("/data.json"));
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        JsonObject object = JsonParser.parseReader(new JsonReader(inputStreamReader)).getAsJsonObject();
         switch (type) {
             case RESOURCECARD:
                 num = object.get("Game").getAsJsonObject().get("ResourceCardsNumber").getAsInt();
