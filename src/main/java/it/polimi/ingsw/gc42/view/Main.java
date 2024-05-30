@@ -1,6 +1,5 @@
-package it.polimi.ingsw.gc42;
+package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.view.Launcher;
 
 public class Main {
     public static void main(String[] args) {
