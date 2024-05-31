@@ -57,40 +57,21 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "chcp", "65001").inheritIO();
-        Process p = null;
-        try {
-            p = pb.start();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            p.waitFor();
-            System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        /*System.out.println("🍄🐺🌳🦋🪶🍷📜");
-        System.out.println("If you have trouble seeing any of those symbols, you need to enable the UTF-8 characters in your Terminal");
-        System.out.println("If you are in Windows we enabled them for you, you just need to reboot the game");
-        boolean exit2 = false;
-        boolean quit = false;
-        while (!exit2) {
-            System.out.println("Do you want to continue? (y/n)");
-            String input = scanner.next();
-            if (input.equals("y")) {
-                exit2 = true;
-            } else if (input.equals("n")) {
-                exit2 = true;
-                quit = true;
-            } else {
-                System.out.println("Unknown command, try again...");
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "chcp", "65001").inheritIO();
+            Process p = null;
+            try {
+                p = pb.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                p.waitFor();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
-        if (quit) {
-            System.exit(0);
-        }*/
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
