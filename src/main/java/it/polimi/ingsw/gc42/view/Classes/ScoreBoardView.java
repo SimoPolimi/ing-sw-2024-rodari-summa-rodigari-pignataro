@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class ScoreBoardView {
     // Attributes
-    private final StackPane container;
-
     private final ImageView blueToken;
     private final ImageView redToken;
     private final ImageView greenToken;
@@ -34,15 +32,13 @@ public class ScoreBoardView {
     private static final int JUMP_ANIMATION_DURATION = 100;
 
     // Constructor Method
-    public ScoreBoardView(StackPane container, ImageView redToken, ImageView blueToken, ImageView greenToken, ImageView yellowToken) {
-        this.container = container;
+    public ScoreBoardView(ImageView redToken, ImageView blueToken, ImageView greenToken, ImageView yellowToken) {
         this.redToken = redToken;
         this.blueToken = blueToken;
         this.greenToken = greenToken;
         this.yellowToken = yellowToken;
         // Initializes the Coordinates needed to animate the Transitions
         initCoordinates();
-        // Sets all the Tokens in Position 0
     }
 
     // Methods
