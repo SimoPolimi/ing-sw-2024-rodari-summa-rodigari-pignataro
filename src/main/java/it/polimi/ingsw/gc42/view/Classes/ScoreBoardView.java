@@ -4,28 +4,38 @@ import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class ScoreBoardView {
     // Attributes
-    private final ImageView redToken;
+    private final StackPane container;
+
     private final ImageView blueToken;
+    private final ImageView redToken;
     private final ImageView greenToken;
     private final ImageView yellowToken;
+
+    private final ArrayList<Token> playingTokens = new ArrayList<>();
 
     private final ArrayList<ArrayList<Token>> tokensInPosition = new ArrayList<>(NUMBER_OF_POSITIONS);
     private final ArrayList<Coordinates> positions = new ArrayList<>(NUMBER_OF_POSITIONS);
 
-    private static final int OVERLAPPING_PADDING = -5;
+    private static final int BLUE_PADDING = 0;
+    private static final int RED_PADDING = -5;
+    private static final int GREEN_PADDING = -10;
+    private static final int YELLOW_PADDING = -15;
     private static final int NUMBER_OF_POSITIONS = 30;
     // Positions are 0-29, 30 in total
     private static final int JUMP_ANIMATION_DURATION = 100;
 
     // Constructor Method
-    public ScoreBoardView(ImageView redToken, ImageView blueToken, ImageView greenToken, ImageView yellowToken) {
+    public ScoreBoardView(StackPane container, ImageView redToken, ImageView blueToken, ImageView greenToken, ImageView yellowToken) {
+        this.container = container;
         this.redToken = redToken;
         this.blueToken = blueToken;
         this.greenToken = greenToken;
@@ -37,14 +47,7 @@ public class ScoreBoardView {
 
     // Methods
     public void animatePath(Token token, int finalPosition) {
-        ImageView tokenImage = null;
-        switch (token) {
-            case RED -> tokenImage = redToken;
-            case BLUE -> tokenImage = blueToken;
-            case GREEN -> tokenImage = greenToken;
-            case YELLOW -> tokenImage = yellowToken;
-        }
-        if (tokenImage != null) {
+        if (getImageOf(token) != null) {
             int startingPosition = 0;
             for (ArrayList<Token> position : tokensInPosition) {
                 if (position.contains(token)) {
@@ -54,12 +57,21 @@ public class ScoreBoardView {
             if (finalPosition > 29) {
                 finalPosition = 29;
             }
-            animate(tokenImage, startingPosition, finalPosition);
+
+            // Sets other Tokens momentarily invisible
+            for (Token t : playingTokens) {
+                if (t != token) {
+                    getImageOf(t).setVisible(false);
+                }
+            }
+
+            animate(token, startingPosition, finalPosition);
             setTokenInPosition(token, finalPosition);
         }
     }
 
-    private void animate(ImageView token, int startingPosition, int finalPosition) {
+    private void animate(Token token, int startingPosition, int finalPosition) {
+        ImageView tokenImage = getImageOf(token);
         if (startingPosition != finalPosition && finalPosition != 0) {
             // Check if the jump is the last one or if it's just an intermediate one
             int nextPosition;
@@ -92,17 +104,15 @@ public class ScoreBoardView {
             }
 
             // Handles the case when other Tokens are already in that Position when the Position is not final
-            if (nextPosition != finalPosition) {
-                finalCoordinates.setY(finalCoordinates.getY() - (tokensInPosition.get(nextPosition).size() * OVERLAPPING_PADDING));
-            }
+            finalCoordinates.setY(finalCoordinates.getY() + getPaddingOf(token));
 
-            TranslateTransition halfJump1 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), token);
+            TranslateTransition halfJump1 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
             halfJump1.setFromX(startingCoordinates.getX());
             halfJump1.setToX(halfWayCoordinates.getX());
-            halfJump1.setFromY(token.getTranslateY());
+            halfJump1.setFromY(tokenImage.getTranslateY());
             halfJump1.setToY(halfWayCoordinates.getY());
 
-            TranslateTransition halfJump2 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), token);
+            TranslateTransition halfJump2 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
             halfJump2.setFromX(halfWayCoordinates.getX());
             halfJump2.setToX(finalCoordinates.getX());
             halfJump2.setFromY(halfWayCoordinates.getY());
@@ -111,7 +121,7 @@ public class ScoreBoardView {
             halfJump1.setOnFinished((e) -> halfJump2.play());
             halfJump2.setOnFinished((e) -> animate(token, nextPosition, finalPosition));
 
-            ScaleTransition zoom = new ScaleTransition(Duration.millis(JUMP_ANIMATION_DURATION), token);
+            ScaleTransition zoom = new ScaleTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
             zoom.setByX(1.2);
             zoom.setByY(1.2);
             zoom.setAutoReverse(true);
@@ -119,33 +129,42 @@ public class ScoreBoardView {
 
             halfJump1.play();
             zoom.play();
-        }
-    }
-
-    private void refreshPosition(int position) {
-        for (Token token : tokensInPosition.get(position)) {
-            setTokenImageHeight(token, positions.get(position).getY()
-                    + (tokensInPosition.get(position).indexOf(token) * OVERLAPPING_PADDING));
-        }
-    }
-
-    private void setTokenImageHeight(Token token, int y) {
-        ImageView tokenImage = null;
-        switch (token) {
-            case RED -> tokenImage = redToken;
-            case BLUE -> tokenImage = blueToken;
-            case GREEN -> tokenImage = greenToken;
-            case YELLOW -> tokenImage = yellowToken;
-        }
-        if (tokenImage != null) {
-            TranslateTransition transition = new TranslateTransition(Duration.millis(50), tokenImage);
-            transition.setFromY(tokenImage.getTranslateY());
-            transition.setToY(y);
-            transition.play();
+        } else {
+            // Animation ended
+            for (Token t : playingTokens) {
+                getImageOf(t).setVisible(true);
+            }
         }
     }
 
     public void setTokenInPosition(Token token, int position) {
+        ImageView tokenImage = getImageOf(token);
+        if (tokenImage != null) {
+            tokenImage.setVisible(true);
+        }
+
+        if (!playingTokens.contains(token)) {
+            playingTokens.add(token);
+        }
+
+        for (ArrayList<Token> positionList : tokensInPosition) {
+            positionList.remove(token);
+        }
+        tokensInPosition.get(position).add(token);
+    }
+
+    private int getPaddingOf(Token token) {
+        int padding = 0;
+        switch (token) {
+            case BLUE -> padding = BLUE_PADDING;
+            case RED -> padding = RED_PADDING;
+            case GREEN -> padding = GREEN_PADDING;
+            case YELLOW -> padding = YELLOW_PADDING;
+        }
+        return padding;
+    }
+
+    private ImageView getImageOf(Token token) {
         ImageView tokenImage = null;
         switch (token) {
             case RED -> tokenImage = redToken;
@@ -153,18 +172,7 @@ public class ScoreBoardView {
             case GREEN -> tokenImage = greenToken;
             case YELLOW -> tokenImage = yellowToken;
         }
-        if (tokenImage != null) {
-            tokenImage.setVisible(true);
-        }
-
-        for (ArrayList<Token> positionList : tokensInPosition) {
-            if (positionList.contains(token)) {
-                positionList.remove(token);
-                refreshPosition(tokensInPosition.indexOf(positionList));
-            }
-        }
-        tokensInPosition.get(position).add(token);
-        refreshPosition(position);
+        return tokenImage;
     }
 
     private void initCoordinates() {
