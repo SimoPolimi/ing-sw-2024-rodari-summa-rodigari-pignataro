@@ -102,6 +102,10 @@ public class GUIController implements ViewController {
     private ImageView yellowToken;
     @FXML
     private ImageView greenToken;
+    @FXML
+    private StackPane chatContainer;
+    @FXML
+    private StackPane chatBoxContainer;
 
     // Attributes
     private Dialog showingDialog;
@@ -122,6 +126,7 @@ public class GUIController implements ViewController {
     private TableView leftTable = null;
 
     private ScoreBoardView scoreBoard;
+    private ChatView chat;
 
 
     public void build() {
@@ -143,6 +148,7 @@ public class GUIController implements ViewController {
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
 
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
+        chat = new ChatView(chatContainer, chatBoxContainer, this);
     }
 
     public NetworkController getNetworkController() {
@@ -512,7 +518,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void toggleCommonTable() {
-        if (canReadInput() && !isShowingGlobalMap) {
+        if (canReadInput() && !isShowingDialog && !isShowingGlobalMap) {
             if (!isCommonTableDown) {
                 bringCommonTableDown();
             } else {
@@ -721,7 +727,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void toggleGlobalMap() {
-        if (canReadInput && isCommonTableDown) {
+        if (canReadInput && !isShowingDialog && isCommonTableDown) {
             if (isShowingGlobalMap) {
                 hideGlobalMap();
             } else {
@@ -764,6 +770,12 @@ public class GUIController implements ViewController {
             unlockInput();
         });
         transition.play();
+    }
+
+    public void toggleChat() {
+        if (canReadInput) {
+            chat.toggle();
+        }
     }
 
     public boolean isShowingGlobalMap() {

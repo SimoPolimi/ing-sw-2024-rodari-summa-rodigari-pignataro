@@ -243,6 +243,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
         </ImageView>
+        <StackPane fx:id="chatContainer" maxHeight="550" maxWidth="500" style="-fx-background-color: red" translateX="1190" translateY="200">
+            <StackPane fx:id="chatBoxContainer" style="-fx-background-color: blue">
+            <StackPane.margin>
+               <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+            </StackPane.margin></StackPane>
+        </StackPane>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
 

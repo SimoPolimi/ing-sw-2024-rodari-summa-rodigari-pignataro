@@ -185,6 +185,9 @@ public class GameWindow extends Application {
                     case M -> {
                         controller.toggleGlobalMap();
                     }
+                    case C -> {
+                        controller.toggleChat();
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
