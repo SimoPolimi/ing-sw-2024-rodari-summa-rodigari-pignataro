@@ -115,6 +115,7 @@ public class SocketClient implements NetworkController {
             case GET_READY -> clientController.getReady(((IntResponse) message).getResponse());
             case NOTIFY_LAST_TURN -> clientController.notifyLastTurn();
             case NOTIFY_END_GAME -> clientController.notifyEndGame(((ListMapStrStrResponse) message).getResponse());
+            case NOTIFY_NEW_MESSAGE -> clientController.notifyNewMessage(((ChatMessageMessage) message).getResponse());
             // Response from server
             default -> queue.add(message);
         }
@@ -385,5 +386,10 @@ public class SocketClient implements NetworkController {
     public PlayableCard getPlayersHandCard(int playerID, int cardID) {
         sendMessage(new GetPlayersHandCardMessage(MessageType.GET_PLAYERS_HAND_CARD, gameID, playerID, cardID));
         return ((PlayableCardResponse) waitResponse()).getResponse();
+    }
+
+    @Override
+    public void sendMessage(int playerID, String message) throws RemoteException {
+        sendMessage(new SendMessageMessage(MessageType.SEND_MESSAGE, gameID, playerID, message));
     }
 }

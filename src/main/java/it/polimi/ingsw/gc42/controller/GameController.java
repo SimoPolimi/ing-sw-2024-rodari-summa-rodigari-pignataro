@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
@@ -143,6 +144,19 @@ public class GameController implements Serializable, Observable {
                 for (RemoteViewController view : views) {
                     try {
                         view.notifyCommonObjectivesChanged();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        game.getChat().setListener(new Listener() {
+            @Override
+            public void onEvent() {
+                for (RemoteViewController view: views) {
+                    try {
+                        ChatMessage message = game.getChat().getLastChatMessage();
+                        view.notifyNewMessage(message);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }

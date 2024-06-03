@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -264,6 +265,11 @@ public class NewGameViewController implements Observable, ViewController {
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        // Don't need
+    }
+
+    @Override
+    public void notifyNewMessage(ChatMessage message) {
         // Don't need
     }
 }

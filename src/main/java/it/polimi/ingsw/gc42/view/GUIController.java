@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
@@ -776,6 +777,11 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        // TODO: Implement
+    }
+
+    @Override
+    public void notifyNewMessage(ChatMessage message) {
         // TODO: Implement
     }
 }

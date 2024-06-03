@@ -3,16 +3,14 @@ package it.polimi.ingsw.gc42.network;
 import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
 import it.polimi.ingsw.gc42.network.messages.responses.*;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,7 +20,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-public class SocketControllerServer implements ServerNetworkController {
+public class SocketControllerServer implements ServerNetworkController, Serializable {
     private String ipAddress;
     private int port = 23690;
     private Runnable onReady;
@@ -153,6 +151,10 @@ public class SocketControllerServer implements ServerNetworkController {
                 case GET_PLAYERS_PLAY_FIELD:
                     ArrayList<PlayableCard> cards = server.getPlayersPlayfield(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     sendMessage(socket, new PlayableCardListResponse(MessageType.GET_PLAYERS_PLAY_FIELD, cards));
+                    break;
+                case SEND_MESSAGE:
+                    server.sendMessage(((SendMessageMessage)temp).getGameID(), ((SendMessageMessage)temp).getPlayerID(), ((SendMessageMessage)temp).getMessage());
+                    break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
                     server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {
@@ -252,6 +254,11 @@ public class SocketControllerServer implements ServerNetworkController {
                         @Override
                         public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
                             sendMessage(socket, new ListMapStrStrResponse(MessageType.NOTIFY_END_GAME, points));
+                        }
+
+                        @Override
+                        public void notifyNewMessage(ChatMessage message) throws RemoteException {
+                            sendMessage(socket, new ChatMessageMessage(MessageType.NOTIFY_NEW_MESSAGE, message));
                         }
                     });
                 case CLIENT_STATE:

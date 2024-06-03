@@ -3,12 +3,14 @@ package it.polimi.ingsw.gc42.network;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
+import it.polimi.ingsw.gc42.network.messages.responses.SendMessageMessage;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -336,5 +338,11 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public ArrayList<PlayableCard> getPlayersPlayfield(int gameID, int playerID) throws RemoteException {
         return collection.get(gameID).getPlayer(playerID).getPlayField().getPlayedCards();
+    }
+
+    @Override
+    public void sendMessage(int gameID, int playerID, String message) throws RemoteException {
+        collection.get(gameID).getGame().getChat().sendMessage(new ChatMessage(message, collection.get(gameID).getPlayer(playerID).getNickname()));
+
     }
 }

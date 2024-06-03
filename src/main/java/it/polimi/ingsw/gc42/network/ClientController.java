@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
@@ -21,6 +22,11 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     @Override
     public void showSecretObjectivesSelectionDialog() throws RemoteException {
         viewController.showSecretObjectivesSelectionDialog();
+    }
+
+    @Override
+    public void notifyNewMessage(ChatMessage message) throws RemoteException {
+        viewController.notifyNewMessage(message);
     }
 
     @Override

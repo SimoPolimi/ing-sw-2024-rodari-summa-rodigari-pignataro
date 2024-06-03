@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc42.view.Interfaces;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 
@@ -31,4 +32,5 @@ public interface ViewController extends Serializable {
     void getReady(int numberOfPlayers);
     void notifyLastTurn() throws RemoteException;
     void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException;
+    void notifyNewMessage(ChatMessage message);
 }

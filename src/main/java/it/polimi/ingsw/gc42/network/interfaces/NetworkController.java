@@ -86,4 +86,6 @@ public interface NetworkController {
     PlayableCard getPlayersHandCard(int playerID, int cardID);
 
     ArrayList<PlayableCard> getPlayersPlayfield(int playerID);
+
+    void sendMessage(int playerID, String message) throws RemoteException;
 }

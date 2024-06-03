@@ -1647,4 +1647,9 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
         // TODO: Implement
     }
+
+    @Override
+    public void notifyNewMessage(ChatMessage message) {
+        // TODO: Implement
+    }
 }

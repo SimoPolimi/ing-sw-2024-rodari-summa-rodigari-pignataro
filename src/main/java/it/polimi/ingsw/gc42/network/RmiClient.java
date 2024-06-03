@@ -403,6 +403,11 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
+    public void sendMessage(int playerID, String message) throws RemoteException {
+        server.sendMessage(gameID, playerID, message);
+    }
+
+    @Override
     public int getIndex() throws RemoteException {
         return gameID;
     }

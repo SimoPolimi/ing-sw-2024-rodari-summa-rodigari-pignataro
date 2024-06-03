@@ -1,23 +1,24 @@
 package it.polimi.ingsw.gc42.model.classes.game;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ChatMessage {
-    private Player sender;
+public class ChatMessage implements Serializable {
+    private String sender;
     private String text;
     private LocalDateTime dateTime;
 
-    public ChatMessage(String text, Player player){
+    public ChatMessage(String text, String player){
         this.text = text;
         this.sender = player;
         this.dateTime = LocalDateTime.now();
     }
 
-    public Player getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Player sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

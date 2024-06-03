@@ -100,4 +100,6 @@ public interface RemoteServer extends Remote {
     int getIndexOfPlayer(int gameID, String nickname) throws RemoteException;
 
     ArrayList<PlayableCard> getPlayersPlayfield(int gameID, int playerID) throws RemoteException;
+
+    void sendMessage(int gameID, int playerID, String message) throws RemoteException;
 }
