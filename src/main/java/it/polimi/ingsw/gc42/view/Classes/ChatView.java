@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.view.Classes;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
@@ -16,6 +17,7 @@ public class ChatView {
     // Attributes
     private final StackPane container;
     private final StackPane contentContainer;
+    private final TextField chatTextField;
     private final GUIController controller;
 
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
@@ -27,9 +29,10 @@ public class ChatView {
     public static final int ANIMATION_LENGTH = 490;
 
     // Constructor Method
-    public ChatView(StackPane container, StackPane contentContainer, GUIController controller) {
+    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, GUIController controller) {
         this.container = container;
         this.contentContainer = contentContainer;
+        this.chatTextField = chatTextField;
         this.controller = controller;
         build();
     }
@@ -55,6 +58,8 @@ public class ChatView {
             text.setFill(Paint.valueOf("white"));
             text.setFont(Font.font("Contantia Italic", 15));
             contentContainer.getChildren().add(text);
+        } else {
+            // TODO:Implement
         }
     }
 
@@ -73,6 +78,7 @@ public class ChatView {
         transition.setByX(ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());
         transition.play();
+        container.requestFocus();
     }
 
     public void show() {

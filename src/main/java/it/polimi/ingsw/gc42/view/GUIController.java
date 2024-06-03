@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -106,6 +107,8 @@ public class GUIController implements ViewController {
     private StackPane chatContainer;
     @FXML
     private StackPane chatBoxContainer;
+    @FXML
+    private TextField chatTextField;
 
     // Attributes
     private Dialog showingDialog;
@@ -148,7 +151,7 @@ public class GUIController implements ViewController {
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
 
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
-        chat = new ChatView(chatContainer, chatBoxContainer, this);
+        chat = new ChatView(chatContainer, chatBoxContainer, chatTextField, this);
     }
 
     public NetworkController getNetworkController() {
@@ -772,6 +775,7 @@ public class GUIController implements ViewController {
         transition.play();
     }
 
+    @FXML
     public void toggleChat() {
         if (canReadInput) {
             chat.toggle();
