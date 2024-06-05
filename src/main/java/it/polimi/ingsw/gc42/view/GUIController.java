@@ -123,6 +123,7 @@ public class GUIController implements ViewController {
     private boolean isShowingGlobalMap = false;
     private CommonTableView commonTable;
     private int playerID;
+    private String playerNickname;
 
     private TableView rightTable = null;
     private TableView topTable = null;
@@ -176,7 +177,12 @@ public class GUIController implements ViewController {
 
     public void setPlayer(int playerID) throws RemoteException {
         this.playerID = playerID;
+        this.playerNickname = controller.getPlayersInfo().get(playerID-1).get("Nickname");
         table.setPlayer(playerID);
+    }
+
+    public String getPlayerNickname() {
+        return playerNickname;
     }
 
     private void setOtherPlayers(int numberOfPlayers) throws RemoteException {
@@ -798,6 +804,6 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyNewMessage(ChatMessage message) {
-        // TODO: Implement
+        chat.addMessage(message);
     }
 }

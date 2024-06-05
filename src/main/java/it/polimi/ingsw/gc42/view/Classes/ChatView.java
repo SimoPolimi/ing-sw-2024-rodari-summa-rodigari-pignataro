@@ -3,12 +3,21 @@ package it.polimi.ingsw.gc42.view.Classes;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -59,8 +68,64 @@ public class ChatView {
             text.setFont(Font.font("Contantia Italic", 15));
             contentContainer.getChildren().add(text);
         } else {
-            // TODO:Implement
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setPrefWidth(contentContainer.getWidth());
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(20);
+            vBox.setPadding(new Insets(10, 10, 10, 10));
+
+            for (ChatMessage message : messages) {
+                AnchorPane pane = new AnchorPane();
+                pane.getChildren().add(createMessageBox(message));
+                vBox.getChildren().add(pane);
+            }
+
+            scrollPane.setContent(vBox);
+            scrollPane.setVvalue(1);
+
+            contentContainer.getChildren().add(scrollPane);
         }
+    }
+
+    private Pane createMessageBox(ChatMessage message) {
+        VBox box = new VBox();
+        box.setMaxWidth(200);
+        box.setPrefHeight(50);
+        box.setPrefWidth(200);
+        box.setSpacing(6);
+        box.setPadding(new Insets(10, 10, 10, 10));
+        if (message.getSender().equals(controller.getPlayerNickname())) {
+            // Message Sent
+            box.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 15;");
+            AnchorPane.setRightAnchor(box, 0.0);
+        } else {
+            // Message Received
+            box.setStyle("-fx-background-color: lightgrey; -fx-background-radius: 15;");
+            AnchorPane.setLeftAnchor(box, 0.0);
+        }
+
+        Label senderName = new Label(message.getSender());
+        senderName.setTextOverrun(OverrunStyle.ELLIPSIS);
+        senderName.setTextAlignment(TextAlignment.LEFT);
+        senderName.setMaxWidth(180);
+        senderName.setFont(Font.font("Tahoma Bold", 15));
+
+        Text body = new Text(message.getText());
+        body.setWrappingWidth(180);
+        body.setFont(Font.font("Tahoma Regular", 12));
+
+        Text timeStamp = new Text();
+        timeStamp.setText(Integer.toString(message.getDateTime().getHour()) + ":" + Integer.toString(message.getDateTime().getMinute()));
+        timeStamp.setFill(Paint.valueOf("dimgrey"));
+        timeStamp.setStrokeWidth(0.6);
+        timeStamp.setFont(Font.font("Tahoma Bold", 8));
+        VBox.setMargin(timeStamp, new Insets(5, 0, 0, 0));
+
+        box.getChildren().addAll(senderName, body, timeStamp);
+        return box;
     }
 
     public void toggle() {
@@ -92,10 +157,13 @@ public class ChatView {
 
     public void addMessage(ChatMessage message) {
         messages.add(message);
-        build();
+        Platform.runLater(() -> {
+            build();
+            notifyNewMessage();
+        });
     }
 
-    public void notifyNewMessage() {
+    private void notifyNewMessage() {
         //TODO: Implement
     }
 }

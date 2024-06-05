@@ -188,6 +188,13 @@ public class GameWindow extends Application {
                     case C -> {
                         controller.toggleChat();
                     }
+                    case L -> {
+                        try {
+                            controller.getNetworkController().sendMessage(controller.getOwner(), "This is a message!");
+                        } catch (RemoteException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
                 }
             }
             scene.setOnKeyReleased(e1 -> {
