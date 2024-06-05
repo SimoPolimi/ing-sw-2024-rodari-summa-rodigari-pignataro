@@ -5,21 +5,19 @@ import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.OverrunStyle;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ChatView {
@@ -27,6 +25,7 @@ public class ChatView {
     private final StackPane container;
     private final StackPane contentContainer;
     private final TextField chatTextField;
+    private final Button chatButton;
     private final GUIController controller;
 
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
@@ -38,12 +37,22 @@ public class ChatView {
     public static final int ANIMATION_LENGTH = 490;
 
     // Constructor Method
-    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, GUIController controller) {
+    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, GUIController controller) {
         this.container = container;
         this.contentContainer = contentContainer;
         this.chatTextField = chatTextField;
+        this.chatButton = sendButton;
         this.controller = controller;
         build();
+
+        // Send messages when ENTER is pressed while typing
+        chatTextField.setOnKeyPressed((e) -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                sendMessage();
+            }
+        });
+        // Send messages when clicking the SEND Button
+        sendButton.setOnMouseClicked((e) -> sendMessage());
     }
 
     // Getters and Setters
@@ -118,7 +127,7 @@ public class ChatView {
         body.setFont(Font.font("Tahoma Regular", 12));
 
         Text timeStamp = new Text();
-        timeStamp.setText(Integer.toString(message.getDateTime().getHour()) + ":" + Integer.toString(message.getDateTime().getMinute()));
+        timeStamp.setText(message.getDateTime().getHour() + ":" + message.getDateTime().getMinute());
         timeStamp.setFill(Paint.valueOf("dimgrey"));
         timeStamp.setStrokeWidth(0.6);
         timeStamp.setFont(Font.font("Tahoma Bold", 8));
@@ -126,6 +135,17 @@ public class ChatView {
 
         box.getChildren().addAll(senderName, body, timeStamp);
         return box;
+    }
+
+    private void sendMessage() {
+        if (!chatTextField.getText().isEmpty()) {
+            try {
+                controller.getNetworkController().sendMessage(controller.getOwner(), chatTextField.getText());
+                chatTextField.clear();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void toggle() {
