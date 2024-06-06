@@ -7,10 +7,8 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -81,10 +79,12 @@ public class ChatView {
             scrollPane.setPrefWidth(contentContainer.getWidth());
             scrollPane.setFitToWidth(true);
             scrollPane.setFitToHeight(true);
+            scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
             VBox vBox = new VBox();
             vBox.setSpacing(20);
             vBox.setPadding(new Insets(10, 10, 10, 10));
+            vBox.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
             for (ChatMessage message : messages) {
                 AnchorPane pane = new AnchorPane();
@@ -121,6 +121,8 @@ public class ChatView {
         senderName.setTextAlignment(TextAlignment.LEFT);
         senderName.setMaxWidth(180);
         senderName.setFont(Font.font("Tahoma Bold", 15));
+        senderName.setTextFill(Color.BLACK);
+        senderName.setStyle("-fx-text-fill: black");
 
         Text body = new Text(message.getText());
         body.setWrappingWidth(180);

@@ -244,18 +244,41 @@
             <Cursor fx:constant="HAND" />
          </cursor>
         </ImageView>
-        <StackPane fx:id="chatContainer" maxHeight="550" maxWidth="500" onMouseClicked="#toggleChat" style="-fx-background-color: red" translateX="1190" translateY="200">
-            <StackPane fx:id="chatBoxContainer" style="-fx-background-color: blue">
+        <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505" onMouseClicked="#toggleChat" style="-fx-background-image: url('chat_background.png'); -fx-background-size: 507;" translateX="1190" translateY="200">
+            <StackPane fx:id="chatBoxContainer">
             <StackPane.margin>
-               <Insets bottom="40.0" left="20.0" right="10.0" top="10.0" />
+               <Insets bottom="40.0" left="40.0" right="10.0" top="12.0" />
             </StackPane.margin></StackPane>
-            <HBox fx:id="textAreaContainer" alignment="CENTER" maxHeight="30.0" maxWidth="500" spacing="5" style="-fx-background-color: green" translateY="255">
-                <TextField fx:id="chatTextField" focusTraversable="false" prefWidth="300" promptText="Send a message..." />
-                <Button fx:id="sendButton" prefWidth="50" text="Send" />
+            <HBox fx:id="textAreaContainer" alignment="CENTER" maxHeight="30.0" maxWidth="500" spacing="5" translateY="255">
+                <TextField fx:id="chatTextField" focusTraversable="false" prefWidth="300" promptText="Send a message...">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
+                <Button fx:id="sendButton" prefWidth="50" style="-fx-background-color: lightgreen;" text="Send">
+                    <effect>
+                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                            <bumpInput>
+                                <Shadow blurType="GAUSSIAN" />
+                            </bumpInput>
+                            <light>
+                                <Light.Distant />
+                            </light>
+                        </Lighting>
+                    </effect>
+                    <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
             </HBox>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
         </StackPane>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
