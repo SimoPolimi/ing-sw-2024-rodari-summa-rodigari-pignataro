@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.game.Chat;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
@@ -249,6 +250,7 @@ public class GameController implements Serializable, Observable {
         if(getPlayer(turn).isFirst()) {
             if(currentStatus.equals(GameStatus.SEMI_LAST_TURN)){
                 setCurrentStatus(GameStatus.LAST_TURN);
+                game.getChat().sendMessage(new ChatMessage("This is the last turn, good luck!", "Server"));
                 for (RemoteViewController view: views) {
                     try {
                         view.notifyLastTurn();
@@ -258,6 +260,7 @@ public class GameController implements Serializable, Observable {
                 }
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
                 setCurrentStatus(GameStatus.END_GAME);
+                game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
                 for (RemoteViewController view: views) {
                     try {
                         view.notifyEndGame(game.countPoints());
@@ -483,6 +486,7 @@ public class GameController implements Serializable, Observable {
                 drawStartingHand();
                 break;
             case PLAYING:
+                game.getChat().sendMessage(new ChatMessage("Game is Starting", "Server"));
                 for (int i = 0; i < game.getNumberOfPlayers(); i++) {
                     game.getPlayer(i+1).setStatus(GameStatus.NOT_MY_TURN);
                 }

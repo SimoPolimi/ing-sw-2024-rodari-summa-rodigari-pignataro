@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -110,8 +111,12 @@ public class ChatView {
             // Message Sent
             box.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 15;");
             AnchorPane.setRightAnchor(box, 0.0);
+        } else if(message.getSender().equals("Server")) {
+            // Message from Server
+            box.setStyle("-fx-background-color: #ccb619; -fx-background-radius: 15;");
+
         } else {
-            // Message Received
+            // Message Received from others
             box.setStyle("-fx-background-color: lightgrey; -fx-background-radius: 15;");
             AnchorPane.setLeftAnchor(box, 0.0);
         }
