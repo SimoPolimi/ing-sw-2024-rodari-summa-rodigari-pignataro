@@ -2,10 +2,11 @@ package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.view.GUIController;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -25,6 +26,7 @@ public class ChatView {
     private final StackPane contentContainer;
     private final TextField chatTextField;
     private final Button chatButton;
+    private final Text chatHint;
     private final GUIController controller;
 
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
@@ -36,11 +38,12 @@ public class ChatView {
     public static final int ANIMATION_LENGTH = 490;
 
     // Constructor Method
-    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, GUIController controller) {
+    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, Text chatHint, GUIController controller) {
         this.container = container;
         this.contentContainer = contentContainer;
         this.chatTextField = chatTextField;
         this.chatButton = sendButton;
+        this.chatHint = chatHint;
         this.controller = controller;
         build();
 
@@ -166,6 +169,7 @@ public class ChatView {
     public void hide() {
         controller.blockInput();
         isShowing = false;
+        chatHint.setText("Show Chat");
         TranslateTransition transition = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);
         transition.setByX(ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());
@@ -176,6 +180,7 @@ public class ChatView {
     public void show() {
         controller.blockInput();
         isShowing = true;
+        chatHint.setText("Hide Chat");
         TranslateTransition transition = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);
         transition.setByX(-ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());
@@ -186,11 +191,38 @@ public class ChatView {
         messages.add(message);
         Platform.runLater(() -> {
             build();
-            notifyNewMessage();
+            notifyNewMessage(message);
         });
     }
 
-    private void notifyNewMessage() {
-        //TODO: Implement
+    private void notifyNewMessage(ChatMessage message) {
+        // Notify only for messages from other players and only when the Chat is hidden
+        if (!isShowing && !message.getSender().equals("Server") && !message.getSender().equals(controller.getPlayerNickname())) {
+            VBox messageBox = new VBox(createMessageBox(message));
+            messageBox.setTranslateX(-300);
+            messageBox.setTranslateY(400);
+            messageBox.setScaleX(0);
+            messageBox.setScaleY(0);
+            container.getChildren().add(messageBox);
+            ScaleTransition scaling = new ScaleTransition(Duration.millis(200), messageBox);
+            scaling.setToX(1);
+            scaling.setToY(1);
+            scaling.setOnFinished((e) -> {
+                TranslateTransition translate = new TranslateTransition(Duration.millis(4000), messageBox);
+                translate.setByY(-1000);
+                translate.setOnFinished((e2) -> {
+                    container.getChildren().remove(messageBox);
+                });
+
+                RotateTransition rotate = new RotateTransition(Duration.millis(700), messageBox);
+                rotate.setByAngle(5);
+                rotate.setAutoReverse(true);
+                rotate.setCycleCount(4);
+
+                rotate.play();
+                translate.play();
+            });
+            scaling.play();
+        }
     }
 }

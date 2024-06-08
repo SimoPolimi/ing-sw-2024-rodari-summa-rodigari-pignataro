@@ -245,6 +245,26 @@
          </cursor>
         </ImageView>
         <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505" onMouseClicked="#toggleChat" style="-fx-background-image: url('chat_background.png'); -fx-background-size: 507;" translateX="1190" translateY="200">
+            <VBox fx:id="chatHintContainer" alignment="CENTER" spacing="10" translateX="-300">
+                <children>
+                    <ImageView fitHeight="71.0" fitWidth="20" preserveRatio="true" onMouseClicked="#toggleChat">
+                        <image>
+                            <Image url="@toggleChatHint.png"/>
+                        </image>
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </ImageView>
+                    <Text fx:id="chatHintTxt" fill="white" onMouseClicked="#toggleChat" text="Show Chat">
+                        <font>
+                            <Font name="Constantia Italic" size="15.0" />
+                        </font>
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </Text>
+                </children>
+            </VBox>
             <StackPane fx:id="chatBoxContainer">
             <StackPane.margin>
                <Insets bottom="40.0" left="40.0" right="10.0" top="12.0" />

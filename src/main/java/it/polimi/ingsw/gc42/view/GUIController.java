@@ -112,6 +112,8 @@ public class GUIController implements ViewController {
     private TextField chatTextField;
     @FXML
     private Button sendButton;
+    @FXML
+    private Text chatHintTxt;
 
     // Attributes
     private Dialog showingDialog;
@@ -155,7 +157,7 @@ public class GUIController implements ViewController {
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
 
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
-        chat = new ChatView(chatContainer, chatBoxContainer, chatTextField, sendButton, this);
+        chat = new ChatView(chatContainer, chatBoxContainer, chatTextField, sendButton, chatHintTxt, this);
     }
 
     public NetworkController getNetworkController() {
