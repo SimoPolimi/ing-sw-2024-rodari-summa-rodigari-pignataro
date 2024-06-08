@@ -14,13 +14,13 @@ class ChatTest {
         Player player = new Player(Token.BLUE);
         ChatMessage message = new ChatMessage("a", null);
         // For coverage
-        message.setSender(player);
+        message.setSender(player.getNickname());
         message.setText("test");
         message.setDateTime(LocalDateTime.now());
         chat.sendMessage(message);
 
         assertEquals(chat.getLastChatMessage().getText(), "test");
-        assertEquals(chat.getLastChatMessage().getSender(), player);
+        assertEquals(chat.getLastChatMessage().getSender(), player.getNickname());
         assertEquals(chat.getLastChatMessage().getDateTime(), LocalDateTime.now());
         assertDoesNotThrow(() -> chat.getChatMessage(chat.getChatSize() - 1));
     }

@@ -151,18 +151,14 @@ public class GameTerminal extends Application implements ViewController {
                     case "2":
                         System.out.println("Select the number of the card you want to flip (0 to cancel)");
                         flipCard(scanner.next());
+                        printHandCards();
+                        returnToMenu();
                         break;
                     case "3":
                         System.out.println(controller.getSecretObjective(playerID).getObjective().getName());
                         //printSecretObjective(controller.getSecret);
                         System.out.println();
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     case "4":
                         if (!chat.isEmpty()) {
@@ -185,13 +181,7 @@ public class GameTerminal extends Application implements ViewController {
                             System.out.println("No messages yet!");
                         }
 
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     case "5":
                         System.out.println("Enter your message:");
@@ -201,13 +191,7 @@ public class GameTerminal extends Application implements ViewController {
                                 actions.add(() -> {
                                     try {
                                         controller.sendMessage(playerID, input);
-                                        actions.add(() -> {
-                                            try {
-                                                play();
-                                            } catch (IOException | InterruptedException e) {
-                                                throw new RuntimeException(e);
-                                            }
-                                        });
+                                        returnToMenu();
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -234,34 +218,16 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                     case "7":
                         showRanking();
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     case "8":
                         printCommonObjective();
                         System.out.println();
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     case "9":
                         printScoreboard(createScoreboard());
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     case "31":
                         /*ArrayList<PlayableCard> cards = new ArrayList<>();
@@ -335,6 +301,27 @@ public class GameTerminal extends Application implements ViewController {
                 throw new RuntimeException(e);
             }
         });*/
+    }
+
+    private void returnToMenu() {
+        System.out.println("Digit 0 to return to menu");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if (input.equals("0")) {
+                    actions.add(() -> {
+                        try {
+                            play();
+                        } catch (IOException | InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } else {
+                    System.err.println("Invalid input!");
+                    actions.add(() -> returnToMenu());
+                }
+            }
+        });
     }
 
     private void printMenu() {
