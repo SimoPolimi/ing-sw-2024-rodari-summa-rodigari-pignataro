@@ -399,4 +399,10 @@ public class SocketClient implements NetworkController {
         sendMessage(new GameMessage(MessageType.GET_FULL_CHAT, gameID));
         return ((ChatResponse) waitResponse()).getResponse();
     }
+
+    @Override
+    public boolean checkNickName(String nickname) throws RemoteException {
+        sendMessage(new StrResponse(MessageType.CHECK_NICKNAME, nickname));
+        return ((BoolResponse) waitResponse()).getResponse();
+    }
 }

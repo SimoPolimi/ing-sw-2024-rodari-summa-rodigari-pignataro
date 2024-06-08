@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class GameCollection implements RemoteCollection, Serializable {
     private final ArrayList<GameController> gameControllers = new ArrayList<>();
+    private final ArrayList<String> blockedNicknames = new ArrayList<>();
 
     public GameCollection() throws RemoteException {}
 
@@ -26,6 +27,20 @@ public class GameCollection implements RemoteCollection, Serializable {
 
     public GameController get(int index) throws RemoteException {
         return gameControllers.get(index);
+    }
+
+    public boolean isNickNameAvailable(String nickname) throws RemoteException {
+        if (!nickname.equals("Server")) {
+            return !blockedNicknames.contains(nickname);
+        } else return false;
+    }
+
+    public void blockNickname(String nickname) throws RemoteException {
+        blockedNicknames.add(nickname);
+    }
+
+    public void unlockNickname(String nickname) throws RemoteException {
+        blockedNicknames.remove(nickname);
     }
 
     @Override

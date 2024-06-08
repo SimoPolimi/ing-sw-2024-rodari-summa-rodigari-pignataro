@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import javafx.scene.control.TextField;
@@ -43,6 +44,8 @@ public class LoginViewController implements Observable {
     private TextField portTextField;
     @FXML
     private ImageView connectionIcon;
+    @FXML
+    private Text errorTxt;
 
     private NetworkMode selectedNetworkMode = NetworkMode.RMI;
     private final ArrayList<Listener> listeners = new ArrayList<>();
@@ -56,7 +59,11 @@ public class LoginViewController implements Observable {
             @Override
             public void handle(KeyEvent keyEvent) {
                 nickName = nickNameTextArea.getText();
-                checkIfCanEnableButton(nickName);
+                try {
+                    checkIfCanEnableButton(nickName);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         rmiMode.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -123,6 +130,7 @@ public class LoginViewController implements Observable {
     }
 
     private void enablePlayButton() {
+        errorTxt.setVisible(false);
         isPlayButtonEnabled = true;
         playButton.setStyle("-fx-background-color: forestgreen; -fx-background-radius: 15;");
     }
@@ -188,15 +196,28 @@ public class LoginViewController implements Observable {
             isConnected = true;
         });
         delay.play();
-        checkIfCanEnableButton(nickNameTextArea.getText());
+        try {
+            checkIfCanEnableButton(nickNameTextArea.getText());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void checkIfCanEnableButton(String nickName) {
+    private void checkIfCanEnableButton(String nickName) throws RemoteException {
         if (null != nickName && !nickName.isEmpty() && isConnected) {
-            enablePlayButton();
+            if (networkController.checkNickName(nickName)) {
+                enablePlayButton();
+            } else {
+                disablePlayButton();
+                showInvalidNickName();
+            }
         } else {
             disablePlayButton();
         }
+    }
+
+    private void showInvalidNickName() {
+        errorTxt.setVisible(true);
     }
 
     @Override

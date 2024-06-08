@@ -159,6 +159,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     ArrayList<ChatMessage> messages = server.getChat(((GameMessage) temp).getGameID());
                     sendMessage(socket, new ChatResponse(MessageType.GET_FULL_CHAT, messages));
                     break;
+                case CHECK_NICKNAME:
+                    sendMessage(socket, new BoolResponse(MessageType.CHECK_NICKNAME, server.checkNickName(((StrResponse) temp).getResponse())));
+                    break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
                     server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {

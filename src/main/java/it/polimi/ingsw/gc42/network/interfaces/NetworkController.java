@@ -90,4 +90,5 @@ public interface NetworkController {
 
     void sendMessage(int playerID, String message) throws RemoteException;
     ArrayList<ChatMessage> getFullChat() throws RemoteException;
+    boolean checkNickName(String nickname) throws RemoteException;
 }

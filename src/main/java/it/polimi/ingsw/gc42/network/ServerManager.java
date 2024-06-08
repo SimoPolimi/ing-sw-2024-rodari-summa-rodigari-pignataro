@@ -145,6 +145,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void addPlayer(int gameID, Player player) throws RemoteException {
         collection.get(gameID).addPlayer(player);
+        collection.blockNickname(player.getNickname());
     }
 
     @Override
@@ -348,5 +349,10 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public ArrayList<ChatMessage> getChat(int gameID) throws RemoteException {
         return collection.get(gameID).getGame().getChat().getFullChat();
+    }
+
+    @Override
+    public boolean checkNickName(String nickname) throws RemoteException {
+        return collection.isNickNameAvailable(nickname);
     }
 }
