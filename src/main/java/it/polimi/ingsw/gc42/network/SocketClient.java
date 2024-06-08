@@ -396,7 +396,7 @@ public class SocketClient implements NetworkController {
 
     @Override
     public ArrayList<ChatMessage> getFullChat() throws RemoteException {
-        return null;
-        // TODO: Implement
+        sendMessage(new GameMessage(MessageType.GET_FULL_CHAT, gameID));
+        return ((ChatResponse) waitResponse()).getResponse();
     }
 }
