@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -391,5 +392,11 @@ public class SocketClient implements NetworkController {
     @Override
     public void sendMessage(int playerID, String message) throws RemoteException {
         sendMessage(new SendMessageMessage(MessageType.SEND_MESSAGE, gameID, playerID, message));
+    }
+
+    @Override
+    public ArrayList<ChatMessage> getFullChat() throws RemoteException {
+        return null;
+        // TODO: Implement
     }
 }

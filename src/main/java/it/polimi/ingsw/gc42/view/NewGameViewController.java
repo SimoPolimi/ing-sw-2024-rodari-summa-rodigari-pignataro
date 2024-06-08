@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
+import it.polimi.ingsw.gc42.view.Classes.ChatView;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Platform;
@@ -15,11 +16,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -35,6 +38,14 @@ public class NewGameViewController implements Observable, ViewController {
     private ScrollPane playersList;
     @FXML
     private TextField gameNameTextField;
+    @FXML
+    private StackPane chatContainer;
+    @FXML
+    private StackPane chatBoxContainer;
+    @FXML
+    private TextField chatTextField;
+    @FXML
+    private Button sendButton;
 
     private int gameID;
     NetworkController controller;
@@ -44,6 +55,8 @@ public class NewGameViewController implements Observable, ViewController {
     private boolean isNameSet = false;
     private int players = 0;
     private boolean startGame = false;
+
+    private ChatView chatView;
 
     @FXML
     private VBox startButton;
@@ -67,6 +80,7 @@ public class NewGameViewController implements Observable, ViewController {
                 }
             }
         });
+        chatView = new ChatView(false, chatContainer, chatBoxContainer, chatTextField, sendButton, null, this);
     }
 
     public void setPlayer(Player player) {
@@ -173,8 +187,7 @@ public class NewGameViewController implements Observable, ViewController {
 
     @Override
     public int getOwner() {
-        // Don't need
-        return -1;
+        return 1;
     }
 
     @Override
@@ -270,6 +283,26 @@ public class NewGameViewController implements Observable, ViewController {
 
     @Override
     public void notifyNewMessage(ChatMessage message) {
+        chatView.addMessage(message);
+    }
+
+    @Override
+    public String getPlayerNickname() {
+        return controller.getPlayersInfo().getFirst().get("Nickname");
+    }
+
+    @Override
+    public NetworkController getNetworkController() {
+        return controller;
+    }
+
+    @Override
+    public void blockInput() {
+        // Don't need
+    }
+
+    @Override
+    public void unlockInput() {
         // Don't need
     }
 }

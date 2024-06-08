@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.NewGameViewController">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.NewGameViewController">
     <children>
         <VBox fx:id="container" alignment="CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
@@ -41,47 +41,87 @@
                   <Insets left="40.0" />
                </padding>
                 </HBox>
-                <VBox alignment="CENTER_RIGHT">
+                <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>
-                        <VBox fx:id="refreshButton" alignment="CENTER" maxHeight="10" maxWidth="40" minWidth="20" style="-fx-background-color: #2d9ad4; -fx-background-radius: 5" onMouseClicked="#refresh">
+                        <VBox alignment="CENTER_RIGHT">
                             <children>
-                                <ImageView fx:id="refreshIcon" preserveRatio="true" fitWidth="18">
-                                    <image>
-                                        <Image url="@refreshIcon.png"/>
-                                    </image>
-                                </ImageView>
+                                <VBox fx:id="refreshButton" alignment="CENTER" maxHeight="10" maxWidth="40" minWidth="20" onMouseClicked="#refresh" style="-fx-background-color: #2d9ad4; -fx-background-radius: 5">
+                                    <children>
+                                        <ImageView fx:id="refreshIcon" fitWidth="18" preserveRatio="true">
+                                            <image>
+                                                <Image url="@refreshIcon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </children>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <padding>
+                                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                                    </padding>
+                                    <effect>
+                                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                            <bumpInput>
+                                                <Shadow blurType="GAUSSIAN" />
+                                            </bumpInput>
+                                            <light>
+                                                <Light.Distant />
+                                            </light>
+                                        </Lighting>
+                                    </effect>
+                                    <VBox.margin>
+                                        <Insets right="40.0" top="5.0" />
+                                    </VBox.margin>
+                                </VBox>
+                                <ScrollPane fx:id="playersList" minWidth="100.0" prefHeight="400.0" prefWidth="200.0">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                    </content>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" left="40.0" right="40.0" top="5.0" />
+                                    </VBox.margin>
+                                </ScrollPane>
                             </children>
+                        </VBox>
+                        <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505">
+                            <StackPane fx:id="chatBoxContainer">
+                                <StackPane.margin>
+                                    <Insets bottom="40.0" left="40.0" right="10.0" top="12.0" />
+                                </StackPane.margin></StackPane>
+                            <HBox fx:id="textAreaContainer" alignment="CENTER" maxHeight="30.0" maxWidth="500" spacing="5" translateY="255">
+                                <TextField fx:id="chatTextField" focusTraversable="false" prefWidth="300" promptText="Send a message...">
+                                    <cursor>
+                                        <Cursor fx:constant="TEXT" />
+                                    </cursor></TextField>
+                                <Button fx:id="sendButton" prefWidth="50" style="-fx-background-color: lightgreen;" text="Send">
+                                    <effect>
+                                        <Lighting diffuseConstant="1.5" specularConstant="0.4">
+                                            <bumpInput>
+                                                <Shadow blurType="GAUSSIAN" />
+                                            </bumpInput>
+                                            <light>
+                                                <Light.Distant />
+                                            </light>
+                                        </Lighting>
+                                    </effect>
+                                    <font>
+                                        <Font name="Tahoma Bold" size="12.0" />
+                                    </font>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Button>
+                            </HBox>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                             <padding>
-                                <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                                <Insets bottom="15.0" />
                             </padding>
-                            <effect>
-                                <Lighting diffuseConstant="1.5" specularConstant="0.4">
-                                    <bumpInput>
-                                        <Shadow blurType="GAUSSIAN" />
-                                    </bumpInput>
-                                    <light>
-                                        <Light.Distant />
-                                    </light>
-                                </Lighting>
-                            </effect>
-                            <VBox.margin>
-                                <Insets right="40.0" top="5.0" />
-                            </VBox.margin>
-                        </VBox>
-                        <ScrollPane fx:id="playersList" minWidth="100.0" prefHeight="400.0" prefWidth="200.0">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                            </content>
-                            <VBox.margin>
-                                <Insets bottom="20.0" left="40.0" right="40.0" top="5.0" />
-                            </VBox.margin>
-                        </ScrollPane>
+                        </StackPane>
                     </children>
-                </VBox>
-                <VBox fx:id="startButton" onMouseClicked="#start" alignment="CENTER" maxWidth="NaN" style="-fx-background-color: grey; -fx-background-radius: 15">
+                </HBox>
+                <VBox fx:id="startButton" alignment="CENTER" maxWidth="NaN" onMouseClicked="#start" style="-fx-background-color: grey; -fx-background-radius: 15">
                     <children>
                         <Text fx:id="playTxt" fill="white" text="Start">
                             <font>
@@ -105,11 +145,14 @@
                             </light>
                         </Lighting>
                     </effect>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
                 </VBox>
             </children>
         </VBox>
     </children>
     <padding>
-        <Insets bottom="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 </AnchorPane>

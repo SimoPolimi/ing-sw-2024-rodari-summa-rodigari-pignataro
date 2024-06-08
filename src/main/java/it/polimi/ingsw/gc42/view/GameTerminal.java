@@ -1652,4 +1652,24 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyNewMessage(ChatMessage message) {
         // TODO: Implement
     }
+
+    @Override
+    public String getPlayerNickname() {
+        return player.getNickname();
+    }
+
+    @Override
+    public NetworkController getNetworkController() {
+        return controller;
+    }
+
+    @Override
+    public void blockInput() {
+        // Don't need
+    }
+
+    @Override
+    public void unlockInput() {
+        // Don't need
+    }
 }

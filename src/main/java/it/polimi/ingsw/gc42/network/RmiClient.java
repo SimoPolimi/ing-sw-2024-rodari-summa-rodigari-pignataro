@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.*;
@@ -405,6 +406,11 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public void sendMessage(int playerID, String message) throws RemoteException {
         server.sendMessage(gameID, playerID, message);
+    }
+
+    @Override
+    public ArrayList<ChatMessage> getFullChat() throws RemoteException {
+        return server.getChat(gameID);
     }
 
     @Override

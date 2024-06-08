@@ -157,7 +157,7 @@ public class GUIController implements ViewController {
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);
 
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
-        chat = new ChatView(chatContainer, chatBoxContainer, chatTextField, sendButton, chatHintTxt, this);
+        chat = new ChatView(true, chatContainer, chatBoxContainer, chatTextField, sendButton, chatHintTxt, this);
     }
 
     public NetworkController getNetworkController() {
@@ -184,6 +184,7 @@ public class GUIController implements ViewController {
         this.playerID = playerID;
         this.playerNickname = controller.getPlayersInfo().get(playerID-1).get("Nickname");
         table.setPlayer(playerID);
+        chat.refresh();
     }
 
     public String getPlayerNickname() {

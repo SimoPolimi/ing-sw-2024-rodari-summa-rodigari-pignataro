@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.network.interfaces;
 import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
@@ -102,4 +103,6 @@ public interface RemoteServer extends Remote {
     ArrayList<PlayableCard> getPlayersPlayfield(int gameID, int playerID) throws RemoteException;
 
     void sendMessage(int gameID, int playerID, String message) throws RemoteException;
+
+    ArrayList<ChatMessage> getChat(int gameID) throws RemoteException;
 }

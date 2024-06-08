@@ -343,6 +343,10 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void sendMessage(int gameID, int playerID, String message) throws RemoteException {
         collection.get(gameID).getGame().getChat().sendMessage(new ChatMessage(message, collection.get(gameID).getPlayer(playerID).getNickname()));
+    }
 
+    @Override
+    public ArrayList<ChatMessage> getChat(int gameID) throws RemoteException {
+        return collection.get(gameID).getGame().getChat().getFullChat();
     }
 }

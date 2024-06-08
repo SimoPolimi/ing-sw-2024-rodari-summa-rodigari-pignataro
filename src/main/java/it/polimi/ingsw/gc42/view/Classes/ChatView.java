@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.view.GUIController;
+import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -22,12 +23,13 @@ import java.util.ArrayList;
 
 public class ChatView {
     // Attributes
+    private boolean hasBackground;
     private final StackPane container;
     private final StackPane contentContainer;
     private final TextField chatTextField;
     private final Button chatButton;
     private final Text chatHint;
-    private final GUIController controller;
+    private final ViewController controller;
 
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
 
@@ -38,13 +40,25 @@ public class ChatView {
     public static final int ANIMATION_LENGTH = 490;
 
     // Constructor Method
-    public ChatView(StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, Text chatHint, GUIController controller) {
+    public ChatView(boolean hasBackground, StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, Text chatHint, ViewController controller) {
+        this.hasBackground = hasBackground;
+        if (!hasBackground) {
+            isShowing = true;
+        }
         this.container = container;
         this.contentContainer = contentContainer;
         this.chatTextField = chatTextField;
         this.chatButton = sendButton;
         this.chatHint = chatHint;
         this.controller = controller;
+
+        // Retrieves the full chat before building it
+        try {
+            this.messages.addAll(controller.getNetworkController().getFullChat());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
         build();
 
         // Send messages when ENTER is pressed while typing
@@ -71,11 +85,19 @@ public class ChatView {
     }
 
     // Methods
+    public void refresh() {
+        build();
+    }
+
     private void build() {
         contentContainer.getChildren().clear();
         if (messages.isEmpty()) {
             Text text = new Text("No chat messages available");
-            text.setFill(Paint.valueOf("white"));
+            if (hasBackground) {
+                text.setFill(Paint.valueOf("white"));
+            } else {
+                text.setFill(Color.BLACK);
+            }
             text.setFont(Font.font("Contantia Italic", 15));
             contentContainer.getChildren().add(text);
         } else {
@@ -169,7 +191,9 @@ public class ChatView {
     public void hide() {
         controller.blockInput();
         isShowing = false;
-        chatHint.setText("Show Chat");
+        if (null != chatHint) {
+            chatHint.setText("Show Chat");
+        }
         TranslateTransition transition = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);
         transition.setByX(ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());
@@ -180,7 +204,9 @@ public class ChatView {
     public void show() {
         controller.blockInput();
         isShowing = true;
-        chatHint.setText("Hide Chat");
+        if (null != chatHint) {
+            chatHint.setText("Hide Chat");
+        }
         TranslateTransition transition = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);
         transition.setByX(-ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());

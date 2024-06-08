@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -88,4 +89,5 @@ public interface NetworkController {
     ArrayList<PlayableCard> getPlayersPlayfield(int playerID);
 
     void sendMessage(int playerID, String message) throws RemoteException;
+    ArrayList<ChatMessage> getFullChat() throws RemoteException;
 }
