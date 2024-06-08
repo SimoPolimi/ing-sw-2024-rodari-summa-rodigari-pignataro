@@ -20,7 +20,7 @@ public class TerminalInputHandler implements Runnable, TerminalObservable {
     public void run() {
         while (isRunning) {
             if (scanner.hasNext()) {
-                notifyListeners(scanner.next());
+                notifyListeners(scanner.nextLine());
             }
         }
     }

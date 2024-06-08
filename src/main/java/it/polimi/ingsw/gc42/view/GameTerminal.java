@@ -9,12 +9,8 @@ import it.polimi.ingsw.gc42.view.Classes.NetworkMode;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -42,6 +38,8 @@ public class GameTerminal extends Application implements ViewController {
 
     private final BlockingDeque<Runnable> actions = new LinkedBlockingDeque<>();
     private TerminalInputHandler inputHandler;
+
+    private ArrayList<ChatMessage> chat;
 
     private String color(String str, UiColors fg) {
         return fg.toString() + str + UiColors.RESET;
@@ -125,6 +123,7 @@ public class GameTerminal extends Application implements ViewController {
         }
 
         System.out.println("Game created. Waiting for other players to join");
+        chat = new ArrayList<>(controller.getFullChat());
         isShowingGameCreationScreen = true;
     }
 
@@ -137,8 +136,7 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     private void play() throws IOException, InterruptedException {
-        //Chat chat = controller.getChat();
-
+        System.out.print("\n\n\n");
         printPlayer();
         printMenu();
         printHandCards();
@@ -167,10 +165,26 @@ public class GameTerminal extends Application implements ViewController {
                         });
                         break;
                     case "4":
-                        /*for (int index = 0; index < chat.getChatSize(); index++) {
-                            ChatMessage message = chat.getMessage(index);
-                            System.out.println(message.getSender().getNickname() + ": " + message.getText() + "/* " + message.getDateTime().toString());
-                        }*/
+                        if (!chat.isEmpty()) {
+                            int number = 0;
+                            if (chat.size() >= 10) {
+                                number = 10;
+                                System.out.println("Last " + number + " messages:");
+                                for (int i = chat.size() - (number+1); i < chat.size(); i++) {
+                                    printMessage(chat.get(i));
+                                }
+                            } else {
+                                number = chat.size();
+                                System.out.println("Last " + number + " messages:");
+                                for (int i = 0; i < chat.size(); i++) {
+                                    printMessage(chat.get(i));
+                                }
+                            }
+
+                        } else {
+                            System.out.println("No messages yet!");
+                        }
+
                         actions.add(() -> {
                             try {
                                 play();
@@ -180,8 +194,26 @@ public class GameTerminal extends Application implements ViewController {
                         });
                         break;
                     case "5":
-                        //ChatMessage message = new ChatMessage(scanner.next(), player);
-                        //chat.sendMessage(message);
+                        System.out.println("Enter your message:");
+                        inputHandler.listen(new TerminalListener() {
+                            @Override
+                            public void onEvent(String input) {
+                                actions.add(() -> {
+                                    try {
+                                        controller.sendMessage(playerID, input);
+                                        actions.add(() -> {
+                                            try {
+                                                play();
+                                            } catch (IOException | InterruptedException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        });
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                        });
                         break;
                     case "6":
                         exit = true;
@@ -293,9 +325,6 @@ public class GameTerminal extends Application implements ViewController {
                         });
                         break;
                 }
-                inputHandler.unlisten(this);
-                System.out.print("\n\n\n");
-                System.out.println("-------------------------------------------------------------------------------");
             }
         });
 
@@ -1345,6 +1374,7 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println("Waiting...");
                         isWaiting = true;
                         inputHandler.unlisten(this);
+                        chat = new ArrayList<>(controller.getFullChat());
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid number. Try again!");
                     } catch (RemoteException e) {
@@ -1650,7 +1680,18 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyNewMessage(ChatMessage message) {
-        // TODO: Implement
+        chat.add(message);
+        actions.add(() -> printMessage(message));
+    }
+
+    private void printMessage(ChatMessage message) {
+        if (message.getSender().equals("Server")) {
+            System.out.println(UiColors.MAGENTA + "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
+                    + "] " + message.getSender() + " - " + message.getText() + UiColors.RESET);
+        } else {
+            System.out.println(UiColors.CYAN + "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
+                    + "] " + message.getSender() + " - " + message.getText() + UiColors.RESET);
+        }
     }
 
     @Override
