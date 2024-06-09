@@ -31,6 +31,7 @@ public class GameTerminal extends Application implements ViewController {
     private int extremeSX;
     private int extremeUP;
     private int extremeDOWN;
+    private String[][] matrix;
 
     private boolean isShowingGameCreationScreen = false;
     private boolean isWaiting = false;
@@ -146,17 +147,39 @@ public class GameTerminal extends Application implements ViewController {
                 switch (input) {
                     case "1":
                         System.out.println("Select the number of the card you want to play (0 to cancel)");
-                        playCard(scanner.next());
+                        inputHandler.listen(new TerminalListener() {
+                            @Override
+                            public void onEvent(String input) {
+                                playCard(input);
+                            }
+                        });
                         break;
                     case "2":
-                        System.out.println("Select the number of the card you want to flip (0 to cancel)");
-                        flipCard(scanner.next());
                         printHandCards();
-                        returnToMenu();
+                        System.out.println("Select the number of the card you want to flip (0 to cancel)");
+                        inputHandler.listen(new TerminalListener() {
+                            @Override
+                            public void onEvent(String input) {
+                                if (input.equals("1") || input.equals("2") || input.equals("3")) {
+                                    controller.flipCard(playerID, Integer.parseInt(input) - 1);
+                                } else if (!input.equals("0")) {
+                                    System.err.println("Invalid input!");
+                                }
+                                actions.add(() -> {
+                                    try {
+                                        play();
+                                    } catch (IOException | InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                        });
                         break;
                     case "3":
-                        System.out.println(controller.getSecretObjective(playerID).getObjective().getName());
-                        //printSecretObjective(controller.getSecret);
+                        ObjectiveCard secretObj = controller.getSecretObjective(playerID);
+                        printSecretObjective(secretObj);
+                        System.out.println(secretObj.getObjective().getName());
+                        System.out.println(secretObj.getObjective().getDescription());
                         System.out.println();
                         returnToMenu();
                         break;
@@ -230,55 +253,8 @@ public class GameTerminal extends Application implements ViewController {
                         returnToMenu();
                         break;
                     case "31":
-                        /*ArrayList<PlayableCard> cards = new ArrayList<>();
-                        PlayableCard card = (PlayableCard) controller.getGame().getStarterDeck().draw();
-                        card.setX(0);
-                        card.setY(0);
-                        card.flip();
-                        card.getShowingSide().getTopLeftCorner().setCovered(true);
-                        card.getShowingSide().getBottomRightCorner().setCovered(true);
-                        card.getShowingSide().getBottomLeftCorner().setCovered(true);
-                        card.getShowingSide().getBottomRightCorner().setCovered(true);
-                        cards.add(card);
-                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
-                        card.setX(1);
-                        card.setY(0);
-                        card.flip();
-                        card.getShowingSide().getBottomLeftCorner().setCovered(true);
-                        cards.add(card);
-                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
-                        card.setX(0);
-                        card.setY(1);
-                        card.flip();
-                        card.getShowingSide().getBottomRightCorner().setCovered(true);
-                        cards.add(card);
-                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
-                        card.setX(-1);
-                        card.setY(0);
-                        card.flip();
-                        card.getShowingSide().getTopRightCorner().setCovered(true);
-                        cards.add(card);
-                        card = (PlayableCard) controller.getGame().getResourcePlayingDeck().getDeck().draw();
-                        card.setX(0);
-                        card.setY(-1);
-                        card.flip();
-                        card.getShowingSide().getTopLeftCorner().setCovered(true);
-                        cards.add(card);
-                        String[][] matrix = createCardMatrix((StarterCard)cards.get(0));
-                        matrix = updateCardMatrix(matrix ,cards.get(1), cards);
-                        matrix = updateCardMatrix(matrix, cards.get(2), cards);
-                        matrix = updateCardMatrix(matrix, cards.get(3), cards);
-                        matrix = updateCardMatrix(matrix, cards.get(4), cards);
                         printPlayArea(matrix);
-                        //printCardMatrix(getMatrix(cards), cards);
-                        //printPlayArea();*/
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        returnToMenu();
                         break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
@@ -326,16 +302,16 @@ public class GameTerminal extends Application implements ViewController {
 
     private void printMenu() {
         System.out.println("Menu:");
-        System.out.println("1) Select card to play");
-        System.out.println("2) Flip card");
-        System.out.println("3) Show objective's descriptions");
+        System.out.println("1) Play a Card");
+        System.out.println("2) Flip a Card");
+        System.out.println("3) Show your Secret Objective");
         System.out.println("4) Show chat");
-        System.out.println("5) Digit 5 and write the message");
+        System.out.println("5) Send a message");
         System.out.println("6) Exit");
         // Test, will be deleted later
         System.out.println("7) Show ranking");
-        System.out.println("8) Digit to show common objective");
-        System.out.println("9) Digit to show scoreboard");
+        System.out.println("8) Show the Common Objectives");
+        System.out.println("9) Show Scoreboard");
         System.out.println("31) Print PlayArea2 [test]");
         System.out.println("Digit a number to select the action.");
         System.out.println();
@@ -368,32 +344,38 @@ public class GameTerminal extends Application implements ViewController {
         switch (input) {
             case "1", "2", "3" -> {
                 // Play card
-                boolean valid = false;
-                // loops until the input is accepted
-                while (!valid) {
-                    int i = 1;
-                    ArrayList<Coordinates> availablePlacements = controller.getAvailablePlacements(playerID);
-                    for (Coordinates coord : availablePlacements) {
-                        System.out.println(i + ") " + coord.getX() + " " + coord.getY());
-                        //stampare la starter card e poi stampare gli spazio in cui possiamo aggiungere la nuova carta
-                        printCard(controller.getPlayersLastPlayedCard(playerID));
-                        i++;
-                    }
-                    // TODO: Handle str to int conversion exceptions or use nextInt() (there are still exceptions to be handled in this case)
-                    String inputCoord = scanner.next();
-                    if (Integer.valueOf(inputCoord) < 1 || Integer.valueOf(inputCoord) > availablePlacements.size()) {
-                        System.out.println(color("Invalid coordinate choice! Retry...", UiColors.RED));
-                    } else {
-                        valid = true;
-                        //TODO: Fix
-                        controller.playCard(1, availablePlacements.get(Integer.valueOf(inputCoord) - 1).getX(), availablePlacements.get(Integer.valueOf(inputCoord) - 1).getY());
-                    }
-                }
+                actions.add(() -> askForCoordinates(Integer.parseInt(input)));
             }
             case "0" -> {
             } // do nothing and exit
             default -> System.out.println(color("Invalid choice!", UiColors.RED));
         }
+    }
+
+    private void askForCoordinates(int cardID) {
+        int i = 1;
+        ArrayList<Coordinates> availablePlacements = controller.getAvailablePlacements(playerID);
+        for (Coordinates coord : availablePlacements) {
+            System.out.println(i + ") " + coord.getX() + " " + coord.getY());
+            //stampare la starter card e poi stampare gli spazio in cui possiamo aggiungere la nuova carta
+            printCard(controller.getPlayersLastPlayedCard(playerID));
+            i++;
+        }
+        // TODO: Handle str to int conversion exceptions or use nextInt() (there are still exceptions to be handled in this case)
+
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if (Integer.parseInt(input) < 1 || Integer.parseInt(input) > availablePlacements.size()) {
+                    System.out.println(color("Invalid coordinate choice! Retry...", UiColors.RED));
+                    actions.add(() -> askForCoordinates(cardID));
+                } else {
+                    //TODO: Fix
+                    controller.playCard(1, availablePlacements.get(Integer.parseInt(input) - 1).getX(), availablePlacements.get(Integer.parseInt(input) - 1).getY());
+                }
+            }
+        });
+
     }
 
     private void flipCard(String input) {
@@ -450,15 +432,14 @@ public class GameTerminal extends Application implements ViewController {
                         controller.flipStarterCard(playerID);
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
-                        inputHandler.unlisten(this);
                         break;
                     case "f":
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
-                        inputHandler.unlisten(this);
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
+                        actions.add(() -> showStarterCardSelectionDialog());
                         break;
                 }
             }
@@ -512,29 +493,56 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void askToDrawOrGrab() {
-        Card card1, card2;
-        card1 = controller.getDeck(CardType.RESOURCECARD).getFirst();
-        card2 = controller.getDeck(CardType.GOLDCARD).getFirst();
-        for (int line = 1; line < 6; line++) {
-            System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
-                    "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
-        }
-        System.out.println();
-        for (int slot = 1; slot < 3; slot++) {
-            card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
-            card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
+        if (isYourTurn) {
+            System.out.println("Choose what you want to draw or grab:");
+            Card card1, card2;
+            card1 = controller.getDeck(CardType.RESOURCECARD).getFirst();
+            card2 = controller.getDeck(CardType.GOLDCARD).getFirst();
+            card1.flip();
+            card2.flip();
+            System.out.println("Decks");
+            System.out.println("\tResource\t\t\t\t\tGold");
             for (int line = 1; line < 6; line++) {
                 System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
                         "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
             }
             System.out.println();
+            System.out.println("Slots:");
+            System.out.println("\tResource\t\t\t\t\tGold");
+            for (int slot = 1; slot < 3; slot++) {
+                card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
+                card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
+                for (int line = 1; line < 6; line++) {
+                    System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
+                            "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
+                }
+                System.out.println();
+            }
+            System.out.println("Digit gr to grab a card from resource deck");
+            System.out.println("Digit gg to grab a card from gold deck");
+            System.out.println("Digit 1r to choose first resource card");
+            System.out.println("Digit 1g to choose first gold card");
+            System.out.println("Digit 2r to choose second resource card");
+            System.out.println("Digit 2g to choose second gold card");
+
+            inputHandler.listen(new TerminalListener() {
+                @Override
+                public void onEvent(String input) {
+                    switch (input) {
+                        case "gr" -> controller.drawCard(playerID, CardType.RESOURCECARD);
+                        case "gg" -> controller.drawCard(playerID, CardType.GOLDCARD);
+                        case "1r" -> controller.grabCard(playerID, CardType.RESOURCECARD, 1);
+                        case "1g" -> controller.grabCard(playerID, CardType.GOLDCARD, 1);
+                        case "2r" -> controller.grabCard(playerID, CardType.RESOURCECARD, 2);
+                        case "2g" -> controller.grabCard(playerID, CardType.GOLDCARD, 2);
+                        default -> {
+                            System.err.println("Invalid input!");
+                            actions.add(() -> askToDrawOrGrab());
+                        }
+                    }
+                }
+            });
         }
-        System.out.println("Digit gr to grab a card from resource deck");
-        System.out.println("Digit gg to grab a card from gold deck");
-        System.out.println("Digit 1r to choose first resource card");
-        System.out.println("Digit 1g to choose first gold card");
-        System.out.println("Digit 2r to choose second resource card");
-        System.out.println("Digit 2g to choose second gold card");
     }
 
     @Override
@@ -554,7 +562,7 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersPointsChanged(Token token, int newPoints) {
-        showRanking();
+        actions.add(this::showRanking);
     }
 
     @Override
@@ -602,30 +610,37 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
-        if (playerID == this.playerID) {
-            //printPlayArea();
+        if (this.playerID == playerID) {
+            ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
+            if (null != matrix) {
+                matrix = updateCardMatrix(matrix, cards.getLast(), cards);
+            } else {
+                matrix = createCardMatrix((StarterCard) cards.getFirst());
+            }
+            printPlayArea(matrix);
         }
     }
 
     @Override
     public void notifyPlayersHandChanged(int playerID) {
         if (this.playerID == playerID) {
-            // Only shows the User's one (the others should be secret!)
-            int handSize = controller.getPlayersHandSize(playerID);
-            if (handSize == 3) {
-                System.out.println("Your Hand:");
-                // Only shows the updated Hand in meaningful situations
-               printHandCards();
-            }
+            actions.add(() -> {
+                // Only shows the User's one (the others should be secret!)
+                int handSize = controller.getPlayersHandSize(playerID);
+                if (handSize == 3) {
+                    System.out.println("Your Hand:");
+                    // Only shows the updated Hand in meaningful situations
+                    printHandCards();
+                }
+            });
         }
     }
 
     @Override
     public void notifyHandCardWasFlipped(int playedID, int cardID) {
-        if (playedID == this.playerID) {
-            for (int i = 0; i < controller.getPlayersHandSize(playerID); i++) {
-                printCard(controller.getPlayersHandCard(playerID, i));
-            }
+        if (this.playerID == playedID) {
+            System.out.println("Hand updated:");
+            actions.add(this::printHandCards);
         }
     }
 
@@ -648,6 +663,7 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyTurnChanged() {
         if (playerID == controller.getPlayerTurn()) {
             this.isYourTurn = true;
+            System.out.println(UiColors.MAGENTA + "It's your turn!" + UiColors.RESET);
             actions.add(() -> {
                 try {
                     play();
@@ -967,7 +983,12 @@ public class GameTerminal extends Application implements ViewController {
             line = getPrintCardLine(starter,j, true,null);
             for (int i = 0; i < line.length(); i += 2) {
                 String string = new String(String.valueOf(line.charAt(i)));
-                string += line.charAt(i+1);
+                // TODO: Fix error that causes the following exception: "Index 17 out of bounds for length 17"
+                try {
+                    string += line.charAt(i+1);
+                } catch (IndexOutOfBoundsException e) {
+                    //string += line.charAt(i);
+                }
                 playArea[firstLine][firstColumn] = string;
                 firstColumn++;
             }
@@ -1642,16 +1663,28 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
     private void printCommonObjective(){
+        ObjectiveCard card1 = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 1);
+        ObjectiveCard card2 = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 2);
+        // Prints the Cards
         for (int line = 1; line < 6; line++) {
-            /*System.out.println(printObjectiveLine((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(1), line) +
-                    "\t"+printObjectiveLine((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getSlot(2), line) );*/
+            System.out.println(printObjectiveLine(card1, line) +
+                    "\t"+printObjectiveLine(card2, line) );
         }
+        // Prints the info
+        System.out.println("1) " + card1.getObjective().getName());
+        System.out.println("\t" + card1.getObjective().getDescription());
+        System.out.println();
+        System.out.println("2) " + card2.getObjective().getName());
+        System.out.println("\t" + card2.getObjective().getDescription());
     }
     private void printHandCards(){
+        PlayableCard card1 = controller.getPlayersHandCard(playerID, 0);
+        PlayableCard card2 = controller.getPlayersHandCard(playerID, 1);
+        PlayableCard card3 = controller.getPlayersHandCard(playerID, 2);
         for (int line = 1; line < 6; line++){
-            System.out.println(getPrintCardLine(controller.getPlayersHandCard(playerID, 0), line, true, null) +
-                    "\t" + getPrintCardLine(controller.getPlayersHandCard(playerID, 1), line, true, null) +
-                    "\t" + getPrintCardLine(controller.getPlayersHandCard(playerID, 2), line, true, null));
+            System.out.println(getPrintCardLine(card1, line, true, null) +
+                    "\t" + getPrintCardLine(card2, line, true, null) +
+                    "\t" + getPrintCardLine(card3, line, true, null));
         }
     }
 
