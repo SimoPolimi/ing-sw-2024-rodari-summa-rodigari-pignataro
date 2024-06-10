@@ -31,7 +31,8 @@ public class GameTerminal extends Application implements ViewController {
     private int extremeSX;
     private int extremeUP;
     private int extremeDOWN;
-    private String[][] matrix;
+
+    private final ArrayList<String[][]> playAreas = new ArrayList<>();
 
     private boolean isShowingGameCreationScreen = false;
     private boolean isWaiting = false;
@@ -71,6 +72,12 @@ public class GameTerminal extends Application implements ViewController {
             }
         }
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+
+        // Initializes the PlayAreas
+        playAreas.add(null);
+        playAreas.add(null);
+        playAreas.add(null);
+        playAreas.add(null);
 
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
@@ -252,8 +259,21 @@ public class GameTerminal extends Application implements ViewController {
                         printScoreboard(createScoreboard());
                         returnToMenu();
                         break;
-                    case "31":
-                        printPlayArea(matrix);
+                    case "10":
+                        printPlayArea(playAreas.get(playerID-1));
+                        returnToMenu();
+                        break;
+                    case "11":
+                        System.out.println("--- Your Table ---");
+                        printPlayArea(playAreas.get(playerID-1));
+                        System.out.println("--- Others ---");
+                        ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
+                        for (int i = 0; i < 4; i++) {
+                            if (i+1 != playerID && null != playAreas.get(i)) {
+                                System.out.println(info.get(i).get("Nickname") + ":");
+                                printPlayArea(playAreas.get(i));
+                            }
+                        }
                         returnToMenu();
                         break;
                     default:
@@ -308,11 +328,11 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("4) Show chat");
         System.out.println("5) Send a message");
         System.out.println("6) Exit");
-        // Test, will be deleted later
         System.out.println("7) Show ranking");
         System.out.println("8) Show the Common Objectives");
         System.out.println("9) Show Scoreboard");
-        System.out.println("31) Print PlayArea2 [test]");
+        System.out.println("10) Print your Table");
+        System.out.println("11) Print all Tables");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -610,14 +630,14 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
+        ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
+        if (null != playAreas.get(playerID - 1)) {
+            playAreas.set(playerID-1, updateCardMatrix(playAreas.get(playerID-1), cards.getLast(), cards));
+        } else {
+            playAreas.set(playerID-1, createCardMatrix((StarterCard) cards.getFirst()));
+        }
         if (this.playerID == playerID) {
-            ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
-            if (null != matrix) {
-                matrix = updateCardMatrix(matrix, cards.getLast(), cards);
-            } else {
-                matrix = createCardMatrix((StarterCard) cards.getFirst());
-            }
-            printPlayArea(matrix);
+            printPlayArea(playAreas.get(playerID-1));
         }
     }
 
