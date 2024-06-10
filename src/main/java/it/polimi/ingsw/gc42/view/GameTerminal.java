@@ -521,14 +521,14 @@ public class GameTerminal extends Application implements ViewController {
             card1.flip();
             card2.flip();
             System.out.println("Decks");
-            System.out.println("\tResource\t\t\t\t\tGold");
+            System.out.println("Resource\t\t\tGold");
             for (int line = 1; line < 6; line++) {
                 System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
                         "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
             }
             System.out.println();
             System.out.println("Slots:");
-            System.out.println("\tResource\t\t\t\t\tGold");
+            System.out.println("Resource\t\t\tGold");
             for (int slot = 1; slot < 3; slot++) {
                 card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
                 card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
@@ -1018,7 +1018,8 @@ public class GameTerminal extends Application implements ViewController {
       for (int i = 0; i < 801; i++){
           for (int j = 0; j < 1441; j++){
               if (playArea[i][j] == null){
-                  playArea[i][j] = "⬛";
+                  //playArea[i][j] = "⬛";
+                  playArea[i][j] = "  ";
               }
           }
       }
