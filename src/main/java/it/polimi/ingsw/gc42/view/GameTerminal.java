@@ -767,11 +767,11 @@ public class GameTerminal extends Application implements ViewController {
                                 string += getCardColor(card) + getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card);
                             }
                             case 2 -> {
-                                string += getItemPrint(card.getPermanentResources().get(1)) + getCardColor(card)
+                                string += getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card)
                                         + getItemPrint(card.getPermanentResources().get(1));
                             }
                             case 3 -> {
-                                string += getItemPrint(card.getPermanentResources().get(1))
+                                string += getItemPrint(card.getPermanentResources().get(0))
                                         + getItemPrint(card.getPermanentResources().get(1))
                                         + getItemPrint(card.getPermanentResources().get(2));
                             }
@@ -1079,18 +1079,18 @@ public class GameTerminal extends Application implements ViewController {
             return matrix;
         }
         //card up sx
-        if(isThereACardIn(card.getX(),card.getY()-1, cards)){
+        if(isThereACardIn(card.getX(),card.getY()+1, cards)){
             int centerX = coordinates.getY() + 10;
-            int centerY = coordinates.getX() + 6;
+            int centerY = coordinates.getX() + 4;
             int firstColumn = centerX - 4;
-            int firstLine = centerY -2;
+            int firstLine = centerY - 2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
             extremeDX = centerX + 4;
             extremeDOWN = centerY + 2;
             return matrix;
         }
         //card down dx
-        if(isThereACardIn(card.getX(),card.getY()+1, cards)){
+        if(isThereACardIn(card.getX(),card.getY()-1, cards)){
             int centerX = coordinates.getY() - 8;
             int centerY = coordinates.getX() - 4;
             int firstColumn = centerX - 4;
