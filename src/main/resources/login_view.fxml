@@ -141,7 +141,7 @@
                 </VBox>
                 <VBox alignment="CENTER_LEFT" spacing="5">
                     <children>
-                        <Text mouseTransparent="true" text="IP Address and Port:" textAlignment="LEFT" translateX="5">
+                        <Text mouseTransparent="true" text="IP Address:" textAlignment="LEFT" translateX="5">
                             <font>
                                 <Font name="Tahoma Regular" size="12.0" />
                             </font>
