@@ -276,6 +276,14 @@ public class GameTerminal extends Application implements ViewController {
                         }
                         returnToMenu();
                         break;
+                    case "12":
+                        for (int i = 0; i < 801; i++) {
+                            for (int j = 0; j < 1441; j++) {
+                                System.out.print(playAreas.getFirst()[i][j]);
+                            }
+                            System.out.println();
+                        }
+                        //TODO: Remote
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> {
@@ -911,7 +919,7 @@ public class GameTerminal extends Application implements ViewController {
                 string = getItemPrint(corner.getItem());
             } else {
                 //string = "◻";
-                string = "⚪";
+                string = "🟫";
             }
         } else string = getCardColor(card);
         return string;
@@ -965,7 +973,7 @@ public class GameTerminal extends Application implements ViewController {
         } else if (card instanceof StarterCard) {
             string = "🟨";
         } else {
-            string = "⚪";
+            string = "🟫";
         }
         return string;
     }
@@ -977,7 +985,7 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     private Coordinates convertToMatrixCoordinates(Coordinates coordinates, int matrixSize) {
-        int shift = (matrixSize - 1) / 2;
+        int shift = (matrixSize) / 2;
         int x = coordinates.getX() + shift;
         int y = shift - coordinates.getY();
         coordinates.setX(x);
@@ -985,8 +993,8 @@ public class GameTerminal extends Application implements ViewController {
         return coordinates;
     }
     private Coordinates convertMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
-        int shiftX = (matrixSizeX - 1) / 2;
-        int shiftY = (matrixSizeY - 1) / 2;
+        int shiftX = (matrixSizeX) / 2;
+        int shiftY = (matrixSizeY) / 2;
         int x = coordinates.getX() + shiftX;
         int y = shiftY - coordinates.getY();
         coordinates.setX(x);
@@ -995,10 +1003,10 @@ public class GameTerminal extends Application implements ViewController {
     }
 
     private String[][] createCardMatrix(StarterCard starter){
-        String[][] playArea = new String[801][1441];
+        String[][] playArea = new String[800][1440];
         String line = "";
-        int firstColumn = 717;
-        int firstLine = 399;
+        int firstColumn = 716;
+        int firstLine = 398 ;
         for (int j = 1; j <= 5; j++) {
             line = getPrintCardLine(starter,j, true,null);
             for (int i = 0; i < line.length(); i += 2) {
@@ -1013,13 +1021,12 @@ public class GameTerminal extends Application implements ViewController {
                 firstColumn++;
             }
             firstLine++;
-            firstColumn = 717;
+            firstColumn = 716;
         }
-      for (int i = 0; i < 801; i++){
-          for (int j = 0; j < 1441; j++){
+      for (int i = 0; i < 800; i++){
+          for (int j = 0; j < 1440; j++){
               if (playArea[i][j] == null){
-                  //playArea[i][j] = "⬛";
-                  playArea[i][j] = "  ";
+                  playArea[i][j] = color("⬛", UiColors.BLACK);
               }
           }
       }
@@ -1037,10 +1044,11 @@ public class GameTerminal extends Application implements ViewController {
         String line = "";
         for (int j = 1; j <= 5; j++) {
             line = getPrintCardLine(card,j, true,null);
-            for (int i = 0; i < line.length(); i += 2) {
+            int i = 0;
+            while (i < line.length()) {
                 String string = new String(String.valueOf(line.charAt(i)));
-                if (string.equals("⚪")){
-                    matrix[firstLine][firstColumn] = "⚪";
+                if (string.equals("🟫")){
+                    matrix[firstLine][firstColumn] = "🟫";
                     i--;
                     firstColumn++;
                 }else {
@@ -1048,6 +1056,7 @@ public class GameTerminal extends Application implements ViewController {
                     matrix[firstLine][firstColumn] = string;
                     firstColumn++;
                 }
+                i += 2;
             }
             firstLine++;
             firstColumn = centerX - 4;
@@ -1055,13 +1064,25 @@ public class GameTerminal extends Application implements ViewController {
         return matrix;
     }
     private String[][] updateCardMatrix(String[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards){
-        Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 801,1441);
+        Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
+        Coordinates coordinates1 = convertToAbsoluteCoordinates(card.getCoordinates());
         //card down sx
         if(isThereACardIn(card.getX()-1,card.getY(), cards)){
-            int centerX = coordinates.getY() + 10;
-            int centerY = coordinates.getX() - 4;
+            int centerX = coordinates.getX() + (8 * Math.abs(coordinates1.getX()));
+            /*if (card.getX() == 0) {
+                centerX = coordinates.getX() + 8;
+            }*/
+            int centerY = coordinates.getY() - (4 * Math.abs(coordinates1.getY()));
+            /*if (card.getY() == 0) {
+                centerY= coordinates.getY() - 4;
+            }*/
+
+            centerX -= coordinates1.getX();
+            centerY+= coordinates1.getY();
+
             int firstColumn = centerX - 4;
             int firstLine = centerY -2;
+
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
             extremeDX = centerX + 4;
             extremeUP = centerY - 2;
@@ -1069,8 +1090,18 @@ public class GameTerminal extends Application implements ViewController {
         }
         //card up dx
         if(isThereACardIn(card.getX()+1,card.getY(), cards)){
-            int centerX = coordinates.getY() - 8;
-            int centerY = coordinates.getX() + 6;
+            int centerX = coordinates.getX() - (8 * Math.abs(coordinates1.getX()));
+            /*if (card.getX() == 0) {
+                centerX = coordinates.getX() - 8;
+            }*/
+            int centerY = coordinates.getY() + (4 * Math.abs(coordinates1.getY()));
+            /*if (card.getY() == 0) {
+                centerY= coordinates.getY() + 4;
+            }*/
+
+            centerX -= coordinates1.getX();
+            centerY+= coordinates1.getY();
+
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
@@ -1080,8 +1111,18 @@ public class GameTerminal extends Application implements ViewController {
         }
         //card up sx
         if(isThereACardIn(card.getX(),card.getY()+1, cards)){
-            int centerX = coordinates.getY() + 10;
-            int centerY = coordinates.getX() + 4;
+            int centerX = coordinates.getX() + (8 * Math.abs(coordinates1.getX()));
+            /*if (card.getX() == 0) {
+                centerX = coordinates.getX() + 8;
+            }*/
+            int centerY = coordinates.getY() + (4 * Math.abs(coordinates1.getY()));
+            /*if (card.getY() == 0) {
+                centerY= coordinates.getY() + 4;
+            }*/
+
+            centerX -= coordinates1.getX();
+            centerY += coordinates1.getY();
+
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
@@ -1091,8 +1132,18 @@ public class GameTerminal extends Application implements ViewController {
         }
         //card down dx
         if(isThereACardIn(card.getX(),card.getY()-1, cards)){
-            int centerX = coordinates.getY() - 8;
-            int centerY = coordinates.getX() - 4;
+            int centerX = coordinates.getX() - (8 * Math.abs(coordinates1.getX()));
+            /*if (card.getX() == 0) {
+                centerX = coordinates.getX() - 8;
+            }*/
+            int centerY = coordinates.getY() - (4 * Math.abs(coordinates1.getY()));
+            /*if (card.getY() == 0) {
+                centerY= coordinates.getY() - 4;
+            }*/
+
+            centerX -= coordinates1.getX();
+            centerY += coordinates1.getY();
+
             int firstColumn = centerX - 4;
             int firstLine = centerY -2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
