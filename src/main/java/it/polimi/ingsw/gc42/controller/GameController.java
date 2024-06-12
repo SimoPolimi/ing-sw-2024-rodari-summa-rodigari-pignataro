@@ -46,6 +46,7 @@ public class GameController implements Serializable, Observable {
         return name;
     }
 
+    // Used in GameTerminal and gameWindow??
     public void setName(String name) throws RemoteException {
         this.name = name;
     }

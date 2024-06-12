@@ -13,6 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CornerTest {
 
     @Test
+    void generalTesting(){
+        Item item = Resource.FEATHER;
+        Corner corner = new Corner(item, false);
+        assertEquals(corner.getItem(), item);
+
+        // now set
+        Item item2 = Resource.POTION;
+        corner.setItem(item2);
+        assertEquals(corner.getItem(), item2);
+    }
+
+    @Test
     void isCovered() {
         Game game = new Game();
         Player player = new Player(Token.BLUE);

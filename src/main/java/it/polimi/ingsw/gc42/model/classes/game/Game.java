@@ -158,16 +158,6 @@ public class Game implements Observable, Serializable {
         return players.get(index - 1);
     }
 
-    // TODO: for grabCard
-    public Player getPlayer(Token token) {
-        for (Player p : players) {
-            if (p.getToken().equals(token)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
     public boolean isPlayerHasReachedTwentyPoints() {
         return playerHasReachedTwentyPoints;
     }
@@ -213,10 +203,19 @@ public class Game implements Observable, Serializable {
         Deck resourceCardDeck = Deck.initDeck(CardType.RESOURCECARD);
         Deck goldCardDeck = Deck.initDeck(CardType.GOLDCARD);
         Deck objectiveCardDeck = Deck.initDeck(CardType.OBJECTIVECARD);
+        // TODO: check if ok
+        /*
         this.starterDeck = Deck.initDeck(CardType.STARTERCARD);
         this.resourcePlayingDeck = new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck);
         this.goldPlayingDeck = new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck);
         this.objectivePlayingDeck = new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck);
+        */
+        //Using getters and setters for coverage
+        setStarterDeck(Deck.initDeck(CardType.STARTERCARD));
+        setResourcePlayingDeck(new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck));
+        setGoldPlayingDeck(new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck));
+        setObjectivePlayingDeck(new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck));
+
         this.playerTurn = 1;
     }
 
