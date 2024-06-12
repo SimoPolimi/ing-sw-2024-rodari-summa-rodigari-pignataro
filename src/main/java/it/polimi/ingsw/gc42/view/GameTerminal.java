@@ -92,6 +92,34 @@ public class GameTerminal extends Application implements ViewController {
             printingExtremes.add(map);
         }
 
+        // Ask for TUI Mode
+        boolean exitGameModeLoop = false;
+        while (!exitGameModeLoop) {
+            System.out.println("This game supports 2 view modes: Fancy and Standard.");
+            System.out.println("Some Terminals don't properly support Fancy Mode: if you can see the left Card properly,");
+            System.out.println("then it's safe to play, otherwise we suggest playing Standard Mode instead");
+            System.out.println();
+            System.out.println("      Fancy:                    Standard:");
+            System.out.println("🍄🟥🟥🟨🟨🟨🟩🟩🌳      ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿ ");
+            System.out.println("🟥🟥🟨🟨⚪🟨🟨🟩🟩      ▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦ ");
+            System.out.println("🟨⚪🟨🍷📜🪶🟨⚪🟨      ▩ ■ ▩ Ỗ ∫ ϡ ▩ ■ ▩ ");
+            System.out.println("🟪🟪🟨🟨⚪🟨🟨🟦🟦      ▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥ ");
+            System.out.println("🦋🟪🟪🟨🟨🟨🟦🟦🐺      ¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘ ");
+            System.out.println("\nPress f to play in Fancy Mode, s for Standard Mode:");
+            String s = scanner.next();
+            if(s.equals("f")) {
+                isAdvancedGraphicsMode = true;
+                exitGameModeLoop = true;
+            } else if (s.equals("s")) {
+                isAdvancedGraphicsMode = false;
+                exitGameModeLoop = true;
+            } else {
+                System.err.println("Invalid Choice!\n");
+            }
+        }
+
+        scanner = new Scanner(System.in);
+
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
         pool.submit(inputHandler);
@@ -292,6 +320,24 @@ public class GameTerminal extends Application implements ViewController {
                         }
                         returnToMenu();
                         break;
+                    case "12":
+                        isAdvancedGraphicsMode = !isAdvancedGraphicsMode;
+                        terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
+
+                        // Refreshes the PlayAreas
+                        for (String[][] playArea: playAreas) {
+                            if (null != playArea) {
+                                recreatePlayArea(playArea);
+                            }
+                        }
+
+                        System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) +
+                                terminalCharacters.getCharacter(Characters.PLANT) +
+                                "Mode Changed" +
+                                terminalCharacters.getCharacter(Characters.ANIMAL) +
+                                terminalCharacters.getCharacter(Characters.INSECT));
+                        returnToMenu();
+                        break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> {
@@ -349,6 +395,11 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("9) Show Scoreboard");
         System.out.println("10) Print your Table");
         System.out.println("11) Print all Tables");
+        if (isAdvancedGraphicsMode) {
+            System.out.println("12) Switch to Standard Mode");
+        } else {
+            System.out.println("12) Switch to Fancy Mode");
+        }
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -1022,11 +1073,7 @@ public class GameTerminal extends Application implements ViewController {
       for (int i = 0; i < 800; i++){
           for (int j = 0; j < 1440; j++){
               if (playArea[i][j] == null){
-                  if(isAdvancedGraphicsMode) {
-                      playArea[i][j] = color("⬛", UiColors.BLACK);
-                  } else {
-                      playArea[i][j] = "  ";
-                  }
+                  playArea[i][j] = "  ";
               }
           }
       }
@@ -1183,6 +1230,32 @@ public class GameTerminal extends Application implements ViewController {
         }
         return matrix;
     }
+
+    private void recreatePlayArea(String[][] playArea) {
+        for (int i = 0; i < playArea.length; i++) {
+            for (int j = 0; j < playArea[i].length; j++) {
+                switch (playArea[i][j]) {
+                    case "ନ ", "🍄" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FUNGI);
+                    case "✿ ", "🌳" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PLANT);
+                    case "♘ ", "🐺" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.ANIMAL);
+                    case "¥ ", "🦋" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.INSECT);
+                    case "∫ ", "📜" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.SCROLL);
+                    case "ϡ ", "🪶" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FEATHER);
+                    case "Ỗ ", "🍷" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.POTION);
+                    case "▤ ", "🟥" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.RED_SQUARE);
+                    case "▥ ", "🟦" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
+                    case "▦ ", "🟩" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
+                    case "▧ ", "🟪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
+                    case "▩ ", "🟨" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+                    case "■ ", "⚪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
+                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLACK_SQUARE);
+                    case "▢ ", "🟫" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+
+                }
+            }
+        }
+    }
+
     private void printPlayArea(String[][] playArea, int playerID){
         int extremeUP = printingExtremes.get(playerID-1).get("UP");
         int extremeDOWN = printingExtremes.get(playerID-1).get("DOWN");

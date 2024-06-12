@@ -39,8 +39,8 @@ public class TerminalCharacters {
                 case GREEN_SQUARE -> string = "🟩";
                 case PURPLE_SQUARE -> string = "🟪";
                 case YELLOW_SQUARE -> string = "🟨";
-                case BLACK_SQUARE -> string = "⬛";
-                case WHITE_SQUARE -> string = "⬜";
+                case BLACK_SQUARE -> string = "  ";
+                case WHITE_SQUARE -> string = "⚪";
                 case EMPTY_CORNER -> string = "🟫";
                 case RED_CIRCLE -> string = "🔴";
                 case BLUE_CIRCLE -> string = "🔵";
@@ -50,26 +50,6 @@ public class TerminalCharacters {
         } else {
             // Standard Characters
             switch (character) {
-                /*case FUNGI -> string = color("ନ ", UiColors.RED);
-                case PLANT -> string = color("⚜ ", UiColors.GREEN);
-                case ANIMAL -> string = color("♘ ", UiColors.BLUE);
-                case INSECT -> string = color("¥ ", UiColors.MAGENTA);
-                case SCROLL -> string = color("∫ ", UiColors.YELLOW);
-                case FEATHER -> string = color("ϡ ", UiColors.YELLOW);
-                case POTION -> string = color("Ỗ ", UiColors.YELLOW);
-                case RED_SQUARE -> string = color("■ ", UiColors.RED);
-                case BLUE_SQUARE -> string = color("■ ",UiColors.BLUE);
-                case GREEN_SQUARE -> string = color("■ ",UiColors.GREEN);
-                case PURPLE_SQUARE -> string = color("■ ",UiColors.MAGENTA);
-                case YELLOW_SQUARE -> string = color("■ ",UiColors.YELLOW);
-                case BLACK_SQUARE -> string = color("■ ",UiColors.BLACK);
-                case WHITE_SQUARE -> string = color("■ ", UiColors.WHITE);
-                case EMPTY_CORNER -> string = color("▢ ", UiColors.YELLOW);
-                case RED_CIRCLE -> string = color("●", UiColors.RED);
-                case BLUE_CIRCLE -> string = color("●",UiColors.BLUE);
-                case GREEN_CIRCLE -> string = color("●",UiColors.GREEN);
-                case YELLOW_CIRCLE -> string = color("●",UiColors.YELLOW);*/
-
                 case FUNGI -> string = "ନ ";
                 case PLANT -> string = "✿ ";
                 case ANIMAL -> string = "♘ ";
@@ -82,7 +62,7 @@ public class TerminalCharacters {
                 case GREEN_SQUARE -> string = "▦ ";
                 case PURPLE_SQUARE -> string = "▧ ";
                 case YELLOW_SQUARE -> string = "▩ ";
-                case BLACK_SQUARE -> string = "■ ";
+                case BLACK_SQUARE -> string = "  ";
                 case WHITE_SQUARE -> string = "■ ";
                 case EMPTY_CORNER -> string = "▢ ";
                 case RED_CIRCLE -> string = "●";
