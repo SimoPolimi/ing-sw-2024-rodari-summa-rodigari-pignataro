@@ -86,9 +86,9 @@ public class TerminalCharacters {
                 case WHITE_SQUARE -> string = "■ ";
                 case EMPTY_CORNER -> string = "▢ ";
                 case RED_CIRCLE -> string = "●";
-                case BLUE_CIRCLE -> string = "●";
-                case GREEN_CIRCLE -> string = "●";
-                case YELLOW_CIRCLE -> string = "●";
+                case BLUE_CIRCLE -> string = "○";
+                case GREEN_CIRCLE -> string = "◍";
+                case YELLOW_CIRCLE -> string = "◉";
             }
         }
         return string;
