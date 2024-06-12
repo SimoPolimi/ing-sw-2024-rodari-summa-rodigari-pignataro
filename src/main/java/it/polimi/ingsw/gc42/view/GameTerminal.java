@@ -338,6 +338,29 @@ public class GameTerminal extends Application implements ViewController {
                                 terminalCharacters.getCharacter(Characters.INSECT));
                         returnToMenu();
                         break;
+                    case "13":
+                        if (!terminalCharacters.isAdvancedGraphicsMode()) {
+                            System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) + " -> Fungi kingdom icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.PLANT) + " -> Plant kingdom icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.ANIMAL) + " -> Animal kingdom icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.INSECT) + " -> Insect kingdom icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.EMPTY_CORNER) + " -> Empty corner");
+                            System.out.println(terminalCharacters.getCharacter(Characters.SCROLL) + " -> Scroll icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.FEATHER) + " -> Feather icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.POTION) + " -> Potion icon");
+                            System.out.println(terminalCharacters.getCharacter(Characters.RED_SQUARE) + " -> Fungi color");
+                            System.out.println(terminalCharacters.getCharacter(Characters.GREEN_SQUARE) + " -> Plant color");
+                            System.out.println(terminalCharacters.getCharacter(Characters.BLUE_SQUARE) + " -> Animal color");
+                            System.out.println(terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) + " -> Insect color");
+                            System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) + " -> Gold card color");
+                            // todo: write description for circles
+                            System.out.println(terminalCharacters.getCharacter(Characters.RED_CIRCLE) + " -> ");
+                            System.out.println(terminalCharacters.getCharacter(Characters.GREEN_CIRCLE) + " -> ");
+                            System.out.println(terminalCharacters.getCharacter(Characters.BLUE_CIRCLE) + " -> ");
+                            System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE) + " -> ");
+                        } else {
+                            System.out.println(color("Unknown command", UiColors.RED));
+                        }
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> {
@@ -399,6 +422,7 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println("12) Switch to Standard Mode");
         } else {
             System.out.println("12) Switch to Fancy Mode");
+            System.out.println("13) Show a legend with character descriptions");
         }
         System.out.println("Digit a number to select the action.");
         System.out.println();
