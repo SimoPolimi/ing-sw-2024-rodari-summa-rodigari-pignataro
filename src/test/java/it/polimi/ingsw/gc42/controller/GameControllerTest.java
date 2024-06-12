@@ -1,26 +1,94 @@
 package it.polimi.ingsw.gc42.controller;
 
-import it.polimi.ingsw.gc42.model.classes.cards.Card;
-import it.polimi.ingsw.gc42.model.classes.cards.CardSide;
-import it.polimi.ingsw.gc42.model.classes.cards.GoldCard;
-import it.polimi.ingsw.gc42.model.classes.cards.ResourceCard;
+import it.polimi.ingsw.gc42.model.classes.cards.*;
+import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.ClientController;
+import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
+import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
+import it.polimi.ingsw.gc42.view.NewGameViewController;
 import javafx.event.ActionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
+
+    @Test
+    void generalTesting() throws RemoteException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        // New view empty just to test listeners
+        controller.addView(new RemoteViewController() {
+            @Override
+            public void showSecretObjectivesSelectionDialog() throws RemoteException {}
+            @Override
+            public void showStarterCardSelectionDialog() throws RemoteException {}
+            @Override
+            public void showTokenSelectionDialog() throws RemoteException {}
+            @Override
+            public void askToDrawOrGrab(int playerID) throws RemoteException {}
+            @Override
+            public void notifyGameIsStarting() throws RemoteException {}
+            @Override
+            public void notifyDeckChanged(CardType type) throws RemoteException {}
+            @Override
+            public void notifySlotCardChanged(CardType type, int slot) throws RemoteException {}
+            @Override
+            public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {}
+            @Override
+            public void notifyNumberOfPlayersChanged() throws RemoteException {}
+            @Override
+            public void notifyPlayersTokenChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersPlayAreaChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersHandChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyHandCardWasFlipped(int playedID, int cardID) throws RemoteException {}
+            @Override
+            public void notifyPlayersObjectiveChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyCommonObjectivesChanged() throws RemoteException {}
+            @Override
+            public void notifyTurnChanged() throws RemoteException {}
+            @Override
+            public void getReady(int numberOfPlayers) throws RemoteException {}
+            @Override
+            public void notifyLastTurn() throws RemoteException {}
+            @Override
+            public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {}
+            @Override
+            public void notifyNewMessage(ChatMessage message) throws RemoteException {}
+        });
+        //TODO: check if ok
+
+        // nextStatus coverage
+        controller.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
+        controller.addPlayer(player);
+        player.setStatus(GameStatus.WAITING_FOR_SERVER);
+        player.setStatus(GameStatus.READY);
+        player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+        player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+        player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        player.setStatus(GameStatus.PLAYING);
+        player.setStatus(GameStatus.END_GAME);
+
+    }
 
     @Test
     void nameIsSet() throws RemoteException {
@@ -367,5 +435,184 @@ class GameControllerTest {
     void beginTokenChoosing() throws RemoteException {
         GameController controller = new GameController("test");
         assertDoesNotThrow(()->controller.beginTokenChoosing());
+    }
+
+    @Test
+    void listenerTest() throws RemoteException, IllegalActionException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        controller.addPlayer(player);
+        // New view empty just to test listeners
+        controller.addView(new RemoteViewController() {
+            @Override
+            public void showSecretObjectivesSelectionDialog() throws RemoteException {}
+            @Override
+            public void showStarterCardSelectionDialog() throws RemoteException {}
+            @Override
+            public void showTokenSelectionDialog() throws RemoteException {}
+            @Override
+            public void askToDrawOrGrab(int playerID) throws RemoteException {}
+            @Override
+            public void notifyGameIsStarting() throws RemoteException {}
+            @Override
+            public void notifyDeckChanged(CardType type) throws RemoteException {}
+            @Override
+            public void notifySlotCardChanged(CardType type, int slot) throws RemoteException {}
+            @Override
+            public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {}
+            @Override
+            public void notifyNumberOfPlayersChanged() throws RemoteException {}
+            @Override
+            public void notifyPlayersTokenChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersPlayAreaChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersHandChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyHandCardWasFlipped(int playedID, int cardID) throws RemoteException {}
+            @Override
+            public void notifyPlayersObjectiveChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyCommonObjectivesChanged() throws RemoteException {}
+            @Override
+            public void notifyTurnChanged() throws RemoteException {}
+            @Override
+            public void getReady(int numberOfPlayers) throws RemoteException {}
+            @Override
+            public void notifyLastTurn() throws RemoteException {}
+            @Override
+            public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {}
+            @Override
+            public void notifyNewMessage(ChatMessage message) throws RemoteException {}
+        });
+        // Map because even if it's final, its elements can still be modified
+        final Map<String, Boolean> isListenerNotified = new HashMap<>();
+        String[] listenerName = {"resourceDeckNotified", "goldDeckNotified", "resourceSlot1Notified", "resourceSlot2Notified", "goldSlot1Notified", "goldSlot2Notified", "commonObjectivesNotified", "chatNotified", "playerHandNotified", "playerSecretObjectiveNotified", "playerTokenNotified", "playerPointsNotified", "playerPlayAreaNotified"};
+        for(String listener: listenerName){
+            isListenerNotified.put(listener, false);
+        }
+
+        controller.getGame().getResourcePlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("resourceDeckNotified", true);
+            }
+        });
+
+        controller.getGame().getGoldPlayingDeck().getDeck().setListener(new DeckViewListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("goldDeckNotified", true);
+            }
+        });
+
+        controller.getGame().setListener(new ResourceSlot1Listener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("resourceSlot1Notified", true);
+            }
+        });
+
+        controller.getGame().setListener(new ResourceSlot2Listener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("resourceSlot2Notified", true);
+            }
+        });
+
+        controller.getGame().setListener(new GoldSlot1Listener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("goldSlot1Notified", true);
+            }
+        });
+
+        controller.getGame().setListener(new GoldSlot2Listener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("goldSlot2Notified", true);
+            }
+        });
+
+        controller.getGame().setListener(new CommonObjectivesListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("commonObjectivesNotified", true);
+            }
+        });
+
+        controller.getGame().getChat().setListener(new Listener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("chatNotified", true);
+            }
+        });
+
+        player.setListener(new HandListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("playerHandNotified", true);
+            }
+        });
+
+        player.setListener(new SecretObjectiveListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("playerSecretObjectiveNotified", true);
+            }
+        });
+
+        player.setListener(new TokenListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("playerTokenNotified", true);
+            }
+        });
+
+        player.setListener(new PointsListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("playerPointsNotified", true);
+            }
+        });
+
+        player.getPlayField().setListener(new PlayAreaListener() {
+            @Override
+            public void onEvent() {
+                isListenerNotified.put("playerPlayAreaNotified", true);
+            }
+        });
+
+        // when
+        controller.getGame().getResourcePlayingDeck().getDeck().draw();
+        controller.getGame().getGoldPlayingDeck().getDeck().draw();
+        controller.getGame().putDown(controller.getGame().getResourcePlayingDeck(), 1);
+        controller.getGame().putDown(controller.getGame().getResourcePlayingDeck(), 2);
+        controller.getGame().putDown(controller.getGame().getGoldPlayingDeck(), 1);
+        controller.getGame().putDown(controller.getGame().getGoldPlayingDeck(), 2);
+        controller.getGame().getChat().sendMessage(new ChatMessage("text", player.getNickname()));
+        player.drawCard(controller.getGame().getResourcePlayingDeck());
+        player.setSecretObjective((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
+        player.setToken(Token.BLUE);
+        // TODO: calling other methods?
+        player.setPoints(10);
+        player.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+        player.setStarterCard();
+
+        assertTrue(isListenerNotified.get("resourceDeckNotified"));
+        assertTrue(isListenerNotified.get("goldDeckNotified"));
+        assertTrue(isListenerNotified.get("resourceSlot1Notified"));
+        assertTrue(isListenerNotified.get("resourceSlot2Notified"));
+        assertTrue(isListenerNotified.get("goldSlot1Notified"));
+        assertTrue(isListenerNotified.get("goldSlot2Notified"));
+        // This one is notified when the game is created aka when the controller is created
+        //assertTrue(isListenerNotified.get("commonObjectivesNotified"));
+        assertTrue(isListenerNotified.get("chatNotified"));
+        assertTrue(isListenerNotified.get("playerHandNotified"));
+        assertTrue(isListenerNotified.get("playerSecretObjectiveNotified"));
+        assertTrue(isListenerNotified.get("playerTokenNotified"));
+        assertTrue(isListenerNotified.get("playerPointsNotified"));
+        assertTrue(isListenerNotified.get("playerPlayAreaNotified"));
     }
 }
