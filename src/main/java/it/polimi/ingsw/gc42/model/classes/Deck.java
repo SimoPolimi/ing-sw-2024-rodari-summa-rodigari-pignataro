@@ -19,7 +19,7 @@ public class Deck implements Observable, Serializable {
     // Attributes
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private final ArrayList<Card> cards = new ArrayList<>();
-    private CardType cardType;
+    private final CardType cardType;
 
     // Constructor
 
@@ -50,15 +50,6 @@ public class Deck implements Observable, Serializable {
      */
     public CardType getCardType() {
         return cardType;
-    }
-
-    /**
-     * Setter Method for cardType
-     *
-     * @param cardType: the type of Cards the Deck is made of
-     */
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
     }
 
     // Methods

@@ -9,10 +9,10 @@ import java.io.Serializable;
  */
 public class CardSide implements Serializable {
     // Attributes
-    private Corner topLeftCorner;
-    private Corner topRightCorner;
-    private Corner bottomLeftCorner;
-    private Corner bottomRightCorner;
+    private final Corner topLeftCorner;
+    private final Corner topRightCorner;
+    private final Corner bottomLeftCorner;
+    private final Corner bottomRightCorner;
 
     // Constructor Method
 
@@ -42,27 +42,11 @@ public class CardSide implements Serializable {
     }
 
     /**
-     * Setter method for topLeftCorner
-     * @param topLeftCorner: the Corner that will be placed in the upper left part of the CardSide
-     */
-    public void setTopLeftCorner(Corner topLeftCorner) {
-        this.topLeftCorner = topLeftCorner;
-    }
-
-    /**
      * Getter method for topRightCorner
      * @return the Corner shown in the upper right part of the CardsSide
      */
     public Corner getTopRightCorner() {
         return topRightCorner;
-    }
-
-    /**
-     * Setter method for upperRightCorner
-     * @param topRightCorner: the Corner that will be placed in the upper right part of the CardSide
-     */
-    public void setTopRightCorner(Corner topRightCorner) {
-        this.topRightCorner = topRightCorner;
     }
 
     /**
@@ -74,14 +58,6 @@ public class CardSide implements Serializable {
     }
 
     /**
-     * Setter method for bottomLeftCorner
-     * @param bottomLeftCorner: the Corner that will be placed in the lower left part of the CardSide
-     */
-    public void setBottomLeftCorner(Corner bottomLeftCorner) {
-        this.bottomLeftCorner = bottomLeftCorner;
-    }
-
-    /**
      * Getter method for bottomRightCorner
      * @return bottomRightCorner: the Corner shown in the lower right part of the CardSide
      */
@@ -89,11 +65,4 @@ public class CardSide implements Serializable {
         return bottomRightCorner;
     }
 
-    /**
-     * Setter method for bottomRightCorner
-     * @param bottomRightCorner: the Corner that will be placed in the bottom right part of the CardSide
-     */
-    public void setBottomRightCorner(Corner bottomRightCorner) {
-        this.bottomRightCorner = bottomRightCorner;
-    }
 }

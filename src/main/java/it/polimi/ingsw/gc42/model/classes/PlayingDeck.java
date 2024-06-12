@@ -16,7 +16,7 @@ public class PlayingDeck implements Serializable {
     // Attributes
     private Card slot1;
     private Card slot2;
-    private Deck deck;
+    private final Deck deck;
 
     // Constructor Method
 
@@ -72,14 +72,5 @@ public class PlayingDeck implements Serializable {
      */
     public Deck getDeck() {
         return deck;
-    }
-
-    /**
-     * Setter Method for Deck
-     *
-     * @param deck: the Deck that goes into the PlayingDeck
-     */
-    public void setDeck(Deck deck) {
-        this.deck = deck;
     }
 }
