@@ -1505,32 +1505,104 @@ public class GameTerminal extends Application implements ViewController {
             case 87:
                 switch (line) {
                     case 1, 5:
-                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
+                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪ 2⚪🟥⚪⚪🟨";
+                        // 🟨⚪⚪ 2⚪🟥⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🟥⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟥⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🟥⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪🟥⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                 }
                 break;
             case 88:
                 switch (line){
                     case 1, 5:
-                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
+                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪🟩⚪ 2⚪⚪🟨";
+                        // 🟨⚪⚪🟩⚪ 2⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🟩⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟩⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪🟩⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪🟩⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
 
                 }
@@ -1538,229 +1610,735 @@ public class GameTerminal extends Application implements ViewController {
             case 89:
                 switch (line){
                     case 1, 5:
-                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
+                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪ 2⚪🟦⚪⚪🟨";
+                        // 🟨⚪⚪ 2⚪🟦⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🟦⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟦⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🟦⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪🟦⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 90:
                 switch (line){
                     case 1, 5:
-                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
+                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
+                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪🟪⚪ 2⚪⚪🟨";
+                        // 🟨⚪⚪🟪⚪ 2⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🟪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪🟪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪🟪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 91:
                 switch (line){
                     case 1, 5:
-                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
+                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪🟥⚪ 3⚪⚪🟨";
+                        // 🟨⚪⚪🟥⚪ 3⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 3" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪🟥⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪🟥⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪🟩⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟩⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 92:
                 switch (line){
                     case 1, 5:
-                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
+                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪ 3⚪🟩⚪⚪🟨";
+                        // 🟨⚪⚪ 3⚪🟩⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 3" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪⚪🟩⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪🟩⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪🟪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 93:
                 switch (line){
                     case 1, 5:
-                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
+                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪🟥⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟥⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪🟦⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪🟦⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🟦⚪ 3⚪⚪🟨";
+                        // 🟨⚪⚪🟦⚪ 3⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 3" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 94:
                 switch (line){
                     case 1,5:
-                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
-                    break;
+                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
+                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
+                        break;
                     case 2:
-                        string = "🟨⚪⚪⚪🟦⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🟦⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪⚪🟪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪🟪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪ 3⚪🟪⚪⚪🟨";
+                        // 🟨⚪⚪ 3⚪🟪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 3" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 95:
                 switch (line){
                     case 1, 5:
-                        string = "🟥🟨🟨🟨🟨🟨🟨🟨🟥";
+                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
+                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🍄⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🍄⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.FUNGI) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🍄⚪🍄⚪⚪🟨";
+                        // 🟨⚪⚪🍄⚪🍄⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.FUNGI) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.FUNGI) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 96:
                 switch (line){
                     case 1, 5:
-                        string = "🟩🟨🟨🟨🟨🟨🟨🟨🟩";
+                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
+                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🌳⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🌳⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PLANT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🌳⚪🌳⚪⚪🟨";
+                        // 🟨⚪⚪🌳⚪🌳⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PLANT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PLANT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 97:
                 switch (line){
                     case 1, 5:
-                        string = "🟦🟨🟨🟨🟨🟨🟨🟨🟦";
+                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
+                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🐺⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🐺⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.ANIMAL) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🐺⚪🐺⚪⚪🟨";
+                        // 🟨⚪⚪🐺⚪🐺⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.ANIMAL) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.ANIMAL) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 98:
                 switch (line){
                     case 1, 5:
-                        string = "🟪🟨🟨🟨🟨🟨🟨🟨🟪";
+                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
+                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪⚪🦋⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪🦋⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.INSECT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪🦋⚪🦋⚪⚪🟨";
+                        // 🟨⚪⚪🦋⚪🦋⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.INSECT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.INSECT) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 99:
                 switch (line){
                     case 1, 5:
-                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 3⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 3⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 3" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪📜🍷🪶⚪⚪🟨";
+                        // 🟨⚪⚪📜🍷🪶⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.SCROLL) +
+                                terminalCharacters.getCharacter(Characters.POTION) +
+                                terminalCharacters.getCharacter(Characters.FEATHER) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 100:
                 switch (line){
                     case 1, 5:
-                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+
                         break;
                     case 3:
-                        string = "🟨⚪⚪📜⚪📜⚪⚪🟨";
+                        // 🟨⚪⚪📜⚪📜⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.SCROLL) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.SCROLL) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 101:
                 switch (line){
                     case 1, 5:
-                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪🍷⚪🍷⚪⚪🟨";
+                        // 🟨⚪⚪🍷⚪🍷⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.POTION) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.POTION) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
             case 102:
                 switch (line){
                     case 1, 5:
-                        string = "🟨🟨🟨🟨🟨🟨🟨🟨🟨";
+                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 2:
-                        string = "🟨⚪⚪⚪ 2⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                " 2" +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 3:
-                        string = "🟨⚪⚪🪶⚪🪶⚪⚪🟨";
+                        // 🟨⚪⚪🪶⚪🪶⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.FEATHER) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.FEATHER) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                     case 4:
-                        string = "🟨⚪⚪⚪⚪⚪⚪⚪🟨";
+                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
+                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         break;
                 }
                 break;
         }
         return string;
+
     }
 
     private void printSecretObjective(ObjectiveCard card){
