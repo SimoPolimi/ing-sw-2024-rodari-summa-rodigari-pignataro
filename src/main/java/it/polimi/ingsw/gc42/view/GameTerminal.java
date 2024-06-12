@@ -5,7 +5,9 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.*;
 import it.polimi.ingsw.gc42.network.*;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
+import it.polimi.ingsw.gc42.view.Classes.Characters;
 import it.polimi.ingsw.gc42.view.Classes.NetworkMode;
+import it.polimi.ingsw.gc42.view.Classes.TerminalCharacters;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ import java.util.concurrent.*;
 
 public class GameTerminal extends Application implements ViewController {
     private boolean exit = false;
+    private boolean isAdvancedGraphicsMode = true;
     private NetworkController controller;
     private Player player;
     private Scanner scanner = new Scanner(System.in);
@@ -33,6 +36,8 @@ public class GameTerminal extends Application implements ViewController {
     private int extremeDOWN;
 
     private final ArrayList<String[][]> playAreas = new ArrayList<>();
+
+    private TerminalCharacters terminalCharacters;
 
     private boolean isShowingGameCreationScreen = false;
     private boolean isWaiting = false;
@@ -84,6 +89,9 @@ public class GameTerminal extends Application implements ViewController {
         pool.submit(inputHandler);
         actions.add(() -> {
             System.out.println("Welcome to Codex Naturalis!");
+            //TODO: Ask for TUI Mode
+            terminalCharacters = new TerminalCharacters(isAdvancedGraphicsMode);
+
             login();
         });
 
@@ -276,14 +284,6 @@ public class GameTerminal extends Application implements ViewController {
                         }
                         returnToMenu();
                         break;
-                    case "12":
-                        for (int i = 0; i < 801; i++) {
-                            for (int j = 0; j < 1441; j++) {
-                                System.out.print(playAreas.getFirst()[i][j]);
-                            }
-                            System.out.println();
-                        }
-                        //TODO: Remote
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> {
@@ -353,10 +353,10 @@ public class GameTerminal extends Application implements ViewController {
         Token token = controller.getPlayerToken(playerID);
         if (null != token) {
             switch (token) {
-                case Token.RED -> string = "🔴";
-                case Token.BLUE -> string = "🔵";
-                case Token.GREEN -> string = "🟢";
-                case Token.YELLOW -> string = "🟡";
+                case Token.RED -> string = terminalCharacters.getCharacter(Characters.RED_CIRCLE);
+                case Token.BLUE -> string = terminalCharacters.getCharacter(Characters.BLUE_CIRCLE);
+                case Token.GREEN -> string = terminalCharacters.getCharacter(Characters.GREEN_CIRCLE);
+                case Token.YELLOW -> string = terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE);
             }
         }
         System.out.println("Token: " + string);
@@ -477,32 +477,32 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void showTokenSelectionDialog() {
         System.out.println("--- Select your token ---");
-        System.out.println("Digit 1 to choose: 🔴");
-        System.out.println("Digit 2 to choose: 🔵");
-        System.out.println("Digit 3 to choose: 🟢");
-        System.out.println("Digit 4 to choose: 🟡");
+        System.out.println("Digit 1 to choose: " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
+        System.out.println("Digit 2 to choose: " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
+        System.out.println("Digit 3 to choose: " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
+        System.out.println("Digit 4 to choose: " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
         String input = "";
         inputHandler.listen(new TerminalListener() {
             @Override
             public void onEvent(String input) {
                 switch (input) {
                     case "1":
-                        System.out.println("You chose 🔴");
+                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
                         controller.setPlayerToken(playerID, Token.RED);
                         inputHandler.unlisten(this);
                         break;
                     case "2":
-                        System.out.println("You chose 🔵");
+                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
                         controller.setPlayerToken(playerID, Token.BLUE);
                         inputHandler.unlisten(this);
                         break;
                     case "3":
-                        System.out.println("You chose 🟢");
+                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
                         controller.setPlayerToken(playerID, Token.GREEN);
                         inputHandler.unlisten(this);
                         break;
                     case "4":
-                        System.out.println("You chose 🟡");
+                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
                         controller.setPlayerToken(playerID, Token.YELLOW);
                         inputHandler.unlisten(this);
                         break;
@@ -627,10 +627,10 @@ public class GameTerminal extends Application implements ViewController {
             if (null != token) {
                 ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                 switch (token) {
-                    case Token.RED -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: 🔴");
-                    case Token.BLUE -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: 🔵");
-                    case Token.GREEN -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: 🟢");
-                    case Token.YELLOW -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: 🟡");
+                    case Token.RED -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
+                    case Token.BLUE -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
+                    case Token.GREEN -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
+                    case Token.YELLOW -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
                 }
             }
         }
@@ -691,7 +691,7 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyTurnChanged() {
         if (playerID == controller.getPlayerTurn()) {
             this.isYourTurn = true;
-            System.out.println(UiColors.MAGENTA + "It's your turn!" + UiColors.RESET);
+            System.out.println(color("It's your turn!", UiColors.MAGENTA));
             actions.add(() -> {
                 try {
                     play();
@@ -728,7 +728,7 @@ public class GameTerminal extends Application implements ViewController {
                         string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
                         for (int i = 0; i < 7; i++) {
                             if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                string += "🟨";
+                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                             } else {
                                 string += getCardColor(card);
                             }
@@ -754,11 +754,11 @@ public class GameTerminal extends Application implements ViewController {
                 }
                 case 2, 4 -> {
                     if (card instanceof GoldCard) {
-                        string += "🟨";
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                         for (int i = 0; i < 7; i++) {
                             string += getCardColor(card);
                         }
-                        string += "🟨";
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                     } else {
                         for (int i = 0; i < 9; i++) {
                             string += getCardColor(card);
@@ -803,7 +803,7 @@ public class GameTerminal extends Application implements ViewController {
                         string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
                         for (int i = 0; i < 7; i++) {
                             if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                string += "🟨";
+                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                             } else {
                                 string += getCardColor(card);
                             }
@@ -918,8 +918,7 @@ public class GameTerminal extends Application implements ViewController {
             if (null != corner.getItem()) {
                 string = getItemPrint(corner.getItem());
             } else {
-                //string = "◻";
-                string = "🟫";
+                string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
             }
         } else string = getCardColor(card);
         return string;
@@ -928,23 +927,13 @@ public class GameTerminal extends Application implements ViewController {
     private String getItemPrint(Item item) {
         String string = "  ";
         switch (item) {
-            //Without Emoji
-                    /*case KingdomResource.FUNGI -> string = "ନ";
-                    case KingdomResource.ANIMAL -> string = "♘";
-                    case KingdomResource.INSECT -> string = "¥";
-                    case KingdomResource.PLANT -> string = "⚜";
-                    case Resource.FEATHER -> string = "ϡ";
-                    case Resource.POTION -> string = "Ỗ";
-                    case Resource.SCROLL -> string = "";
-                    default -> {}*/
-            // With Emoji
-            case KingdomResource.FUNGI -> string = "🍄";
-            case KingdomResource.ANIMAL -> string = "🐺";
-            case KingdomResource.INSECT -> string = "🦋";
-            case KingdomResource.PLANT -> string = "🌳";
-            case Resource.FEATHER -> string = "🪶";
-            case Resource.POTION -> string = "🍷";
-            case Resource.SCROLL -> string = "📜";
+            case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI);
+            case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL);
+            case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT);
+            case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT);
+            case Resource.FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER);
+            case Resource.POTION -> string = terminalCharacters.getCharacter(Characters.POTION);
+            case Resource.SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL);
             default -> {
                 string = "  ";
             }
@@ -964,16 +953,16 @@ public class GameTerminal extends Application implements ViewController {
         String string = "";
         if (card instanceof ResourceCard || card instanceof GoldCard) {
             switch (card.getPermanentResources().getFirst()) {
-                case KingdomResource.PLANT -> string = "🟩";
-                case KingdomResource.ANIMAL -> string = "🟦";
-                case KingdomResource.FUNGI -> string = "🟥";
-                case KingdomResource.INSECT -> string = "🟪";
+                case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
+                case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
+                case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE);
+                case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
                 default -> string = "";
             }
         } else if (card instanceof StarterCard) {
-            string = "🟨";
+            string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
         } else {
-            string = "🟫";
+            string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
         }
         return string;
     }
@@ -1026,7 +1015,11 @@ public class GameTerminal extends Application implements ViewController {
       for (int i = 0; i < 800; i++){
           for (int j = 0; j < 1440; j++){
               if (playArea[i][j] == null){
-                  playArea[i][j] = color("⬛", UiColors.BLACK);
+                  if(isAdvancedGraphicsMode) {
+                      playArea[i][j] = color("⬛", UiColors.BLACK);
+                  } else {
+                      playArea[i][j] = "  ";
+                  }
               }
           }
       }
@@ -1046,17 +1039,27 @@ public class GameTerminal extends Application implements ViewController {
             line = getPrintCardLine(card,j, true,null);
             int i = 0;
             while (i < line.length()) {
-                String string = new String(String.valueOf(line.charAt(i)));
-                if (string.equals("🟫")){
-                    matrix[firstLine][firstColumn] = "🟫";
-                    i--;
-                    firstColumn++;
-                }else {
+                if (isAdvancedGraphicsMode) {
+                    // Emoji Mode
+                    String string = new String(String.valueOf(line.charAt(i)));
+                    if (string.equals("🟫")) {
+                        matrix[firstLine][firstColumn] = "🟫";
+                        i--;
+                        firstColumn++;
+                    } else {
+                        string += line.charAt(i + 1);
+                        matrix[firstLine][firstColumn] = string;
+                        firstColumn++;
+                    }
+                    i += 2;
+                } else {
+                    // Character Mode
+                    String string = new String(String.valueOf(line.charAt(i)));
                     string += line.charAt(i + 1);
                     matrix[firstLine][firstColumn] = string;
                     firstColumn++;
+                    i += 2;
                 }
-                i += 2;
             }
             firstLine++;
             firstColumn = centerX - 4;
