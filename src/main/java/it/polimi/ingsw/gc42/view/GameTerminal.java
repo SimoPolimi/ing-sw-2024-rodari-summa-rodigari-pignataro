@@ -30,10 +30,8 @@ public class GameTerminal extends Application implements ViewController {
     private Scanner scanner = new Scanner(System.in);
     private int playerID;
     private boolean isYourTurn = false;
-    private int extremeDX;
-    private int extremeSX;
-    private int extremeUP;
-    private int extremeDOWN;
+
+    private final ArrayList<HashMap<String, Integer>> printingExtremes = new ArrayList<>();
 
     private final ArrayList<String[][]> playAreas = new ArrayList<>();
 
@@ -83,6 +81,16 @@ public class GameTerminal extends Application implements ViewController {
         playAreas.add(null);
         playAreas.add(null);
         playAreas.add(null);
+
+        // Initializes the Printing Extremes
+        for (int i = 0; i < 4; i++) {
+            HashMap<String, Integer> map = new HashMap<>();
+            map.put("UP", 0);
+            map.put("DOWN", 800);
+            map.put("LEFT", 0);
+            map.put("RIGHT", 1440);
+            printingExtremes.add(map);
+        }
 
         ExecutorService pool = Executors.newCachedThreadPool();
         inputHandler = new TerminalInputHandler(scanner);
@@ -268,18 +276,18 @@ public class GameTerminal extends Application implements ViewController {
                         returnToMenu();
                         break;
                     case "10":
-                        printPlayArea(playAreas.get(playerID-1));
+                        printPlayArea(playAreas.get(playerID-1), playerID);
                         returnToMenu();
                         break;
                     case "11":
                         System.out.println("--- Your Table ---");
-                        printPlayArea(playAreas.get(playerID-1));
+                        printPlayArea(playAreas.get(playerID-1), playerID);
                         System.out.println("--- Others ---");
                         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                         for (int i = 0; i < 4; i++) {
                             if (i+1 != playerID && null != playAreas.get(i)) {
                                 System.out.println(info.get(i).get("Nickname") + ":");
-                                printPlayArea(playAreas.get(i));
+                                printPlayArea(playAreas.get(i), i+1);
                             }
                         }
                         returnToMenu();
@@ -640,12 +648,12 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyPlayersPlayAreaChanged(int playerID) {
         ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
         if (null != playAreas.get(playerID - 1)) {
-            playAreas.set(playerID-1, updateCardMatrix(playAreas.get(playerID-1), cards.getLast(), cards));
+            playAreas.set(playerID-1, updateCardMatrix(playAreas.get(playerID-1), cards.getLast(), cards, playerID));
         } else {
-            playAreas.set(playerID-1, createCardMatrix((StarterCard) cards.getFirst()));
+            playAreas.set(playerID-1, createCardMatrix((StarterCard) cards.getFirst(), playerID));
         }
         if (this.playerID == playerID) {
-            printPlayArea(playAreas.get(playerID-1));
+            printPlayArea(playAreas.get(playerID-1), playerID);
         }
     }
 
@@ -991,7 +999,7 @@ public class GameTerminal extends Application implements ViewController {
         return coordinates;
     }
 
-    private String[][] createCardMatrix(StarterCard starter){
+    private String[][] createCardMatrix(StarterCard starter, int playerID){
         String[][] playArea = new String[800][1440];
         String line = "";
         int firstColumn = 716;
@@ -1000,7 +1008,6 @@ public class GameTerminal extends Application implements ViewController {
             line = getPrintCardLine(starter,j, true,null);
             for (int i = 0; i < line.length(); i += 2) {
                 String string = new String(String.valueOf(line.charAt(i)));
-                // TODO: Fix error that causes the following exception: "Index 17 out of bounds for length 17"
                 try {
                     string += line.charAt(i+1);
                 } catch (IndexOutOfBoundsException e) {
@@ -1024,13 +1031,13 @@ public class GameTerminal extends Application implements ViewController {
           }
       }
         //extreme DX
-        extremeDX  = 725;
+        printingExtremes.get(playerID-1).replace("RIGHT", 725);
         //extreme SX
-        extremeSX = 717;
+        printingExtremes.get(playerID-1).replace("LEFT", 717);
         //extreme UP
-        extremeUP = 399;
+        printingExtremes.get(playerID-1).replace("UP", 399);
         //extreme DOWN
-        extremeDOWN = 403;
+        printingExtremes.get(playerID-1).replace("DOWN", 403);
         return playArea;
     }
     private String[][] addCardToMatrix(String[][] matrix, PlayableCard card, int firstLine, int firstColumn, int centerX){
@@ -1066,7 +1073,7 @@ public class GameTerminal extends Application implements ViewController {
         }
         return matrix;
     }
-    private String[][] updateCardMatrix(String[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards){
+    private String[][] updateCardMatrix(String[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards, int playerID){
         Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
         Coordinates coordinates1 = convertToAbsoluteCoordinates(card.getCoordinates());
         //card down sx
@@ -1087,8 +1094,13 @@ public class GameTerminal extends Application implements ViewController {
             int firstLine = centerY -2;
 
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-            extremeDX = centerX + 4;
-            extremeUP = centerY - 2;
+
+            if (centerX + 4 > printingExtremes.get(playerID-1).get("RIGHT")) {
+                printingExtremes.get(playerID - 1).replace("RIGHT", centerX + 4);
+            }
+            if (centerY - 2 < printingExtremes.get(playerID-1).get("UP")) {
+                printingExtremes.get(playerID - 1).replace("UP", centerY - 2);
+            }
             return matrix;
         }
         //card up dx
@@ -1108,8 +1120,13 @@ public class GameTerminal extends Application implements ViewController {
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-            extremeSX = centerX - 4;
-            extremeDOWN = centerY + 2;
+
+            if (centerX - 4 < printingExtremes.get(playerID-1).get("LEFT")) {
+                printingExtremes.get(playerID - 1).replace("LEFT", centerX - 4);
+            }
+            if (centerY + 2 > printingExtremes.get(playerID-1).get("DOWN")) {
+                printingExtremes.get(playerID - 1).replace("DOWN", centerY + 2);
+            }
             return matrix;
         }
         //card up sx
@@ -1129,8 +1146,13 @@ public class GameTerminal extends Application implements ViewController {
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-            extremeDX = centerX + 4;
-            extremeDOWN = centerY + 2;
+
+            if (centerX + 4 > printingExtremes.get(playerID-1).get("RIGHT")) {
+                printingExtremes.get(playerID - 1).replace("RIGHT", centerX + 4);
+            }
+            if (centerY + 2 > printingExtremes.get(playerID-1).get("DOWN")) {
+                printingExtremes.get(playerID - 1).replace("DOWN", centerY + 2);
+            }
             return matrix;
         }
         //card down dx
@@ -1150,16 +1172,25 @@ public class GameTerminal extends Application implements ViewController {
             int firstColumn = centerX - 4;
             int firstLine = centerY -2;
             matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-            extremeSX = centerX - 4;
-            extremeUP = centerY - 2;
+
+            if (centerX - 4 < printingExtremes.get(playerID-1).get("LEFT")) {
+                printingExtremes.get(playerID - 1).replace("LEFT", centerX - 4);
+            }
+            if (centerY - 2 < printingExtremes.get(playerID-1).get("UP")) {
+                printingExtremes.get(playerID - 1).replace("UP", centerY - 2);
+            }
             return matrix;
         }
         return matrix;
     }
-    private void printPlayArea(String[][] playArea){
+    private void printPlayArea(String[][] playArea, int playerID){
+        int extremeUP = printingExtremes.get(playerID-1).get("UP");
+        int extremeDOWN = printingExtremes.get(playerID-1).get("DOWN");
+        int extremeLEFT = printingExtremes.get(playerID-1).get("LEFT");
+        int extremeRIGHT = printingExtremes.get(playerID-1).get("RIGHT");
         for (int i = extremeUP - 5; i <= extremeDOWN + 5; i++){
             String line = "";
-            for (int j = extremeSX - 5; j <= extremeDX + 5; j++){
+            for (int j = extremeLEFT - 5; j <= extremeRIGHT + 5; j++){
                 line += playArea[i][j];
             }
             System.out.println(line);
