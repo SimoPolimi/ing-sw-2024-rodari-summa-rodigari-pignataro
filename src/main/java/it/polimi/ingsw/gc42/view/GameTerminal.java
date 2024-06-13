@@ -353,11 +353,10 @@ public class GameTerminal extends Application implements ViewController {
                             System.out.println(terminalCharacters.getCharacter(Characters.BLUE_SQUARE) + " -> Animal color");
                             System.out.println(terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) + " -> Insect color");
                             System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) + " -> Gold card color");
-                            // todo: write description for circles
-                            System.out.println(terminalCharacters.getCharacter(Characters.RED_CIRCLE) + " -> ");
-                            System.out.println(terminalCharacters.getCharacter(Characters.GREEN_CIRCLE) + " -> ");
-                            System.out.println(terminalCharacters.getCharacter(Characters.BLUE_CIRCLE) + " -> ");
-                            System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE) + " -> ");
+                            System.out.println(terminalCharacters.getCharacter(Characters.RED_CIRCLE) + " -> Red Token");
+                            System.out.println(terminalCharacters.getCharacter(Characters.GREEN_CIRCLE) + " -> Green Token");
+                            System.out.println(terminalCharacters.getCharacter(Characters.BLUE_CIRCLE) + " -> Blue Token");
+                            System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE) + " -> Yellow Token");
                         } else {
                             System.out.println(color("Unknown command", UiColors.RED));
                         }
