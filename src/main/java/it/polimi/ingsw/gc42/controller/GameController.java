@@ -17,6 +17,7 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameController implements Serializable, Observable {
     private final Game game;
@@ -262,9 +263,11 @@ public class GameController implements Serializable, Observable {
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
                 setCurrentStatus(GameStatus.END_GAME);
                 game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
+                // Sends the final points to all the Players
+                ArrayList<HashMap<String, String>> points = game.countPoints();
                 for (RemoteViewController view: views) {
                     try {
-                        view.notifyEndGame(game.countPoints());
+                        view.notifyEndGame(points);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }

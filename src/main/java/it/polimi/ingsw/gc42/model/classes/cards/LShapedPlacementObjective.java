@@ -74,7 +74,7 @@ public class LShapedPlacementObjective extends PlacementObjective {
         int count = 0;
         ArrayList<ArrayList<PlayableCard>> allInlineCouples = new ArrayList<>();
         for (PlayableCard baseCard : playArea) {
-            if (!baseCard.getKingdom().equals(getPrimaryType())) continue;
+            if (baseCard.getKingdom() != null && !baseCard.getKingdom().equals(getPrimaryType())) continue;
 
             ArrayList<PlayableCard> inlineCouple = new ArrayList<>();
             inlineCouple.add(baseCard);
@@ -99,7 +99,9 @@ public class LShapedPlacementObjective extends PlacementObjective {
             }
         }
         int overlaps = countOverlap(allInlineCouples);
-        return count/Math.ceilDiv(overlaps, 2);
+        if (count != 0) {
+            return count / Math.ceilDiv(overlaps, 2);
+        } else return 0;
     }
 
     /**

@@ -78,8 +78,10 @@ public class Game implements Observable, Serializable {
         player.setListener(new PlayerListener() {
             @Override
             public void onEvent() {
-                setPlayerHasReachedTwentyPoints(true);
-                checkEndGame();
+                if (!playerHasReachedTwentyPoints) {
+                    setPlayerHasReachedTwentyPoints(true);
+                    checkEndGame();
+                }
             }
         });
         player.setListener(new PointsListener() {
@@ -308,15 +310,37 @@ public class Game implements Observable, Serializable {
         for (Player player : players) {
             HashMap<String, String> playerPoints = new HashMap<>();
             playerPoints.put("Nickname", player.getNickname());
+            switch (player.getToken()) {
+                case RED -> playerPoints.put("Token", "RED");
+                case BLUE -> playerPoints.put("Token", "BLUE");
+                case GREEN -> playerPoints.put("Token", "GREEN");
+                case YELLOW -> playerPoints.put("Token", "YELLOW");
+            }
             int secretObjectivePoints = player.getSecretObjective().getObjective().calculatePoints(player.getPlayField().getPlayedCards());
             int commonObjective1Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(1)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
             int commonObjective2Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(2)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
+            playerPoints.put("InitialPoints", String.valueOf(player.getPoints()));
             playerPoints.put("SecretObjectivePoints", String.valueOf(secretObjectivePoints));
             playerPoints.put("CommonObjective1Points", String.valueOf(commonObjective1Points));
             playerPoints.put("CommonObjective2Points", String.valueOf(commonObjective2Points));
-            playerPoints.put("TotalPoints", String.valueOf(secretObjectivePoints + commonObjective1Points + commonObjective2Points));
+            playerPoints.put("TotalPoints", String.valueOf(player.getPoints() + secretObjectivePoints + commonObjective1Points + commonObjective2Points));
+            playerPoints.put("IsWinner", String.valueOf(false));
             points.add(playerPoints);
+
+            // Updated the Player's Points
+            player.setPoints(player.getPoints() + secretObjectivePoints + commonObjective1Points + commonObjective2Points);
         }
+
+        int winnerID = 0;
+        int max = 0;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getPoints() > max) {
+                winnerID = i;
+                max = players.get(i).getPoints();
+            }
+        }
+        points.get(winnerID).replace("IsWinner", String.valueOf(true));
+
         return points;
     }
 

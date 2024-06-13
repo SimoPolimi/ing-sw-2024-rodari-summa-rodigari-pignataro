@@ -7,14 +7,11 @@ import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.Classes.*;
-import it.polimi.ingsw.gc42.view.Dialog.SharedTokenPickerDialog;
-import it.polimi.ingsw.gc42.view.Dialog.TextDialog;
+import it.polimi.ingsw.gc42.view.Dialog.*;
 import it.polimi.ingsw.gc42.view.Interfaces.CardPickerListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.view.Dialog.CardPickerDialog;
-import it.polimi.ingsw.gc42.view.Dialog.Dialog;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -801,11 +798,16 @@ public class GUIController implements ViewController {
     @Override
     public void notifyLastTurn() throws RemoteException {
         // TODO: Implement
+        System.out.println("Last Turn!");
     }
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
-        // TODO: Implement
+        EndGameDialog dialog = new EndGameDialog("The End", false, points, this);
+        Platform.runLater(() -> {
+            showDialog(dialog);
+            dialog.animate();
+        });
     }
 
     @Override
