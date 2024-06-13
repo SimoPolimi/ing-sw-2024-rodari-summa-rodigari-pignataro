@@ -39,7 +39,7 @@ public class TerminalCharacters {
                 case GREEN_SQUARE -> string = "🟩";
                 case PURPLE_SQUARE -> string = "🟪";
                 case YELLOW_SQUARE -> string = "🟨";
-                case BLACK_SQUARE -> string = "  ";
+                case EMPTY_SPACE -> string = "  ";
                 case WHITE_SQUARE -> string = "⚪";
                 case EMPTY_CORNER -> string = "🟫";
                 case RED_CIRCLE -> string = "🔴";
@@ -62,7 +62,7 @@ public class TerminalCharacters {
                 case GREEN_SQUARE -> string = "▦ ";
                 case PURPLE_SQUARE -> string = "▧ ";
                 case YELLOW_SQUARE -> string = "▩ ";
-                case BLACK_SQUARE -> string = "  ";
+                case EMPTY_SPACE -> string = "  ";
                 case WHITE_SQUARE -> string = "■ ";
                 case EMPTY_CORNER -> string = "▢ ";
                 case RED_CIRCLE -> string = "●";

@@ -16,7 +16,7 @@ public enum Characters {
     PURPLE_SQUARE,
     YELLOW_SQUARE,
 
-    BLACK_SQUARE,
+    EMPTY_SPACE,
     WHITE_SQUARE,
 
     EMPTY_CORNER,

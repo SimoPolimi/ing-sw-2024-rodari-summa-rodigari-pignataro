@@ -360,6 +360,7 @@ public class GameTerminal extends Application implements ViewController {
                         } else {
                             System.out.println(color("Unknown command", UiColors.RED));
                         }
+                        break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> {
@@ -1271,7 +1272,7 @@ public class GameTerminal extends Application implements ViewController {
                     case "▧ ", "🟪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
                     case "▩ ", "🟨" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
                     case "■ ", "⚪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
-                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLACK_SQUARE);
+                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
                     case "▢ ", "🟫" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
 
                 }
