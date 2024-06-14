@@ -22,9 +22,21 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Implementation of a Player's Table for GUI.
+ * A TableView contains all the UI elements that can be found in each Player's Private Table.
+ * Those elements are:
+ * - The Hand (3 Cards)
+ * - The Secret Objective
+ * - The Token
+ * - The Black Token
+ * - The PlayArea
+ * - The PhantomPlayArea (used to show the Available Placements)
+ * It also contains the NetworkController, used to communicate with the Server.
+ * It supports a Privacy Mode: in this mode the Hand and the Secret Objective are all set to Privacy Mode.
+ */
 public class TableView {
     // Attributes
     private int playerID;
@@ -46,6 +58,12 @@ public class TableView {
 
     // Constructor Method
 
+    /**
+     * Constructor Method
+     * @param isPrivacyModeEnabled: a boolean value indicating if Privacy Mode is enabled
+     * @param controller: the GUIController that created this TableView
+     * @param server: the NetworkController used for communications
+     */
     public TableView(boolean isPrivacyModeEnabled, GUIController controller, NetworkController server) {
         this.server = server;
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
@@ -57,23 +75,42 @@ public class TableView {
 
     // Getters and Setters
 
-
+    /**
+     * Getter Method for secretObjective
+     * @return the ObjectiveCardView
+     */
     public ObjectiveCardView getSecretObjective() {
         return secretObjective;
     }
 
+    /**
+     * Getter Method for canPlayCards
+     * @return a boolean value indicating if the feature of "Playing Cards" is currently enabled or not
+     */
     public boolean isCanPlayCards() {
         return canPlayCards;
     }
 
+    /**
+     * Setter Method for canPlayCards
+     * @param canPlayCards: a boolean value indicating if the feature of "Playing Cards" is enabled or not
+     */
     public void setCanPlayCards(boolean canPlayCards) {
         this.canPlayCards = canPlayCards;
     }
 
+    /**
+     * Getter Method for hand
+     * @return the HandView
+     */
     public HandView getHand() {
         return hand;
     }
 
+    /**
+     * Connects this TableView to a Player, making it able to automatically detect updates too.
+     * @param playerID: the Player's playerID
+     */
     public void setPlayer(int playerID) {
         this.playerID = playerID;
         if (server.isPlayerFirst(playerID)) {
@@ -82,23 +119,43 @@ public class TableView {
         hand.setPlayer(playerID);
     }
 
+    /**
+     * Getter Method for playerID
+     * @return the playerID to which this TableView is currently connected
+     */
     public int getPlayer() {
         return playerID;
     }
 
+    /**
+     * Getter Method for isPrivacyModeEnabled
+     * @return a boolean value indicating if Privacy Mode is enabled or not
+     */
     public boolean isPrivacyModeEnabled() {
         return isPrivacyModeEnabled;
     }
 
+    /**
+     * Setter Method for isPrivacyModeEnabled
+     * @param privacyModeEnabled: a boolean value indicating if Privacy Mode is enabled or not
+     */
     public void setPrivacyModeEnabled(boolean privacyModeEnabled) {
         isPrivacyModeEnabled = privacyModeEnabled;
     }
 
+    /**
+     * Setter Method for the Secret Objective
+     * @param card: the Objective Card to use to build the ObjectiveCardView
+     */
     public void setSecretObjective(ObjectiveCard card) {
        secretObjective.setModelCard(card);
     }
 
     // Methods:
+
+    /**
+     * Build the Table's UI
+     */
     private void build() {
         playerTableContainer = new AnchorPane();
         AnchorPane.setRightAnchor(playerTableContainer, 0.0);
@@ -187,10 +244,17 @@ public class TableView {
                 playerToken, blackToken, playArea, phantomPlayArea);
     }
 
+    /**
+     * Getter Method for playerTableContainer
+     * @return the Pane containing the UI
+     */
     public Pane getPane() {
         return playerTableContainer;
     }
 
+    /**
+     * Toggles the HandView between its Shown and Hidden states
+     */
     public void toggleHand() {
         if (!hand.isHidden()) {
             hand.hide();
@@ -199,14 +263,26 @@ public class TableView {
         }
     }
 
+    /**
+     * Toggles the Secret Objective between its Shown and Hidden states
+     */
     public void rotateObjective() {
         secretObjective.rotate();
     }
 
+    /**
+     * Adds a new Card to this TableView's PlayArea
+     * @param card: the Card to add
+     * @param x: the x coordinate where this Card has to be set
+     * @param y: the y coordinate where this Card has to be set
+     */
     private void addToPlayArea(PlayableCard card, int x, int y) {
         playArea.getChildren().add(initImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getShowingImage()))), x, y));
     }
 
+    /**
+     * Populates the Phantom PlayArea with all the Available Placements, then it shows it to the User
+     */
     private void showAvailablePlacements() {
         if (!isShowingPlacements) {
             ArrayList<Coordinates> placements = server.getAvailablePlacements(playerID);
@@ -225,11 +301,21 @@ public class TableView {
         }
     }
 
+    /**
+     * Hides the Available Placements.
+     * In the process the Available Placements are destroyed.
+     */
     private void hideAvailablePlacements() {
         isShowingPlacements = false;
         phantomPlayArea.getChildren().clear();
     }
 
+    /**
+     * Visually highlights one of the Hand's HandCardView in a red glowing effect to show it's selected, then
+     * it shows the Available Placements.
+     * If the Card can't be played because of costs reasons, it shows the Error animation.
+     * If it's not this User's turn, it doesn't do anything.
+     */
     public void playCard() {
         if (canPlayCards) {
             int oldBeingPlayed = cardBeingPlayed;
@@ -254,6 +340,10 @@ public class TableView {
         }
     }
 
+    /**
+     * Animates the Card's disappearance from the Hand, then it sends a Message to the Server to play the selected Card.
+     * @param coordinates: the Coordinates where the Card has to be played in.
+     */
     public void placeCard(Coordinates coordinates) {
         setCanPlayCards(false);
         ScaleTransition transition = new ScaleTransition(Duration.millis(150), hand.getHandCardView(cardBeingPlayed).getImageView());
@@ -270,6 +360,13 @@ public class TableView {
         transition.play();
     }
 
+    /**
+     * Creates the ImageView of the Card to be added in the PlayArea
+     * @param image: the texture of the Card
+     * @param x: the x coordinate to place the Card
+     * @param y: the y coordinate to place the Card
+     * @return the ImageView, already set, ready to be added to the StackPane
+     */
     private ImageView initImageView(Image image, int x, int y) {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(160);
@@ -293,6 +390,10 @@ public class TableView {
         return imageView;
     }
 
+    /**
+     * Sets the Player's Token texture based on its Token
+     * @param playerToken: the Player's Token
+     */
     private void setPlayerToken(Token playerToken) {
         switch (playerToken) {
             case BLUE -> {
@@ -318,6 +419,11 @@ public class TableView {
         }
     }
 
+    /**
+     * Scales the size of the PlayArea
+     * @param scale: the scale it needs to be set
+     * @param fastAnimation: a boolean value that defines the speed of the animation (fast for the mouse input, slow for the automatic one)
+     */
     private void scalePlayArea(double scale, boolean fastAnimation) {
         if (scale > 0.3 && scale < 1) {
             ScaleTransition t1;
@@ -343,6 +449,10 @@ public class TableView {
         }
     }
 
+    /**
+     * Visually flips a HandCardView inside the HandView
+     * @param cardID: an int indicating which HandCardView has to be flipped
+     */
     public void flipCard(int cardID) {
         HandCardView handCardView = hand.getHandCardView(cardID);
         if (!handCardView.isBeingPlayed()) {
@@ -351,6 +461,9 @@ public class TableView {
         }
     }
 
+    /**
+     * Updates the Token's texture if needed
+     */
     public void refreshToken() {
         Token token = server.getPlayerToken(playerID);
         if (null != token) {
@@ -359,6 +472,9 @@ public class TableView {
         }
     }
 
+    /**
+     * Adds the last played Card to the PlayArea
+     */
     public void refreshPlayArea() {
         PlayableCard card = server.getPlayersLastPlayedCard(playerID);
         Platform.runLater(() -> {
@@ -366,6 +482,9 @@ public class TableView {
         });
     }
 
+    /**
+     * Refreshes the Hand
+     */
     public void refreshHand() {
         Card card1;
         try {
@@ -390,6 +509,9 @@ public class TableView {
         hand.getHandCardView(3).setModelCard(card3);
     }
 
+    /**
+     * Refreshes the Secret Objective
+     */
     public void refreshSecretObjective() {
         ObjectiveCard card = server.getSecretObjective(playerID);
         setSecretObjective(card);

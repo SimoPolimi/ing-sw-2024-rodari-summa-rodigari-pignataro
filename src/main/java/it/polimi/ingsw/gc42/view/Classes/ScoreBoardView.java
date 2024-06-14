@@ -4,13 +4,19 @@ import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+/**
+ * Implementation of the ScoreBoard for the GUI.
+ * The ScoreBoard is the place where the Player's points are visually shown on-screen.
+ * It's composed by an ImageView that shows the actual Score Board, and 4 ImageViews showing the 4 Tokens on top of it.
+ * Each Token is placed in a particular position, so that it covers one of the Numbers shown on the ScoreBoard, corresponding
+ * to the Points of the Owner of that Token.
+ * Point updates are shown and animated, with the Token's ImageView jumping around until it lands on its new spot.
+ */
 public class ScoreBoardView {
     // Attributes
     private final ImageView blueToken;
@@ -32,6 +38,14 @@ public class ScoreBoardView {
     private static final int JUMP_ANIMATION_DURATION = 100;
 
     // Constructor Method
+
+    /**
+     * Constructor Method
+     * @param redToken: the ImageView showing the Red Token
+     * @param blueToken: the ImageView showing the Blue Token
+     * @param greenToken: the ImageView showing the Green Token
+     * @param yellowToken: the ImageView showing the Yellow Token
+     */
     public ScoreBoardView(ImageView redToken, ImageView blueToken, ImageView greenToken, ImageView yellowToken) {
         this.redToken = redToken;
         this.blueToken = blueToken;
@@ -42,6 +56,12 @@ public class ScoreBoardView {
     }
 
     // Methods
+
+    /**
+     * Animates the layout update to move a Token from its current position to a new one.
+     * @param token: the Token that needs to be moved
+     * @param finalPosition: a number corresponding to the Points shown on the final position
+     */
     public void animatePath(Token token, int finalPosition) {
         if (getImageOf(token) != null) {
             int startingPosition = 0;
@@ -66,6 +86,14 @@ public class ScoreBoardView {
         }
     }
 
+    /**
+     * Visually animates the Token's path.
+     * This method is called RECURSIVELY: it animates the single jump, and after each jump it's called once again to animate
+     * the remaining part of the path, until startingPosition == finalPosition.
+     * @param token: the Token whose ImageView has to be animated
+     * @param startingPosition: the position where the Token's ImageView is currently
+     * @param finalPosition: the position the Token's ImageView has to reach
+     */
     private void animate(Token token, int startingPosition, int finalPosition) {
         ImageView tokenImage = getImageOf(token);
         if (startingPosition != finalPosition && finalPosition != 0) {
@@ -133,6 +161,11 @@ public class ScoreBoardView {
         }
     }
 
+    /**
+     * Updates the Tokens inside a specific position
+     * @param token: the Token that has to be moved
+     * @param position: an int indicating where it needs to be moved
+     */
     public void setTokenInPosition(Token token, int position) {
         ImageView tokenImage = getImageOf(token);
         if (tokenImage != null) {
@@ -149,6 +182,11 @@ public class ScoreBoardView {
         tokensInPosition.get(position).add(token);
     }
 
+    /**
+     * Getter method for PADDING
+     * @param token: the Token whose Padding has to be returned
+     * @return an int value, corresponding to that Token's PADDING
+     */
     private int getPaddingOf(Token token) {
         int padding = 0;
         switch (token) {
@@ -160,6 +198,11 @@ public class ScoreBoardView {
         return padding;
     }
 
+    /**
+     * Getter Method for an ImageView
+     * @param token: the Token whose ImageView has to be returned
+     * @return the ImageView connected to that Token
+     */
     private ImageView getImageOf(Token token) {
         ImageView tokenImage = null;
         switch (token) {
@@ -171,6 +214,10 @@ public class ScoreBoardView {
         return tokenImage;
     }
 
+    /**
+     * Initializes the ArrayList of Coordinates containing the exact coordinates of each position,
+     * then used to calculate the animations.
+     */
     private void initCoordinates() {
         // Initializes the ArrayLists
         for (int i = 0; i < NUMBER_OF_POSITIONS; i++) {

@@ -22,6 +22,20 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
+/**
+ * Implementation of Hand for the GUI.
+ * The HandView contains 3 HandCardViews, one for each Card inside the Hand.
+ * It also contains all the necessary Texts and ImageViews to represent the Hints for the supported actions.
+ * It supports the following actions:
+ * - Show
+ * - Hide
+ * - Refresh
+ * - Select Card
+ * - Deselect Card
+ * It also contains the NetworkController, to communicate the User's intentions to the Server.
+ * The HandView supports a Privacy Mode: in this Mode it's not interactable, it's always shown in its Hidden form
+ * and its HandCardViews are all set to PrivacyMode, aka showing their Back Side texture the whole time.
+ */
 public class HandView {
     private HandCardView handCardView1;
     private HandCardView handCardView2;
@@ -42,6 +56,14 @@ public class HandView {
     private int selectedCard = 0;
     private int lastSelected = 0;
 
+    // Constructor Method
+
+    /**
+     * Constructor Method
+     * @param isPrivacyModeEnabled: a boolean indicating if Privacy Mode is enabled or not.
+     * @param controller: the GUIController that created this HandView.
+     * @param server: The NetworkController used to communicate.
+     */
     public HandView(boolean isPrivacyModeEnabled, GUIController controller, NetworkController server) {
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         this.server = server;
@@ -50,14 +72,26 @@ public class HandView {
         hide();
     }
 
+    // Getters and Setters
+    /**
+     * Getter Method for selectedCard
+     * @return an int indicating which HandCardView is currently selected (0 if none; 1, 2, 3 otherwise)
+     */
     public int getSelectedCard() {
         return selectedCard;
     }
 
+    /**
+     * Getter Method for container
+     * @return the Pane containing the UI of this HandView
+     */
     public Pane getPane() {
         return container;
     }
 
+    /**
+     * Builds the UI of this HandView, that is then stored inside container.
+     */
     private void build() {
         container = new VBox();
         container.setAlignment(Pos.CENTER_LEFT);
@@ -258,14 +292,28 @@ public class HandView {
         }
     }
 
+    /**
+     * Getter Method for isHidden
+     * @return a boolean indicating if the HandView is currently hidden or not.
+     */
     public boolean isHidden() {
         return isHidden;
     }
 
+    /**
+     * Setter Method for isFirstTime.
+     * This is used to regulate the HandView behavior: the first time the "Show" feature is called, it runs an animation.
+     * @param firstTime: a boolean indicating if the next "Show" action will be the first one or not.
+     */
     public void setFirstTime(boolean firstTime) {
         this.isFirstTime = firstTime;
     }
 
+    /**
+     * Getter Method for the HandCardViews
+     * @param number: an int indicating which HandCardView has to be returned (1, 2, 3)
+     * @return the selected HandCardView
+     */
     public HandCardView getHandCardView(int number) {
         switch (number) {
             case 1 -> {
@@ -283,6 +331,9 @@ public class HandView {
         }
     }
 
+    /**
+     * Visually hides the HandView
+     */
     public void hide() {
         controller.blockInput();
         deselectAllCards(false);
@@ -307,6 +358,9 @@ public class HandView {
         handCardView3.hide(3, controller);
     }
 
+    /**
+     * Visually shows the HandView
+     */
     public void show() {
         controller.blockInput();
         isHidden = false;
@@ -327,6 +381,12 @@ public class HandView {
         handCardView3.show(3, controller);
     }
 
+    /**
+     * Visually refreshes the HandView, updating the HandCardView's textures.
+     * During this process the HandView is animated and brought outside the screen, where it can be updated seamlessly.
+     * The HandView is then automatically brought back in-screen at the end.
+     * @param runnable: some Code to run after the Hand has been refreshed
+     */
     public void refresh(Runnable runnable) {
         Platform.runLater(() -> {
             controller.blockInput();
@@ -353,6 +413,9 @@ public class HandView {
         });
     }
 
+    /**
+     * Visually animates the last part of the "Refresh" feature, bringing the Hand back on-screen
+     */
     public void showAfterRefresh() {
         Platform.runLater(() -> {
             TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
@@ -379,6 +442,12 @@ public class HandView {
         });
     }
 
+    /**
+     * Visually selects one of the HandCardViews inside this HandView, by showing a yellow glowing effect around it.
+     * @param selectedCard: an int indicating which HandCardView has to be selected.
+     * @param unlockInputAfter: a boolean indicating if the selection must be PERMANENT or not, aka if the HandCardView
+     *                        must be automatically deselected when the Mouse exits from it or not.
+     */
     private void selectCard(int selectedCard, boolean unlockInputAfter) {
         if (!isHidden && !controller.isShowingDialog() && !controller.isCommonTableDown()) {
             this.selectedCard = selectedCard;
@@ -424,6 +493,9 @@ public class HandView {
         }
     }
 
+    /**
+     * Handles the Keyboard navigation when the DOWN ARROW key is pressed
+     */
     public void moveDown() {
         lastSelected = selectedCard;
         if (selectedCard == 3) {
@@ -434,6 +506,9 @@ public class HandView {
         selectCard(selectedCard, true);
     }
 
+    /**
+     * Handles the Keyboard navigation when the UP ARROW key is pressed
+     */
     public void moveUp() {
         lastSelected = selectedCard;
         if (selectedCard == 1) {
@@ -444,10 +519,17 @@ public class HandView {
         selectCard(selectedCard, true);
     }
 
+    /**
+     * Handles the flipping of a HandCardView when the F key is pressed or when a RIGHT CLICK is made
+     */
     public void onFKeyPressed() {
         flipCard(selectedCard);
     }
 
+    /**
+     * Sends the Server a message to perform a FLIP action to one of the Cards in the Hand.
+     * @param num: an int indicating which Card to flip (1, 2, 3)
+     */
     public void flipCard(int num) {
         switch (num) {
             case 1 -> server.flipCard(playerID, 0);
@@ -456,10 +538,19 @@ public class HandView {
         }
     }
 
+    /**
+     * Visually deselects all the HandCardViews currently selected
+     * @param unlockInputAfter: a boolean indicating if the action has to be PERMANENT or not.
+     */
     public void deselectAllCards(boolean unlockInputAfter) {
         selectCard(0, unlockInputAfter);
     }
 
+    /**
+     * Visually highlights one of the HandCardViews with a red glowing effect, to show it's being played
+     * @param number: an int indicating which HandCardView must be selected
+     * @param value: a boolean value
+     */
     public void setPlayingOverlay(int number, boolean value) {
         switch (number) {
             case 0 -> {

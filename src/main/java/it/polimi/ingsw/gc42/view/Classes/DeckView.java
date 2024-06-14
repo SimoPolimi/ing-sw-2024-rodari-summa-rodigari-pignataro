@@ -12,17 +12,36 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Implementation of Deck for the GUI.
+ * A DeckView is the UI element that shows a Deck on screen.
+ * It's composed of a StackPane, containing all the ImageViews of the Card inside the Deck,
+ * all showing their Back Side texture.
+ */
 public class DeckView {
     private final StackPane container;
 
+    // Constructor Method
+    /**
+     * Constructor Method
+     * @param container: the StackPane that will contain the Cards' ImageViews.
+     */
     public DeckView(StackPane container) {
         this.container = container;
     }
 
+    /**
+     * Getter Method for container
+     * @return the StackPane containing the Cards.
+     */
     public Pane getContainer() {
         return container;
     }
 
+    /**
+     * Updates the DeckView model by deleting the Images inside and recreating them from scratch.
+     * @param cards: an ArrayList of Card that represents the content of the Deck to create.
+     */
     public void refresh(ArrayList<Card> cards) {
         container.getChildren().clear();
         if (!cards.isEmpty()) {

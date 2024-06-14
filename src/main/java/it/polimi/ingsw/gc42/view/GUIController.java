@@ -148,7 +148,7 @@ public class GUIController implements ViewController {
         } catch (AlreadyBoundException e) {
             throw new RuntimeException(e);
         }
-        commonTable = new CommonTableView(controller, gameID, this,
+        commonTable = new CommonTableView(controller, this,
                 new DeckView(resourceDeckContainer), new DeckView(goldDeckContainer), resourceDown1,
                 resourceDown2, goldDown1, goldDown2, commonObjective1, commonObjective2, objName1, objDescr1,
                 objName2, objDescr2, commonObjDescriptiionBox1, commonObjDescriptiionBox2);

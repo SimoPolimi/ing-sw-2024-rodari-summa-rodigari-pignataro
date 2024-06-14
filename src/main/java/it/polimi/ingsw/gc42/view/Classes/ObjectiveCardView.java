@@ -1,8 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -27,7 +25,18 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
+/**
+ * Implementation of the Objective Card in GUI.
+ * It contains a CardView for the textures and a few Texts and ImageViews to show Hints for the supported actions.
+ * It supports the following actions:
+ * - Rotate (Show)
+ * - Rotate (Hide)
+ * - Show details
+ * - Hide details
+ * It supports a Privacy Mode, where the CardView is not interactable and it only shows the Back Side texture
+ */
 public class ObjectiveCardView {
+    // Attributes
     private CardView cardView;
     private ImageView imageView;
     private Text hint;
@@ -40,68 +49,137 @@ public class ObjectiveCardView {
     private boolean isPrivacyModeEnabled;
     private GUIController controller;
 
+    // Constructor Method
+
+    /**
+     * Constructor Method
+     * @param isPrivacyModeEnabled: a boolean indicating if Privacy Mode is enabled or not
+     * @param controller: the GUIController that created this ObjectiveCardView
+     */
     public ObjectiveCardView(boolean isPrivacyModeEnabled, GUIController controller) {
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
         this.controller = controller;
         build();
     }
 
+    // Getters and Setters
+
+    /**
+     * Getter Method for cardView
+     * @return the CardView containing the textures of this ObjectiveCardView
+     */
     public CardView getCardView() {
         return cardView;
     }
 
+    /**
+     * Setter Method for cardView
+     * @param cardView: the CardView containing the textures of this ObjectiveCardView
+     */
     public void setCardView(CardView cardView) {
         this.cardView = cardView;
     }
 
+    /**
+     * Getter Method for imageView
+     * @return the ImageView (JavaFx element) that shows this ObjectiveCardView's texture
+     */
     public ImageView getImageView() {
         return imageView;
     }
 
+    /**
+     * Setter Method for imageView
+     * @param imageView: the ImageView (JavaFx element) that shows this ObjectiveCardView's texture
+     */
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
     }
 
+    /**
+     * Getter Method for hint
+     * @return the Text (JavaFx element) that's showing this ObjectiveCardView's "Show/Hide" hint
+     */
     public Text getHint() {
         return hint;
     }
 
+    /**
+     * Setter Method for hint
+     * @param hint: the Text (JavaFx element) that's showing this ObjectiveCardView's "Show/Hide" hint
+     */
     public void setHint(Text hint) {
         this.hint = hint;
     }
 
+    /**
+     * Getter Method for hintImage
+     * @return the ImageView (JavaFx element) that's showing this ObjectiveCardView's "Show/Hide" hint icon
+     */
     public ImageView getHintImage() {
         return hintImage;
     }
 
+    /**
+     * Setter Method for hintImage
+     * @param hintImage: the ImageView (JavaFx element) that's showing this ObjectiveCardView's "Show/Hide" hint icon
+     */
     public void setHintImage(ImageView hintImage) {
         this.hintImage = hintImage;
     }
 
+    /**
+     * Getter Method for isShowingDetails
+     * @return a boolean value indicating if the ObjectiveCardView is currently showing it details (name and description) or not
+     */
     public boolean isShowingDetails() {
         return isShowingDetails;
     }
 
+    /**
+     * Setter Method for isShowingDetails
+     * @param showingDetails: a boolean value indicating if the ObjectiveCardView is currently showing it details (name and description) or not
+     */
     public void setShowingDetails(boolean showingDetails) {
         isShowingDetails = showingDetails;
     }
 
+    /**
+     * Getter Method for title
+     * @return the Text (JavaFx element) that's showing this ObjectiveCardView's Name
+     */
     public Text getTitle() {
         return title;
     }
 
+    /**
+     * Setter Method for title
+     * @param title: the Text (JavaFx element) that's showing this ObjectiveCardView's Name
+     */
     public void setTitle(Text title) {
         this.title = title;
     }
 
+    /**
+     * Getter Method for description
+     * @return the Text (JavaFx element) that's showing this ObjectiveCardView's Description
+     */
     public Text getDescription() {
         return this.description;
     }
 
+    /**
+     * Setter Method for description
+     * @param description: the Text (JavaFx element) that's showing this ObjectiveCardView's Description
+     */
     public void setDescription(Text description) {
         this.description = description;
     }
 
+    /**
+     * Setter Method for the ObjectiveCard.
+     * Sets the Objective's name, description and textures in the UI
+     */
     public void setModelCard(ObjectiveCard card) {
         if (!isPrivacyModeEnabled) {
             imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
@@ -134,8 +212,12 @@ public class ObjectiveCardView {
         description.setText(card.getObjective().getDescription());
     }
 
+    /**
+     * Visually animates the "Rotate" feature, both to Show and to Hide.
+     * This animation moves the ImageView between its Hidden state (close to the Screen's edge, slightly rotated) to its
+     * Shown state (horizontal, slightly bigger, all shown on-screen, with Name and Description visible)
+     */
     public void rotate() {
-
         RotateTransition rotateTransition = new RotateTransition(Duration.millis(350), imageView);
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(350), imageView);
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(350), imageView);
@@ -170,6 +252,9 @@ public class ObjectiveCardView {
         isShowingDetails = !isShowingDetails;
     }
 
+    /**
+     * Visually selects the ObjectiveCardView by applying a yellow glowing effect to the CardView
+     */
     public void select() {
         DropShadow glowEffect = new DropShadow();
         glowEffect.setWidth(100);
@@ -179,6 +264,9 @@ public class ObjectiveCardView {
         imageView.setEffect(glowEffect);
     }
 
+    /**
+     * Visually deselects the ObjectiveCardView by removing the yellow glowing effect from the CardView
+     */
     public void deselect() {
         DropShadow shadow = new DropShadow();
         shadow.setWidth(50);
@@ -187,12 +275,18 @@ public class ObjectiveCardView {
         imageView.setEffect(shadow);
     }
 
+    /**
+     * Visually animates the "Show" feature of "Rotate"
+     */
     public void show() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(250), imageView);
         transition.setByX(-200);
         transition.play();
     }
 
+    /**
+     * Builds the UI
+     */
     private void build() {
         container = new VBox();
         container.setAlignment(Pos.CENTER);
@@ -275,10 +369,17 @@ public class ObjectiveCardView {
         container.getChildren().addAll(hintContainer, imageView, objDescriptionBox);
     }
 
+    /**
+     * Getter Method for container
+     * @return the Pane containing this ObjectiveCardView's UI
+     */
     public Pane getPane() {
         return container;
     }
 
+    /**
+     * Visually animates the "Hide" feature of "Rotate"
+     */
     public void hide() {
         imageView.setTranslateX(imageView.getTranslateX() + 210);
     }

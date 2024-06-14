@@ -23,6 +23,20 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
+/**
+ * Implementation of a PlayableCard for the GUI's Hand.
+ * A HandCardView contains a CardView (the textures), plus all the necessary Texts and ImageViews to represent the
+ * various Hints to action that can be performed on the HandCardView.
+ * HandCardViews support the following actions:
+ * - Flip
+ * - Play
+ * - Hide
+ * - Show
+ * - Select
+ * - Deselect
+ * HandCardView also have a Privacy Mode: in this Mode the Card won't be interactable and will always show its
+ * Back Side texture
+ */
 public class HandCardView {
     private CardView card;
     private ImageView imageView;
@@ -38,6 +52,13 @@ public class HandCardView {
     private boolean isPrivacyModeEnabled;
     private HBox cardContainer;
 
+    // Constructor Methods
+
+    /**
+     * Constructor Method with Card
+     * @param modelCard: the Card that will be displayed in the HandCardView
+     * @param isPrivacyModeEnabled: a boolean that enables or disables Privacy Mode
+     */
     public HandCardView(Card modelCard, boolean isPrivacyModeEnabled) {
         build();
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
@@ -47,6 +68,10 @@ public class HandCardView {
         this.card = new CardView(modelCard.getFrontImage(), modelCard.getBackImage());
     }
 
+    /**
+     * Constructor Method without Card
+     * @param isPrivacyModeEnabled: a boolean that enables or disables Privacy Mode
+     */
     public HandCardView(boolean isPrivacyModeEnabled) {
         build();
         this.isPrivacyModeEnabled = isPrivacyModeEnabled;
@@ -54,58 +79,116 @@ public class HandCardView {
         this.isSelected = false;
     }
 
+    // Getters and Setters
+
+    /**
+     * Getter Method for card
+     * @return the CardView of this HandCardView
+     */
     public CardView getCard() {
         return card;
     }
 
+    /**
+     * Setter Method for card
+     * @param card: the CardView of this HandCardView
+     */
     public void setCard(CardView card) {
         this.card = card;
     }
 
+    /**
+     * Getter Method for imageView
+     * @return the ImageView (JavaFx element) of this Card, aka the on-screen element
+     */
     public ImageView getImageView() {
         return imageView;
     }
 
+    /**
+     * Setter Method for imageView
+     * @param imageView: the ImageView (JavaFx element) of this Card, aka the on-screen element
+     */
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
     }
 
+    /**
+     * Getter Method for the Flip Hint Text
+     * @return the Text (JavaFx element) of the "Flip" Hint of this HandCardView
+     */
     public Text getHintFlip() {
         return hintFlip;
     }
 
+    /**
+     * Setter Method for the Flip Hint Text
+     * @param hintFlip: the Text (JavaFx element) of the "Flip" Hint of this HandCardView
+     */
     public void setHintFlip(Text hintFlip) {
         this.hintFlip = hintFlip;
     }
 
+    /**
+     * Getter Method for the Flip Hint Icon for Keyboard
+     * @return the ImageView (JavaFx element) of the "Flip" Hint of this HandCardView
+     */
     public ImageView getHintIconFlipKB() {
         return hintIconFlipKB;
     }
 
+    /**
+     * Setter Method for the Flip Hint Icon for Keyboard
+     * @param hintIconFlipKB  the ImageView (JavaFx element) of the "Flip" Hint of this HandCardView
+     */
     public void setHintIconFlipKB(ImageView hintIconFlipKB) {
         this.hintIconFlipKB = hintIconFlipKB;
     }
 
+    /**
+     * Getter Method for isSelected
+     * @return: a boolean indicating if this HandCardView is selected
+     */
     public boolean isSelected() {
         return isSelected;
     }
 
+    /**
+     * Setter Method for isSelected
+     * @param selected: a boolean indicating if this HandCardView is selected
+     */
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
 
+    /**
+     * Getter Method for isBeingPlayed
+     * @return a boolean indicating if this HandCardView is being played
+     */
     public boolean isBeingPlayed() {
         return isBeingPlayed;
     }
 
+    /**
+     * Setter Method for isBeingPlayed
+     * @param beingPlayed: a boolean indicating if this HandCardView is being played
+     */
     public void setBeingPlayed(boolean beingPlayed) {
         this.isBeingPlayed = beingPlayed;
     }
 
+    /**
+     * Getter Method for modelCard
+     * @return the Card (Model) that is being shown by this HandCardView
+     */
     public Card getModelCard() {
         return modelCard;
     }
 
+    /**
+     * Setter Method for modelCard
+     * @param modelCard: the Card (Model) that is being shown by this HandCardView
+     */
     public void setModelCard(Card modelCard) {
         this.modelCard = modelCard;
         if (null != modelCard) {
@@ -127,17 +210,27 @@ public class HandCardView {
         }
     }
 
+    /**
+     * Getter Method for cardContainer
+     * @return the Pane containing the UI of this HandCardView
+     */
     public Pane getPane() {
         return cardContainer;
     }
 
 
+    /**
+     * Flips the modelCard
+     */
     public void flip() {
         if (!isBeingPlayed && null != modelCard) {
             modelCard.flip();
         }
     }
 
+    /**
+     * Builds the UI of this HandCardView, that is then stored in cardContainer
+     */
     private void build() {
         cardContainer = new HBox();
         cardContainer.setAlignment(Pos.CENTER_LEFT);
@@ -221,6 +314,10 @@ public class HandCardView {
         cardContainer.getChildren().addAll(imageView, hintContainer);
     }
 
+    /**
+     * Visually selects this HandCardView, showing a yellow glowing effect
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void select(GUIController controller) {
         if (!isBeingPlayed) {
             controller.blockInput();
@@ -247,6 +344,10 @@ public class HandCardView {
         }
     }
 
+    /**
+     * Visually deselects this HandCardView, removing the yellow glowing effect
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void deselect(GUIController controller, boolean unlockInputAfter){
         if (!isBeingPlayed) {
             controller.blockInput();
@@ -276,6 +377,11 @@ public class HandCardView {
         }
     }
 
+    /**
+     * Visually Hides this HandCardView (Hand only)
+     * @param position: the position inside the Hand of this HandCardView
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void hide(int position, GUIController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(-155);
@@ -306,6 +412,11 @@ public class HandCardView {
         t.play();
     }
 
+    /**
+     * Visually shows this HandCardView (Hand only)
+     * @param position: the position inside the Hand of this HandCardView
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void show(int position, GUIController controller) {
         TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
         t.setByX(155);
@@ -334,6 +445,11 @@ public class HandCardView {
         t.play();
     }
 
+    /**
+     * Visually Flips this HandCardView.
+     * The Texture shown is also changed in the process.
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void visualFlip(GUIController controller) {
         ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
         jumpHalf1.setFromX(1.2);
@@ -376,6 +492,10 @@ public class HandCardView {
         flipCardHalf1.play();
     }
 
+    /**
+     * Visually highlights the HandCardView in a red glowing effect, to indicate it's being played
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void setPlayingSelection(GUIController controller) {
         isBeingPlayed = true;
         DropShadow glowEffect = new DropShadow();
@@ -393,6 +513,10 @@ public class HandCardView {
         select1.play();
     }
 
+    /**
+     * Removes the red glowing effect from this HandCardView, to indicate it's not being played
+     * @param controller: the GUIController that created this HandCardView
+     */
     public void removePlayingSelection(GUIController controller) {
         isBeingPlayed = false;
         DropShadow shadow = new DropShadow();
@@ -410,6 +534,9 @@ public class HandCardView {
         deselect(controller, true);
     }
 
+    /**
+     * Visually animates the HandCardView to show it cannot be played
+     */
     public void showError() {
         RotateTransition transition = new RotateTransition(Duration.millis(50), imageView);
         transition.setFromAngle(0);

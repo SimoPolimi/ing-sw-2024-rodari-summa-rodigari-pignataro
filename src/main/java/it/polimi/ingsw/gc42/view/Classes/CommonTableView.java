@@ -23,9 +23,18 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Implementation of the Common Table for the GUI.
+ * The Common Table is the portion of UI that contains the following elements:
+ * - The ScoreBoard
+ * - The Resource Deck
+ * - The Gold Deck
+ * - The two Resource Slots
+ * - The two Gold Decks
+ * This class contains all the GUI elements and their behavior.
+ */
 public class CommonTableView {
     private NetworkController controller;
-    private int gameID;
     private GUIController guiController;
     private DeckView resourceDeck;
     private DeckView goldDeck;
@@ -47,12 +56,31 @@ public class CommonTableView {
 
     private int isShowingInfo = 0;
 
-    public CommonTableView(NetworkController controller, int gameID, GUIController guiController, DeckView resourceDeck,
+    /**
+     * Constructor Method.
+     * @param controller: The NetworkController that will be used to send Messages.
+     * @param guiController: The GUIController that created this CommonTable.
+     * @param resourceDeck: The DeckView that contains the Resource Deck.
+     * @param goldDeck: The DeckView that contains the Gold Deck.
+     * @param resourceDown1: The ImageView that contains the Resource Card Slot 1.
+     * @param resourceDown2: The ImageView that contains the Resource Card Slot 2.
+     * @param goldDown1: The ImageView that contains the Gold Card Slot 1.
+     * @param goldDown2: The ImageView that contains the Gold Card Slot 2.
+     * @param commonObjective1: The ImageView that contains the Common Objective 1.
+     * @param commonObjective2: The ImageView that contains the Common Objective 2.
+     * @param objName1: The Text containing Common Objective 1's name.
+     * @param objDescr1: The Text containing Common Objective 1's description.
+     * @param objName2: The Text containing Common Objective 2's name.
+     * @param objDescr2: The Text containing Common Objective 2's description.
+     * @param commonObjDescriptionBox1: the StackPane containing Common Objective 1's Name and Description.
+     * @param commonObjDescriptionBox2: the StackPane containing Common Objective 2's Name and Description.
+     * @throws RemoteException in case of communication errors.
+     */
+    public CommonTableView(NetworkController controller, GUIController guiController, DeckView resourceDeck,
                            DeckView goldDeck, ImageView resourceDown1, ImageView resourceDown2,
                            ImageView goldDown1, ImageView goldDown2, ImageView commonObjective1, ImageView commonObjective2,
-                           Text objName1, Text objDescr1, Text objName2, Text objDescr2, StackPane commonObjDescriptiionBox1, StackPane commonObjDescriptiionBox2) throws RemoteException {
+                           Text objName1, Text objDescr1, Text objName2, Text objDescr2, StackPane commonObjDescriptionBox1, StackPane commonObjDescriptionBox2) throws RemoteException {
         this.controller = controller;
-        this.gameID = gameID;
         this.guiController = guiController;
         this.resourceDeck = resourceDeck;
         this.goldDeck = goldDeck;
@@ -66,8 +94,8 @@ public class CommonTableView {
         this.objDescr1 = objDescr1;
         this.objName2 = objName2;
         this.objDescr2 = objDescr2;
-        this.commonObjDescriptiionBox1 = commonObjDescriptiionBox1;
-        this.commonObjDescriptiionBox2 = commonObjDescriptiionBox2;
+        this.commonObjDescriptiionBox1 = commonObjDescriptionBox1;
+        this.commonObjDescriptiionBox2 = commonObjDescriptionBox2;
 
         // onClick
         resourceDeck.getContainer().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -254,6 +282,11 @@ public class CommonTableView {
         });
     }
 
+    /**
+     * Handles what happens when the User navigates on any of the Cards or Decks with their keyboard.
+     * The Selected element is highlighted with a yellow glow.
+     * @param number: an ID indicating which element has been selected.
+     */
     public void select(int number) {
         if (number != 0) {
             if (!guiController.isShowingGlobalMap()) {
@@ -292,6 +325,11 @@ public class CommonTableView {
         lastSelected = selected;
     }
 
+    /**
+     * Handles what happens when the user's focus leaves an element.
+     * The Selected yellow glow effect is removed from the element.
+     * @param number: an ID indicating which element is deselected.
+     */
     public void deselect(int number) {
         if (number != 0) {
             guiController.blockInput();
@@ -323,6 +361,10 @@ public class CommonTableView {
         }
     }
 
+    /**
+     * Handles the Keyboard Arrow Keys Inputs
+     * @param key: a String containing the name of the Arrow KEY: "UP", "DOWN", "RIGHT", "LEFT".
+     */
     public void onArrowKeyPressed(String key) {
         switch (selected) {
             case 0 -> select(1);
@@ -379,6 +421,10 @@ public class CommonTableView {
         }
     }
 
+    /**
+     * Handles the Keyboard Enter Key Pressing.
+     * @throws RemoteException if there is a communication error.
+     */
     public void onEnterPressed() throws RemoteException {
         if (guiController.canReadInput() && guiController.isCommonTableDown()
                 && !guiController.isShowingDialog()) {
@@ -435,16 +481,26 @@ public class CommonTableView {
         }
     }
 
+    /**
+     * Visually updates the Resource DeckView.
+     */
     public void refreshResourceDeck() {
         ArrayList<Card> deck = controller.getDeck(CardType.RESOURCECARD);
         Platform.runLater(() -> resourceDeck.refresh(deck));
     }
 
+    /**
+     * Visually updates the Gold DeckView.
+     */
     public void refreshGoldDeck() {
         ArrayList<Card> deck = controller.getDeck(CardType.GOLDCARD);
         Platform.runLater(() -> goldDeck.refresh(deck));
     }
 
+    /**
+     * Visually updates one of the Resource CardView slots.
+     * @param slot: an int specifying if it needs to update slot 1 or 2.
+     */
     public void refreshResourceSlot(int slot) {
         switch (slot) {
             case 1 -> {
@@ -468,6 +524,10 @@ public class CommonTableView {
         }
     }
 
+    /**
+     * Visually updates one of the Gold CardView slots.
+     * @param slot: an int specifying if it needs to update slot 1 or 2.
+     */
     public void refreshGoldSlot(int slot) {
         switch (slot) {
             case 1 -> {
@@ -491,6 +551,9 @@ public class CommonTableView {
         }
     }
 
+    /**
+     * Visually updates both the Common Objectives CardView slots.
+     */
     public void refreshCommonObjectives() {
         ObjectiveCard card = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 1);
         commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));

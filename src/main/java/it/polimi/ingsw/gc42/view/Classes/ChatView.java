@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc42.view.Classes;
 
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
-import it.polimi.ingsw.gc42.view.GUIController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -21,6 +20,10 @@ import javafx.util.Duration;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ *  Implementation of the Chat for the GUI.
+ *  This Class contains everything needed to build the Chat, plus everything needed to make it work.
+ */
 public class ChatView {
     // Attributes
     private boolean hasBackground;
@@ -40,6 +43,17 @@ public class ChatView {
     public static final int ANIMATION_LENGTH = 490;
 
     // Constructor Method
+
+    /**
+     * Constructor Method.
+     * @param hasBackground: a boolean value that specifies if the Chat has a background or not, used to adjust some colors.
+     * @param container: the StackPane that will contain the Chat, used to animate the show/hide behavior.
+     * @param contentContainer: the StackPane that will contain the Messages, used to give updates in real time.
+     * @param chatTextField: The TextField where it will read the User's Messages.
+     * @param sendButton: The Button that registers the User's "Send" click.
+     * @param chatHint: The Text that contains the "Show/Hide" hint, that will updated during the Show/Hide behavior.
+     * @param controller: The main GUI Controller that needs to be accessed for input-blocking etc.
+     */
     public ChatView(boolean hasBackground, StackPane container, StackPane contentContainer, TextField chatTextField, Button sendButton, Text chatHint, ViewController controller) {
         this.hasBackground = hasBackground;
         if (!hasBackground) {
@@ -72,23 +86,43 @@ public class ChatView {
     }
 
     // Getters and Setters
+
+    /**
+     * Getter Method for isShowing.
+     * @return a boolean value indicating if the Chat is currently shown or hidden.
+     */
     public boolean isShowing() {
         return isShowing;
     }
 
+    /**
+     * Setter Method for isShowing.
+     * @param showing: a boolean value indicating if the Chat is currently shown or hidden.
+     */
     public void setShowing(boolean showing) {
         isShowing = showing;
     }
 
+    /**
+     * Getter Method for container.
+     * @return the StackPane that contains the whole Chat.
+     */
     public Pane getPane() {
         return container;
     }
 
     // Methods
+
+    /**
+     * Re-builds the entire Chat as needed.
+     */
     public void refresh() {
         build();
     }
 
+    /**
+     * Builds the Chat, including all the GUI elements, and puts them inside container.
+     */
     private void build() {
         contentContainer.getChildren().clear();
         if (messages.isEmpty()) {
@@ -125,6 +159,11 @@ public class ChatView {
         }
     }
 
+    /**
+     * Creates the Message GUI element to add in the Chat.
+     * @param message: the new Message that needs to be added.
+     * @return the Pane that contains the whole Message, ready to be added in the ScrollPane.
+     */
     private Pane createMessageBox(ChatMessage message) {
         VBox box = new VBox();
         box.setMaxWidth(200);
@@ -169,6 +208,9 @@ public class ChatView {
         return box;
     }
 
+    /**
+     * Creates a new Message containing the Player's playerID and the TextField's content and sends it to the Server.
+     */
     private void sendMessage() {
         if (!chatTextField.getText().isEmpty()) {
             try {
@@ -180,6 +222,9 @@ public class ChatView {
         }
     }
 
+    /**
+     * Inverts the current mode: Shown -> Hidden, Hidden -> Shown.
+     */
     public void toggle() {
         if (isShowing) {
             hide();
@@ -188,6 +233,9 @@ public class ChatView {
         }
     }
 
+    /**
+     * Animates the Hide feature
+     */
     public void hide() {
         controller.blockInput();
         isShowing = false;
@@ -201,6 +249,9 @@ public class ChatView {
         container.requestFocus();
     }
 
+    /**
+     * Animates the Show feature
+     */
     public void show() {
         controller.blockInput();
         isShowing = true;
@@ -213,6 +264,10 @@ public class ChatView {
         transition.play();
     }
 
+    /**
+     * Adds a new Message to the Chat, and visually updates it.
+     * @param message: the new Message to add.
+     */
     public void addMessage(ChatMessage message) {
         messages.add(message);
         Platform.runLater(() -> {
@@ -221,6 +276,10 @@ public class ChatView {
         });
     }
 
+    /**
+     * Visually notifies the User of a new Message if the Chat is hidden (not if it's shown).
+     * @param message: the new Message that needs to be notified to the User.
+     */
     private void notifyNewMessage(ChatMessage message) {
         // Notify only for messages from other players and only when the Chat is hidden
         if (!isShowing && !message.getSender().equals("Server") && !message.getSender().equals(controller.getPlayerNickname())) {
