@@ -31,6 +31,8 @@ public class GameTerminal extends Application implements ViewController {
     private int playerID;
     private boolean isYourTurn = false;
 
+    private final ArrayList<Token> availableToken = new ArrayList<>();
+
     private final ArrayList<HashMap<String, Integer>> printingExtremes = new ArrayList<>();
 
     private final ArrayList<String[][]> playAreas = new ArrayList<>();
@@ -40,6 +42,7 @@ public class GameTerminal extends Application implements ViewController {
     private boolean isShowingGameCreationScreen = false;
     private boolean isWaiting = false;
     private boolean isGameCreator = false;
+    private boolean hasChosenToken = false;
 
     private final BlockingDeque<Runnable> actions = new LinkedBlockingDeque<>();
     private TerminalInputHandler inputHandler;
@@ -559,35 +562,70 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void showTokenSelectionDialog() {
+        // Inits the ArrayList the first time
+        if (availableToken.isEmpty()) {
+            availableToken.add(Token.RED);
+            availableToken.add(Token.BLUE);
+            availableToken.add(Token.GREEN);
+            availableToken.add(Token.YELLOW);
+        }
+
         System.out.println("--- Select your token ---");
-        System.out.println("Digit 1 to choose: " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
-        System.out.println("Digit 2 to choose: " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
-        System.out.println("Digit 3 to choose: " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
-        System.out.println("Digit 4 to choose: " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
-        String input = "";
+        if(availableToken.contains(Token.RED)) {
+            System.out.println("Digit 1 to choose: " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
+        } else {
+            System.out.println(terminalCharacters.getCharacter(Characters.RED_CIRCLE) + " already taken!");
+        }
+        if (availableToken.contains(Token.BLUE)) {
+            System.out.println("Digit 2 to choose: " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
+        } else {
+            System.out.println(terminalCharacters.getCharacter(Characters.BLUE_CIRCLE) + " already taken!");
+        }
+        if (availableToken.contains(Token.GREEN)) {
+            System.out.println("Digit 3 to choose: " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
+        }else {
+            System.out.println(terminalCharacters.getCharacter(Characters.GREEN_CIRCLE) + " already taken!");
+        }
+        if (availableToken.contains(Token.YELLOW)) {
+            System.out.println("Digit 4 to choose: " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
+        } else {
+            System.out.println(terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE) + " already taken!");
+        }
         inputHandler.listen(new TerminalListener() {
             @Override
             public void onEvent(String input) {
                 switch (input) {
                     case "1":
-                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
-                        controller.setPlayerToken(playerID, Token.RED);
-                        inputHandler.unlisten(this);
+                        if (availableToken.contains(Token.RED)) {
+                            System.out.println("You chose " + terminalCharacters.getCharacter(Characters.RED_CIRCLE));
+                            controller.setPlayerToken(playerID, Token.RED);
+                            hasChosenToken = true;
+                            inputHandler.unlisten(this);
+                        } else System.err.println("Already Taken!");
                         break;
                     case "2":
-                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
-                        controller.setPlayerToken(playerID, Token.BLUE);
-                        inputHandler.unlisten(this);
+                        if (availableToken.contains(Token.BLUE)) {
+                            System.out.println("You chose " + terminalCharacters.getCharacter(Characters.BLUE_CIRCLE));
+                            controller.setPlayerToken(playerID, Token.BLUE);
+                            hasChosenToken = true;
+                            inputHandler.unlisten(this);
+                        } else System.err.println("Already Taken!");
                         break;
                     case "3":
-                        System.out.println("You chose " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
-                        controller.setPlayerToken(playerID, Token.GREEN);
-                        inputHandler.unlisten(this);
+                        if (availableToken.contains(Token.GREEN)) {
+                            System.out.println("You chose " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
+                            controller.setPlayerToken(playerID, Token.GREEN);
+                            hasChosenToken = true;
+                            inputHandler.unlisten(this);
+                        } else System.err.println("Already Taken!");
                         break;
                     case "4":
+                        if (availableToken.contains(Token.YELLOW)) {
                         System.out.println("You chose " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
                         controller.setPlayerToken(playerID, Token.YELLOW);
+                        hasChosenToken = true;
                         inputHandler.unlisten(this);
+                        } else System.err.println("Already Taken!");
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
@@ -704,9 +742,10 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyPlayersTokenChanged(int playerID) {
+        Token token = controller.getPlayerToken(playerID);
+        availableToken.remove(token);
         if (this.playerID != playerID) {
             // Only prints the other Players' Tokens
-            Token token = controller.getPlayerToken(playerID);
             if (null != token) {
                 ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                 switch (token) {
@@ -715,6 +754,9 @@ public class GameTerminal extends Application implements ViewController {
                     case Token.GREEN -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.GREEN_CIRCLE));
                     case Token.YELLOW -> System.out.println(info.get(playerID - 1).get("Nickname") + " choose: " + terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE));
                 }
+            }
+            if(!hasChosenToken) {
+                showTokenSelectionDialog();
             }
         }
     }
