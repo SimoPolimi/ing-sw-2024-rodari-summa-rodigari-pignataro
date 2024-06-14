@@ -419,6 +419,11 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     @Override
+    public void blockNickName(String nickname) throws RemoteException {
+        server.blockNickName(nickname);
+    }
+
+    @Override
     public int getIndex() throws RemoteException {
         return gameID;
     }

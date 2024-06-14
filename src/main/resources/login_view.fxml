@@ -48,7 +48,7 @@
                            <font>
                               <Font size="14.0" />
                            </font></TextField>
-                        <Text fx:id="errorTxt" fill="RED" strokeType="INSIDE" strokeWidth="0.0" text="This username is not available!" underline="true" visible="false">
+                        <Text fx:id="errorTxt" fill="RED" strokeType="INSIDE" strokeWidth="0.0" text="This nickname is not available!" underline="true" visible="false">
                            <font>
                               <Font name="Tahoma Bold" size="12.0" />
                            </font>
