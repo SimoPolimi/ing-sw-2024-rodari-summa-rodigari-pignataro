@@ -405,4 +405,9 @@ public class SocketClient implements NetworkController {
         sendMessage(new StrResponse(MessageType.CHECK_NICKNAME, nickname));
         return ((BoolResponse) waitResponse()).getResponse();
     }
+
+    @Override
+    public void blockNickName(String nickname) throws RemoteException {
+        sendMessage(new StrResponse(MessageType.BLOCK_NICKNAME, nickname));
+    }
 }

@@ -128,7 +128,6 @@ public class GameTerminal extends Application implements ViewController {
         pool.submit(inputHandler);
         actions.add(() -> {
             System.out.println("Welcome to Codex Naturalis!");
-            //TODO: Ask for TUI Mode
             terminalCharacters = new TerminalCharacters(isAdvancedGraphicsMode);
 
             login();
@@ -1575,24 +1574,34 @@ public class GameTerminal extends Application implements ViewController {
                     case "":
                         break;
                     default:
-                        player = new Player(input);
-                        ArrayList<HashMap<String, String>> games = null;
                         try {
-                            games = controller.getAvailableGames();
+                            if (controller.checkNickName(input)) {
+                                controller.blockNickName(input);
+                                player = new Player(input);
+                                ArrayList<HashMap<String, String>> games = null;
+                                try {
+                                    games = controller.getAvailableGames();
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if (games.isEmpty()) {
+                                    try {
+                                        createNewGame();
+                                    } catch (RemoteException | AlreadyBoundException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    isWaiting = true;
+                                    // Setups the User's Input Handler
+                                } else {
+                                    ArrayList<HashMap<String, String>> finalGames = games;
+                                    actions.add(() -> askToJoinGame(finalGames));
+                                }
+                            } else {
+                                System.err.println("This nickname is not available!");
+                                actions.add(() -> askForNickName());
+                            }
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
-                        }
-                        if (games.isEmpty()) {
-                            try {
-                                createNewGame();
-                            } catch (RemoteException | AlreadyBoundException e) {
-                                throw new RuntimeException(e);
-                            }
-                            isWaiting = true;
-                            // Setups the User's Input Handler
-                        } else {
-                            ArrayList<HashMap<String, String>> finalGames = games;
-                            actions.add(() -> askToJoinGame(finalGames));
                         }
                 }
             }

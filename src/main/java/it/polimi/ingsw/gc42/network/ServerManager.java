@@ -145,7 +145,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public void addPlayer(int gameID, Player player) throws RemoteException {
         collection.get(gameID).addPlayer(player);
-        collection.blockNickname(player.getNickname());
     }
 
     @Override
@@ -354,5 +353,10 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public boolean checkNickName(String nickname) throws RemoteException {
         return collection.isNickNameAvailable(nickname);
+    }
+
+    @Override
+    public void blockNickName(String nickname) throws RemoteException {
+        collection.blockNickname(nickname);
     }
 }

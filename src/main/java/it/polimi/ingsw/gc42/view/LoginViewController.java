@@ -96,6 +96,11 @@ public class LoginViewController implements Observable {
 
     public void onEnterPressed() {
         if (isPlayButtonEnabled) {
+            try {
+                networkController.blockNickName(nickName);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             notifyListeners("Play Button Clicked");
         }
     }
@@ -145,7 +150,6 @@ public class LoginViewController implements Observable {
         connectionIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/connectingIcon.png"))));
         String ip = getIPAddress();
         if (ip != null && !ip.isEmpty()) {
-            //TODO: Connect to Server
             if (selectedNetworkMode == NetworkMode.RMI) {
                 networkController = new RmiClient(getIPAddress());
                 try {
@@ -156,7 +160,6 @@ public class LoginViewController implements Observable {
                     isConnected = false;
                 }
             } else {
-                // TODO: Socket
                 networkController = new SocketClient(getIPAddress());
                 try {
                     networkController.connect();

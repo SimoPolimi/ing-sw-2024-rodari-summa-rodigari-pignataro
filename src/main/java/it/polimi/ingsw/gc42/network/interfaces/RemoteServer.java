@@ -107,4 +107,6 @@ public interface RemoteServer extends Remote {
     ArrayList<ChatMessage> getChat(int gameID) throws RemoteException;
 
     boolean checkNickName(String nickname) throws RemoteException;
+
+    void blockNickName(String nickname) throws RemoteException;
 }
