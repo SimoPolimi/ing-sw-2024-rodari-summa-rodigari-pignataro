@@ -80,6 +80,6 @@ public class ItemCountObjective extends CountObjective{
                 count++;
             }
         }
-        return count;
+        return Math.floorDiv(count, getNumber());
     }
 }
