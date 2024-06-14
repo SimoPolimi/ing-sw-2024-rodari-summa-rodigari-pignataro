@@ -102,7 +102,7 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println("Some Terminals don't properly support Fancy Mode: if you can see the left Card properly,");
             System.out.println("then it's safe to play, otherwise we suggest playing Standard Mode instead");
             System.out.println();
-            System.out.println("      Fancy:                    Standard:");
+            System.out.println("Fancy:\t\t\tStandard:");
             System.out.println("🍄🟥🟥🟨🟨🟨🟩🟩🌳      ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿ ");
             System.out.println("🟥🟥🟨🟨⚪🟨🟨🟩🟩      ▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦ ");
             System.out.println("🟨⚪🟨🍷📜🪶🟨⚪🟨      ▩ ■ ▩ Ỗ ∫ ϡ ▩ ■ ▩ ");
@@ -2527,7 +2527,129 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
-        // TODO: Implement
+        final ArrayList<HashMap<String, String>> players = points;
+        actions.add(() -> {
+            int number = players.size();
+            printSeparator(number);
+            for (int i = 0; i < number; i++) {
+                String name = players.get(i).get("Nickname");
+                if (name.length() > 10) {
+                    String shortName = name.substring(0, 10);
+                    players.get(i).replace("Nickname", shortName + "...");
+                } else {
+                    int length = name.length();
+                    String longName = name;
+                    for (int j = length ; j < 13; j++) {
+                        longName += " ";
+                        players.get(i).replace("Nickname", longName);
+                    }
+                }
+            }
+
+            printNames(players);
+            printSeparator(number);
+
+            System.out.print("| ");
+            for (int i = 0; i < number; i++) {
+                String pointsValue = players.get(i).get("InitialPoints");
+                if (pointsValue.length() == 1) {
+                    pointsValue = "0" + pointsValue;
+                }
+                System.out.print("Initial Points: " + pointsValue + "    | ");
+            }
+            System.out.println();
+            printEmptyLine(number);
+
+            System.out.print("| ");
+            for (int i = 0; i < number; i++) {
+                String pointsValue = players.get(i).get("SecretObjectivePoints");
+                if (pointsValue.length() == 1) {
+                    pointsValue = "0" + pointsValue;
+                }
+                System.out.print("Secret Objective: " + pointsValue + "  | ");
+            }
+            System.out.println();
+            printEmptyLine(number);
+
+            System.out.print("| ");
+            for (int i = 0; i < number; i++) {
+                String pointsValue = players.get(i).get("CommonObjective1Points");
+                if (pointsValue.length() == 1) {
+                    pointsValue = "0" + pointsValue;
+                }
+                System.out.print("Common Obj. 1: " + pointsValue + "     | ");
+            }
+            System.out.println();
+            printEmptyLine(number);
+
+            System.out.print("| ");
+            for (int i = 0; i < number; i++) {
+                String pointsValue = players.get(i).get("CommonObjective2Points");
+                if (pointsValue.length() == 1) {
+                    pointsValue = "0" + pointsValue;
+                }
+                System.out.print("Common Obj. 2: " + pointsValue + "     | ");
+            }
+            System.out.println();
+            printEmptyLine(number);
+
+            System.out.print("| ");
+            for (int i = 0; i < number; i++) {
+                String pointsValue = players.get(i).get("TotalPoints");
+                if (pointsValue.length() == 1) {
+                    pointsValue = "0" + pointsValue;
+                }
+                System.out.print("Final Points: " + pointsValue + "      | ");
+            }
+            System.out.println();
+            printSeparator(number);
+
+            printEmptyLine(number);
+
+            for (int i = 0; i < number; i++) {
+                System.out.print("|");
+                if (players.get(i).get("IsWinner").equals("true")) {
+                    System.out.print("        WINNER!        ");
+                } else {
+                    System.out.print("                       ");
+                }
+            }
+            System.out.println("|");
+            printEmptyLine(number);
+            printSeparator(number);
+        });
+    }
+
+    private void printSeparator(int number) {
+        number = (24 * number) + 1;
+        for (int i = 0; i < number; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
+    private void printEmptyLine(int columns) {
+        for (int i = 0; i < columns; i++) {
+            System.out.print("|");
+            for (int j = 0; j < 23; j++) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println("|");
+    }
+
+    private void printNames(ArrayList<HashMap<String, String>> info) {
+        for (HashMap<String, String> player: info) {
+            String token = "";
+            switch (player.get("Token")) {
+                case "BLUE" -> token = terminalCharacters.getCharacter(Characters.BLUE_CIRCLE);
+                case "RED" -> token = terminalCharacters.getCharacter(Characters.RED_CIRCLE);
+                case "GREEN" -> token = terminalCharacters.getCharacter(Characters.GREEN_CIRCLE);
+                case "YELLOW" -> token = terminalCharacters.getCharacter(Characters.YELLOW_CIRCLE);
+            }
+            System.out.print("| " + token + " " + player.get("Nickname") + "      ");
+        }
+        System.out.println("|");
     }
 
     @Override

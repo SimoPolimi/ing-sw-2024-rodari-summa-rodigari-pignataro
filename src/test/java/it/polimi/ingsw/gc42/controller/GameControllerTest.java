@@ -82,7 +82,9 @@ class GameControllerTest {
         player.setStatus(GameStatus.WAITING_FOR_SERVER);
         player.setStatus(GameStatus.READY);
         player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
+        player.setToken(Token.BLUE);
         player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        player.setSecretObjective((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
         player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
         player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
         player.setStatus(GameStatus.PLAYING);
@@ -394,6 +396,7 @@ class GameControllerTest {
             throw new RuntimeException(e);
         }
         Player player = new Player(Token.BLUE);
+        player.setSecretObjective((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
         controller.getGame().addPlayer(player);
 
 

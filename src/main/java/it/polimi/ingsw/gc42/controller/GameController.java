@@ -352,7 +352,6 @@ public class GameController implements Serializable, Observable {
                 try {
                     player.drawCard(playingDeck);
                 }catch (IllegalArgumentException e){
-                    // TODO: implement dialog
                     // Last turn and zero Cards in the decks... don't draw
                 }
                 nextTurn();
