@@ -30,9 +30,9 @@ public class ScoreBoardView {
     private final ArrayList<Coordinates> positions = new ArrayList<>(NUMBER_OF_POSITIONS);
 
     private static final int BLUE_PADDING = 0;
-    private static final int RED_PADDING = -5;
-    private static final int GREEN_PADDING = -10;
-    private static final int YELLOW_PADDING = -15;
+    private static final int RED_PADDING = -3;
+    private static final int GREEN_PADDING = -6;
+    private static final int YELLOW_PADDING = -9;
     private static final int NUMBER_OF_POSITIONS = 30;
     // Positions are 0-29, 30 in total
     private static final int JUMP_ANIMATION_DURATION = 100;

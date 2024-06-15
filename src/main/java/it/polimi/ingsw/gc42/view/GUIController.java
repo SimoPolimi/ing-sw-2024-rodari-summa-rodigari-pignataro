@@ -813,6 +813,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
+        root.setEffect(null);
         EndGameDialog dialog = new EndGameDialog("The End", false, points, this);
         Platform.runLater(() -> {
             showDialog(dialog);
