@@ -73,11 +73,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyDeckChanged(CardType.RESOURCECARD);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyDeckChanged(CardType.RESOURCECARD);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -85,11 +88,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
+                    Thread thread = new Thread(() -> {
                     try {
                         view.notifyDeckChanged(CardType.GOLDCARD);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -97,11 +103,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifySlotCardChanged(CardType.RESOURCECARD, 1);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifySlotCardChanged(CardType.RESOURCECARD, 1);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -109,11 +118,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
+                    Thread thread = new Thread(() -> {
                     try {
                         view.notifySlotCardChanged(CardType.RESOURCECARD, 2);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -121,11 +133,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifySlotCardChanged(CardType.GOLDCARD, 1);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifySlotCardChanged(CardType.GOLDCARD, 1);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -133,11 +148,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
+                    Thread thread = new Thread(() -> {
                     try {
                         view.notifySlotCardChanged(CardType.GOLDCARD, 2);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -145,11 +163,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyCommonObjectivesChanged();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyCommonObjectivesChanged();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -157,12 +178,15 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view: views) {
-                    try {
-                        ChatMessage message = game.getChat().getLastChatMessage();
-                        view.notifyNewMessage(message);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            ChatMessage message = game.getChat().getLastChatMessage();
+                            view.notifyNewMessage(message);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -183,11 +207,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyPlayersHandChanged(game.getIndexOfPlayer(player.getNickname()));
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyPlayersHandChanged(game.getIndexOfPlayer(player.getNickname()));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -195,11 +222,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyPlayersObjectiveChanged(game.getIndexOfPlayer(player.getNickname()));
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyPlayersObjectiveChanged(game.getIndexOfPlayer(player.getNickname()));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -207,11 +237,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyPlayersTokenChanged(game.getIndexOfPlayer(player.getNickname()));
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyPlayersTokenChanged(game.getIndexOfPlayer(player.getNickname()));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -219,11 +252,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view : views) {
-                    try {
-                        view.notifyPlayersPointsChanged(player.getToken(), player.getPoints());
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyPlayersPointsChanged(player.getToken(), player.getPoints());
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -231,11 +267,14 @@ public class GameController implements Serializable, Observable {
             @Override
             public void onEvent() {
                 for (RemoteViewController view: views) {
-                    try {
-                        view.notifyPlayersPlayAreaChanged(game.getIndexOfPlayer(player.getNickname()));
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyPlayersPlayAreaChanged(game.getIndexOfPlayer(player.getNickname()));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }
         });
@@ -254,11 +293,14 @@ public class GameController implements Serializable, Observable {
                 setCurrentStatus(GameStatus.LAST_TURN);
                 game.getChat().sendMessage(new ChatMessage("This is the last turn, good luck!", "Server"));
                 for (RemoteViewController view: views) {
-                    try {
-                        view.notifyLastTurn();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyLastTurn();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    thread.start();
                 }
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
                 setCurrentStatus(GameStatus.END_GAME);
@@ -275,11 +317,14 @@ public class GameController implements Serializable, Observable {
         }
         game.setPlayerTurn(turn);
         for (RemoteViewController view: views) {
-            try {
-                view.notifyTurnChanged();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            Thread thread = new Thread(() -> {
+                try {
+                    view.notifyTurnChanged();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            thread.start();
         }
     }
 
