@@ -69,7 +69,7 @@ public class DiagonalPlacementObjective extends PlacementObjective {
                 list.sort((a, b) -> a.getY() < b.getY() ? 1 : -1);
                 // i is the index of the center card in the tentative sequence of three cards
                 for (int i = 1; i < list.size() - 1; i++) {
-                    if (list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
+                    if (null != list.get(i).getKingdom() && list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
                         count++;
                         // Since every Card can be part only of one sequence,
                         // the next two Cards won't be considered as center

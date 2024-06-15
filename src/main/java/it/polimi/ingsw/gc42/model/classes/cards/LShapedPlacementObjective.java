@@ -99,7 +99,7 @@ public class LShapedPlacementObjective extends PlacementObjective {
             }
         }
         int overlaps = countOverlap(allInlineCouples);
-        if (count != 0) {
+        if (count != 0 && overlaps != 0) {
             return count / Math.ceilDiv(overlaps, 2);
         } else return 0;
     }
