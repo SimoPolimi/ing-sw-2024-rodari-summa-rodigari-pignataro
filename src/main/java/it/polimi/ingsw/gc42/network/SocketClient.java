@@ -125,13 +125,17 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<PlayableCard> getPlayersPlayfield(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_PLAY_FIELD, gameID, playerID));
-        return ((PlayableCardListResponse) waitResponse()).getResponse();
+        return ((PlayableCardListResponse) waitResponse(MessageType.GET_PLAYERS_PLAY_FIELD)).getResponse();
     }
 
-    private synchronized Message waitResponse() {
+    private synchronized Message waitResponse(MessageType messageType) {
         Message temp = null;
         try{
             temp = queue.take();
+            while (!temp.getType().equals(messageType)){
+                queue.addLast(temp);
+                temp = queue.take();
+            }
         }catch (InterruptedException e){
             e.printStackTrace();
         }
@@ -169,7 +173,7 @@ public class SocketClient implements NetworkController {
         sendMessage(new AddPlayerMessage(MessageType.ADD_PLAYER, gameID, player));
         // Set owner
         this.owner = player;
-        playerID = ((IntResponse) waitResponse()).getResponse();
+        playerID = ((IntResponse) waitResponse(MessageType.ADD_PLAYER)).getResponse();
     }
 
     @Override
@@ -212,7 +216,7 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
         sendMessage(new Message(MessageType.GET_AVAILABLE_GAMES));
-        return ((ListMapStrStrResponse) waitResponse()).getResponse();
+        return ((ListMapStrStrResponse) waitResponse(MessageType.GET_AVAILABLE_GAMES)).getResponse();
     }
 
     @Override
@@ -223,7 +227,7 @@ public class SocketClient implements NetworkController {
     @Override
     public void getNewGameController() throws RemoteException {
         sendMessage(new Message(MessageType.NEW_GAME));
-        gameID = ((IntResponse) waitResponse()).getResponse();
+        gameID = ((IntResponse) waitResponse(MessageType.NEW_GAME)).getResponse();
     }
 
     @Override
@@ -251,13 +255,13 @@ public class SocketClient implements NetworkController {
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
         sendMessage(new GetNameMessage(MessageType.GET_INDEX_OF_PLAYER, gameID, nickName));
-        return ((IntResponse) waitResponse()).getResponse();
+        return ((IntResponse) waitResponse(MessageType.GET_INDEX_OF_PLAYER)).getResponse();
     }
 
     @Override
     public int getNumberOfPlayers() {
         sendMessage(new GameMessage(MessageType.GET_NUMBER_OF_PLAYERS, gameID));
-        return ((IntResponse) waitResponse()).getResponse();
+        return ((IntResponse) waitResponse(MessageType.GET_NUMBER_OF_PLAYERS)).getResponse();
     }
 
     @Override
@@ -293,85 +297,85 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<Card> getDeck(CardType type) {
         sendMessage(new GetDeckTexturesMessage(MessageType.GET_DECK, gameID, type));
-        return ((DeckResponse) waitResponse()).getResponse();
+        return ((DeckResponse) waitResponse(MessageType.GET_DECK)).getResponse();
     }
 
     @Override
     public Card getSlotCard(CardType type, int slot) {
         sendMessage(new GetSlotCardTextureMessage(MessageType.GET_SLOT_CARD, gameID, type, slot));
-        return ((CardResponse) waitResponse()).getResponse();
+        return ((CardResponse) waitResponse(MessageType.GET_SLOT_CARD)).getResponse();
     }
 
     @Override
     public ObjectiveCard getSecretObjective(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_SECRET_OBJECTIVE, gameID, playerID));
-        return ((ObjectiveCardResponse) waitResponse()).getResponse();
+        return ((ObjectiveCardResponse) waitResponse(MessageType.GET_SECRET_OBJECTIVE)).getResponse();
     }
 
     @Override
     public int getPlayerTurn() {
         sendMessage(new GameMessage(MessageType.GET_PLAYER_TURN, gameID));
-        return ((IntResponse) waitResponse()).getResponse();
+        return ((IntResponse) waitResponse(MessageType.GET_PLAYER_TURN)).getResponse();
     }
 
     @Override
     public ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS, gameID, playerID));
-        return ((ObjCardListResponse) waitResponse()).getResponse();
+        return ((ObjCardListResponse) waitResponse(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS)).getResponse();
     }
 
     @Override
     public StarterCard getTemporaryStarterCard(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_TEMPORARY_STARTER_CARD, gameID, playerID));
-        return ((StarterCardResponse) waitResponse()).getResponse();
+        return ((StarterCardResponse) waitResponse(MessageType.GET_TEMPORARY_STARTER_CARD)).getResponse();
     }
 
     @Override
     public GameStatus getPlayerStatus(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYER_STATUS, gameID, playerID));
-        return ((GameStatusResponse) waitResponse()).getResponse();
+        return ((GameStatusResponse) waitResponse(MessageType.GET_PLAYER_STATUS)).getResponse();
     }
 
     @Override
     public ArrayList<HashMap<String, String>> getPlayersInfo() {
         sendMessage(new GameMessage(MessageType.GET_PLAYERS_INFO, gameID));
-        return ((ListMapStrStrResponse) waitResponse()).getResponse();
+        return ((ListMapStrStrResponse) waitResponse(MessageType.GET_PLAYERS_INFO)).getResponse();
     }
 
     @Override
     public int getPlayersHandSize(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_HAND_SIZE, gameID, playerID));
-        return ((IntResponse) waitResponse()).getResponse();
+        return ((IntResponse) waitResponse(MessageType.GET_PLAYERS_HAND_SIZE)).getResponse();
     }
 
     @Override
     public boolean isPlayerFirst(int playerID) {
         sendMessage(new PlayerMessage(MessageType.IS_PLAYER_FIRST, gameID, playerID));
-        return ((BoolResponse) waitResponse()).getResponse();
+        return ((BoolResponse) waitResponse(MessageType.IS_PLAYER_FIRST)).getResponse();
     }
 
     @Override
     public ArrayList<Coordinates> getAvailablePlacements(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_AVAILABLE_PLACEMENT, gameID, playerID));
-        return ((ListCoordResponse) waitResponse()).getResponse();
+        return ((ListCoordResponse) waitResponse(MessageType.GET_AVAILABLE_PLACEMENT)).getResponse();
     }
 
     @Override
     public boolean canCardBePlayed(int playerID, int cardID) {
         sendMessage(new CanCardBePlayedMessage(MessageType.CAN_CARD_BE_PLAYED, gameID, playerID, cardID));
-        return ((BoolResponse) waitResponse()).getResponse();
+        return ((BoolResponse) waitResponse(MessageType.CAN_CARD_BE_PLAYED)).getResponse();
     }
 
     @Override
     public Token getPlayerToken(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYER_TOKEN, gameID, playerID));
-        return ((TokenResponse) waitResponse()).getResponse();
+        return ((TokenResponse) waitResponse(MessageType.GET_PLAYER_TOKEN)).getResponse();
     }
 
     @Override
     public PlayableCard getPlayersLastPlayedCard(int playerID) {
         sendMessage(new PlayerMessage(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, gameID, playerID));
-        PlayableCardResponse temp = (PlayableCardResponse) waitResponse();
+        PlayableCardResponse temp = (PlayableCardResponse) waitResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD);
         PlayableCard card = temp.getResponse();
         if (null != card) {
             card.setX(temp.getX());
@@ -386,7 +390,7 @@ public class SocketClient implements NetworkController {
     @Override
     public PlayableCard getPlayersHandCard(int playerID, int cardID) {
         sendMessage(new GetPlayersHandCardMessage(MessageType.GET_PLAYERS_HAND_CARD, gameID, playerID, cardID));
-        return ((PlayableCardResponse) waitResponse()).getResponse();
+        return ((PlayableCardResponse) waitResponse(MessageType.GET_PLAYERS_HAND_CARD)).getResponse();
     }
 
     @Override
@@ -397,13 +401,13 @@ public class SocketClient implements NetworkController {
     @Override
     public ArrayList<ChatMessage> getFullChat() throws RemoteException {
         sendMessage(new GameMessage(MessageType.GET_FULL_CHAT, gameID));
-        return ((ChatResponse) waitResponse()).getResponse();
+        return ((ChatResponse) waitResponse(MessageType.GET_FULL_CHAT)).getResponse();
     }
 
     @Override
     public boolean checkNickName(String nickname) throws RemoteException {
         sendMessage(new StrResponse(MessageType.CHECK_NICKNAME, nickname));
-        return ((BoolResponse) waitResponse()).getResponse();
+        return ((BoolResponse) waitResponse(MessageType.CHECK_NICKNAME)).getResponse();
     }
 
     @Override
