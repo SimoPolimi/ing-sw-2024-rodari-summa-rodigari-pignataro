@@ -22,13 +22,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -710,8 +713,15 @@ public class GUIController implements ViewController {
     public void notifyTurnChanged() {
         if (controller.getPlayerTurn() == playerID) {
             table.setCanPlayCards(true);
+            InnerShadow glow = new InnerShadow();
+            glow.setBlurType(BlurType.GAUSSIAN);
+            glow.setColor(Color.GOLD);
+            glow.setWidth(200);
+            glow.setHeight(200);
+            root.setEffect(glow);
         } else {
             table.setCanPlayCards(false);
+            root.setEffect(null);
         }
     }
 

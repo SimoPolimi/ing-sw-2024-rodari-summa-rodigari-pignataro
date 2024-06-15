@@ -247,9 +247,9 @@
         <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505" onMouseClicked="#toggleChat" style="-fx-background-image: url('chat_background.png'); -fx-background-size: 507;" translateX="1190" translateY="200">
             <VBox fx:id="chatHintContainer" alignment="CENTER" spacing="10" translateX="-300">
                 <children>
-                    <ImageView fitHeight="71.0" fitWidth="20" preserveRatio="true" onMouseClicked="#toggleChat">
+                    <ImageView fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleChat" preserveRatio="true">
                         <image>
-                            <Image url="@toggleChatHint.png"/>
+                            <Image url="@toggleChatHint.png" />
                         </image>
                         <cursor>
                             <Cursor fx:constant="HAND" />
