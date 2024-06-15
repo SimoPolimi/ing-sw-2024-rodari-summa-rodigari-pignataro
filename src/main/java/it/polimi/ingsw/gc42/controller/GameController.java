@@ -263,15 +263,8 @@ public class GameController implements Serializable, Observable {
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
                 setCurrentStatus(GameStatus.END_GAME);
                 game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
-                // Sends the final points to all the Players
-                ArrayList<HashMap<String, String>> points = game.countPoints();
-                for (RemoteViewController view: views) {
-                    try {
-                        view.notifyEndGame(points);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                currentStatus = GameStatus.COUNTING_POINTS;
+                nextStatus();
             }
         }
 
@@ -494,6 +487,17 @@ public class GameController implements Serializable, Observable {
                     game.getPlayer(i+1).setStatus(GameStatus.NOT_MY_TURN);
                 }
                 nextTurn();
+                break;
+            case COUNTING_POINTS:
+                ArrayList<HashMap<String, String>> points = game.countPoints();
+                for (RemoteViewController view : views) {
+                    try {
+                        view.notifyEndGame(points);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                currentStatus = GameStatus.END_GAME;
             case END_GAME:
                 break;
             default:
