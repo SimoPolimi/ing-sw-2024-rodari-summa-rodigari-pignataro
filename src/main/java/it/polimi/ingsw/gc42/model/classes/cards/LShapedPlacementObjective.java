@@ -81,13 +81,13 @@ public class LShapedPlacementObjective extends PlacementObjective {
             boolean validCorner = false;
             boolean validInline = false;
             for (PlayableCard c : playArea) {
-                if (c.getX() == baseCard.getX() + positionCornerCard.getXOffset() && c.getY() == baseCard.getY() + positionCornerCard.getYOffset() && c.getKingdom().equals(secondaryType)) {
+                if (c.getX() == baseCard.getX() + positionCornerCard.getXOffset() && c.getY() == baseCard.getY() + positionCornerCard.getYOffset() && null != c.getKingdom() && c.getKingdom().equals(secondaryType)) {
                     validCorner = true;
                     break;
                 }
             }
             for (PlayableCard c : playArea) {
-                if (c.getX() == baseCard.getX() + positionCornerCard.getInlineOffset() && c.getY() == baseCard.getY() + positionCornerCard.getInlineOffset() && c.getKingdom().equals(secondaryType)) {
+                if (c.getX() == baseCard.getX() + positionCornerCard.getInlineOffset() && c.getY() == baseCard.getY() + positionCornerCard.getInlineOffset() && null != c.getKingdom() && c.getKingdom().equals(secondaryType)) {
                     validInline = true;
                     inlineCouple.add(c);
                     break;

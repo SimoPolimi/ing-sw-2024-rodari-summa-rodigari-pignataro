@@ -85,7 +85,7 @@ public class DiagonalPlacementObjective extends PlacementObjective {
             for (ArrayList<PlayableCard> list : rows.values()) {
                 list.sort((a, b) -> a.getX() < b.getX() ? 1 : -1);
                 for (int i = 1; i < list.size() - 1; i++) {
-                    if (list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
+                    if (null != list.get(i).getKingdom() && list.get(i).getKingdom().equals(list.get(i-1).getKingdom()) && list.get(i).getKingdom().equals(list.get(i+1).getKingdom()) ) {
                         count++;
                         i += 2;
                     }
