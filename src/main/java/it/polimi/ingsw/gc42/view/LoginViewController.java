@@ -27,6 +27,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * This class creates and handles the behavior of the Login Screen.
+ * This screen allows the Player to input the Server's IP Address, to select a Network Mode (RMI or Socket)
+ * and to pick a NickName.
+ * It checks if a NickName is valid before allowing the User to go to the next Screen.
+ * This class is Observable: the Listeners are notified when the User is ready to go to the next Screen.
+ */
 public class LoginViewController implements Observable {
     @FXML
     private VBox netModeSelector;
@@ -41,8 +48,6 @@ public class LoginViewController implements Observable {
     @FXML
     private TextField ipTextField;
     @FXML
-    private TextField portTextField;
-    @FXML
     private ImageView connectionIcon;
     @FXML
     private Text errorTxt;
@@ -54,6 +59,9 @@ public class LoginViewController implements Observable {
     private boolean isConnected = false;
     private NetworkController networkController;
 
+    /**
+     * Initializes the UI elements
+     */
     public void init() {
         nickNameTextArea.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
@@ -86,14 +94,23 @@ public class LoginViewController implements Observable {
         });
     }
 
+    /**
+     * @return the Network Controller created at the moment of establishing the connection
+     */
     public NetworkController getNetworkController() {
         return networkController;
     }
 
+    /**
+     * @return a String containing the User's NickName
+     */
     public String getNickName() {
         return nickName;
     }
 
+    /**
+     * Handles the Keyboard's ENTER Key input event
+     */
     public void onEnterPressed() {
         if (isPlayButtonEnabled) {
             try {
@@ -105,17 +122,16 @@ public class LoginViewController implements Observable {
         }
     }
 
+    /**
+     * @return a String containing the IP Address
+     */
     public String getIPAddress() {
         return ipTextField.getText();
     }
 
-    public int getPort() {
-        String port = portTextField.getText();
-        if (!port.isEmpty() && !port.matches("^[a-zA-Z]*$") && !(port.length() > 5)) {
-            return Integer.parseInt(portTextField.getText());
-        } else return -1;
-    }
-
+    /**
+     * @param selectedNetworkMode the selected Network Mode
+     */
     public void setSelectedNetworkMode(NetworkMode selectedNetworkMode) {
         if (this.selectedNetworkMode != selectedNetworkMode) {
             if (selectedNetworkMode == NetworkMode.RMI) {
@@ -134,17 +150,29 @@ public class LoginViewController implements Observable {
         }
     }
 
+    /**
+     * Applies a green color to the Play Button, and enables its clicking behavior
+     */
     private void enablePlayButton() {
         errorTxt.setVisible(false);
         isPlayButtonEnabled = true;
         playButton.setStyle("-fx-background-color: forestgreen; -fx-background-radius: 15;");
     }
 
+    /**
+     * Applies a gray color to the Play Button, and disables its clicking behavior
+     */
     private void disablePlayButton() {
         isPlayButtonEnabled = false;
         playButton.setStyle("-fx-background-color: grey; -fx-background-radius: 15;");
     }
 
+    /**
+     * Attempts establishing a connection.
+     * Animates the Connection Icon to let the User know what's going on.
+     * If the connection is successful, the Icon is updated to a "Successful" one.
+     * If the connection fails, the Icon is updated to a "Failed" one.
+     */
     @FXML
     private void connect() {
         connectionIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/connectingIcon.png"))));
@@ -180,6 +208,9 @@ public class LoginViewController implements Observable {
         }
     }
 
+    /**
+     * Updates the Icon's ImageView in case of a Failed Connection
+     */
     private void showConnectionError() {
         TranslateTransition delay = new TranslateTransition(Duration.millis(100), connectionIcon);
         delay.setOnFinished((e) -> {
@@ -191,6 +222,9 @@ public class LoginViewController implements Observable {
         disablePlayButton();
     }
 
+    /**
+     * Updates the Icon's ImageView in case of a Successful Connection
+     */
     private void showConnectionSuccess() {
         TranslateTransition delay = new TranslateTransition(Duration.millis(100), connectionIcon);
         delay.setOnFinished((e) -> {
@@ -206,6 +240,12 @@ public class LoginViewController implements Observable {
         }
     }
 
+    /**
+     * Checks if the User inputted a valid NickName, and if the Connection is Successful, in which case it unlocks the
+     * option to go to the next Screen.
+     * @param nickName the User's NickName
+     * @throws RemoteException in case of a connection error.
+     */
     private void checkIfCanEnableButton(String nickName) throws RemoteException {
         if (null != nickName && !nickName.isEmpty() && isConnected) {
             if (networkController.checkNickName(nickName)) {
@@ -219,20 +259,35 @@ public class LoginViewController implements Observable {
         }
     }
 
+    /**
+     * Shows an error message in case of an invalid NickName
+     */
     private void showInvalidNickName() {
         errorTxt.setVisible(true);
     }
 
+    /**
+     * Adds a Listener that will be notified when the User is ready to go to the next Screen
+     * @param listener the Listener to add
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Removes an existing Listener from the List, if present
+     * @param listener the Listener to remove
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Notifies all Listeners that the User is ready to go to the next Screen
+     * @param context a String message explaining what event was triggered
+     */
     @Override
     public void notifyListeners(String context) {
         for (Listener listener : listeners) {

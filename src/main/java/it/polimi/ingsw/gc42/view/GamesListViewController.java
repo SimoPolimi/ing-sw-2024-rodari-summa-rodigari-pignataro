@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc42.view;
 
-import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
@@ -27,6 +25,16 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class handles the UI and logic for the "Pick Game" Window in GUI.
+ * This Windows shows the User a list of all the available Games and asks him to pick the one he wants to join.
+ * Once a Game is picked, all the instances of ExistingGameListener are notified so that the GUI can act accordingly.
+ * The picked Game's gameID is saved in an inner attribute, and can be queried in response to the Listener call.
+ * When a Game is picked, the Server is immediately notified from this class, so no need to do that externally.
+ * </p>
+ * This Window also allows the User to create a New Game.
+ * This is handled by alerting all instances of NewGameListener.
+ */
 public class GamesListViewController {
     @FXML
     private ScrollPane gamesList;
@@ -40,10 +48,18 @@ public class GamesListViewController {
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private int pickedGame;
 
+    /**
+     * Setter Method for the NetworkController
+     * @param server the NetworkController to use for communications
+     */
     public void setServer(NetworkController server) {
         this.server = server;
     }
 
+    /**
+     * Refreshes the list of Available Games
+     * @throws RemoteException in the case of a network communication error.
+     */
     @FXML
     public void refresh() throws RemoteException {
         ScaleTransition transition = new ScaleTransition(Duration.millis(200), refreshButton);
@@ -96,6 +112,14 @@ public class GamesListViewController {
         gamesList.setContent(content);
     }
 
+    /**
+     * Creates the UI element for one of the entries of the list
+     * @param gameName a String containing the Game's name, chosen by the Player who created it
+     * @param gameNumber an int value specifying how many Players are already inside this Game
+     * @param gameStatus the GameStatus of that Game
+     * @param gameID the Game's gameID, used to trigger the picking feature appropriately
+     * @return the Pane (JavaFx element) containing the UI for this element.
+     */
     private Pane getNewListItem(String gameName, String gameNumber, String gameStatus, int gameID) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
@@ -140,6 +164,10 @@ public class GamesListViewController {
         return newListItem;
     }
 
+    /**
+     * Handles the behavior of picking a Game, alerting the Server of the joining of this new Player
+     * @param gameID the Game's gameID in which the User wants to join.
+     */
     private void joinGame(int gameID) {
         try {
             server.pickGame(gameID);
@@ -149,23 +177,47 @@ public class GamesListViewController {
         }
     }
 
+    /**
+     * Setter Method for the Player.
+     * @param player the empty Player created when the Nickname was chosen, ready to be sent to the Server.
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Notifies all NewGameListeners that the User chose to create a New Game.
+     */
     @FXML
     public void newGame() {
         notifyListeners("New Game");
     }
 
+    /**
+     * Adds a Listener to the List of Listeners that will be notified when the User has performed an action.
+     * @param listener the Listener to add in the List
+     */
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Removes an existing Listener to the List.
+     * If the Listener is not in the List, no action is performed.
+     * @param listener the Listener to remove from the List
+     */
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Notifies all the appropriate Listener inside the List that the User has performed an action.
+     * Which Listeners are called changes based on the action.
+     * Currently supports:
+     * - NewGameListener: notified if the User chose to create a New Game
+     * - ExistingGameListener: notified if the User chose to join an existing Game.
+     * @param context a string specifying which event has been triggered
+     */
     public void notifyListeners(String context) {
         switch (context) {
             case "New Game" -> {

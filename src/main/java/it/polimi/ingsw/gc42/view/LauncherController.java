@@ -14,6 +14,10 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * This class handles the complex behavior of the Launcher.
+ * It handles the keyboard inputs, the animations and the whole logic behind them.
+ */
 public class LauncherController {
     @FXML
     private ImageView guiIcon;
@@ -24,6 +28,9 @@ public class LauncherController {
     private HBox serverButton;
 
 
+    /**
+     * Animates the GUI Icon, then hides the current Launcher window and launches the GameWindow
+     */
     @FXML
     private void launchGUIWindow() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(60), guiIcon);
@@ -45,6 +52,9 @@ public class LauncherController {
         transition.play();
     }
 
+    /**
+     * Animates the TUI Icon, then hides the current Launcher window and launches the GameTerminal
+     */
     @FXML
     private void launchTUIWindow() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(60), tuiIcon);
@@ -68,23 +78,35 @@ public class LauncherController {
         transition.play();
     }
 
+    /**
+     * Closes the window
+     */
     @FXML
     public void exit() {
         guiIcon.getScene().getWindow().hide();
     }
 
+    /**
+     * Animates the GUI Icon when the Mouse hovers on it
+     */
     @FXML
     public void hoverOnGuiMode() {
         selectedMode = 1;
         selectView(guiIcon);
     }
 
+    /**
+     * Animates the TUI Icon when the Mouse hovers on it
+     */
     @FXML
     public void hoverOnTuiMode() {
         selectedMode = 2;
         selectView(tuiIcon);
     }
 
+    /**
+     * Removes the yellow glow effect from both Icons
+     */
     @FXML
     public void deselectAllModes() {
         selectedMode = 0;
@@ -92,14 +114,26 @@ public class LauncherController {
         hoverOutOfGuiMode();
     }
 
+    /**
+     * Animates the GUI Icon to remove the focus effect
+     */
     public void hoverOutOfGuiMode() {
         deselectView(guiIcon);
     }
 
+    /**
+     * Animates the TUI Icon to remove the focus effect
+     */
     public void hoverOutOfTuiMode() {
         deselectView(tuiIcon);
     }
 
+    /**
+     * Handles the Keyboard's LEFT Key input event.
+     * It moves the focus from the currently selected Mode to the previous one.
+     * If no mode is selected, or if the first one (GUI) is, it selects the last one (TUI).
+     * @throws Exception
+     */
     public void moveLeft() throws Exception {
         if (selectedMode == 1) {
             selectedMode = 2;
@@ -111,6 +145,12 @@ public class LauncherController {
         updateView();
     }
 
+    /**
+     * Handles the Keyboard's RIGHT Key input event.
+     * It moves the focus from the currently selected Mode to the next one.
+     * If no mode is selected, or if the last one (TUI) is, it selects the first one (GUI).
+     * @throws Exception
+     */
     public void moveRight() throws Exception {
         if (selectedMode == 2) {
             selectedMode = 1;
@@ -120,6 +160,10 @@ public class LauncherController {
         updateView();
     }
 
+    /**
+     * Handles the Keyboard's ENTER Key input event, as well as the Mouse click event.
+     * It launches the appropriate Mode based on which Icon was selected when the event happened.
+     */
     public void selectMode() {
         switch (selectedMode) {
             case 1:
@@ -133,6 +177,9 @@ public class LauncherController {
         }
     }
 
+    /**
+     * Updates the View after an event has been registered
+     */
     private void updateView() {
         switch (selectedMode) {
             case 0 -> {
@@ -149,6 +196,10 @@ public class LauncherController {
         }
     }
 
+    /**
+     * Animates the selection of an Icon by applying a yellow glowing effect to it
+     * @param view the ImageView to select
+     */
     private void selectView(ImageView view) {
         DropShadow glowEffect = new DropShadow();
         glowEffect.setWidth(100);
@@ -164,6 +215,10 @@ public class LauncherController {
         transition.play();
     }
 
+    /**
+     * Animates the deselection of an Icon by removing the yellow glowing effect from it
+     * @param view the ImageView to deselect
+     */
     private void deselectView(ImageView view) {
         DropShadow shadow = new DropShadow();
         shadow.setWidth(20);
@@ -178,6 +233,10 @@ public class LauncherController {
         transition.play();
     }
 
+    /**
+     * Launches the Server
+     * @throws IOException in case the view file can't be found
+     */
     @FXML
     public void openServer() throws IOException {
         ScaleTransition transition = new ScaleTransition(Duration.millis(200), serverButton);

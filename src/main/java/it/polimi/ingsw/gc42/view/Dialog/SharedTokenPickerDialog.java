@@ -29,8 +29,23 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Dialog that shows the four Tokens and lets the User pick one of them.
+ * The Tokens shown in this Dialog are not customizable.
+ * All four of them are always shown.
+ * Like other Dialogs, this can be Dismissible (closable by clicking outside it) or not.
+ * This behavior is defined by the value of isDismissible.
+ * This Dialog asks the User to pick a Token.
+ * When a Token is picked, the Dialog will block its inputs and notify all
+ * Listeners of the event.
+ * It's up to the caller to hide the Dialog, as it's not handled by the Dialog itself.
+ * However, the Dialog will ignore inputs after the first pick, to avoid unpredictable behaviors.
+ * If another Player picks a Token, this Dialog is updated and that Token becomes unavailable.
+ * This is shown by applying a greyscale filter to the Token's ImageView.
+ * Unavailable Tokens are not selectable, both by Keyboard and Mouse inputs.
+ */
 public class SharedTokenPickerDialog extends Dialog implements Observable {
-
+    // Attributes
     private final ArrayList<Token> tokens = new ArrayList<>();
     private final ArrayList<ImageView> views = new ArrayList<>();
     private final ArrayList<Token> availableTokens = new ArrayList<>();
@@ -41,6 +56,13 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
     private int selectedToken = -1;
 
     // Constructor Method
+
+    /**
+     * Constructor Method
+     * @param title a String that will be shown at the top of the Dialog, as a Title
+     * @param isDismissible a boolean value that defines if the Dialog can be closed without picking a Card
+     * @param controller the GUIController that created this Dialog
+     */
     public SharedTokenPickerDialog(String title, boolean isDismissible, GUIController controller) {
         super(title, isDismissible);
         this.controller = controller;
@@ -54,6 +76,9 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
 
     // Getters and Setters
 
+    /** Getter Method for the Picked Token
+     * @return the Token picked by the User.
+     */
     public Token getPickedToken() {
         return pickedToken;
     }
@@ -61,25 +86,33 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
 
     // Methods
 
-    // Makes the Card grey when another Player has picked it.
-    public void greyToken(int number) {
+    /**
+     * Makes the Token gray when another Player has picked it.
+     * @param number the index of the Token to mark as unavailable.
+     */
+    public void grayToken(int number) {
         ColorAdjust effect = new ColorAdjust();
         effect.setSaturation(-1);
         views.get(number).setEffect(effect);
         availableTokens.remove(tokens.get(number));
     }
 
-    // Makes the Card grey when another Player has picked it.
-    public void greyToken(Token token) {
+    /**
+     * Makes the Token gray when another Player has picked it.
+     * @param token the Token to mark as unavailable.
+     */    public void grayToken(Token token) {
         switch (token) {
-            case BLUE -> greyToken(0);
-            case RED -> greyToken(1);
-            case YELLOW -> greyToken(2);
-            case GREEN -> greyToken(3);
+            case BLUE -> grayToken(0);
+            case RED -> grayToken(1);
+            case YELLOW -> grayToken(2);
+            case GREEN -> grayToken(3);
         }
     }
 
-    // Makes the Card colored again.
+    /**
+     * Removes the B/W filter from the Token and makes it selectable
+     * @param number the index of the Token to mark as available.
+     */
     public void ungreyToken(int number) {
         DropShadow effect = new DropShadow();
         effect.setWidth(50);
@@ -89,6 +122,10 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         availableTokens.add(tokens.get(number));
     }
 
+    /**
+     * Removes the B/W filter from the Token and makes it selectable
+     * @param token the Token to mark as available.
+     */
     public void ungreyToken(Token token) {
         switch (token) {
             case BLUE -> ungreyToken(0);
@@ -98,16 +135,29 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Adds a Listener to the List of Listeners that will be notified when the User has picked a Token.
+     * @param listener the Listener to add in the List
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Removes an existing Listener to the List.
+     * If the Listener is not in the List, no action is performed.
+     * @param listener the Listener to remove from the List
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Notifies all the Listener inside the List that the User has picked a Token.
+     * @param context a string specifying which event has been triggered
+     */
     @Override
     public void notifyListeners(String context) {
         for (Listener l: listeners) {
@@ -115,6 +165,10 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Builds this Dialog's UI.
+     * @return the Node (JavaFx element) that contains the whole UI
+     */
     @Override
     public Node build() {
         container.getChildren().add(initTokenContainer());
@@ -122,6 +176,10 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         return container;
     }
 
+    /**
+     * Creates the container for the Token's ImageViews
+     * @return the Node (JavaFx element) containing this component's UI
+     */
     private Node initTokenContainer() {
         HBox tokenContainer = new HBox();
         tokenContainer.setAlignment(Pos.CENTER);
@@ -133,6 +191,13 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         return tokenContainer;
     }
 
+    /**
+     * Creates the UI for the Hint Container.
+     * Supported hints are:
+     * - "Navigate"
+     * - "Select"
+     * @return the Node (JavaFx element) containing the whole UI.
+     */
     private Node initHintContainer() {
         HBox hintContainer = new HBox();
         hintContainer.setSpacing(20);
@@ -168,6 +233,11 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         return hintContainer;
     }
 
+    /**
+     * Creates the Text (JavaFx element) element with Font and Color applied.
+     * @param string the content to show in this Text.
+     * @return the Text (JavaFx element)
+     */
     private Text initText(String string) {
         Text text = new Text(string);
         text.setFont(Font.font("Constantia Italic", 15));
@@ -177,6 +247,15 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         return text;
     }
 
+    /**
+     * Handles the Keyboard's input events.
+     * Supported inputs are:
+     * - RIGHT
+     * - LEFT
+     * - ENTER
+     * Unsupported inputs will be ignored.
+     * @param key a String containing the Key's name.
+     */
     @Override
     public void onKeyPressed(String key) {
         switch (key) {
@@ -194,6 +273,11 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Visually moves the focus from the currently selected Token to the previous, the one on the right.
+     * If no Token is currently selected, the focus will go to the last one.
+     * If the first Token is currently selected, the focus will jump to the last one.
+     */
     private void moveLeft() {
         if (selectedToken == -1) {
             selectedToken = 0;
@@ -213,6 +297,11 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Visually moves the focus from the currently selected Token to the next, the one on the left.
+     * If no Token is currently selected, the focus will go to the first one.
+     * If the last Token is currently selected, the focus will jump to the first one.
+     */
     private void moveRight() {
         if (selectedToken == -1) {
             selectedToken = 0;
@@ -231,6 +320,9 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
             selectTokenNumber(selectedToken);
         }    }
 
+    /**
+     * Visually deselects ALL Tokens, removing the yellow glowing effect from them.
+     */
     private void deselectAllTokens() {
         if (selectedToken > 0 && selectedToken < tokens.size()) {
             deselectToken(tokens.get(selectedToken));
@@ -238,12 +330,20 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         selectedToken = -1;
     }
 
+    /**
+     * Visually selects a Token by applying a yellow glowing effect to its ImageView.
+     * @param number the index of the Token that will be selected.
+     */
     private void selectTokenNumber(int number) {
         if (number >= 0 && number < tokens.size()) {
             selectToken(tokens.get(number));
         }
     }
 
+    /**
+     * Visually deselects a Token by removing the yellow glowing effect, if present.
+     * @param number the index of the Token that will be deselected.
+     */
     private void deselectTokenNumber(int number) {
         if (number >= 0 && number < tokens.size()) {
             deselectToken(tokens.get(number));
@@ -252,6 +352,11 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Picks a Token and blocks all future inputs in this Dialog.
+     * Notifies all Listeners that a Token has been picked.
+     * @param number the index of the picked Token.
+     */
     private void pickToken(int number) {
         if (number != -1 && availableTokens.contains(tokens.get(number))) {
             pickedToken = tokens.get(number);
@@ -259,6 +364,11 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Visually selects a Token with a yellow glowing effect.
+     * Deselect the previously selected Token automatically.
+     * @param token the Token that will be selected
+     */
     private void selectToken(Token token) {
         if (availableTokens.contains(token)) {
             if (selectedToken >= 0 && selectedToken < tokens.size()) {
@@ -269,11 +379,19 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Visually deselects a Token by removing the yellow glowing effect, if present.
+     * @param token the Token that will be deselected
+     */
     private void deselectToken(Token token) {
         deselectView(views.get(tokens.indexOf(token)));
         lastSelected = tokens.indexOf(token);
     }
 
+    /**
+     * Animates the selection of the ImageView
+     * @param view the ImageView that will be animated
+     */
     private void selectView(ImageView view) {
         controller.blockInput();
         DropShadow glowEffect = new DropShadow();
@@ -291,6 +409,10 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         select1.play();
     }
 
+    /**
+     * Animated the deselection of the ImageView
+     * @param view the ImageView to deselect
+     */
     private void deselectView(ImageView view) {
         controller.blockInput();
         DropShadow shadow = new DropShadow();
@@ -307,6 +429,9 @@ public class SharedTokenPickerDialog extends Dialog implements Observable {
         deselect2.play();
     }
 
+    /**
+     * Created the ImageViews, assigning them a texture
+     */
     private void initViews() {
         for (Token token : tokens) {
             ImageView view = null;

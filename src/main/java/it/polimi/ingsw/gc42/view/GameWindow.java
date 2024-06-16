@@ -16,15 +16,26 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.Objects;
 
+/**
+ * This class handles the entire GUI, from the Login View to the Game Window.
+ */
 public class GameWindow extends Application {
 
     private boolean isFullScreen = false;
     private LoginViewController loginController;
     private Player player;
 
+    /**
+     * Creates and shows the Login View scene/window, then it handles its behavior.
+     * When the Scene notifies that the Login is completed, it calls goToGameSelectionScreen().
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException if the view file can't be found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoaderLogin = new FXMLLoader(getClass().getResource("/login_view.fxml"));
@@ -59,13 +70,22 @@ public class GameWindow extends Application {
         stage.show();
     }
 
-
-
+    /**
+     * Launches the Application
+     * @param args
+     */
     public static void main(String[] args) {
         launch();
     }
 
-
+    /**
+     * Creates and shows the Scene for the Game Selection Screen.
+     * It handles its behaviors.
+     * If the Scene notifies that the User wants to join a Game, it calls goToPlayScreen().
+     * If the Scene notifies that the User wants to create a new Game, it calls goToNewGameScreen().
+     * @param stage the currently shown Stage
+     * @throws IOException if the view file can't be found
+     */
     private void goToGameSelectionScreen(Stage stage) throws IOException {
         FXMLLoader gamesSelection = new FXMLLoader(getClass().getResource("/games-list-view.fxml"));
         Scene gamesSelectionScene = new Scene(gamesSelection.load());
@@ -98,6 +118,14 @@ public class GameWindow extends Application {
         stage.setScene(gamesSelectionScene);
     }
 
+    /**
+     * Creates and shows the Scene for the Game Creation Screen.
+     * In this Screen the User can see who joins his Game, can give it a Name, and can access the in-game Chat.
+     * When he is ready he can start the Game, in which case the Scene notifies this method, who then calls
+     * goToPlayScreen().
+     * @param stage the currently shown Stage
+     * @throws IOException if the view file can't be found.
+     */
     private void goToNewGameScreen(Stage stage) throws IOException {
         FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/new-game-view.fxml"));
         Scene newGameScene = new Scene(newGameLoader.load());
@@ -123,6 +151,15 @@ public class GameWindow extends Application {
         stage.show();
     }
 
+    /**
+     * Creates and shows the Playing Screen.
+     * It sets the Window to be resizable, and to set the minimum and maximum sizes to some pre-determined values.
+     * If the User created the Game, it sets its status to WAITING_FOR_SERVER just before actually entering the Screen.
+     * @param stage the currently shown Stage
+     * @param nickName the User's NickName
+     * @param startGame a boolean value indicating if this method needs to tell the Server to start the Game (if the User created it) or not
+     * @throws IOException if the view file can't be found
+     */
     private void goToPlayScreen(Stage stage, String nickName, boolean startGame) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());

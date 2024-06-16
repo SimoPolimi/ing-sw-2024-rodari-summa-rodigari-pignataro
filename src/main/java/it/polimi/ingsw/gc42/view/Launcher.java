@@ -9,11 +9,23 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This class creates and handles the behavior of the Launcher Window.
+ * The Launcher is the Window where the User can pick between GUI and TUI Mode.
+ */
 public class Launcher extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Creates and shows the Scene
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException if the view file can't be found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/launcher-view.fxml"));

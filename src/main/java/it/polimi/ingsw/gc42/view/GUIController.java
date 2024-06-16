@@ -331,7 +331,7 @@ public class GUIController implements ViewController {
             table.getHand().deselectAllCards(true);
             setShowingDialog(true);
             backgroundContainer.setEffect(new GaussianBlur(10));
-            if (content.isDismissable()) {
+            if (content.isDismissible()) {
                 backgroundContainer.setOnMouseClicked((e) -> {
                     hideDialog();
                 });
@@ -653,7 +653,7 @@ public class GUIController implements ViewController {
         }
         Token token = controller.getPlayerToken(playerID);
         if (this.playerID != playerID && isShowingDialog && showingDialog instanceof SharedTokenPickerDialog) {
-            ((SharedTokenPickerDialog) showingDialog).greyToken(token);
+            ((SharedTokenPickerDialog) showingDialog).grayToken(token);
         }
         scoreBoard.setTokenInPosition(token, 0);
     }

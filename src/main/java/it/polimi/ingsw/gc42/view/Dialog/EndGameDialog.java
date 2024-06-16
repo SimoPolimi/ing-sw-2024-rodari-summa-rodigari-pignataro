@@ -25,6 +25,21 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Dialog that shows the Final Points acquired by each Player.
+ * For each Player it will show the following Points:
+ * - Initial Points (the ones accumulated throughout the match)
+ * - Secret Objective Points
+ * - Common Objective 1 Points
+ * - Common Objective 2 Points
+ * - Total Points (the total sum).
+ * <p>
+ * One or more Players are chosen as Winner(s) by the Server.
+ * These Players will be highlighted in a yellow, slightly bigger card/box, and will show a
+ * "WINNER!" tag under their Total Points.
+ * Additionally, if the GUIController that created this Dialog belongs to one of the Winner Players,
+ * this Dialog will handle a winning animation, consisting of a number of confetti falling through the Screen.
+ */
 public class EndGameDialog extends Dialog implements Observable {
     // Attributes
     private final ArrayList<HashMap<String, String>> points;
@@ -34,12 +49,24 @@ public class EndGameDialog extends Dialog implements Observable {
     private boolean animate = false;
 
     // Constructor Method
-    public EndGameDialog(String title, boolean isDismissable, ArrayList<HashMap<String, String>> points, GUIController controller) {
-        super(title, isDismissable);
+
+    /**
+     * Constructor Method
+     * @param title a String that will be shown at the top of the Dialog, as a Title
+     * @param isDismissible a boolean value that defines if the Dialog can be closed without picking a Card
+     * @param points an ArrayList<HashMap<String, String>> containing the info to show in this Dialog.
+     * @param controller the GUIController that created this Dialog
+     */
+    public EndGameDialog(String title, boolean isDismissible, ArrayList<HashMap<String, String>> points, GUIController controller) {
+        super(title, isDismissible);
         this.points = points;
         this.controller = controller;
     }
 
+    /**
+     * Builds the Dialog's UI.
+     * @return the Node (JavaFx element) that contains the whole UI.
+     */
     @Override
     public Node build() {
         HBox container = new HBox();
@@ -145,6 +172,12 @@ public class EndGameDialog extends Dialog implements Observable {
         return super.container;
     }
 
+    /**
+     * Creates and initializes the Textboxes for the different entries of this Dialog.
+     * @param text1 the entry's text or title
+     * @param text2 the number of Points associated to this entry
+     * @return an HBox (JavaFx element) containing the UI for this element
+     */
     private HBox initTextBox(String text1, String text2) {
         HBox box = new HBox();
         box.setAlignment(Pos.CENTER_LEFT);
@@ -160,11 +193,18 @@ public class EndGameDialog extends Dialog implements Observable {
         return box;
     }
 
+    /**
+     * Handles the Keyboard's input events
+     * @param key a String containing the Key's name.
+     */
     @Override
     public void onKeyPressed(String key) {
 
     }
 
+    /**
+     * Animates the Confetti animation for the Winner Player
+     */
     public void animate() {
         if (animate) {
             ArrayList<Image> images = new ArrayList<>();
@@ -185,6 +225,12 @@ public class EndGameDialog extends Dialog implements Observable {
         }
     }
 
+    /**
+     * Creates and adds to the UI a single Confetti element
+     * @param count an int value representing how many Confetti have already been created
+     * @param images the ArrayList of available textures, where a random one is chosen
+     * @param pane the Pane (KJavaFx element) where the Confetti element will be added.
+     */
     private void addConfetti(int count, ArrayList<Image> images, StackPane pane) {
         Random random = new Random();
         if (count < 1500) {
@@ -210,18 +256,21 @@ public class EndGameDialog extends Dialog implements Observable {
         }
     }
 
-
     // Observable Methods
+
+    // TODO: Javadoc
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    // TODO: Javadoc
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    // TODO: Javadoc
     @Override
     public void notifyListeners(String context) {
         for (Listener l: listeners) {

@@ -22,7 +22,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+/**
+ * This class handles the whole TUI behavior and output system.
+ * All the TUI is contained inside this class.
+ * All that's needed to run a TUI is to call .start() on a GameTerminal object.
+ */
 public class GameTerminal extends Application implements ViewController {
+    // Attributes
     private boolean exit = false;
     private boolean isAdvancedGraphicsMode = true;
     private NetworkController controller;
@@ -49,18 +55,44 @@ public class GameTerminal extends Application implements ViewController {
 
     private ArrayList<ChatMessage> chat;
 
+    /**
+     * Formats a String using the Unicode Color codes to print a colored output.
+     * @param str the Text that will be printed
+     * @param fg a foreground color (text color) chosen from the UiColors enum
+     * @return the formatted String to print in System.out
+     */
     private String color(String str, UiColors fg) {
         return fg.toString() + str + UiColors.RESET;
     }
 
+    /**
+     *      * Formats a String using the Unicode Color codes to print a colored output on a colored background
+     * @param str the Text that will be printed
+     * @param fg a foreground color (text color) chosen from the UiColors enum
+     * @param bg a background color chosen from the UiColors enum
+     * @return the formatted String to print in System.out
+     */
     private String color(String str, UiColors fg, UiColors bg) {
         return fg.toString() + bg.toString() + str + UiColors.RESET;
     }
 
+    /**
+     * Adds an action inside the Queue.
+     * Actions are executed one by one from this Queue, so this is how a new one can be added.
+     * @param runnable the Code to execute
+     */
     public void addToActionQueue(Runnable runnable) {
         actions.add(runnable);
     }
 
+    /**
+     * Starts the TUI
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages. THIS STAGE WILL NOT BE SHOWN
+     * @throws Exception if any issue occurs
+     */
     @Override
     public void start(Stage stage) throws Exception {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -147,7 +179,15 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
-    private void createNewGame() throws RemoteException, AlreadyBoundException {
+    /**
+     * Handles the creation of a New Game.
+     * Creating a New Game requires the user to confirm and to type a Name for the Game.
+     * This method also handles invalid inputs.
+     * The Player is then automatically added inside the newly created Game.
+     * The Game is automatically set to WAITING_FOR_PLAYERS.
+     * @throws RemoteException in case of a network communication error
+     */
+    private void createNewGame() throws RemoteException {
         boolean exit = false;
         while (!exit) {
             System.out.println("No games available! Press c to create a new one!");
@@ -181,6 +221,10 @@ public class GameTerminal extends Application implements ViewController {
         isShowingGameCreationScreen = true;
     }
 
+    /**
+     * Connects a new QueuedClientController to the Game inside the Server, allowing all the inputs
+     * from the Server to be added to the Queue of actions.
+     */
     private void setViewController() {
         try {
             controller.setViewController(new QueuedClientController(this));
@@ -189,7 +233,15 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
-    private void play() throws IOException, InterruptedException {
+    /**
+     * Handles the printing and input recognition of the "Playing Menu".
+     * This menu shows the User all the actions he can perform during its Turn, then
+     * asks the number of the action he wants to perform.
+     * If the input is recognized, it adds to the Queue the appropriate method, otherwise
+     * it handles the error, prints a warning, then adds another instance of this method to
+     * the action Queue.
+     */
+    private void play() {
         System.out.print("\n\n\n");
         printPlayer();
         printMenu();
@@ -218,13 +270,7 @@ public class GameTerminal extends Application implements ViewController {
                                 } else if (!input.equals("0")) {
                                     System.err.println("Invalid input!");
                                 }
-                                actions.add(() -> {
-                                    try {
-                                        play();
-                                    } catch (IOException | InterruptedException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
+                                actions.add(GameTerminal.this::play);
                             }
                         });
                         break;
@@ -297,7 +343,7 @@ public class GameTerminal extends Application implements ViewController {
                         returnToMenu();
                         break;
                     case "8":
-                        printCommonObjective();
+                        printCommonObjectives();
                         System.out.println();
                         returnToMenu();
                         break;
@@ -365,40 +411,25 @@ public class GameTerminal extends Application implements ViewController {
                         break;
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
-                        actions.add(() -> {
-                            try {
-                                play();
-                            } catch (IOException | InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                        actions.add(() -> play());
                         break;
                 }
             }
         });
-
-        /*actions.add(() -> {
-            try {
-                play();
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });*/
     }
 
+    /**
+     * Asks the user to confirm if he wants to exit the current submenu by typing '0'.
+     * Invalid inputs are handled.
+     * Exiting from this menu adds an instance of play() in the Queue.
+     */
     private void returnToMenu() {
         System.out.println("Digit 0 to return to menu");
         inputHandler.listen(new TerminalListener() {
             @Override
             public void onEvent(String input) {
                 if (input.equals("0")) {
-                    actions.add(() -> {
-                        try {
-                            play();
-                        } catch (IOException | InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                    actions.add(() -> play());
                 } else {
                     System.err.println("Invalid input!");
                     actions.add(() -> returnToMenu());
@@ -407,6 +438,9 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Prints the menu entries for the play() method.
+     */
     private void printMenu() {
         System.out.println("Menu:");
         System.out.println("1) Play a Card");
@@ -430,6 +464,9 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println();
     }
 
+    /**
+     * Prints the Player's info
+     */
     private void printPlayer() {
         System.out.println("Player n° " + controller.getPlayerTurn());
         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
@@ -453,10 +490,19 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Digit I to open the inventory");
     }
 
+    /**
+     * Reads the User's input after being asked which Card he wants to play.
+     * Inputs 1, 2, 3 are accepted.
+     * In this case the User will be asked where he wants to play the selected Card.
+     * Input 0 is used as an "undo" input.
+     * Other inputs are handled as errors.
+     * @param input
+     */
     private void playCard(String input) {
         switch (input) {
             case "1", "2", "3" -> {
                 // Play card
+                // TODO: Add Requirement Check for GoldCards
                 actions.add(() -> askForCoordinates(Integer.parseInt(input)));
             }
             case "0" -> {
@@ -465,6 +511,10 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Asks the User where he wants to play the selected Card.
+     * @param cardID the Card that the User previously selected.
+     */
     private void askForCoordinates(int cardID) {
         int i = 1;
         ArrayList<Coordinates> availablePlacements = controller.getAvailablePlacements(playerID);
@@ -491,10 +541,12 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
-    private void flipCard(String input) {
-
-    }
-
+    /**
+     * Asks the User to choose between 2 Objective Cards.
+     * The Cards are shown as ASCII art or Emojis based on the Graphics Mode.
+     * The Objectives' Names and Descriptions are also printed.
+     * Handles the User's inputs: 1 or 2 are accepted, others are handled as errors.
+     */
     @Override
     public void showSecretObjectivesSelectionDialog() {
         ArrayList<ObjectiveCard> cards = controller.getTemporaryObjectiveCards(playerID);
@@ -527,6 +579,11 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Asks the User to pick which Side he wants to play the Starter Card.
+     * Both Sides are printed, in ASCII art or with Emojis based on the Graphics Mode.
+     * Handles the User's inputs: f (front) or b (back) are accepted, others are handled as errors.
+     */
     @Override
     public void showStarterCardSelectionDialog() {
         System.out.println("--- Choose the side of your starter card ---");
@@ -559,6 +616,13 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Asks the User to pick one of the 4 Tokens.
+     * All Tokens are always shown: if a Token is not available, it will be printed as "already taken!".
+     * Tokens are visually printed in Unicode characters or Emojis, depending on the Graphics Mode.
+     * Unavailable Token can't be picked: if the User inputs a number corresponding to an unavailable Token,
+     * the input will be handled as an error.
+     */
     @Override
     public void showTokenSelectionDialog() {
         // Inits the ArrayList the first time
@@ -634,11 +698,23 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Returns the playerID of the Player using this ViewController.
+     * @return the playerID
+     */
     @Override
     public int getOwner() {
         return playerID;
     }
 
+    /**
+     * Prints the 2 Decks and the 4 Cards on the table (Slots) and asks the user to Draw or Grab from any of those.
+     * The Deck's top Card's Back Side is printed graphically.
+     * The Slot Card's Front Side is printed as well.
+     * All those Cards are printed in ASCII art or with Emojis, based on the Graphics Mode.
+     * User inputs are handled as well.
+     * Correct inputs are translated in Server Messages to DRAW or GRAB a Card.
+     */
     @Override
     public void askToDrawOrGrab() {
         if (isYourTurn) {
@@ -693,6 +769,8 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    // Not needed
+    //TODO: Remove
     @Override
     public void notifyGameIsStarting() {
 
@@ -700,19 +778,34 @@ public class GameTerminal extends Application implements ViewController {
 
     @Override
     public void notifyDeckChanged(CardType type) {
-        //Unnecessary
+        //Unnecessary because the TUI won't print the Deck every time someone draws from it.
+        // Decks are only shown when needed.
     }
 
     @Override
     public void notifySlotCardChanged(CardType type, int slot) {
-        //Unnecessary
+        //Unnecessary because the TUI won't print the Slot Cards every time someone grabs one of them.
+        // Slots are only shown when needed.
     }
 
+    /**
+     * Shows the updated Ranking of all Player's points
+     * @param token the Token of the Player who updated its Points.
+     * @param newPoints the updated Points' value
+     */
     @Override
     public void notifyPlayersPointsChanged(Token token, int newPoints) {
         actions.add(this::showRanking);
     }
 
+    /**
+     * Notifies the number of Players in the Game has changed, both increased and decreased.
+     * Prints a list of all the Players inside the Game.
+     * This method is only call if the User created the Game.
+     * It allows him to know how many Players have joined, so that he can start the Game whenever he wants.
+     * This method also asks the User to type "s" to start the Game.
+     * Invalid inputs are handled.
+     */
     @Override
     public void notifyNumberOfPlayersChanged() {
         if (isGameCreator) {
@@ -739,6 +832,13 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Notifies the User that another Player has picked a Token.
+     * Updates the List of available Tokens.
+     * If the User hasn't picked a Token yet, it then adds the showTokenSelectionDialog() method to the Queue once again,
+     * so that the User can choose a Token with an updated view of all the Tokens still available.
+     * @param playerID the Player who picked the Token.
+     */
     @Override
     public void notifyPlayersTokenChanged(int playerID) {
         Token token = controller.getPlayerToken(playerID);
@@ -760,6 +860,13 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server's message that a Player has played a Card.
+     * Updates the playArea matrix with the new Card in the right place.
+     * If the playerID is the same as the User, it prints the updated playArea matrix.
+     * If it's another playerID, it only updates the matrix, but it doesn't print it.
+     * @param playerID the Player who placed the Card.
+     */
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
         ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
@@ -773,6 +880,12 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server Message that someone's Hand has been updated.
+     * If the playerId is the same as the User, it prints the updated Hand; otherwise, this method does nothing.
+     * Updates are shown only when the Hand goes from 2 to 3 Cards => The initial updated are ignored.
+     * @param playerID the Player whose Hand was updated.
+     */
     @Override
     public void notifyPlayersHandChanged(int playerID) {
         if (this.playerID == playerID) {
@@ -788,6 +901,12 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server Message that someone's Card was flipped.
+     * If the playerID is the same as the User, it prints the updated Hand, otherwise it ignores it.
+     * @param playedID the Player whose Card was flipped.
+     * @param cardID the Card that was flipped.
+     */
     @Override
     public void notifyHandCardWasFlipped(int playedID, int cardID) {
         if (this.playerID == playedID) {
@@ -796,6 +915,11 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server Message that someone's Secret Objective has been updated.
+     * If the playerID is the same as the User, it prints the Secret Objective, otherwise it's ignored.
+     * @param playerID the Player whose Secret Objective has been updated.
+     */
     @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
         if (this.playerID == playerID) {
@@ -804,6 +928,9 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server Message that the 2 Common Objectives have been updated and prints them.
+     */
     @Override
     public void notifyCommonObjectivesChanged() {
         for (int i = 0; i < 2; i++) {
@@ -811,29 +938,36 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Intercepts the Server Message that the Turn changed.
+     * Asks the Server whose Turn it is now: if it's the User's one, it adds the play() method to the action Queue.
+     */
     @Override
     public void notifyTurnChanged() {
         if (playerID == controller.getPlayerTurn()) {
             this.isYourTurn = true;
             System.out.println(color("It's your turn!", UiColors.MAGENTA));
-            actions.add(() -> {
-                try {
-                    play();
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            actions.add(this::play);
         } else {
             this.isYourTurn = false;
         }
 
     }
 
+    /**
+     * Prints the "Waiting for Server..." text.
+     */
     @Override
     public void showWaitingForServerDialog() {
-        System.out.println("Server Waiting...");
+        System.out.println("Waiting for Server...");
     }
 
+    /**
+     * Intercepts the Server Message that the Game is starting.
+     * If the User created the Game, it sets the status to READY.
+     * In all cases, it sets the Player's status to READY.
+     * @param numberOfPlayers the number of Players inside the Game.
+     */
     @Override
     public void getReady(int numberOfPlayers) {
         if (isGameCreator) {
@@ -843,6 +977,15 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("Getting ready...");
     }
 
+    /**
+     * Creates a formatted String representation of one of the Card's lines.
+     * A Card has 5 lines, because it's printed in 5 different Lines.
+     * @param card the Card to print
+     * @param line an int value (1-5) corresponding to the Line to print
+     * @param printCoveredCorners a boolean value specifying if covered Corners need to be printed.
+     * @param cards the PlayArea, from which some info are needed.
+     * @return the formatted String, in ASCII art or Emojis based on the Graphics Mode.
+     */
     private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners, ArrayList<PlayableCard> cards) {
         String string = "";
         if (null != card) {
@@ -952,76 +1095,6 @@ public class GameTerminal extends Application implements ViewController {
                     }
                 }
             }
-
-            // TODO: Backup just in case
-            /*switch (line) {
-                case 1 -> {
-                    if (printCoveredCorners) {
-                        string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
-                        if (getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("◻") || getCornerPrint(card.getShowingSide().getTopLeftCorner()).equals("X")) {
-                            string += "―";
-                        }
-                        string += "――――――";
-                        if (getCornerPrint(card.getShowingSide().getTopRightCorner()).equals("X")) {
-                            string += " ";
-                        }
-                        string += getCornerPrint(card.getShowingSide().getTopRightCorner());
-                    } else {
-                        if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()) {
-                            string = getCornerPrint(card.getShowingSide().getTopLeftCorner());
-                        } else string += "◻-";
-                        string += "--------";
-                        if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()) {
-                            string += getCornerPrint(card.getShowingSide().getTopRightCorner());
-                        } else string+= "-◻";
-                    }
-                }
-                case 2, 4 -> {
-                    string = "│            │";
-                }
-                case 3 -> {
-                    if (!card.isFrontFacing() || (card.isFrontFacing() && card instanceof StarterCard)) {
-                        string = "│  ";
-                        switch (card.getPermanentResources().size()) {
-                            case 1 -> {
-                                string += "    " + getItemPrint(card.getPermanentResources().get(0)) + "   ";
-                            }
-                            case 2 -> {
-                                string += "   " + getItemPrint(card.getPermanentResources().get(1))
-                                        + getItemPrint(card.getPermanentResources().get(1)) + "   ";
-                            }
-                            case 3 -> {
-                                string += "  " + getItemPrint(card.getPermanentResources().get(1))
-                                        + getItemPrint(card.getPermanentResources().get(1))
-                                        + getItemPrint(card.getPermanentResources().get(2)) + "  ";
-                            }
-                            default -> {string += "         ";}
-                        }
-                        string += "  │";
-                    } else string = "│            │";
-                }
-                case 5 -> {
-                    if (printCoveredCorners) {
-                        string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
-                        if (getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("◻") || getCornerPrint(card.getShowingSide().getBottomLeftCorner()).equals("X")) {
-                            string += "―";
-                        }
-                        string += "――――――";
-                        if (getCornerPrint(card.getShowingSide().getBottomRightCorner()).equals("X")) {
-                            string += " ";
-                        }
-                        string += getCornerPrint(card.getShowingSide().getBottomRightCorner());
-                    } else {
-                        if (null != card.getShowingSide().getBottomLeftCorner() && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
-                            string = getCornerPrint(card.getShowingSide().getBottomLeftCorner());
-                        } else string += "◻-";
-                        string += "--------";
-                        if (null != card.getShowingSide().getBottomRightCorner() &&!card.getShowingSide().getBottomRightCorner().isCovered()) {
-                            string += getCornerPrint(card.getShowingSide().getBottomRightCorner());
-                        } else string+= "-◻";
-                    }
-                }
-            }*/
         } else {
             if (printCoveredCorners) {
                 for (int i = 0; i < 20; i++) {
@@ -1036,6 +1109,12 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
+    /**
+     * Creates a String containing a representation of a Corner, based on its type and the content inside.
+     * @param card the Card that contains the Corner
+     * @param corner the Corner to print
+     * @return the String representation of the Corner, in Unicode characters or Emojis depending on the Graphics Mode.
+     */
     private String getCornerPrint(PlayableCard card, Corner corner) {
         String string = "";
         if (null != corner) {
@@ -1048,6 +1127,11 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
+    /**
+     * Creates a String containing a representation of an Item (KingdomResource or Resource)
+     * @param item the item to print
+     * @return the String representation of the Item, in Unicode characters or Emojis depending on the Graphics Mode.
+     */
     private String getItemPrint(Item item) {
         String string = "  ";
         switch (item) {
@@ -1065,6 +1149,10 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
+    /**
+     * Prints a Card in its entirety by printing all the 5 lines the Card is made of.
+     * @param card the Card to print
+     */
     public void printCard(PlayableCard card) {
         System.out.println(getPrintCardLine(card, 1, true, null));
         System.out.println(getPrintCardLine(card, 2, true, null));
@@ -1073,6 +1161,11 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println(getPrintCardLine(card, 5, true, null));
     }
 
+    /**
+     * Creates a String containing the "Building Block" of a Card, the character used to visually create the Card when printing it.
+     * @param card the Card to print
+     * @return the Unicode Character or Emoji, depending on the Graphics Mode.
+     */
     private String getCardColor(PlayableCard card) {
         String string = "";
         if (card instanceof ResourceCard || card instanceof GoldCard) {
@@ -1091,20 +1184,29 @@ public class GameTerminal extends Application implements ViewController {
         return string;
     }
 
+    /**
+     * Converts a Card's Coordinates from the custom 45° angled system used in Model to the standard xy system representation.
+     * @param coordinates the Model's Coordinates
+     * @return a Coordinates object containing the converted values.
+     */
     private Coordinates convertToAbsoluteCoordinates(Coordinates coordinates) {
         int x = coordinates.getX() - coordinates.getY();
         int y = coordinates.getX() + coordinates.getY();
         return new Coordinates(x, y);
     }
 
-    private Coordinates convertToMatrixCoordinates(Coordinates coordinates, int matrixSize) {
-        int shift = (matrixSize) / 2;
-        int x = coordinates.getX() + shift;
-        int y = shift - coordinates.getY();
-        coordinates.setX(x);
-        coordinates.setY(y);
-        return coordinates;
-    }
+    /**
+     * Converts the Coordinates to a format specifically tailored to work for the matrices used to represent the PlayArea.
+     * This format uses two offset values, calculated from the matrix's width and height to move the (0,0) position from the
+     * top left corner to the matrix's center, and then allows all the other normalized Coordinates to be converted in matrix's
+     * Coordinates.
+     * IMPORTANT: This method requires normalized Coordinates, as in using the standard xy representation.
+     * Model's Coordinates need to be converted to Absolute Coordinates before being passed here.
+     * @param coordinates the Absolute Coordinates to convert to Matrix's Coordinates
+     * @param matrixSizeX the Matrix's width
+     * @param matrixSizeY the Matrix's height
+     * @return the converted Coordinates
+     */
     private Coordinates convertMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
         int shiftX = (matrixSizeX) / 2;
         int shiftY = (matrixSizeY) / 2;
@@ -1115,6 +1217,12 @@ public class GameTerminal extends Application implements ViewController {
         return coordinates;
     }
 
+    /**
+     * Initializes the Matrix used to represent the PlayArea, and puts the StarterCard already in there.
+     * @param starter the Player's Starter Card
+     * @param playerID the Player's playerID, used to initialize its Matrix's printing extremes values
+     * @return the initialized Matrix of String[][]
+     */
     private String[][] createCardMatrix(StarterCard starter, int playerID){
         String[][] playArea = new String[800][1440];
         String line = "";
@@ -1152,6 +1260,16 @@ public class GameTerminal extends Application implements ViewController {
         printingExtremes.get(playerID-1).replace("DOWN", 403);
         return playArea;
     }
+
+    /**
+     * Updates the Matrix by adding a Card in a specific position, identified by 3 Matrix's Coordinates
+     * @param matrix the Matrix to update
+     * @param card the Card to add inside the Matrix (PlayArea)
+     * @param firstLine the y Coordinate of the top left Corner of the Card
+     * @param firstColumn the x Coordinate of the top left Corner of the Card
+     * @param centerX the x Coordinate of the center of the Card
+     * @return the updated Matrix
+     */
     private String[][] addCardToMatrix(String[][] matrix, PlayableCard card, int firstLine, int firstColumn, int centerX){
         String line = "";
         for (int j = 1; j <= 5; j++) {
@@ -1185,6 +1303,15 @@ public class GameTerminal extends Application implements ViewController {
         }
         return matrix;
     }
+
+    /**
+     * Calculates the Coordinates where a Card has to be placed inside the Matrix
+     * @param matrix the Matrix to update
+     * @param card the Card to add inside the Matrix
+     * @param cards the Player's PlayField
+     * @param playerID the Player's playerID
+     * @return the updated Matrix
+     */
     private String[][] updateCardMatrix(String[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards, int playerID){
         Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
         Coordinates coordinates1 = convertToAbsoluteCoordinates(card.getCoordinates());
@@ -1296,6 +1423,14 @@ public class GameTerminal extends Application implements ViewController {
         return matrix;
     }
 
+    /**
+     * Refreshes the entire Matrix (PlayArea), fetching every single String and re-writing all of them.
+     * This is intended to re-generate the Matrix after switching Graphics Mode: in this situation every String, still
+     * formatted for the old Mode, is replaced by the same String but in the new Mode representation.
+     * This works both ways: STANDARD -> FANCY and FANCY -> STANDARD.
+     * This method can also be used to re-generate a Matrix while keeping the same Graphics Mode, in the case of errors.
+     * @param playArea the updated Matrix
+     */
     private void recreatePlayArea(String[][] playArea) {
         for (int i = 0; i < playArea.length; i++) {
             for (int j = 0; j < playArea[i].length; j++) {
@@ -1321,6 +1456,15 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Prints a portion of the Matrix (PlayArea).
+     * Printing is limited to a portion because the whole Matrix is too big.
+     * Printing extremes are used to determine where to start and end printing: they are
+     * updated every time a new Card is added inside the Matrix.
+     * Printing extremes leave a few empty Strings around the Cards as a margin.
+     * @param playArea the Matrix to print
+     * @param playerID the Player's playerID associated to this Matrix
+     */
     private void printPlayArea(String[][] playArea, int playerID){
         int extremeUP = printingExtremes.get(playerID-1).get("UP");
         int extremeDOWN = printingExtremes.get(playerID-1).get("DOWN");
@@ -1335,17 +1479,10 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
-    private PlayableCard[][] getMatrix(ArrayList<PlayableCard> playedCards) {
-        int size = (2 * playedCards.size()) + 1;
-        PlayableCard[][] matrix = new PlayableCard[size][size];
-        // Puts all the played cards inside the Matrix
-        for (PlayableCard card : playedCards) {
-            Coordinates coord = convertToMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), size);
-            matrix[coord.getX()][coord.getY()] = card;
-        }
-        return matrix;
-    }
-
+    /**
+     * Initializes the Matrix containing the ScoreBoard
+     * @return the Matrix
+     */
     private String[][] createScoreboard(){
         String[][] scoreboard = {
                 {"🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨"},
@@ -1435,6 +1572,11 @@ public class GameTerminal extends Application implements ViewController {
         */
         return scoreboard;
     }
+
+    /**
+     * Prints the Matrix containing the ScoreBoard
+     * @param scoreboard the Matrix to print
+     */
     private void printScoreboard(String[][] scoreboard){
 
         for (int i = 0; i < 41; i++){
@@ -1447,48 +1589,14 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
-    private void printCardMatrix(PlayableCard[][] matrix, ArrayList<PlayableCard> cards) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 1; j <= 5; j++) {
-                // It takes 5 prints to completely print a Card
-                String string = "";
-                for (int k = 0; k < matrix[i].length; k++) {
-                    /*if (i > 0 && i < matrix.length - 1) {
-                        if (j == 1) {
-                            if (null != matrix[i][k]) {
-                                string += getPrintCardLine(matrix[i][k], 1, false, cards);
-                            } else {
-                                string += getPrintCardLine(matrix[i - 1][k], 5, false, cards);
-                            }
-                        } /*else if (j == 5) {
-                            if (null == matrix[i][k] && null != matrix[i+1][k]) {
-                                string += getPrintCardLine(matrix[i+1][k], 1, false, cards);
-                            } else {
-                                //string += getPrintCardLine(matrix[i][k], j, false, cards);
-                            }
-                        }*/ /*else {
-                            if (k > 0 && null != matrix[i][k - 1]) {
-                                string += " ";
-                            }
-                            string += " ";
-                            if (k < matrix.length - 1 && null != matrix[i][k + 1]) {
-                                string += " ";
-                            }
-                            string += getPrintCardLine(matrix[i][k], j, false, cards);
-                        }*/
-
-                        string += getPrintCardLine(matrix[i][k], j, true, cards);
-
-                }
-                System.out.println(string);
-            }
-        }
-    }
-
-    /*private void printPlayArea() {
-        printCardMatrix(getMatrix(player.getPlayField().getPlayedCards()), player.getPlayField().getPlayedCards());
-    }*/
-
+    /**
+     * Checks if a Card is present in a specific set of Coordinates (Model) inside an ArrayList<Card>,
+     * such as a Player's PlayField.
+     * @param x the x Coordinate to check
+     * @param y the y Coordinate to check
+     * @param cards the PlayField to check into
+     * @return a boolean value indicating if those Coordinates belong to any Card or not.
+     */
     private boolean isThereACardIn(int x, int y, ArrayList<PlayableCard> cards) {
         for (PlayableCard card : cards) {
             if (card.getX() == x && card.getY() == y) {
@@ -1498,6 +1606,9 @@ public class GameTerminal extends Application implements ViewController {
         return false;
     }
 
+    /**
+     * Prints the current Player's Ranking, ordered by Points.
+     */
     public void showRanking() {
         ArrayList<HashMap<String, String>> playersList = new ArrayList<>();
         ArrayList<Integer> alreadySeen = new ArrayList<>();
@@ -1520,6 +1631,11 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println(i + 1 + ") " + playersList.get(i).get("Nickname") + ": " + playersList.get(i).get("Points"));
     }
 
+    /**
+     * Asks the User to pick a Network Mode between RMI and Socket.
+     * If the input is accepted, it calls askForIPAddress().
+     * Handles invalid inputs.
+     */
     public void login() {
         System.out.println("Select connection mode");
         System.out.println("Digit r to choose RMI");
@@ -1542,6 +1658,13 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
+    /**
+     * Asks the User to insert the Server's IP Address.
+     * Once received an input, it attempts to connect via the previously selected Network Mode:
+     * if the connection is successful, it adds a call to askForNickName() in the action Queue;
+     * if the connection fails, it handles the error and asks for the IP Address again.
+     * @param selectedMode the previously selected Network Mode, used to choose how to attempt establishing a connection.
+     */
     private void askForIPAddress(NetworkMode selectedMode) {
         System.out.println("Digit IP Address: ");
         inputHandler.listen(new TerminalListener() {
@@ -1565,6 +1688,12 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Asks the User to choose a NickName.
+     * Once received an input, it asks the Server if this NickName is acceptable and available:
+     * if it is, it adds a call to askToJoinGame() to the actions Queue.
+     * if it's not, it handles the error and asks for a new NickName.
+     */
     private void askForNickName() {
         System.out.println("--- Insert Nickname ---");
         inputHandler.listen(new TerminalListener() {
@@ -1587,7 +1716,7 @@ public class GameTerminal extends Application implements ViewController {
                                 if (games.isEmpty()) {
                                     try {
                                         createNewGame();
-                                    } catch (RemoteException | AlreadyBoundException e) {
+                                    } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
                                     isWaiting = true;
@@ -1608,6 +1737,14 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Handles the process of joining an existing Game.
+     * Prints a list of all the available Games, then asks the User to input the number corresponding to the one he wants
+     * to join.
+     * It also offers the option of inputting "c" to create a new Game, in which case it adds a call to createNewGame() to
+     * the actions Queue.
+     * @param games the list of Available Games
+     */
     private void askToJoinGame(ArrayList<HashMap<String, String>> games) {
         System.out.println("Games available:");
         for (HashMap<String, String> game : games) {
@@ -1621,7 +1758,7 @@ public class GameTerminal extends Application implements ViewController {
                 if (input.equals("c")) {
                     try {
                         createNewGame();
-                    } catch (RemoteException | AlreadyBoundException e) {
+                    } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                     isWaiting = true;
@@ -1647,6 +1784,14 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Creates and builds a formatted String containing a visual representation of one of the Lines that make up an Objective Card.
+     * Like Playable Cards, Objective Cards are also made of 5 Lines, and the one to return is passed as a parameter.
+     * The String is formatted in ASCII art or with Emojis, based on the Graphics Mode selected.
+     * @param card the Objective Card to print
+     * @param line the Line to print
+     * @return the formatted String
+     */
     private String printObjectiveLine(ObjectiveCard card, int line) {
         String string = "";
         switch (card.getId()) {
@@ -2489,12 +2634,24 @@ public class GameTerminal extends Application implements ViewController {
 
     }
 
+    /**
+     * Prints an entire Objective Card, line by line.
+     * @param card the Objective Card to print
+     */
     private void printSecretObjective(ObjectiveCard card){
         for (int line = 1; line < 6; line++) {
             System.out.println(printObjectiveLine(card, line));
         }
     }
-    private void printCommonObjective(){
+
+    /**
+     * Prints the 2 Common Objectives.
+     * Common Objectives are printed both visually and in details.
+     * Visually, the two Cards are printed side by side, separated by a "tab".
+     * The style they are printed depends on the Graphics Mode: either ASCII art or with Emojis.
+     * Under them, both the Name and the Description for both Cards is printed too.
+     */
+    private void printCommonObjectives(){
         ObjectiveCard card1 = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 1);
         ObjectiveCard card2 = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 2);
         // Prints the Cards
@@ -2509,6 +2666,11 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("2) " + card2.getObjective().getName());
         System.out.println("\t" + card2.getObjective().getDescription());
     }
+
+    /**
+     * Prints the Player's Hand, showing his 3 Cards side by side.
+     * The style depends by the Graphics Mode.
+     */
     private void printHandCards(){
         PlayableCard card1 = controller.getPlayersHandCard(playerID, 0);
         PlayableCard card2 = controller.getPlayersHandCard(playerID, 1);
@@ -2520,11 +2682,23 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * Notifies the User that this is the Last Turn before the end of the Game
+     * @throws RemoteException in case of a connection error.
+     */
     @Override
     public void notifyLastTurn() throws RemoteException {
         // TODO: Implement
     }
 
+    /**
+     * Notifies the User that the Game has ended.
+     * It also shows all the Player's Points acquired during the match, as well as the Points that were given from
+     * the Secret Objective and the 2 Common Objectives, plus the sum of all of them.
+     * Finally, it shows who is/are the Winner/s.
+     * @param points an ArrayList<HashMap<String, String>> containing all the data (taken from the Server)
+     * @throws RemoteException in case of a connection error.
+     */
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
         final ArrayList<HashMap<String, String>> players = points;
@@ -2620,6 +2794,10 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Prints a line of "-" to separate each row of the table
+     * @param number the number of columns (also the number of Players in the match)
+     */
     private void printSeparator(int number) {
         number = (24 * number) + 1;
         for (int i = 0; i < number; i++) {
@@ -2628,6 +2806,11 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println();
     }
 
+    /**
+     * Prints an empty line for the table.
+     * This line contains the vertical separator for the table's borders and columns separators ("|").
+     * @param columns the number of columns inside the table
+     */
     private void printEmptyLine(int columns) {
         for (int i = 0; i < columns; i++) {
             System.out.print("|");
@@ -2638,6 +2821,10 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("|");
     }
 
+    /**
+     * Prints the row containing each Player's Token and NickName.
+     * @param info an ArrayList<HashMap<String, String>> containing all the data (taken from the Server)
+     */
     private void printNames(ArrayList<HashMap<String, String>> info) {
         for (HashMap<String, String> player: info) {
             String token = "";
@@ -2652,12 +2839,21 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("|");
     }
 
+    /**
+     * Notifies the User that someone sent a new Message
+     * @param message the new Message received
+     */
     @Override
     public void notifyNewMessage(ChatMessage message) {
         chat.add(message);
         actions.add(() -> printMessage(message));
     }
 
+    /**
+     * Prints a Message.
+     * Server's Messages are colored in Magenta, others in Cyan
+     * @param message the Message to print
+     */
     private void printMessage(ChatMessage message) {
         if (message.getSender().equals("Server")) {
             System.out.println(UiColors.MAGENTA + "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
@@ -2668,11 +2864,18 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
+    /**
+     * @return the User's Nickname
+     */
     @Override
     public String getPlayerNickname() {
         return player.getNickname();
     }
 
+    /**
+     *
+     * @return the Network Controller used for communications
+     */
     @Override
     public NetworkController getNetworkController() {
         return controller;

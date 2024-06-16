@@ -1,5 +1,8 @@
 package it.polimi.ingsw.gc42.view;
 
+/**
+ * This enum contains all the Unicode Colors that can be used to print in different colors in the Terminal
+ */
 public enum UiColors {
 
     // Must be inserted to change back the color
