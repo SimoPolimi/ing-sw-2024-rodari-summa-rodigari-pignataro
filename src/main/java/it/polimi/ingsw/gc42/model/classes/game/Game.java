@@ -107,35 +107,66 @@ public class Game implements Observable, Serializable {
         return players.remove(player);
     }
 
-
+    /**
+     * Getter method for the resourcePlayingDeck
+     * @return the resourcePlayingDeck
+     */
     public PlayingDeck getResourcePlayingDeck() {
         return resourcePlayingDeck;
     }
 
+    /**
+     * Setter method for the resourcePlayingDeck
+     * @param resourcePlayingDeck the resourcePlayingDeck
+     */
     public void setResourcePlayingDeck(PlayingDeck resourcePlayingDeck) {
         this.resourcePlayingDeck = resourcePlayingDeck;
     }
 
+    /**
+     * Getter method for the goldPlayingDeck
+     * @return the goldPlayingDeck
+     */
     public PlayingDeck getGoldPlayingDeck() {
         return goldPlayingDeck;
     }
 
+    /**
+     * Setter method for the goldPlayingDeck
+     * @param goldPlayingDeck the goldPlayingDeck
+     */
     public void setGoldPlayingDeck(PlayingDeck goldPlayingDeck) {
         this.goldPlayingDeck = goldPlayingDeck;
     }
 
+    /**
+     * Getter method for the objectivePlayingDeck
+     * @return the objectivePlayingDeck
+     */
     public PlayingDeck getObjectivePlayingDeck() {
         return objectivePlayingDeck;
     }
 
+    /**
+     * Setter method for the objectivePlayingDeck
+     * @param objectivePlayingDeck the objectivePlayingDeck
+     */
     public void setObjectivePlayingDeck(PlayingDeck objectivePlayingDeck) {
         this.objectivePlayingDeck = objectivePlayingDeck;
     }
 
+    /**
+     * Getter method for the starterDeck
+     * @return the starterDeck
+     */
     public Deck getStarterDeck() {
         return starterDeck;
     }
 
+    /**
+     * Setter method for the starterDeck
+     * @param starterDeck the starterDeck
+     */
     public void setStarterDeck(Deck starterDeck) {
         this.starterDeck = starterDeck;
     }

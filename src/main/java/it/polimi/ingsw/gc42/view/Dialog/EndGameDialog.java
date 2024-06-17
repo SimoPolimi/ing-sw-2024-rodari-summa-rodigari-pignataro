@@ -54,7 +54,7 @@ public class EndGameDialog extends Dialog implements Observable {
      * Constructor Method
      * @param title a String that will be shown at the top of the Dialog, as a Title
      * @param isDismissible a boolean value that defines if the Dialog can be closed without picking a Card
-     * @param points an ArrayList<HashMap<String, String>> containing the info to show in this Dialog.
+     * @param points an ArrayList containing the info to show in this Dialog
      * @param controller the GUIController that created this Dialog
      */
     public EndGameDialog(String title, boolean isDismissible, ArrayList<HashMap<String, String>> points, GUIController controller) {

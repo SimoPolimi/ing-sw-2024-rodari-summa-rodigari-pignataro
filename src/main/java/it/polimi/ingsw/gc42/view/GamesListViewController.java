@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * <p>
  * This class handles the UI and logic for the "Pick Game" Window in GUI.
  * This Windows shows the User a list of all the available Games and asks him to pick the one he wants to join.
  * Once a Game is picked, all the instances of ExistingGameListener are notified so that the GUI can act accordingly.

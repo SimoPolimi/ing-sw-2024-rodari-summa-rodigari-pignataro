@@ -2696,7 +2696,7 @@ public class GameTerminal extends Application implements ViewController {
      * It also shows all the Player's Points acquired during the match, as well as the Points that were given from
      * the Secret Objective and the 2 Common Objectives, plus the sum of all of them.
      * Finally, it shows who is/are the Winner/s.
-     * @param points an ArrayList<HashMap<String, String>> containing all the data (taken from the Server)
+     * @param points an ArrayList containing all the data (taken from the Server)
      * @throws RemoteException in case of a connection error.
      */
     @Override

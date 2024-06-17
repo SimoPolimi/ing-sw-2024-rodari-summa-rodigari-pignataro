@@ -34,6 +34,16 @@ public class Player implements Observable, Serializable {
     private StarterCard temporaryStarterCard;
 
     // Constructor Methods
+
+    /**
+     * Constructor method for Player
+     * @param nickname the nickname of the Player
+     * @param isFirst the Player is first, {@code true} if the Player is first, {@code false} if not
+     * @param points the points of the Player
+     * @param token the token of the Player
+     * @param objectiveCard the objectiveCard of the Player
+     * @param game the game in which the Player is in
+     */
     public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
         this.nickname = nickname;
         this.isFirst = isFirst;
@@ -44,6 +54,10 @@ public class Player implements Observable, Serializable {
 
     }
 
+    /**
+     * Constructor method for Player
+     * @param token the token of the Player
+     */
     public Player(Token token) {
         this.nickname = "Bot";
         this.isFirst = false;
@@ -53,6 +67,10 @@ public class Player implements Observable, Serializable {
         setStatus(GameStatus.NOT_IN_GAME);
     }
 
+    /**
+     * Constructor method for Player
+     * @param nickname the nickname of the Player
+     */
     public Player(String nickname) {
         this.nickname = nickname;
         this.isFirst = false;
@@ -193,6 +211,10 @@ public class Player implements Observable, Serializable {
         return playField;
     }
 
+    /**
+     * Getter Method for the temporaryStarterCard
+     * @return the temporaryStarterCard
+     */
     public StarterCard getTemporaryStarterCard() {
         return temporaryStarterCard;
     }

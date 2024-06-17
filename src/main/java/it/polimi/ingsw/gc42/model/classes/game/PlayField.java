@@ -116,6 +116,13 @@ public class PlayField implements Observable, Serializable {
         } else throw new RemovingFromZeroException();
     }
 
+    /**
+     * Checks if the specified PlayableCard can be played into the PlayField in position (x,y) and adds it to the PlayField in that those coordinates
+     * @param card the PlayableCard to be added
+     * @param x the horizontal coordinate of the PlayableCard on the PlayField
+     * @param y the vertical coordinate of the PlayableCard on the PlayField
+     * @throws IllegalPlacementException if the PlayCard can't be played in those coordinates
+     */
     public void addCard(PlayableCard card, int x, int y) throws IllegalPlacementException {
         boolean isValid = false;
         for (Coordinates coordinates : getAvailablePlacements()) {
@@ -132,6 +139,11 @@ public class PlayField implements Observable, Serializable {
         } else throw new IllegalPlacementException();
     }
 
+    /**
+     * Covers the Corners that a PlayableCard placed on the PlayField in position (x,y) would cover
+     * @param x the horizontal coordinate of the PlayableCard on the PlayField
+     * @param y the vertical coordinate of the PlayableCard on the PlayField
+     */
     private void coverNearbyCorners(int x, int y) {
         for (PlayableCard card : playedCards) {
             if (card.getX() == x + 1 && card.getY() == y && null != card.getShowingSide().getBottomLeftCorner()) {
@@ -146,6 +158,10 @@ public class PlayField implements Observable, Serializable {
         }
     }
 
+    /**
+     * Gets the list of coordinates in which a PlayableCard can be played
+     * @return the list of coordinates in which a PlayableCard can be played
+     */
     public ArrayList<Coordinates> getAvailablePlacements() {
         ArrayList<Coordinates> placements = new ArrayList<>();
         ArrayList<Coordinates> illegalPlacementes = new ArrayList<>();
@@ -181,6 +197,12 @@ public class PlayField implements Observable, Serializable {
         return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacementes);
     }
 
+    // TODO: check param javadoc
+    /**
+     * Removes the duplicates from the specified ArrayList
+     * @param placements the placements ArrayList
+     * @return the List of placements without duplicates
+     */
     private ArrayList<Coordinates> removeDuplicatePlacements(ArrayList<Coordinates> placements) {
         for (int i = 0; i < placements.size(); i++) {
             for (int j = i+1; j < placements.size(); j++) {
@@ -195,6 +217,12 @@ public class PlayField implements Observable, Serializable {
         return placements;
     }
 
+    // TODO: check param javadoc
+    /**
+     * Removes the Coordinates where a PlayableCard can't be played from the specified ArrayList
+     * @param placements the placements ArrayList
+     * @return the placements ArrayList without illegal placements
+     */
     private ArrayList<Coordinates> removeIllegalPlacements(ArrayList<Coordinates> placements, ArrayList<Coordinates> illegalPlacements) {
         for (int i = 0; i < placements.size(); i++) {
             for (int j = 0; j < illegalPlacements.size(); j++) {
@@ -208,6 +236,12 @@ public class PlayField implements Observable, Serializable {
         return placements;
     }
 
+    /**
+     * Checks if there is a PlayableCard in position (x,y)
+     * @param x the horizontal coordinate of the PlayableCard on the PlayField
+     * @param y the vertical coordinate of the PlayableCard on the PlayField
+     * @return {@code true} if there is a PlayableCard in position (x,y)
+     */
     private boolean isThereACardIn(int x, int y) {
         for (PlayableCard card : playedCards) {
             if (card.getX() == x && card.getY() == y) {
@@ -217,6 +251,10 @@ public class PlayField implements Observable, Serializable {
         return false;
     }
 
+    /**
+     * Gets the last played PlayableCard
+     * @return the last played PlayableCard
+     */
     public PlayableCard getLastPlayedCard() {
         return playedCards.getLast();
     }

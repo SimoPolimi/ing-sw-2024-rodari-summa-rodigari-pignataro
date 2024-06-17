@@ -147,7 +147,7 @@ public class HandCardView {
 
     /**
      * Getter Method for isSelected
-     * @return: a boolean indicating if this HandCardView is selected
+     * @return a boolean indicating if this HandCardView is selected
      */
     public boolean isSelected() {
         return isSelected;

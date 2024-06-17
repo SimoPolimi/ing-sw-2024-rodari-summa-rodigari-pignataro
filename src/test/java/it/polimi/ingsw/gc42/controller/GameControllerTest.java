@@ -354,7 +354,7 @@ class GameControllerTest {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        Player player = new Player(Token.BLUE);
+        Player player = new Player("bot");
         controller.getGame().addPlayer(player);
 
         // when
@@ -375,7 +375,7 @@ class GameControllerTest {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        Player player = new Player(Token.BLUE);
+        Player player = new Player("bot");
         controller.getGame().addPlayer(player);
 
         // when
