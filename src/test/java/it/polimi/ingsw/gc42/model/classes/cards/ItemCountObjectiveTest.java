@@ -18,11 +18,18 @@ class ItemCountObjectiveTest {
 
         ArrayList<Card> countObjectives = g.getObjectivePlayingDeck().getDeck().getCopy();
         ObjectiveCard obj = null;
+
+        if (g.getObjectivePlayingDeck().getSlot(1).getId() == 96) {
+            obj = (ObjectiveCard) g.getObjectivePlayingDeck().getSlot(1);
+        } else if (g.getObjectivePlayingDeck().getSlot(2).getId() == 96) {
+            obj = (ObjectiveCard) g.getObjectivePlayingDeck().getSlot(2);
+        } else {
         for (Card c : countObjectives) {
             if (c.getId() == 96) {
                 obj = (ObjectiveCard) c;
                 break;
             }
+        }
         }
 
         ArrayList<Card> starters = g.getStarterDeck().getCopy();
