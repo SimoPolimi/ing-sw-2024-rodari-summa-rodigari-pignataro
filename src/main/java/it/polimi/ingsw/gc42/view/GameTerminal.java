@@ -534,7 +534,7 @@ public class GameTerminal extends Application implements ViewController {
                     actions.add(() -> askForCoordinates(cardID));
                 } else {
                     //TODO: Fix
-                    controller.playCard(1, availablePlacements.get(Integer.parseInt(input) - 1).getX(), availablePlacements.get(Integer.parseInt(input) - 1).getY());
+                    controller.playCard(cardID, availablePlacements.get(Integer.parseInt(input) - 1).getX(), availablePlacements.get(Integer.parseInt(input) - 1).getY());
                 }
             }
         });
@@ -2129,9 +2129,9 @@ public class GameTerminal extends Application implements ViewController {
                                 terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
                                 terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
                                 terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
+                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
                                 terminalCharacters.getCharacter(Characters.RED_SQUARE);
                         break;
                     case 3:
