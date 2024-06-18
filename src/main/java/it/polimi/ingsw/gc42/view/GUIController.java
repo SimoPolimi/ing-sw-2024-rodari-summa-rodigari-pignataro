@@ -47,6 +47,8 @@ import java.util.Objects;
 public class GUIController implements ViewController {
     // Imports from the GUI
     @FXML
+    public AnchorPane uiContainer;
+    @FXML
     private StackPane root;
     @FXML
     private AnchorPane mainArea;
@@ -63,7 +65,7 @@ public class GUIController implements ViewController {
     @FXML
     private AnchorPane leftPlayerTableContainer;
     @FXML
-    private AnchorPane backgroundContainer;
+    private StackPane backgroundContainer;
     @FXML
     private Text commonTableTxt;
     @FXML
@@ -158,6 +160,7 @@ public class GUIController implements ViewController {
 
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
         chat = new ChatView(true, chatContainer, chatBoxContainer, chatTextField, sendButton, chatHintTxt, this);
+        root.requestFocus();
     }
 
     public NetworkController getNetworkController() {
@@ -185,6 +188,7 @@ public class GUIController implements ViewController {
         this.playerNickname = controller.getPlayersInfo().get(playerID-1).get("Nickname");
         table.setPlayer(playerID);
         chat.refresh();
+        root.requestFocus();
     }
 
     public String getPlayerNickname() {
@@ -768,7 +772,7 @@ public class GUIController implements ViewController {
         }
 
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
         transition.setFromX(1);
         transition.setFromY(1);
         transition.setToX(0.4);
@@ -782,7 +786,7 @@ public class GUIController implements ViewController {
 
     private void hideGlobalMap() {
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(250), backgroundContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
         transition.setFromX(0.4);
         transition.setFromY(0.4);
         transition.setToX(1);
@@ -798,6 +802,9 @@ public class GUIController implements ViewController {
     public void toggleChat() {
         if (canReadInput) {
             chat.toggle();
+        }
+        if (!chat.isShowing()) {
+            root.requestFocus();
         }
     }
 

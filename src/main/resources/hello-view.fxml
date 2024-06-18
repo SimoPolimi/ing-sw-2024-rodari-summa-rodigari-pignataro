@@ -8,229 +8,237 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="root" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.GUIController">
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc42.view.GUIController">
     <children>
-        <AnchorPane fx:id="backgroundContainer" maxHeight="3300" maxWidth="4100">
-            <children>
-                <AnchorPane fx:id="mainArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-                    <children>
-                        <AnchorPane fx:id="rightPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="270" translateX="1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                        <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1500" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                        <AnchorPane fx:id="leftPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="90" translateX="-1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                        <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                        <StackPane fx:id="commonTableContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-450" StackPane.alignment="TOP_CENTER">
-                            <children>
-                                <VBox alignment="CENTER" spacing="5">
-                                    <children>
-                                        <StackPane fx:id="scoreboardContainer">
-                                            <children>
-                                                <ImageView fx:id="scoreboard" fitWidth="250" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
-                                                    <image>
-                                                        <Image url="@scoreboard.png" />
-                                                    </image>
-                                                    <effect>
-                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                    </effect>
-                                                    <cursor>
-                                                        <Cursor fx:constant="HAND" />
-                                                    </cursor>
-                                                </ImageView>
-                                                <StackPane fx:id="tokensContainer" disable="true">
-                                                    <children>
-                                                        <ImageView fx:id="blueToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="215.0" visible="false">
-                                                            <image>
-                                                                <Image url="@blueToken.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow />
-                                                            </effect>
-                                                        </ImageView>
-                                                        <ImageView fx:id="redToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="210.0" visible="false">
-                                                            <image>
-                                                                <Image url="@redToken.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow />
-                                                            </effect>
-                                                        </ImageView>
-                                                        <ImageView fx:id="greenToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="205.0" visible="false">
-                                                            <image>
-                                                                <Image url="@greenToken.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow />
-                                                            </effect>
-                                                        </ImageView>
-                                                        <ImageView fx:id="yellowToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="200.0" visible="false">
-                                                            <image>
-                                                                <Image url="@yellowToken.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow />
-                                                            </effect>
-                                                        </ImageView>
-                                                    </children>
-                                                </StackPane>
-                                                <StackPane fx:id="resourceDeckContainer" maxHeight="120" maxWidth="160" rotate="25" translateX="-400" translateY="-350">
-                                            <effect>
-                                                <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                       </effect></StackPane>
-                                                <StackPane fx:id="goldDeckContainer" maxHeight="120" maxWidth="160" rotate="-25" translateX="400" translateY="-350">
-                                       <effect>
-                                          <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                       </effect></StackPane>
-                                                <ImageView fx:id="resourceDown1" fitWidth="160" preserveRatio="true" rotate="5" translateX="-350" translateY="-100">
-                                                    <image>
-                                                        <Image url="@cards/card1Front.png" />
-                                                    </image>
-                                                    <effect>
-                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                    </effect>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                                </ImageView>
-                                                <ImageView fx:id="resourceDown2" fitWidth="160" preserveRatio="true" rotate="-15" translateX="-350" translateY="100">
-                                                    <image>
-                                                        <Image url="@cards/card1Front.png" />
-                                                    </image>
-                                                    <effect>
-                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                    </effect>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                                </ImageView>
-                                                <ImageView fx:id="goldDown1" fitWidth="160" preserveRatio="true" rotate="-10" translateX="350" translateY="-100">
-                                                    <image>
-                                                        <Image url="@cards/card1Front.png" />
-                                                    </image>
-                                                    <effect>
-                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                    </effect>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                                </ImageView>
-                                                <ImageView fx:id="goldDown2" fitWidth="160" preserveRatio="true" rotate="25" translateX="350" translateY="100">
-                                                    <image>
-                                                        <Image url="@cards/card1Front.png" />
-                                                    </image>
-                                                    <effect>
-                                                        <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                    </effect>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                                </ImageView>
-                                                <VBox alignment="CENTER" maxWidth="200" spacing="10" translateX="-120.0" translateY="-370.0">
-                                                    <children>
-                                                        <ImageView fx:id="commonObjective1" fitWidth="160" preserveRatio="true" rotate="5">
-                                                            <image>
-                                                                <Image url="@cards/card1Front.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                            </effect>
-                                                            <cursor>
-                                                                <Cursor fx:constant="HAND" />
-                                                            </cursor>
-                                                        </ImageView>
-                                                        <StackPane fx:id="commonObjDescriptiionBox1" disable="true" mouseTransparent="true" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10;" visible="false">
-                                                            <children>
-                                                                <VBox spacing="10">
-                                                                    <children>
-                                                                        <Text fx:id="objName1" strokeType="OUTSIDE" strokeWidth="25" textAlignment="CENTER" underline="true" wrappingWidth="150">
-                                                                            <font>
-                                                                                <Font name="Constantia Italic" size="15" />
-                                                                            </font>
-                                                                        </Text>
-                                                                        <Text fx:id="objDescr1" strokeType="OUTSIDE" strokeWidth="20" textAlignment="CENTER" wrappingWidth="150">
-                                                                            <font>
-                                                                                <Font name="Constantia Italic" size="15" />
-                                                                            </font>
-                                                                        </Text>
-                                                                    </children>
-                                                   <StackPane.margin>
-                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                   </StackPane.margin>
-                                                                </VBox>
-                                                            </children>
-                                                        </StackPane>
-                                                    </children>
-                                                </VBox>
-                                                <VBox alignment="CENTER" maxWidth="200.0" spacing="10" translateX="120.0" translateY="-370.0">
-                                                    <children>
-                                                        <ImageView fx:id="commonObjective2" fitWidth="160" preserveRatio="true" rotate="-10">
-                                                            <image>
-                                                                <Image url="@cards/card1Front.png" />
-                                                            </image>
-                                                            <effect>
-                                                                <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
-                                                            </effect>
-                                                            <cursor>
-                                                                <Cursor fx:constant="HAND" />
-                                                            </cursor>
-                                                        </ImageView>
-                                                        <StackPane fx:id="commonObjDescriptiionBox2" disable="true" mouseTransparent="true" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10;" visible="false">
-                                                            <children>
-                                                                <VBox spacing="10">
-                                                                    <children>
-                                                                        <Text fx:id="objName2" strokeType="OUTSIDE" strokeWidth="25" textAlignment="CENTER" underline="true" wrappingWidth="150">
-                                                                            <font>
-                                                                                <Font name="Constantia Italic" size="15" />
-                                                                            </font>
-                                                                        </Text>
-                                                                        <Text fx:id="objDescr2" strokeType="OUTSIDE" strokeWidth="20" textAlignment="CENTER" wrappingWidth="150">
-                                                                            <font>
-                                                                                <Font name="Constantia Italic" size="15" />
-                                                                            </font>
-                                                                        </Text>
-                                                                    </children>
-                                                   <StackPane.margin>
-                                                      <Insets top="10.0" />
-                                                   </StackPane.margin>
-                                                                </VBox>
-                                                            </children>
-                                                        </StackPane>
-                                                    </children>
-                                                </VBox>
-                                            </children>
-                                        </StackPane>
-                                        <HBox id="commonTableHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
-                                            <children>
-                                                <ImageView fx:id="commonTableHint" fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
-                                                    <image>
-                                                        <Image url="@commonTableHInt.png" />
-                                                    </image>
-                                                    <cursor>
-                                                        <Cursor fx:constant="HAND" />
-                                                    </cursor>
-                                                </ImageView>
-                                                <Text fx:id="commonTableTxt" fill="white" onMouseClicked="#toggleCommonTable" text="See the Common Table">
-                                                    <font>
-                                                        <Font name="Constantia Italic" size="15.0" />
-                                                    </font>
-                                                    <cursor>
-                                                        <Cursor fx:constant="HAND" />
-                                                    </cursor>
-                                                </Text>
-                                            </children>
-                                            <padding>
-                                                <Insets left="5" />
-                                            </padding>
-                                            <cursor>
-                                                <Cursor fx:constant="DEFAULT" />
-                                            </cursor>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </StackPane>
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
+        <StackPane fx:id="backgroundContainer" style="-fx-background-image: url('background.jpg'); -fx-background-position: center; -fx-background-size: 2000;">
+            <AnchorPane fx:id="uiContainer" maxHeight="3300" maxWidth="4100">
+                <children>
+                    <AnchorPane fx:id="mainArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                        <children>
+                            <AnchorPane fx:id="rightPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="270" translateX="1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                            <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1500" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                            <AnchorPane fx:id="leftPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="90" translateX="-1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                            <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                            <StackPane fx:id="commonTableContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-600" StackPane.alignment="TOP_CENTER">
+                                <children>
+                                    <ImageView fitWidth="1300" preserveRatio="true" translateY="-120.0">
+                                        <image>
+                                            <Image url="@common_table_background.png" />
+                                        </image>
+                                    </ImageView>
+                                    <VBox alignment="CENTER" spacing="5">
+                                        <children>
+                                            <StackPane fx:id="scoreboardContainer">
+                                                <children>
+                                                    <ImageView fx:id="scoreboard" fitWidth="250" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
+                                                        <image>
+                                                            <Image url="@scoreboard.png" />
+                                                        </image>
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <StackPane fx:id="tokensContainer" disable="true">
+                                                        <children>
+                                                            <ImageView fx:id="blueToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="215.0" visible="false">
+                                                                <image>
+                                                                    <Image url="@blueToken.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow />
+                                                                </effect>
+                                                            </ImageView>
+                                                            <ImageView fx:id="redToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="210.0" visible="false">
+                                                                <image>
+                                                                    <Image url="@redToken.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow />
+                                                                </effect>
+                                                            </ImageView>
+                                                            <ImageView fx:id="greenToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="205.0" visible="false">
+                                                                <image>
+                                                                    <Image url="@greenToken.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow />
+                                                                </effect>
+                                                            </ImageView>
+                                                            <ImageView fx:id="yellowToken" disable="true" fitWidth="50" preserveRatio="true" translateX="-60.0" translateY="200.0" visible="false">
+                                                                <image>
+                                                                    <Image url="@yellowToken.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow />
+                                                                </effect>
+                                                            </ImageView>
+                                                        </children>
+                                                    </StackPane>
+                                                    <StackPane fx:id="resourceDeckContainer" maxHeight="120" maxWidth="160" rotate="25" translateX="-400" translateY="-350">
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect></StackPane>
+                                                    <StackPane fx:id="goldDeckContainer" maxHeight="120" maxWidth="160" rotate="-25" translateX="400" translateY="-350">
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect></StackPane>
+                                                    <ImageView fx:id="resourceDown1" fitWidth="160" preserveRatio="true" rotate="5" translateX="-350" translateY="-100">
+                                                        <image>
+                                                            <Image url="@cards/card1Front.png" />
+                                                        </image>
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <ImageView fx:id="resourceDown2" fitWidth="160" preserveRatio="true" rotate="-15" translateX="-350" translateY="100">
+                                                        <image>
+                                                            <Image url="@cards/card1Front.png" />
+                                                        </image>
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <ImageView fx:id="goldDown1" fitWidth="160" preserveRatio="true" rotate="-10" translateX="350" translateY="-100">
+                                                        <image>
+                                                            <Image url="@cards/card1Front.png" />
+                                                        </image>
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <ImageView fx:id="goldDown2" fitWidth="160" preserveRatio="true" rotate="25" translateX="350" translateY="100">
+                                                        <image>
+                                                            <Image url="@cards/card1Front.png" />
+                                                        </image>
+                                                        <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                        </effect>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <VBox alignment="CENTER" maxWidth="200" spacing="10" translateX="-120.0" translateY="-370.0">
+                                                        <children>
+                                                            <ImageView fx:id="commonObjective1" fitWidth="160" preserveRatio="true" rotate="5">
+                                                                <image>
+                                                                    <Image url="@cards/card1Front.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                                </effect>
+                                                                <cursor>
+                                                                    <Cursor fx:constant="HAND" />
+                                                                </cursor>
+                                                            </ImageView>
+                                                            <StackPane fx:id="commonObjDescriptiionBox1" disable="true" mouseTransparent="true" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10;" visible="false">
+                                                                <children>
+                                                                    <VBox spacing="10">
+                                                                        <children>
+                                                                            <Text fx:id="objName1" strokeType="OUTSIDE" strokeWidth="25" textAlignment="CENTER" underline="true" wrappingWidth="150">
+                                                                                <font>
+                                                                                    <Font name="Constantia Italic" size="15" />
+                                                                                </font>
+                                                                            </Text>
+                                                                            <Text fx:id="objDescr1" strokeType="OUTSIDE" strokeWidth="20" textAlignment="CENTER" wrappingWidth="150">
+                                                                                <font>
+                                                                                    <Font name="Constantia Italic" size="15" />
+                                                                                </font>
+                                                                            </Text>
+                                                                        </children>
+                                                                        <StackPane.margin>
+                                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                        </StackPane.margin>
+                                                                    </VBox>
+                                                                </children>
+                                                            </StackPane>
+                                                        </children>
+                                                    </VBox>
+                                                    <VBox alignment="CENTER" maxWidth="200.0" spacing="10" translateX="120.0" translateY="-370.0">
+                                                        <children>
+                                                            <ImageView fx:id="commonObjective2" fitWidth="160" preserveRatio="true" rotate="-10">
+                                                                <image>
+                                                                    <Image url="@cards/card1Front.png" />
+                                                                </image>
+                                                                <effect>
+                                                                    <DropShadow blurType="GAUSSIAN" height="50.0" radius="24.5" width="50.0" />
+                                                                </effect>
+                                                                <cursor>
+                                                                    <Cursor fx:constant="HAND" />
+                                                                </cursor>
+                                                            </ImageView>
+                                                            <StackPane fx:id="commonObjDescriptiionBox2" disable="true" mouseTransparent="true" opacity="0.7" style="-fx-background-color: #ececec; -fx-background-radius: 10;" visible="false">
+                                                                <children>
+                                                                    <VBox spacing="10">
+                                                                        <children>
+                                                                            <Text fx:id="objName2" strokeType="OUTSIDE" strokeWidth="25" textAlignment="CENTER" underline="true" wrappingWidth="150">
+                                                                                <font>
+                                                                                    <Font name="Constantia Italic" size="15" />
+                                                                                </font>
+                                                                            </Text>
+                                                                            <Text fx:id="objDescr2" strokeType="OUTSIDE" strokeWidth="20" textAlignment="CENTER" wrappingWidth="150">
+                                                                                <font>
+                                                                                    <Font name="Constantia Italic" size="15" />
+                                                                                </font>
+                                                                            </Text>
+                                                                        </children>
+                                                                        <StackPane.margin>
+                                                                            <Insets top="10.0" />
+                                                                        </StackPane.margin>
+                                                                    </VBox>
+                                                                </children>
+                                                            </StackPane>
+                                                        </children>
+                                                    </VBox>
+                                                </children>
+                                            </StackPane>
+                                            <HBox id="commonTableHintContainer" alignment="CENTER" maxWidth="200" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="15">
+                                                <children>
+                                                    <ImageView fx:id="commonTableHint" fitHeight="71.0" fitWidth="20" onMouseClicked="#toggleCommonTable" pickOnBounds="true" preserveRatio="true">
+                                                        <image>
+                                                            <Image url="@commonTableHInt.png" />
+                                                        </image>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </ImageView>
+                                                    <Text fx:id="commonTableTxt" fill="white" onMouseClicked="#toggleCommonTable" text="See the Common Table">
+                                                        <font>
+                                                            <Font name="Constantia Italic" size="15.0" />
+                                                        </font>
+                                                        <cursor>
+                                                            <Cursor fx:constant="HAND" />
+                                                        </cursor>
+                                                    </Text>
+                                                </children>
+                                                <padding>
+                                                    <Insets left="5" />
+                                                </padding>
+                                                <cursor>
+                                                    <Cursor fx:constant="DEFAULT" />
+                                                </cursor>
+                                            </HBox>
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </StackPane>
+                        </children>
+                    </AnchorPane>
+                </children>
+            </AnchorPane>
+
+        </StackPane>
         <VBox fx:id="miniScoreboardContainer" alignment="CENTER_LEFT" maxHeight="130.0" maxWidth="150" prefHeight="100.0" prefWidth="100.0" spacing="5" style="-fx-background-color: #343434aa;" translateX="-880.0" translateY="-450">
             <padding>
                 <Insets left="10.0" right="10.0" />
@@ -270,11 +278,11 @@
                <Insets bottom="40.0" left="40.0" right="10.0" top="12.0" />
             </StackPane.margin></StackPane>
             <HBox fx:id="textAreaContainer" alignment="CENTER" maxHeight="30.0" maxWidth="500" spacing="5" translateY="255">
-                <TextField fx:id="chatTextField" focusTraversable="false" prefWidth="300" promptText="Send a message...">
+                <TextField fx:id="chatTextField" disable="true" focusTraversable="false" prefWidth="300" promptText="Send a message...">
                <cursor>
                   <Cursor fx:constant="TEXT" />
                </cursor></TextField>
-                <Button fx:id="sendButton" prefWidth="50" style="-fx-background-color: lightgreen;" text="Send">
+                <Button fx:id="sendButton" focusTraversable="false" prefWidth="50" style="-fx-background-color: lightgreen;" text="Send">
                     <effect>
                         <Lighting diffuseConstant="1.5" specularConstant="0.4">
                             <bumpInput>

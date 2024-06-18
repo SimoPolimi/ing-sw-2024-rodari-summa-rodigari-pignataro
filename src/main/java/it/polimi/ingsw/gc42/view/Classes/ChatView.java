@@ -237,6 +237,7 @@ public class ChatView {
      * Animates the Hide feature
      */
     public void hide() {
+        chatTextField.setDisable(true);
         controller.blockInput();
         isShowing = false;
         if (null != chatHint) {
@@ -246,13 +247,13 @@ public class ChatView {
         transition.setByX(ANIMATION_LENGTH);
         transition.setOnFinished((e) -> controller.unlockInput());
         transition.play();
-        container.requestFocus();
     }
 
     /**
      * Animates the Show feature
      */
     public void show() {
+        chatTextField.setDisable(false);
         controller.blockInput();
         isShowing = true;
         if (null != chatHint) {
