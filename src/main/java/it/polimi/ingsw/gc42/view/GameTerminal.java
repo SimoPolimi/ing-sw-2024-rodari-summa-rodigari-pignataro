@@ -31,6 +31,7 @@ public class GameTerminal extends Application implements ViewController {
     // Attributes
     private boolean exit = false;
     private boolean isAdvancedGraphicsMode = true;
+    private boolean isColorTerminalSupported = true;
     private NetworkController controller;
     private Player player;
     private Scanner scanner = new Scanner(System.in);
@@ -130,27 +131,54 @@ public class GameTerminal extends Application implements ViewController {
         // Ask for TUI Mode
         boolean exitGameModeLoop = false;
         while (!exitGameModeLoop) {
-            System.out.println("This game supports 2 view modes: Fancy and Standard.");
-            System.out.println("Some Terminals don't properly support Fancy Mode: if you can see the left Card properly,");
-            System.out.println("then it's safe to play, otherwise we suggest playing Standard Mode instead");
+            System.out.println("This game supports 3 view modes: Fancy, Enhanced and Standard.");
+            System.out.println("Some Terminals don't properly support Fancy and Enhanced Mode: if you can see the left and the middle Cards properly,");
+            System.out.println("then it's safe to play, otherwise we suggest playing Standard Mode");
             System.out.println();
-            System.out.println("Fancy:\t\t\tStandard:");
-            System.out.println("🍄🟥🟥🟨🟨🟨🟩🟩🌳      ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿ ");
-            System.out.println("🟥🟥🟨🟨⚪🟨🟨🟩🟩      ▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦ ");
-            System.out.println("🟨⚪🟨🍷📜🪶🟨⚪🟨      ▩ ■ ▩ Ỗ ∫ ϡ ▩ ■ ▩ ");
-            System.out.println("🟪🟪🟨🟨⚪🟨🟨🟦🟦      ▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥ ");
-            System.out.println("🦋🟪🟪🟨🟨🟨🟦🟦🐺      ¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘ ");
-            System.out.println("\nPress f to play in Fancy Mode, s for Standard Mode:");
+
+            System.out.println("Fancy:");
+            System.out.println("🍄🟥🟥🟨🟨🟨🟩🟩🌳");
+            System.out.println("🟥🟥🟨🟨⚪🟨🟨🟩🟩");
+            System.out.println("🟨⚪🟨🍷📜🪶🟨⚪🟨");
+            System.out.println("🟪🟪🟨🟨⚪🟨🟨🟦🟦");
+            System.out.println("🦋🟪🟪🟨🟨🟨🟦🟦🐺");
+            System.out.println();
+
+            System.out.println("Enhanced:");
+            System.out.println(UiColors.RED + "ନ ▤ ▤ " + UiColors.YELLOW + "▩ ▩ ▩ " + UiColors.GREEN + "▦ ▦ ✿ " + UiColors.RESET);
+            System.out.println(UiColors.RED + "▤ ▤ " + UiColors.YELLOW + "▩ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ ▩ " + UiColors.GREEN + "▦ ▦ " + UiColors.RESET);
+            System.out.println(UiColors.YELLOW + "▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ Ỗ ∫ ϡ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ " + UiColors.RESET);
+            System.out.println(UiColors.MAGENTA + "▧ ▧ " + UiColors.YELLOW + "▩ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ ▩ " + UiColors.CYAN + "▥ ▥ " + UiColors.RESET);
+            System.out.println(UiColors.MAGENTA + "¥ ▧ ▧ " + UiColors.YELLOW + "▩ ▩ ▩ " + UiColors.CYAN + "▥ ▥ ♘ " + UiColors.RESET);
+            System.out.println();
+
+            System.out.println("Standard:");
+            System.out.println("ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿ ");
+            System.out.println("▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦ ");
+            System.out.println("▩ ■ ▩ Ỗ ∫ ϡ ▩ ■ ▩ ");
+            System.out.println("▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥ ");
+            System.out.println("¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘ ");
+
+
+
+            System.out.println("\nPress f to play in Fancy Mode, e for Enhanced Mode or s for Standard Mode:");
             String s = scanner.next();
             if(s.equals("f")) {
                 isAdvancedGraphicsMode = true;
                 exitGameModeLoop = true;
+            } else if (s.equals("e")) {
+                isAdvancedGraphicsMode = false;
+                isColorTerminalSupported = true;
+                exitGameModeLoop = true;
             } else if (s.equals("s")) {
                 isAdvancedGraphicsMode = false;
+                isColorTerminalSupported = false;
                 exitGameModeLoop = true;
             } else {
                 System.err.println("Invalid Choice!\n");
             }
+
+            System.out.println("\n\n\n\n");
         }
 
         scanner = new Scanner(System.in);
@@ -160,7 +188,7 @@ public class GameTerminal extends Application implements ViewController {
         pool.submit(inputHandler);
         actions.add(() -> {
             System.out.println("Welcome to Codex Naturalis!");
-            terminalCharacters = new TerminalCharacters(isAdvancedGraphicsMode);
+            terminalCharacters = new TerminalCharacters(isAdvancedGraphicsMode, isColorTerminalSupported);
 
             login();
         });
@@ -369,22 +397,7 @@ public class GameTerminal extends Application implements ViewController {
                         returnToMenu();
                         break;
                     case "12":
-                        isAdvancedGraphicsMode = !isAdvancedGraphicsMode;
-                        terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
-
-                        // Refreshes the PlayAreas
-                        for (String[][] playArea: playAreas) {
-                            if (null != playArea) {
-                                recreatePlayArea(playArea);
-                            }
-                        }
-
-                        System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) +
-                                terminalCharacters.getCharacter(Characters.PLANT) +
-                                "Mode Changed" +
-                                terminalCharacters.getCharacter(Characters.ANIMAL) +
-                                terminalCharacters.getCharacter(Characters.INSECT));
-                        returnToMenu();
+                        askForGraphicsMode();
                         break;
                     case "13":
                         if (!terminalCharacters.isAdvancedGraphicsMode()) {
@@ -413,6 +426,104 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> play());
                         break;
+                }
+            }
+        });
+    }
+
+    private void askForGraphicsMode() {
+        System.out.println("This game supports 3 view modes: Fancy, Enhanced and Standard.");
+        System.out.println("Some Terminals don't properly support Fancy and Enhanced Mode: if you can see the left and the middle Cards properly,");
+        System.out.println("then it's safe to play, otherwise we suggest playing Standard Mode");
+        System.out.println();
+
+        System.out.println("Fancy:");
+        System.out.println("🍄🟥🟥🟨🟨🟨🟩🟩🌳");
+        System.out.println("🟥🟥🟨🟨⚪🟨🟨🟩🟩");
+        System.out.println("🟨⚪🟨🍷📜🪶🟨⚪🟨");
+        System.out.println("🟪🟪🟨🟨⚪🟨🟨🟦🟦");
+        System.out.println("🦋🟪🟪🟨🟨🟨🟦🟦🐺");
+        System.out.println();
+
+        System.out.println("Enhanced:");
+        System.out.println(UiColors.RED + "ନ ▤ ▤ " + UiColors.YELLOW + "▩ ▩ ▩ " + UiColors.GREEN + "▦ ▦ ✿ " + UiColors.RESET);
+        System.out.println(UiColors.RED + "▤ ▤ " + UiColors.YELLOW + "▩ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ ▩ " + UiColors.GREEN + "▦ ▦ " + UiColors.RESET);
+        System.out.println(UiColors.YELLOW + "▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ Ỗ ∫ ϡ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ " + UiColors.RESET);
+        System.out.println(UiColors.MAGENTA + "▧ ▧ " + UiColors.YELLOW + "▩ ▩ " + UiColors.WHITE + "■ " + UiColors.YELLOW + "▩ ▩ " + UiColors.CYAN + "▥ ▥ " + UiColors.RESET);
+        System.out.println(UiColors.MAGENTA + "¥ ▧ ▧ " + UiColors.YELLOW + "▩ ▩ ▩ " + UiColors.CYAN + "▥ ▥ ♘ " + UiColors.RESET);
+        System.out.println();
+
+        System.out.println("Standard:");
+        System.out.println("ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿ ");
+        System.out.println("▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦ ");
+        System.out.println("▩ ■ ▩ Ỗ ∫ ϡ ▩ ■ ▩ ");
+        System.out.println("▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥ ");
+        System.out.println("¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘ ");
+
+
+        System.out.println("\nPress f to play in Fancy Mode, e for Enhanced Mode or s for Standard Mode:");
+        inputHandler.listen(new TerminalListener() {
+            @Override
+            public void onEvent(String input) {
+                if(input.equals("f")) {
+                    isAdvancedGraphicsMode = true;
+                    isColorTerminalSupported = true;
+                    terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
+                    terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
+                    // Refreshes the PlayAreas
+                    for (String[][] playArea: playAreas) {
+                        if (null != playArea) {
+                            recreatePlayArea(playArea);
+                        }
+                    }
+
+                    System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) +
+                            terminalCharacters.getCharacter(Characters.PLANT) +
+                            "Mode Changed" +
+                            terminalCharacters.getCharacter(Characters.ANIMAL) +
+                            terminalCharacters.getCharacter(Characters.INSECT));
+                    returnToMenu();
+                } else if (input.equals("e")) {
+                    isAdvancedGraphicsMode = false;
+                    isColorTerminalSupported = true;
+                    terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
+                    terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
+                    returnToMenu();
+                    // Refreshes the PlayAreas
+                    for (String[][] playArea: playAreas) {
+                        if (null != playArea) {
+                            recreatePlayArea(playArea);
+                        }
+                    }
+
+                    System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) +
+                            terminalCharacters.getCharacter(Characters.PLANT) +
+                            "Mode Changed" +
+                            terminalCharacters.getCharacter(Characters.ANIMAL) +
+                            terminalCharacters.getCharacter(Characters.INSECT));
+                    returnToMenu();
+                } else if (input.equals("s")) {
+                    isAdvancedGraphicsMode = false;
+                    isColorTerminalSupported = false;
+                    terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
+                    terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
+                    returnToMenu();
+                    // Refreshes the PlayAreas
+                    for (String[][] playArea: playAreas) {
+                        if (null != playArea) {
+                            recreatePlayArea(playArea);
+                        }
+                    }
+
+                    System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) +
+                            terminalCharacters.getCharacter(Characters.PLANT) +
+                            "Mode Changed" +
+                            terminalCharacters.getCharacter(Characters.ANIMAL) +
+                            terminalCharacters.getCharacter(Characters.INSECT));
+                    returnToMenu();
+                } else {
+                    System.err.println("Invalid Choice!\n");
+                    System.out.println("\nPress f to play in Fancy Mode, e for Enhanced Mode or s for Standard Mode:");
                 }
             }
         });
@@ -454,10 +565,8 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("9) Show Scoreboard");
         System.out.println("10) Print your Table");
         System.out.println("11) Print all Tables");
-        if (isAdvancedGraphicsMode) {
-            System.out.println("12) Switch to Standard Mode");
-        } else {
-            System.out.println("12) Switch to Fancy Mode");
+        System.out.println("12) Change Graphics Mode");
+        if (!isAdvancedGraphicsMode) {
             System.out.println("13) Show a legend with character descriptions");
         }
         System.out.println("Digit a number to select the action.");
@@ -727,8 +836,8 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println("Decks");
             System.out.println("Resource\t\t\tGold");
             for (int line = 1; line < 6; line++) {
-                System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
-                        "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
+                System.out.println(getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported) +
+                        "\t" + (getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported)));
             }
             System.out.println();
             System.out.println("Slots:");
@@ -737,8 +846,8 @@ public class GameTerminal extends Application implements ViewController {
                 card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
                 card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
                 for (int line = 1; line < 6; line++) {
-                    System.out.println(getPrintCardLine((PlayableCard) card1, line, true, null) +
-                            "\t" + (getPrintCardLine((PlayableCard) card2, line, true, null)));
+                    System.out.println(getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported) +
+                            "\t" + (getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported)));
                 }
                 System.out.println();
             }
@@ -980,123 +1089,87 @@ public class GameTerminal extends Application implements ViewController {
     /**
      * Creates a formatted String representation of one of the Card's lines.
      * A Card has 5 lines, because it's printed in 5 different Lines.
-     * @param card the Card to print
-     * @param line an int value (1-5) corresponding to the Line to print
-     * @param printCoveredCorners a boolean value specifying if covered Corners need to be printed.
-     * @param cards the PlayArea, from which some info are needed.
+     *
+     * @param card  the Card to print
+     * @param line  an int value (1-5) corresponding to the Line to print
+     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or use that one instead
      * @return the formatted String, in ASCII art or Emojis based on the Graphics Mode.
      */
-    private String getPrintCardLine(PlayableCard card, int line, boolean printCoveredCorners, ArrayList<PlayableCard> cards) {
+    private String getPrintCardLine(PlayableCard card, int line, boolean printColors) {
         String string = "";
         if (null != card) {
             switch (line) {
                 case 1 -> {
-                    if (printCoveredCorners) {
-                        string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        for (int i = 0; i < 7; i++) {
-                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                            } else {
-                                string += getCardColor(card);
-                            }
-                        }
-                        string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
-                    } else {
-                        if (!isThereACardIn(card.getX(), card.getY() + 1, cards)) {
-                            string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        } else if (null == card.getShowingSide().getTopLeftCorner()) {
-                            // If there is no Corner, then it must be covering the other card's corner
-                            string += getCornerPrint(card, card.getShowingSide().getTopLeftCorner());
-                        }
-                        for (int i = 0; i < 7; i++) {
-                            string += getCardColor(card);
-                        }
-                        if (!isThereACardIn(card.getX() + 1, card.getY(), cards)) {
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
-                        } else if (null == card.getShowingSide().getTopRightCorner()) {
-                            // If there is no Corner, then it must be covering the other card's corner
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner());
+                    string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
+                    for (int i = 0; i < 7; i++) {
+                        if ((i == 0 || i == 6) && card instanceof GoldCard) {
+                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                        } else {
+                            string += getCardColor(card, printColors);
                         }
                     }
+                    string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
                 }
                 case 2, 4 -> {
                     if (card instanceof GoldCard) {
-                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
                         for (int i = 0; i < 7; i++) {
-                            string += getCardColor(card);
+                            string += getCardColor(card, printColors);
                         }
-                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
                     } else {
                         for (int i = 0; i < 9; i++) {
-                            string += getCardColor(card);
+                            string += getCardColor(card, printColors);
                         }
                     }
                 }
                 case 3 -> {
                     for (int i = 0; i < 3; i++) {
-                        string += getCardColor(card);
+                        string += getCardColor(card, printColors);
                     }
                     if ((!(card instanceof StarterCard) && !card.isFrontFacing()) || (card.isFrontFacing() && card instanceof StarterCard)) {
                         switch (card.getPermanentResources().size()) {
                             case 1 -> {
-                                string += getCardColor(card) + getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card);
+                                string += getCardColor(card, printColors) + getItemPrint(card.getPermanentResources().get(0), printColors) + getCardColor(card, printColors);
                             }
                             case 2 -> {
-                                string += getItemPrint(card.getPermanentResources().get(0)) + getCardColor(card)
-                                        + getItemPrint(card.getPermanentResources().get(1));
+                                string += getItemPrint(card.getPermanentResources().get(0), printColors) + getCardColor(card, printColors)
+                                        + getItemPrint(card.getPermanentResources().get(1), printColors);
                             }
                             case 3 -> {
-                                string += getItemPrint(card.getPermanentResources().get(0))
-                                        + getItemPrint(card.getPermanentResources().get(1))
-                                        + getItemPrint(card.getPermanentResources().get(2));
+                                string += getItemPrint(card.getPermanentResources().get(0), printColors)
+                                        + getItemPrint(card.getPermanentResources().get(1), printColors)
+                                        + getItemPrint(card.getPermanentResources().get(2), printColors);
                             }
                             default -> {
                                 for (int i = 0; i < 3; i++) {
-                                    string += getCardColor(card);
+                                    string += getCardColor(card, printColors);
                                 }
                             }
                         }
                     } else {
                         for (int i = 0; i < 3; i++) {
-                            string += getCardColor(card);
+                            string += getCardColor(card, printColors);
                         }
                     }
                     for (int i = 0; i < 3; i++) {
-                        string += getCardColor(card);
+                        string += getCardColor(card, printColors);
                     }
                 }
                 case 5 -> {
-                    if (printCoveredCorners) {
-                        string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
-                        for (int i = 0; i < 7; i++) {
-                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                            } else {
-                                string += getCardColor(card);
-                            }
-                        }
-                        string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
-                    } else {
-                        if (!isThereACardIn(card.getX(), card.getY() - 1, cards)) {
-                            string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
-                        } else if (null == card.getShowingSide().getBottomLeftCorner()) {
-                            // If there is no Corner, then it must be covering the other card's corner
-                            string += getCornerPrint(card, card.getShowingSide().getBottomLeftCorner());
-                        }
-                        for (int i = 0; i < 7; i++) {
-                            string += getCardColor(card);
-                        }
-                        if (!isThereACardIn(card.getX() - 1, card.getY(), cards)) {
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
-                        } else if (null == card.getShowingSide().getBottomRightCorner()) {
-                            // If there is no Corner, then it must be covering the other card's corner
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner());
+                    string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner(), printColors);
+                    for (int i = 0; i < 7; i++) {
+                        if ((i == 0 || i == 6) && card instanceof GoldCard) {
+                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                        } else {
+                            string += getCardColor(card, printColors);
                         }
                     }
+                    string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
                 }
             }
         } else {
-            if (printCoveredCorners) {
+            if (true) {
                 for (int i = 0; i < 20; i++) {
                     string += " ";
                 }
@@ -1113,35 +1186,37 @@ public class GameTerminal extends Application implements ViewController {
      * Creates a String containing a representation of a Corner, based on its type and the content inside.
      * @param card the Card that contains the Corner
      * @param corner the Corner to print
+     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or not
      * @return the String representation of the Corner, in Unicode characters or Emojis depending on the Graphics Mode.
      */
-    private String getCornerPrint(PlayableCard card, Corner corner) {
+    private String getCornerPrint(PlayableCard card, Corner corner, boolean printColors) {
         String string = "";
         if (null != corner) {
             if (null != corner.getItem()) {
-                string = getItemPrint(corner.getItem());
+                string = getItemPrint(corner.getItem(), printColors);
             } else {
-                string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
             }
-        } else string = getCardColor(card);
+        } else string = getCardColor(card, printColors);
         return string;
     }
 
     /**
      * Creates a String containing a representation of an Item (KingdomResource or Resource)
      * @param item the item to print
+     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or not
      * @return the String representation of the Item, in Unicode characters or Emojis depending on the Graphics Mode.
      */
-    private String getItemPrint(Item item) {
+    private String getItemPrint(Item item, boolean printColors) {
         String string = "  ";
         switch (item) {
-            case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI);
-            case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL);
-            case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT);
-            case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT);
-            case Resource.FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER);
-            case Resource.POTION -> string = terminalCharacters.getCharacter(Characters.POTION);
-            case Resource.SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL);
+            case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI, printColors);
+            case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
+            case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT, printColors);
+            case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT, printColors);
+            case Resource.FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER, printColors);
+            case Resource.POTION -> string = terminalCharacters.getCharacter(Characters.POTION, printColors);
+            case Resource.SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL, printColors);
             default -> {
                 string = "  ";
             }
@@ -1154,32 +1229,33 @@ public class GameTerminal extends Application implements ViewController {
      * @param card the Card to print
      */
     public void printCard(PlayableCard card) {
-        System.out.println(getPrintCardLine(card, 1, true, null));
-        System.out.println(getPrintCardLine(card, 2, true, null));
-        System.out.println(getPrintCardLine(card, 3, true, null));
-        System.out.println(getPrintCardLine(card, 4, true, null));
-        System.out.println(getPrintCardLine(card, 5, true, null));
+        System.out.println(getPrintCardLine(card, 1, isColorTerminalSupported));
+        System.out.println(getPrintCardLine(card, 2, isColorTerminalSupported));
+        System.out.println(getPrintCardLine(card, 3, isColorTerminalSupported));
+        System.out.println(getPrintCardLine(card, 4, isColorTerminalSupported));
+        System.out.println(getPrintCardLine(card, 5, isColorTerminalSupported));
     }
 
     /**
      * Creates a String containing the "Building Block" of a Card, the character used to visually create the Card when printing it.
      * @param card the Card to print
+     * @param printColors a boolean value indicating it it needs to override the global isColorTerminalSupported or use that one instead
      * @return the Unicode Character or Emoji, depending on the Graphics Mode.
      */
-    private String getCardColor(PlayableCard card) {
+    private String getCardColor(PlayableCard card, boolean printColors) {
         String string = "";
         if (card instanceof ResourceCard || card instanceof GoldCard) {
             switch (card.getPermanentResources().getFirst()) {
-                case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
+                case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE, printColors);
+                case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE, printColors);
+                case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE, printColors);
+                case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE, printColors);
                 default -> string = "";
             }
         } else if (card instanceof StarterCard) {
-            string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+            string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
         } else {
-            string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+            string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
         }
         return string;
     }
@@ -1229,7 +1305,7 @@ public class GameTerminal extends Application implements ViewController {
         int firstColumn = 716;
         int firstLine = 398 ;
         for (int j = 1; j <= 5; j++) {
-            line = getPrintCardLine(starter,j, true,null);
+            line = getPrintCardLine(starter,j, false);
             for (int i = 0; i < line.length(); i += 2) {
                 String string = new String(String.valueOf(line.charAt(i)));
                 try {
@@ -1273,7 +1349,7 @@ public class GameTerminal extends Application implements ViewController {
     private String[][] addCardToMatrix(String[][] matrix, PlayableCard card, int firstLine, int firstColumn, int centerX){
         String line = "";
         for (int j = 1; j <= 5; j++) {
-            line = getPrintCardLine(card,j, true,null);
+            line = getPrintCardLine(card,j, false);
             int i = 0;
             while (i < line.length()) {
                 if (isAdvancedGraphicsMode) {
@@ -1473,7 +1549,31 @@ public class GameTerminal extends Application implements ViewController {
         for (int i = extremeUP - 5; i <= extremeDOWN + 5; i++){
             String line = "";
             for (int j = extremeLEFT - 5; j <= extremeRIGHT + 5; j++){
-                line += playArea[i][j];
+                if (!isAdvancedGraphicsMode && isColorTerminalSupported) {
+                    // Enhanced Mode (here colors are injected in the String, because the Matrix doesn't store them
+                    String symbol = "";
+                    switch (playArea[i][j]) {
+                        case "ନ " -> symbol = terminalCharacters.getCharacter(Characters.FUNGI);
+                        case "✿ " -> symbol = terminalCharacters.getCharacter(Characters.PLANT);
+                        case "♘ " -> symbol = terminalCharacters.getCharacter(Characters.ANIMAL);
+                        case "¥ " -> symbol = terminalCharacters.getCharacter(Characters.INSECT);
+                        case "∫ " -> symbol = terminalCharacters.getCharacter(Characters.SCROLL);
+                        case "ϡ " -> symbol = terminalCharacters.getCharacter(Characters.FEATHER);
+                        case "Ỗ " -> symbol = terminalCharacters.getCharacter(Characters.POTION);
+                        case "▤ " -> symbol = terminalCharacters.getCharacter(Characters.RED_SQUARE);
+                        case "▥ " -> symbol = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
+                        case "▦ " -> symbol = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
+                        case "▧ " -> symbol = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
+                        case "▩ " -> symbol = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
+                        case "■ " -> symbol = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
+                        case "  " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
+                        case "▢ " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                    }
+                    line += symbol;
+                } else {
+                    // Fancy and Standard Mode (no character modifications required
+                    line += playArea[i][j];
+                }
             }
             System.out.println(line);
         }
@@ -2676,9 +2776,9 @@ public class GameTerminal extends Application implements ViewController {
         PlayableCard card2 = controller.getPlayersHandCard(playerID, 1);
         PlayableCard card3 = controller.getPlayersHandCard(playerID, 2);
         for (int line = 1; line < 6; line++){
-            System.out.println(getPrintCardLine(card1, line, true, null) +
-                    "\t" + getPrintCardLine(card2, line, true, null) +
-                    "\t" + getPrintCardLine(card3, line, true, null));
+            System.out.println(getPrintCardLine(card1, line, isColorTerminalSupported) +
+                    "\t" + getPrintCardLine(card2, line, isColorTerminalSupported) +
+                    "\t" + getPrintCardLine(card3, line, isColorTerminalSupported));
         }
     }
 
@@ -2855,12 +2955,21 @@ public class GameTerminal extends Application implements ViewController {
      * @param message the Message to print
      */
     private void printMessage(ChatMessage message) {
+        String text = "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
+                + "] " + message.getSender() + " - " + message.getText();
+
         if (message.getSender().equals("Server")) {
-            System.out.println(UiColors.MAGENTA + "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
-                    + "] " + message.getSender() + " - " + message.getText() + UiColors.RESET);
+            if (isColorTerminalSupported) {
+                System.out.println(UiColors.MAGENTA + text + UiColors.RESET);
+            } else {
+                System.out.println("--- " + text);
+            }
         } else {
-            System.out.println(UiColors.CYAN + "[" + message.getDateTime().getHour() + ":" + message.getDateTime().getMinute()
-                    + "] " + message.getSender() + " - " + message.getText() + UiColors.RESET);
+            if (isColorTerminalSupported) {
+                System.out.println(UiColors.CYAN + text + UiColors.RESET);
+            } else {
+                System.out.println(text);
+            }
         }
     }
 
