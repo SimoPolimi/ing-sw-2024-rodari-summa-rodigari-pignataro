@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+import static it.polimi.ingsw.gc42.model.classes.cards.KingdomResource.*;
+import static it.polimi.ingsw.gc42.model.classes.cards.Resource.*;
+
 /**
  * This class handles the whole TUI behavior and output system.
  * All the TUI is contained inside this class.
@@ -431,6 +434,9 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
+    /**
+     * Asks the User to pick one of the 3 Supported Graphics Modes.
+     */
     private void askForGraphicsMode() {
         System.out.println("This game supports 3 view modes: Fancy, Enhanced and Standard.");
         System.out.println("Some Terminals don't properly support Fancy and Enhanced Mode: if you can see the left and the middle Cards properly,");
@@ -1100,15 +1106,70 @@ public class GameTerminal extends Application implements ViewController {
         if (null != card) {
             switch (line) {
                 case 1 -> {
-                    string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
-                    for (int i = 0; i < 7; i++) {
-                        if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                        } else {
-                            string += getCardColor(card, printColors);
+                    if (0 != card.getEarnedPoints()) {
+                        // This Card has Points, that will be displayed on the texture
+                        string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
+                        for (int i = 0; i < 7; i++) {
+                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
+                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                            } else if (i == 3 && card.isFrontFacing()) {
+                                // Print points
+                                if (printColors) {
+                                    string += color(card.getEarnedPoints() + " ", UiColors.YELLOW);
+                                } else {
+                                    string += card.getEarnedPoints() + " ";
+                                }
+                            } else {
+                                string += getCardColor(card, printColors);
+                            }
                         }
+                        string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
+                    } else if (card instanceof GoldCard && null != ((GoldCard) card).getObjective()) {
+                        // This Card has some Points related to a Condition, that will be displayed on the texture
+                        string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
+                        for (int i = 0; i < 7; i++) {
+                            if (i == 0 || i == 6) {
+                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                            } else if (i == 2 && card.isFrontFacing()) {
+                                // Print points
+                                if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
+                                    string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                                } else {
+                                    switch (((ItemCountObjective)((GoldCard) card).getObjective()).getItem()) {
+                                        case FUNGI -> string += terminalCharacters.getCharacter(Characters.FUNGI);
+                                        case PLANT -> string += terminalCharacters.getCharacter(Characters.PLANT);
+                                        case ANIMAL -> string += terminalCharacters.getCharacter(Characters.ANIMAL);
+                                        case INSECT -> string += terminalCharacters.getCharacter(Characters.INSECT);
+                                        case POTION -> string += terminalCharacters.getCharacter(Characters.POTION);
+                                        case FEATHER -> string += terminalCharacters.getCharacter(Characters.FEATHER);
+                                        case SCROLL -> string += terminalCharacters.getCharacter(Characters.SCROLL);
+                                        default ->
+                                                throw new IllegalStateException("Unexpected value: " + ((ItemCountObjective)((GoldCard) card).getObjective()).getItem());
+                                    }
+                                }
+                            } else if (i == 4 && card.isFrontFacing()) {
+                                // Print points
+                                if (printColors) {
+                                    string += color(((GoldCard) card).getObjective().getPoints() + " ", UiColors.YELLOW);
+                                } else {
+                                    string += ((GoldCard) card).getObjective().getPoints() + " ";
+                                }
+                            } else {
+                                string += getCardColor(card, printColors);
+                            }
+                        }
+                        string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
+                    } else {
+                        string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
+                        for (int i = 0; i < 7; i++) {
+                            if ((i == 0 || i == 6) && card instanceof GoldCard) {
+                                string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                            } else {
+                                string += getCardColor(card, printColors);
+                            }
+                        }
+                        string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
                     }
-                    string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
                 }
                 case 2, 4 -> {
                     if (card instanceof GoldCard) {
@@ -1158,14 +1219,79 @@ public class GameTerminal extends Application implements ViewController {
                 }
                 case 5 -> {
                     string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner(), printColors);
-                    for (int i = 0; i < 7; i++) {
-                        if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                        } else {
+                    if (card instanceof GoldCard) {
+                        // Read costs
+                        ArrayList<Item> costs = new ArrayList<>();
+                        for (int i = 0; i < ((GoldCard) card).getCost(FUNGI); i++) {
+                            costs.add(FUNGI);
+                        }
+                        for (int i = 0; i < ((GoldCard) card).getCost(PLANT); i++) {
+                            costs.add(PLANT);
+                        }
+                        for (int i = 0; i < ((GoldCard) card).getCost(ANIMAL); i++) {
+                            costs.add(ANIMAL);
+                        }
+                        for (int i = 0; i < ((GoldCard) card).getCost(INSECT); i++) {
+                            costs.add(INSECT);
+                        }
+
+                        if (!card.isFrontFacing()) {
+                            costs = new ArrayList<>();
+                        }
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                        switch (costs.size()) {
+                            case 0 -> {
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+                            }
+                            case 1 -> {
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+                                string += getItemPrint(costs.getFirst(), printColors);
+                                string += getCardColor(card, printColors);
+                                string += getCardColor(card, printColors);
+
+                            }
+                            case 2 -> {
+                                string += getCardColor(card, printColors);
+                                string += getItemPrint(costs.getFirst(), printColors);
+                                string += getCardColor(card, printColors);
+                                string += getItemPrint(costs.get(1), printColors);
+                                string += getCardColor(card, printColors);
+                            }
+                            case 3 -> {
+                                string += getCardColor(card, printColors);
+                                string += getItemPrint(costs.getFirst(), printColors);
+                                string += getItemPrint(costs.get(1), printColors);
+                                string += getItemPrint(costs.get(2), printColors);
+                                string += getCardColor(card, printColors);
+                            }
+                            case 4 -> {
+                                string += getItemPrint(costs.getFirst(), printColors);
+                                string += getItemPrint(costs.get(1), printColors);
+                                string += getItemPrint(costs.get(2), printColors);
+                                string += getItemPrint(costs.get(3), printColors);
+                                string += getCardColor(card, printColors);
+                            }
+                            case 5 -> {
+                                string += getItemPrint(costs.getFirst(), printColors);
+                                string += getItemPrint(costs.get(1), printColors);
+                                string += getItemPrint(costs.get(2), printColors);
+                                string += getItemPrint(costs.get(3), printColors);
+                                string += getItemPrint(costs.get(4), printColors);
+                            }
+                        }
+                        string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
+                        string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
+                    } else {
+                        for (int i = 0; i < 7; i++) {
                             string += getCardColor(card, printColors);
                         }
+                        string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
                     }
-                    string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
                 }
             }
         } else {
@@ -1210,13 +1336,13 @@ public class GameTerminal extends Application implements ViewController {
     private String getItemPrint(Item item, boolean printColors) {
         String string = "  ";
         switch (item) {
-            case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI, printColors);
-            case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
-            case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT, printColors);
-            case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT, printColors);
-            case Resource.FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER, printColors);
-            case Resource.POTION -> string = terminalCharacters.getCharacter(Characters.POTION, printColors);
-            case Resource.SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL, printColors);
+            case FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI, printColors);
+            case ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
+            case INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT, printColors);
+            case PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT, printColors);
+            case FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER, printColors);
+            case POTION -> string = terminalCharacters.getCharacter(Characters.POTION, printColors);
+            case SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL, printColors);
             default -> {
                 string = "  ";
             }
@@ -1246,10 +1372,10 @@ public class GameTerminal extends Application implements ViewController {
         String string = "";
         if (card instanceof ResourceCard || card instanceof GoldCard) {
             switch (card.getPermanentResources().getFirst()) {
-                case KingdomResource.PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE, printColors);
-                case KingdomResource.ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE, printColors);
-                case KingdomResource.FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE, printColors);
-                case KingdomResource.INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE, printColors);
+                case PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE, printColors);
+                case ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE, printColors);
+                case FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE, printColors);
+                case INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE, printColors);
                 default -> string = "";
             }
         } else if (card instanceof StarterCard) {
