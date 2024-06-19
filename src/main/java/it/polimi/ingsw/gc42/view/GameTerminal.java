@@ -617,8 +617,17 @@ public class GameTerminal extends Application implements ViewController {
         switch (input) {
             case "1", "2", "3" -> {
                 // Play card
-                // TODO: Add Requirement Check for GoldCards
-                actions.add(() -> askForCoordinates(Integer.parseInt(input)));
+                if (controller.canCardBePlayed(playerID, Integer.parseInt(input) - 1)) {
+                    actions.add(() -> askForCoordinates(Integer.parseInt(input)));
+                } else {
+                    System.err.println("Placement Condition Not Met! Try another Card or flip this one!");
+                    inputHandler.listen(new TerminalListener() {
+                        @Override
+                        public void onEvent(String input) {
+                            playCard(input);
+                        }
+                    });
+                }
             }
             case "0" -> {
             } // do nothing and exit
@@ -1133,16 +1142,16 @@ public class GameTerminal extends Application implements ViewController {
                             } else if (i == 2 && card.isFrontFacing()) {
                                 // Print points
                                 if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
-                                    string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                                    string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
                                 } else {
                                     switch (((ItemCountObjective)((GoldCard) card).getObjective()).getItem()) {
-                                        case FUNGI -> string += terminalCharacters.getCharacter(Characters.FUNGI);
-                                        case PLANT -> string += terminalCharacters.getCharacter(Characters.PLANT);
-                                        case ANIMAL -> string += terminalCharacters.getCharacter(Characters.ANIMAL);
-                                        case INSECT -> string += terminalCharacters.getCharacter(Characters.INSECT);
-                                        case POTION -> string += terminalCharacters.getCharacter(Characters.POTION);
-                                        case FEATHER -> string += terminalCharacters.getCharacter(Characters.FEATHER);
-                                        case SCROLL -> string += terminalCharacters.getCharacter(Characters.SCROLL);
+                                        case FUNGI -> string += terminalCharacters.getCharacter(Characters.FUNGI, printColors);
+                                        case PLANT -> string += terminalCharacters.getCharacter(Characters.PLANT, printColors);
+                                        case ANIMAL -> string += terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
+                                        case INSECT -> string += terminalCharacters.getCharacter(Characters.INSECT, printColors);
+                                        case POTION -> string += terminalCharacters.getCharacter(Characters.POTION, printColors);
+                                        case FEATHER -> string += terminalCharacters.getCharacter(Characters.FEATHER, printColors);
+                                        case SCROLL -> string += terminalCharacters.getCharacter(Characters.SCROLL, printColors);
                                         default ->
                                                 throw new IllegalStateException("Unexpected value: " + ((ItemCountObjective)((GoldCard) card).getObjective()).getItem());
                                     }
@@ -1694,6 +1703,7 @@ public class GameTerminal extends Application implements ViewController {
                         case "■ " -> symbol = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
                         case "  " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
                         case "▢ " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                        default -> symbol = playArea[i][j];
                     }
                     line += symbol;
                 } else {
