@@ -218,38 +218,99 @@ public class GameTerminal extends Application implements ViewController {
      * The Game is automatically set to WAITING_FOR_PLAYERS.
      * @throws RemoteException in case of a network communication error
      */
-    private void createNewGame() throws RemoteException {
-        boolean exit = false;
-        while (!exit) {
-            System.out.println("No games available! Press c to create a new one!");
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.next();
-            if (input.equals("c")) {
+    private void createNewGame(boolean needToAsk) throws RemoteException {
+        if (needToAsk) {
+            System.out.println("No games available! Press c to create a new one, or press r to refresh the list!");
+            inputHandler.listen(new TerminalListener() {
+                @Override
+                public void onEvent(String input) {
+                    if (input.equals("c")) {
+                        try {
+                            controller.getNewGameController();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        setViewController();
+                        controller.addPlayer(player);
+                        try {
+                            playerID = controller.getIndexOfPlayer(player.getNickname());
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        controller.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
+                        isGameCreator = true;
+
+                        System.out.println("Enter a name for this game:");
+                        inputHandler.listen(new TerminalListener() {
+                            @Override
+                            public void onEvent(String input) {
+                                if (!input.isEmpty()) {
+                                    try {
+                                        controller.setName(input);
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    inputHandler.unlisten(this);
+                                    System.out.println("Game created. Waiting for other players to join");
+                                    try {
+                                        chat = new ArrayList<>(controller.getFullChat());
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    isShowingGameCreationScreen = true;
+                                } else {
+                                    System.err.println("Name is mandatory! Please enter a name for this game:");
+                                }
+                            }
+                        });
+                    } else if (input.equals("r")) {
+                        actions.add(() -> showAvailableGames());
+                    } else {
+                        System.out.println("Invalid input!");
+                    }
+                }
+            });
+        } else {
+            try {
                 controller.getNewGameController();
-                setViewController();
-                controller.addPlayer(player);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            setViewController();
+            controller.addPlayer(player);
+            try {
                 playerID = controller.getIndexOfPlayer(player.getNickname());
-                controller.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
-                isGameCreator = true;
-                exit = true;
-            } else {
-                System.out.println("Invalid input!");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
             }
-        }
+            controller.setCurrentStatus(GameStatus.WAITING_FOR_PLAYERS);
+            isGameCreator = true;
 
-        exit = false;
-        while (!exit) {
-            System.out.println("Insert a name for this game:");
-            String input = scanner.next();
-            if (!input.isEmpty()) {
-                controller.setName(input);
-                exit = true;
-            }
-        }
+            System.out.println("Enter a name for this game:");
+            inputHandler.listen(new TerminalListener() {
+                @Override
+                public void onEvent(String input) {
 
-        System.out.println("Game created. Waiting for other players to join");
-        chat = new ArrayList<>(controller.getFullChat());
-        isShowingGameCreationScreen = true;
+                    if (!input.isEmpty()) {
+                        try {
+                            controller.setName(input);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        inputHandler.unlisten(this);
+                        System.out.println("Game created. Waiting for other players to join");
+                        try {
+                            chat = new ArrayList<>(controller.getFullChat());
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        isShowingGameCreationScreen = true;
+                    } else {
+                        System.err.println("Name is mandatory! Please enter a name for this game:");
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -726,10 +787,12 @@ public class GameTerminal extends Application implements ViewController {
                         controller.flipStarterCard(playerID);
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        inputHandler.unlisten(this);
                         break;
                     case "f":
                         controller.setPlayerStarterCard(playerID);
                         controller.setPlayerStatus(playerID, GameStatus.READY_TO_DRAW_STARTING_HAND);
+                        inputHandler.unlisten(this);
                         break;
                     default:
                         System.out.println(color("Invalid choice! Retry...", UiColors.RED));
@@ -1012,7 +1075,7 @@ public class GameTerminal extends Application implements ViewController {
      */
     @Override
     public void notifyPlayersHandChanged(int playerID) {
-        if (this.playerID == playerID) {
+        /*if (this.playerID == playerID) {
             actions.add(() -> {
                 // Only shows the User's one (the others should be secret!)
                 int handSize = controller.getPlayersHandSize(playerID);
@@ -1022,7 +1085,7 @@ public class GameTerminal extends Application implements ViewController {
                     printHandCards();
                 }
             });
-        }
+        }*/
     }
 
     /**
@@ -1943,24 +2006,7 @@ public class GameTerminal extends Application implements ViewController {
                             if (controller.checkNickName(input)) {
                                 controller.blockNickName(input);
                                 player = new Player(input);
-                                ArrayList<HashMap<String, String>> games = null;
-                                try {
-                                    games = controller.getAvailableGames();
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                if (games.isEmpty()) {
-                                    try {
-                                        createNewGame();
-                                    } catch (RemoteException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                    isWaiting = true;
-                                    // Setups the User's Input Handler
-                                } else {
-                                    ArrayList<HashMap<String, String>> finalGames = games;
-                                    actions.add(() -> askToJoinGame(finalGames));
-                                }
+                                actions.add(() -> showAvailableGames());
                             } else {
                                 System.err.println("This nickname is not available!");
                                 actions.add(() -> askForNickName());
@@ -1971,6 +2017,27 @@ public class GameTerminal extends Application implements ViewController {
                 }
             }
         });
+    }
+
+    private void showAvailableGames() {
+        ArrayList<HashMap<String, String>> games = null;
+        try {
+            games = controller.getAvailableGames();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        if (games.isEmpty()) {
+            try {
+                createNewGame(true);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            isWaiting = true;
+            // Setups the User's Input Handler
+        } else {
+            ArrayList<HashMap<String, String>> finalGames = games;
+            actions.add(() -> askToJoinGame(finalGames));
+        }
     }
 
     /**
@@ -1987,17 +2054,19 @@ public class GameTerminal extends Application implements ViewController {
             int gameID = games.indexOf(game) + 1;
             System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
         }
-        System.out.println("\nPress c to create a new one");
+        System.out.println("\nPress c to create a new one, or press r to refresh the list!");
         inputHandler.listen(new TerminalListener() {
             @Override
             public void onEvent(String input) {
                 if (input.equals("c")) {
                     try {
-                        createNewGame();
+                        createNewGame(false);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                     isWaiting = true;
+                } else if (input.equals("r")) {
+                    actions.add(() -> showAvailableGames());
                 } else {
                     try {
                         int gameID = Integer.parseInt(input);
