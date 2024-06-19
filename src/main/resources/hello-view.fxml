@@ -276,7 +276,8 @@
             <StackPane fx:id="chatBoxContainer">
             <StackPane.margin>
                <Insets bottom="40.0" left="40.0" right="10.0" top="12.0" />
-            </StackPane.margin></StackPane>
+            </StackPane.margin>
+            </StackPane>
             <HBox fx:id="textAreaContainer" alignment="CENTER" maxHeight="30.0" maxWidth="500" spacing="5" translateY="255">
                 <TextField fx:id="chatTextField" disable="true" focusTraversable="false" prefWidth="300" promptText="Send a message...">
                <cursor>
@@ -308,6 +309,18 @@
             <Insets bottom="15.0" />
          </padding>
         </StackPane>
+        <VBox fx:id="settingsContainer" maxHeight="100" maxWidth="100" onMouseClicked="#toggleSettingsDialog" translateX="-800.0" translateY="400.0">
+            <children>
+                <ImageView fitWidth="100" preserveRatio="true">
+                    <image>
+                        <Image url="@settings_Icon.png" />
+                    </image>
+                </ImageView>
+            </children>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+        </VBox>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
 

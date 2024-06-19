@@ -139,6 +139,8 @@ public class GUIController implements ViewController {
     private ScoreBoardView scoreBoard;
     private ChatView chat;
 
+    private double currentUIScale = 1;
+
 
     public void build() {
         table = new TableView(false, this, controller);
@@ -773,8 +775,8 @@ public class GUIController implements ViewController {
 
         blockInput();
         ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
-        transition.setFromX(1);
-        transition.setFromY(1);
+        transition.setFromX(currentUIScale);
+        transition.setFromY(currentUIScale);
         transition.setToX(0.4);
         transition.setToY(0.4);
         transition.setOnFinished((e) -> {
@@ -789,8 +791,8 @@ public class GUIController implements ViewController {
         ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
         transition.setFromX(0.4);
         transition.setFromY(0.4);
-        transition.setToX(1);
-        transition.setToY(1);
+        transition.setToX(currentUIScale);
+        transition.setToY(currentUIScale);
         transition.setOnFinished((e) -> {
             isShowingGlobalMap = false;
             unlockInput();
@@ -831,5 +833,31 @@ public class GUIController implements ViewController {
     @Override
     public void notifyNewMessage(ChatMessage message) {
         chat.addMessage(message);
+    }
+
+    @FXML
+    public void toggleSettingsDialog() {
+        if (!isShowingGlobalMap) {
+            SettingsDialog dialog = new SettingsDialog("Settings", true, this);
+            showDialog(dialog);
+        }
+    }
+
+    public void resizeUI(double scale) {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
+        transition.setFromX(currentUIScale);
+        transition.setFromY(currentUIScale);
+        transition.setToX(scale);
+        transition.setToY(scale);
+        transition.play();
+        TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(250), chatContainer);
+        chatTranslate.setFromX(chatContainer.getTranslateX());
+        chatTranslate.setToX(chatContainer.getTranslateX() - ((currentUIScale-scale)*500));
+        chatTranslate.play();
+        currentUIScale = scale;
+    }
+
+    public double getCurrentUIScale() {
+        return currentUIScale;
     }
 }
