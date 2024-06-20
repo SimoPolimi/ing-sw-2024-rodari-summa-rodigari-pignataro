@@ -169,6 +169,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                 case DISCONNECT_PLAYER:
                     server.disconnectPlayer(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
+                case REJOIN_GAME:
+                    server.rejoinGame(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
+                    break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
                     server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {

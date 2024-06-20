@@ -2,7 +2,9 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.PlayingDeck;
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.model.classes.cards.ObjectiveCard;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
+import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
@@ -596,6 +598,41 @@ public class GameController implements Serializable, Observable {
             } catch (RemoteException e) {
                 disconnectPlayer(viewOwners.get(view));
             }
+        }
+    }
+
+    public void rejoinGame(int playerID) {
+        Player player = game.getPlayer(playerID);
+        player.setDisconnected(false);
+        player.setStatus(GameStatus.PLAYING);
+
+        if (null == player.getToken()) {
+            ArrayList<Token> availableTokens = new ArrayList<>();
+            availableTokens.add(Token.BLUE);
+            availableTokens.add(Token.YELLOW);
+            availableTokens.add(Token.RED);
+            availableTokens.add(Token.GREEN);
+            for (int i = 1; i < game.getNumberOfPlayers(); i++) {
+                if (null != game.getPlayer(i)) {
+                    availableTokens.remove(game.getPlayer(i).getToken());
+                }
+            }
+            player.setToken(availableTokens.getFirst());
+        }
+
+        if (null == player.getSecretObjective()) {
+            player.setSecretObjective((ObjectiveCard) game.getObjectivePlayingDeck().getDeck().draw());
+        }
+
+        if (player.getPlayField().getPlayedCards().isEmpty()) {
+            if (null == player.getTemporaryStarterCard()) {
+                player.drawTemporaryStarterCard(game.getStarterDeck());
+            }
+            player.setStarterCard();
+        }
+
+        if (player.getHandSize() == 0) {
+            player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
         }
     }
 

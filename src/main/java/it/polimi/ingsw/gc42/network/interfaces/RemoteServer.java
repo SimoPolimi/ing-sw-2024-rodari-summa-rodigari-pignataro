@@ -22,6 +22,8 @@ public interface RemoteServer extends Remote {
 
     void disconnectPlayer(int gameID, int playerID) throws RemoteException;
 
+    void rejoinGame(int gameID, int playerID) throws RemoteException;
+
     boolean kickPlayer(int gameID, Player player) throws RemoteException;
 
     void nextTurn(int gameID) throws RemoteException;

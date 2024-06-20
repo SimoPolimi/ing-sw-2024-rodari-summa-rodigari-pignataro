@@ -18,6 +18,7 @@ import java.util.HashMap;
 public interface NetworkController {
     void connect() throws RemoteException, NotBoundException, IOException;
     void disconnect();
+    void rejoinGame(int playerID) throws RemoteException;
     boolean isConnected();
 
     void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException;

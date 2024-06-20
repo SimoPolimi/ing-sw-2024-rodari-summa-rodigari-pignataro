@@ -416,4 +416,9 @@ public class SocketClient implements NetworkController {
     public void blockNickName(String nickname) throws RemoteException {
         sendMessage(new StrResponse(MessageType.BLOCK_NICKNAME, nickname));
     }
+
+    @Override
+    public void rejoinGame(int playerID) throws RemoteException {
+        sendMessage(new PlayerMessage(MessageType.REJOIN_GAME, gameID, playerID));
+    }
 }

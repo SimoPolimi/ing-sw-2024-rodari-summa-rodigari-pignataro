@@ -79,6 +79,17 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
         collection.get(gameID).disconnectPlayer(playerID);
     }
 
+    /**
+     * Sets the Player as not Disconnected, then allows it to continue playing
+     * @param gameID the Game in which the Player is located
+     * @param playerID the Player's playerID
+     * @throws RemoteException in case of a communication error
+     */
+    @Override
+    public void rejoinGame(int gameID, int playerID) throws RemoteException {
+        collection.get(gameID).rejoinGame(playerID);
+    }
+
     @Override
     public void nextTurn(int gameID) throws RemoteException {
         Thread thread = new Thread(() -> {

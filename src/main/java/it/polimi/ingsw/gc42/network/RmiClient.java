@@ -19,7 +19,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -29,7 +28,6 @@ public class RmiClient implements NetworkController, Serializable {
     private int port = 23689;
     private Registry registry;
     private Registry localRegistry;
-    //private RemoteCollection games;
     private RemoteServer server;
     private int gameID;
     private boolean isConnected = false;
@@ -444,6 +442,11 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public RemoteServer getServer() throws RemoteException {
         return server;
+    }
+
+    @Override
+    public void rejoinGame(int playerID) throws RemoteException {
+        server.rejoinGame(gameID, playerID);
     }
 
     @Override

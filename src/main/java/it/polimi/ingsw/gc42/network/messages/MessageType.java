@@ -84,6 +84,7 @@ public enum MessageType {
 
     CLIENT_STATE,
 
-    DISCONNECT_PLAYER
+    DISCONNECT_PLAYER,
+    REJOIN_GAME
 
 }
