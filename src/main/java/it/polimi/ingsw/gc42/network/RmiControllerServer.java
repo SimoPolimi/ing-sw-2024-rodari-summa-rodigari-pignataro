@@ -12,6 +12,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class RmiControllerServer implements ServerNetworkController, Serializable {
@@ -38,26 +40,16 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
     }
 
     private void connect() throws IOException, AlreadyBoundException {
-        System.out.println("Constructing Server Implementation...");
-
-        System.out.println("Binding Server Implementation to registry...");
-        // Temporarily creates a Socket with port 0 because it gets assigned a random available port
-        //ServerSocket serverSocket = new ServerSocket(0);
-        // Use that port in the RMI connection
-        //port = serverSocket.getLocalPort();
-        // Closes the socket because it's not needed anymore
-        //serverSocket.close();
-        // Uses that port in combination with the current IP Address to create an RMI Registry
-        registry = LocateRegistry.createRegistry(port);
+        try {
+            registry = LocateRegistry.createRegistry(port);
+        } catch (ExportException e) {
+            registry = LocateRegistry.getRegistry(port);
+        }
         server = new ServerManager(port);
         // Puts the shared GameCollection inside the ServerManager
         server.setCollection(games);
-        registry.bind("ServerManager", server);
+        registry.rebind("ServerManager", server);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
-        System.out.println("Open for connections at: " + ipAddress
-                + ", " + port);
-
-        System.out.println("Waiting for invocations from clients...");
         // Executes the GUI refresh Code to show the IP and Port in Server's GUI
         onReady.run();
     }
@@ -65,6 +57,8 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
     @Override
     public void stop() throws NotBoundException, RemoteException {
         registry.unbind("ServerManager");
+        UnicastRemoteObject.unexportObject(server, true);
+        registry = null;
         System.out.println("Server stopped");
     }
 

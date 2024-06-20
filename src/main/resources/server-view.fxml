@@ -14,7 +14,7 @@
             <children>
                 <VBox fx:id="leftContainer" maxHeight="-Infinity" minWidth="200.0" prefHeight="200" spacing="20.0">
                     <children>
-                        <HBox fx:id="titleContainer" spacing="10" alignment="CENTER_LEFT">
+                        <HBox fx:id="titleContainer" alignment="CENTER_LEFT" spacing="10">
                             <children>
                                 <ImageView fx:id="logo" fitWidth="40" preserveRatio="true" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
                                     <image>
@@ -132,6 +132,11 @@
                                         </ImageView>
                                     </children>
                                 </HBox>
+                        <Text fx:id="errorTxt" fill="RED" text="Server is already running!" textAlignment="CENTER" underline="true" visible="false">
+                           <font>
+                              <Font name="Tahoma Bold" size="15.0" />
+                           </font>
+                        </Text>
                             </children>
                         </VBox>
                         <VBox alignment="CENTER">

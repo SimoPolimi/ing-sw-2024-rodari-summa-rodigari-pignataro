@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -25,12 +26,15 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.net.BindException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Objects;
 
 public class Server extends Application {
+    private static String[] args;
+
     private ServerNetworkController rmiController;
     private ServerNetworkController socketController;
     private boolean isRunning = false;
@@ -59,6 +63,8 @@ public class Server extends Application {
     private ImageView socketPortCopyIcon;
     @FXML
     private ScrollPane gamesList;
+    @FXML
+    private Text errorTxt;
 
 
     public static void main(String[] args) {
@@ -77,7 +83,8 @@ public class Server extends Application {
     }
 
     @FXML
-    public void toggleServer() throws IOException, NotBoundException, AlreadyBoundException {
+    public void toggleServer() throws IOException, NotBoundException {
+        errorTxt.setVisible(false);
         // Animates the button
         if (canReadInput) {
             canReadInput = false;
@@ -127,8 +134,12 @@ public class Server extends Application {
                 socketController.setCollection(collection);
 
                 // Starts both connections
-                rmiController.start();
-                socketController.start();
+                try {
+                    rmiController.start();
+                    socketController.start();
+                } catch (AlreadyBoundException | BindException e) {
+                    errorTxt.setVisible(true);
+                }
                 isRunning = true;
             } else {
                 // Closes the RMI Connection

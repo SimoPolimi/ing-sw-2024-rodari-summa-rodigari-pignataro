@@ -21,6 +21,7 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class SocketControllerServer implements ServerNetworkController, Serializable {
+    private ServerSocket serverSocket;
     private String ipAddress;
     private int port = 23690;
     private Runnable onReady;
@@ -301,15 +302,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
 
     @Override
     public void start() throws IOException {
-        // TODO: Create connection
-        ServerSocket serverSocket;
-        try {
-            //serverSocket = new ServerSocket(0);
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        serverSocket = new ServerSocket(port);
         ipAddress = InetAddress.getLocalHost().getHostAddress();
         //port = serverSocket.getLocalPort();
         System.out.println("Server socket created");
@@ -361,7 +354,6 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                         }
                     });
                 } catch (IOException e) {
-                    e.printStackTrace();
                     break; // Server is closed
                 }
             }
@@ -370,7 +362,13 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
 
     @Override
     public void stop() {
-        // TODO: Close connection
+        try {
+            if (null != serverSocket) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
