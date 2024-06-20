@@ -235,6 +235,18 @@
                             </StackPane>
                         </children>
                     </AnchorPane>
+                    <VBox fx:id="settingsContainer" maxHeight="100" maxWidth="100" onMouseClicked="#toggleSettingsDialog" AnchorPane.leftAnchor="50" AnchorPane.bottomAnchor="50">
+                        <children>
+                            <ImageView fitWidth="100" preserveRatio="true">
+                                <image>
+                                    <Image url="@settings_Icon.png" />
+                                </image>
+                            </ImageView>
+                        </children>
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </VBox>
                 </children>
             </AnchorPane>
 
@@ -309,18 +321,6 @@
             <Insets bottom="15.0" />
          </padding>
         </StackPane>
-        <VBox fx:id="settingsContainer" maxHeight="100" maxWidth="100" onMouseClicked="#toggleSettingsDialog" translateX="-800.0" translateY="400.0">
-            <children>
-                <ImageView fitWidth="100" preserveRatio="true">
-                    <image>
-                        <Image url="@settings_Icon.png" />
-                    </image>
-                </ImageView>
-            </children>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-        </VBox>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
 

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.gc42.view.Dialog;
 
+import it.polimi.ingsw.gc42.model.interfaces.Listener;
+import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.view.GUIController;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -13,15 +16,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class SettingsDialog extends Dialog {
+public class SettingsDialog extends Dialog implements Observable {
     // Attributes
     private final GUIController controller;
+
+    private final ArrayList<Listener> listeners = new ArrayList<>();
 
     /**
      * Constructor Method
@@ -164,7 +170,27 @@ public class SettingsDialog extends Dialog {
         mode3.getChildren().addAll(mode3Image, mode3Text);
 
         hbox.getChildren().addAll(mode1, mode2, mode3);
-        container.getChildren().addAll(text1, hbox);
+
+        HBox buttonContainer = new HBox();
+        buttonContainer.setAlignment(Pos.CENTER);
+
+        Button closeButton = new Button();
+        closeButton.setText("Close");
+        closeButton.setFont(Font.font("Tahoma Bold", 20));
+        closeButton.setTextFill(Color.WHITE);
+        closeButton.setStyle("-fx-background-color: forestgreen; -fx-background-radius: 15");
+        closeButton.setTextAlignment(TextAlignment.CENTER);
+        closeButton.setCursor(Cursor.HAND);
+        closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.hideDialog();
+            }
+        });
+
+        buttonContainer.getChildren().add(closeButton);
+
+        container.getChildren().addAll(text1, hbox, buttonContainer);
 
         super.container.getChildren().add(container);
         return super.container;
@@ -173,5 +199,22 @@ public class SettingsDialog extends Dialog {
     @Override
     public void onKeyPressed(String key) {
 
+    }
+
+    @Override
+    public void setListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(String context) {
+        for (Listener l: listeners) {
+            l.onEvent();
+        }
     }
 }

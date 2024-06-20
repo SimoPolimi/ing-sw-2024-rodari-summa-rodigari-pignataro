@@ -838,7 +838,13 @@ public class GUIController implements ViewController {
     @FXML
     public void toggleSettingsDialog() {
         if (!isShowingGlobalMap) {
-            SettingsDialog dialog = new SettingsDialog("Settings", true, this);
+            SettingsDialog dialog = new SettingsDialog("Settings", false, this);
+            dialog.setListener(new Listener() {
+                @Override
+                public void onEvent() {
+                    hideDialog();
+                }
+            });
             showDialog(dialog);
         }
     }
