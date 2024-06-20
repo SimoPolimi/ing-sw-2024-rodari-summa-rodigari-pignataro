@@ -43,6 +43,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GUIController implements ViewController {
     // Imports from the GUI
@@ -201,41 +202,53 @@ public class GUIController implements ViewController {
     }
 
     private void setOtherPlayers(int numberOfPlayers) throws RemoteException {
-        boolean isRightTableEmpty = true;
-        boolean isTopTableEmpty = true;
-        boolean isLeftTableEmpty = true;
+        AtomicBoolean isRightTableEmpty = new AtomicBoolean(true);
+        AtomicBoolean isTopTableEmpty = new AtomicBoolean(true);
+        AtomicBoolean isLeftTableEmpty = new AtomicBoolean(true);
         ArrayList<Integer> players = new ArrayList<>();
         for (int i = 1; i <= numberOfPlayers; i++) {
             if (i != playerID && !players.contains(i)) {
                 players.add(i);
-                if (numberOfPlayers == 2 && isTopTableEmpty) {
-                    isTopTableEmpty = false;
-                    topTable = new TableView(true, this, controller);
-                    topTable.setPlayer(i);
-                    topPlayerTableContainer.getChildren().add(topTable.getPane());
-                } else if (numberOfPlayers > 2 && isRightTableEmpty) {
-                    isRightTableEmpty = false;
-                    rightTable = new TableView(true, this, controller);
-                    rightTable.setPlayer(i);
-                    rightPlayerTableContainer.getChildren().add(rightTable.getPane());
-                } else if (numberOfPlayers == 4 && isTopTableEmpty) {
-                    isTopTableEmpty = false;
-                    topTable = new TableView(true, this, controller);
-                    topTable.setPlayer(i);
-                    topPlayerTableContainer.getChildren().add(topTable.getPane());
-                } else if (numberOfPlayers >= 3 && isLeftTableEmpty){
-                    isLeftTableEmpty = false;
-                    leftTable = new TableView(true, this, controller);
-                    leftTable.setPlayer(i);
-                    leftPlayerTableContainer.getChildren().add(leftTable.getPane());
+                if (numberOfPlayers == 2 && isTopTableEmpty.get()) {
+                    int finalI1 = i;
+                    Platform.runLater(() -> {
+                        isTopTableEmpty.set(false);
+                        topTable = new TableView(true, this, controller);
+                        topTable.setPlayer(finalI1);
+                        topPlayerTableContainer.getChildren().add(topTable.getPane());
+                    });
+                } else if (numberOfPlayers > 2 && isRightTableEmpty.get()) {
+                    int finalI = i;
+                    Platform.runLater(() -> {
+                        isRightTableEmpty.set(false);
+                        rightTable = new TableView(true, this, controller);
+                        rightTable.setPlayer(finalI);
+                        rightPlayerTableContainer.getChildren().add(rightTable.getPane());
+                    });
+                } else if (numberOfPlayers == 4 && isTopTableEmpty.get()) {
+                    int finalI2 = i;
+                    Platform.runLater(() -> {
+                        isTopTableEmpty.set(false);
+                        topTable = new TableView(true, this, controller);
+                        topTable.setPlayer(finalI2);
+                        topPlayerTableContainer.getChildren().add(topTable.getPane());
+                    });
+                } else if (numberOfPlayers >= 3 && isLeftTableEmpty.get()){
+                    int finalI3 = i;
+                    Platform.runLater(() -> {
+                        isLeftTableEmpty.set(false);
+                        leftTable = new TableView(true, this, controller);
+                        leftTable.setPlayer(finalI3);
+                        leftPlayerTableContainer.getChildren().add(leftTable.getPane());
+                    });
                 }
             }
         }
-        notifyCommonObjectivesChanged();
-        notifySlotCardChanged(CardType.RESOURCECARD, 1);
-        notifySlotCardChanged(CardType.RESOURCECARD, 2);
-        notifySlotCardChanged(CardType.GOLDCARD, 1);
-        notifySlotCardChanged(CardType.GOLDCARD, 2);
+        Platform.runLater(this::notifyCommonObjectivesChanged);
+        Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 1));
+        Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 2));
+        Platform.runLater(() -> notifySlotCardChanged(CardType.GOLDCARD, 1));
+        Platform.runLater(() -> notifySlotCardChanged(CardType.GOLDCARD, 2));
     }
 
     public boolean isShowingDialog() {
@@ -316,65 +329,69 @@ public class GUIController implements ViewController {
     }
 
     public void showDialog(Dialog content) {
-        if (!isShowingDialog) {
-            showingDialog = content;
-            dialog.getChildren().clear();
-            dialog.getChildren().add(content.build());
+        Platform.runLater(() -> {
+            if (!isShowingDialog) {
+                showingDialog = content;
+                dialog.getChildren().clear();
+                dialog.getChildren().add(content.build());
 
-            blockInput();
-            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), dialog);
-            transition.setFromX(0);
-            transition.setToX(1.1);
-            transition.setFromY(0);
-            transition.setToY(1.1);
-            transition.setInterpolator(Interpolator.TANGENT(Duration.millis(currentAnimationSpeed), 1));
-            ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
-            bounceBack.setFromX(1.1);
-            bounceBack.setToX(1);
-            bounceBack.setFromY(1.1);
-            bounceBack.setToY(1);
+                blockInput();
+                ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), dialog);
+                transition.setFromX(0);
+                transition.setToX(1.1);
+                transition.setFromY(0);
+                transition.setToY(1.1);
+                transition.setInterpolator(Interpolator.TANGENT(Duration.millis(currentAnimationSpeed), 1));
+                ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
+                bounceBack.setFromX(1.1);
+                bounceBack.setToX(1);
+                bounceBack.setFromY(1.1);
+                bounceBack.setToY(1);
 
-            transition.setOnFinished(e -> bounceBack.play());
-            bounceBack.setOnFinished(e -> unlockInput());
+                transition.setOnFinished(e -> bounceBack.play());
+                bounceBack.setOnFinished(e -> unlockInput());
 
-            table.getHand().deselectAllCards(true);
-            setShowingDialog(true);
-            backgroundContainer.setEffect(new GaussianBlur(10));
-            if (content.isDismissible()) {
-                backgroundContainer.setOnMouseClicked((e) -> {
-                    hideDialog();
-                });
+                table.getHand().deselectAllCards(true);
+                setShowingDialog(true);
+                backgroundContainer.setEffect(new GaussianBlur(10));
+                if (content.isDismissible()) {
+                    backgroundContainer.setOnMouseClicked((e) -> {
+                        hideDialog();
+                    });
+                }
+                dialog.setVisible(true);
+                transition.play();
+            } else {
+                dialogQueue.add(content);
             }
-            dialog.setVisible(true);
-            transition.play();
-        } else {
-            dialogQueue.add(content);
-        }
+        });
     }
 
     public void hideDialog() {
-        blockInput();
-        ScaleTransition bounce = new ScaleTransition(Duration.millis(80), dialog);
-        bounce.setFromX(1);
-        bounce.setToX(1.1);
-        bounce.setFromY(1);
-        bounce.setToY(1.1);
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), dialog);
-        transition.setFromX(1.1);
-        transition.setToX(0);
-        transition.setFromY(1.1);
-        transition.setToY(0);
+        Platform.runLater(() -> {
+            blockInput();
+            ScaleTransition bounce = new ScaleTransition(Duration.millis(80), dialog);
+            bounce.setFromX(1);
+            bounce.setToX(1.1);
+            bounce.setFromY(1);
+            bounce.setToY(1.1);
+            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), dialog);
+            transition.setFromX(1.1);
+            transition.setToX(0);
+            transition.setFromY(1.1);
+            transition.setToY(0);
 
-        bounce.setOnFinished(e -> transition.play());
-        transition.setOnFinished(e -> {
-            dialog.setVisible(false);
-            dialog.getChildren().clear();
-            unlockInput();
-            setShowingDialog(false);
+            bounce.setOnFinished(e -> transition.play());
+            transition.setOnFinished(e -> {
+                dialog.setVisible(false);
+                dialog.getChildren().clear();
+                unlockInput();
+                setShowingDialog(false);
+            });
+            backgroundContainer.setEffect(null);
+            backgroundContainer.setOnMouseClicked(null);
+            bounce.play();
         });
-        backgroundContainer.setEffect(null);
-        backgroundContainer.setOnMouseClicked(null);
-        bounce.play();
     }
 
     public void onDialogKeyboardPressed(String key) {
@@ -383,24 +400,28 @@ public class GUIController implements ViewController {
 
     @Override
     public void showSecretObjectivesSelectionDialog() {
-        CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
-        ArrayList<ObjectiveCard> cards = controller.getTemporaryObjectiveCards(playerID);
-        for (ObjectiveCard card : cards) {
-            dialog.addCard(card);
-        }
-        dialog.setListener(new CardPickerListener() {
-            @Override
-            public void onEvent() {
-                controller.setPlayerSecretObjective(playerID, dialog.getPickedCardNumber());
-                hideDialog();
-                controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+        Thread thread = new Thread(() -> {
+            CardPickerDialog dialog = new CardPickerDialog("Choose a Secret Objective!", false, false, this);
+            ArrayList<ObjectiveCard> cards = controller.getTemporaryObjectiveCards(playerID);
+            for (ObjectiveCard card : cards) {
+                dialog.addCard(card);
             }
+            dialog.setListener(new CardPickerListener() {
+                @Override
+                public void onEvent() {
+                    controller.setPlayerSecretObjective(playerID, dialog.getPickedCardNumber());
+                    hideDialog();
+                    controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+                }
+            });
+            Platform.runLater(() -> showDialog(dialog));
         });
-        Platform.runLater(() -> showDialog(dialog));
+        thread.start();
     }
 
     @Override
     public void showStarterCardSelectionDialog() {
+        Thread thread = new Thread(() -> {
         CardPickerDialog dialog = new CardPickerDialog("This is your Starter Card, choose a Side!", false
                 , true, this);
         StarterCard card = controller.getTemporaryStarterCard(playerID);
@@ -418,20 +439,25 @@ public class GUIController implements ViewController {
             }
         });
         Platform.runLater(() -> showDialog(dialog));
+        });
+        thread.start();
     }
 
     @Override
     public void showTokenSelectionDialog() {
-        SharedTokenPickerDialog dialog = new SharedTokenPickerDialog("Pick your Token!", false, this);
-        dialog.setListener(new TokenListener() {
-            @Override
-            public void onEvent() {
-                controller.setPlayerToken(playerID, dialog.getPickedToken());
-                hideDialog();
-                controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
-            }
+        Thread thread = new Thread(() -> {
+            SharedTokenPickerDialog dialog = new SharedTokenPickerDialog("Pick your Token!", false, this);
+            dialog.setListener(new TokenListener() {
+                @Override
+                public void onEvent() {
+                    controller.setPlayerToken(playerID, dialog.getPickedToken());
+                    hideDialog();
+                    controller.setPlayerStatus(playerID, GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+                }
+            });
+            Platform.runLater(() -> showDialog(dialog));
         });
-        Platform.runLater(() -> showDialog(dialog));
+        thread.start();
     }
 
     public void onEnterPressed() {
@@ -449,23 +475,23 @@ public class GUIController implements ViewController {
     }
 
     private void initMiniScoreBoard() throws RemoteException {
-        ArrayList<Player> notOrderedPlayers = new ArrayList<>();
-        int number = controller.getNumberOfPlayers();
-        ArrayList<HashMap<String, String>> allPlayers = controller.getPlayersInfo();
-        for (HashMap<String, String> player: allPlayers) {
-            Player newPlayer = new Player(player.get("Nickname"));
-            newPlayer.setPoints(Integer.parseInt(player.get("Points")));
-            Token token = null;
-            switch (player.get("Token")) {
-                case "Blue" -> token = Token.BLUE;
-                case "Red" -> token = Token.RED;
-                case "Yellow" -> token = Token.YELLOW;
-                case "Green" -> token = Token.GREEN;
+        Thread thread = new Thread(() -> {
+            ArrayList<Player> notOrderedPlayers = new ArrayList<>();
+            int number = controller.getNumberOfPlayers();
+            ArrayList<HashMap<String, String>> allPlayers = controller.getPlayersInfo();
+            for (HashMap<String, String> player : allPlayers) {
+                Player newPlayer = new Player(player.get("Nickname"));
+                newPlayer.setPoints(Integer.parseInt(player.get("Points")));
+                Token token = null;
+                switch (player.get("Token")) {
+                    case "Blue" -> token = Token.BLUE;
+                    case "Red" -> token = Token.RED;
+                    case "Yellow" -> token = Token.YELLOW;
+                    case "Green" -> token = Token.GREEN;
+                }
+                newPlayer.setToken(token);
+                notOrderedPlayers.add(newPlayer);
             }
-            newPlayer.setToken(token);
-            notOrderedPlayers.add(newPlayer);
-        }
-        Platform.runLater(() -> {
             ArrayList<Player> players = new ArrayList<>();
             ArrayList<Integer> alreadySeen = new ArrayList<>();
             // Players are ordered by their points
@@ -482,54 +508,57 @@ public class GUIController implements ViewController {
                 alreadySeen.add(currentMax);
             }
 
-            miniScoreboardContainer.getChildren().clear();
-            for (Player player : players) {
-                if (null != player.getToken()) {
-                    ImageView tokenView = null;
-                    switch (player.getToken()) {
-                        case BLUE ->
-                                tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
-                        case RED ->
-                                tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
-                        case YELLOW ->
-                                tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
-                        case GREEN ->
-                                tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+            Platform.runLater(() -> {
+                miniScoreboardContainer.getChildren().clear();
+                for (Player player : players) {
+                    if (null != player.getToken()) {
+                        ImageView tokenView = null;
+                        switch (player.getToken()) {
+                            case BLUE ->
+                                    tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/blueToken.png"))));
+                            case RED ->
+                                    tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/redToken.png"))));
+                            case YELLOW ->
+                                    tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/yellowToken.png"))));
+                            case GREEN ->
+                                    tokenView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/greenToken.png"))));
+                        }
+                        tokenView.setPreserveRatio(true);
+                        tokenView.setFitWidth(15);
+
+                        Label name = new Label(player.getNickname());
+                        name.setFont(Font.font("Tahoma Regular", 15));
+                        name.setTextOverrun(OverrunStyle.ELLIPSIS);
+                        name.setTextAlignment(TextAlignment.LEFT);
+                        name.setMaxWidth(100);
+                        name.setMinWidth(50);
+
+                        if (players.indexOf(player) == 0) {
+                            name.setTextFill(Paint.valueOf("gold"));
+                        } else {
+                            name.setTextFill(Paint.valueOf("white"));
+                        }
+                        name.setTextAlignment(TextAlignment.LEFT);
+
+                        Text points = new Text(String.valueOf(player.getPoints()));
+                        points.setFont(Font.font("Tahoma Bold", 12));
+                        points.setStrokeWidth(25);
+                        if (players.indexOf(player) == 0) {
+                            points.setFill(Paint.valueOf("gold"));
+                        } else {
+                            points.setFill(Paint.valueOf("white"));
+                        }
+
+                        HBox container = new HBox(tokenView, name, points);
+                        container.setAlignment(Pos.CENTER_LEFT);
+                        container.setSpacing(5);
+
+                        miniScoreboardContainer.getChildren().add(container);
                     }
-                    tokenView.setPreserveRatio(true);
-                    tokenView.setFitWidth(15);
-
-                    Label name = new Label(player.getNickname());
-                    name.setFont(Font.font("Tahoma Regular", 15));
-                    name.setTextOverrun(OverrunStyle.ELLIPSIS);
-                    name.setTextAlignment(TextAlignment.LEFT);
-                    name.setMaxWidth(100);
-                    name.setMinWidth(50);
-
-                    if (players.indexOf(player) == 0) {
-                        name.setTextFill(Paint.valueOf("gold"));
-                    } else {
-                        name.setTextFill(Paint.valueOf("white"));
-                    }
-                    name.setTextAlignment(TextAlignment.LEFT);
-
-                    Text points = new Text(String.valueOf(player.getPoints()));
-                    points.setFont(Font.font("Tahoma Bold", 12));
-                    points.setStrokeWidth(25);
-                    if (players.indexOf(player) == 0) {
-                        points.setFill(Paint.valueOf("gold"));
-                    } else {
-                        points.setFill(Paint.valueOf("white"));
-                    }
-
-                    HBox container = new HBox(tokenView, name, points);
-                    container.setAlignment(Pos.CENTER_LEFT);
-                    container.setSpacing(5);
-
-                    miniScoreboardContainer.getChildren().add(container);
                 }
-            }
+            });
         });
+        thread.start();
     }
 
     public void refreshScoreBoard() {
@@ -624,24 +653,33 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyDeckChanged(CardType type) {
-        switch (type) {
-            case RESOURCECARD -> commonTable.refreshResourceDeck();
-            case GOLDCARD -> commonTable.refreshGoldDeck();
-        }
+        Thread thread = new Thread(() -> {
+            switch (type) {
+                case RESOURCECARD -> commonTable.refreshResourceDeck();
+                case GOLDCARD -> commonTable.refreshGoldDeck();
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void notifySlotCardChanged(CardType type, int slot) {
+        Thread thread = new Thread(() -> {
         switch (type) {
             case RESOURCECARD -> commonTable.refreshResourceSlot(slot);
             case GOLDCARD -> commonTable.refreshGoldSlot(slot);
         }
+        });
+        thread.start();
     }
 
     @Override
     public void notifyPlayersPointsChanged(Token token, int newPoints) {
-        refreshScoreBoard();
-        Platform.runLater(() -> scoreBoard.animatePath(token, newPoints));
+        Thread thread = new Thread(() -> {
+            refreshScoreBoard();
+            scoreBoard.animatePath(token, newPoints);
+        });
+        thread.start();
     }
 
     @Override
@@ -651,94 +689,115 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyPlayersTokenChanged(int playerID) {
-        if (this.playerID == playerID) {
-            table.refreshToken();
-        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-            rightTable.refreshToken();
-        } else if (null != topTable && playerID == topTable.getPlayer()) {
-            topTable.refreshToken();
-        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-            leftTable.refreshToken();
-        }
-        Token token = controller.getPlayerToken(playerID);
-        if (this.playerID != playerID && isShowingDialog && showingDialog instanceof SharedTokenPickerDialog) {
-            ((SharedTokenPickerDialog) showingDialog).grayToken(token);
-        }
-        scoreBoard.setTokenInPosition(token, 0);
+        Thread thread = new Thread(() -> {
+            if (this.playerID == playerID) {
+                table.refreshToken();
+            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+                rightTable.refreshToken();
+            } else if (null != topTable && playerID == topTable.getPlayer()) {
+                topTable.refreshToken();
+            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+                leftTable.refreshToken();
+            }
+            Token token = controller.getPlayerToken(playerID);
+            if (this.playerID != playerID && isShowingDialog && showingDialog instanceof SharedTokenPickerDialog) {
+                ((SharedTokenPickerDialog) showingDialog).grayToken(token);
+            }
+            scoreBoard.setTokenInPosition(token, 0);
+        });
+        thread.start();
     }
 
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
-        if (this.playerID == playerID) {
-            table.refreshPlayArea();
-        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-            rightTable.refreshPlayArea();
-        } else if (null != topTable && playerID == topTable.getPlayer()) {
-            topTable.refreshPlayArea();
-        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-            leftTable.refreshPlayArea();
-        }
+        Thread thread = new Thread(() -> {
+            if (this.playerID == playerID) {
+                table.refreshPlayArea();
+            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+                rightTable.refreshPlayArea();
+            } else if (null != topTable && playerID == topTable.getPlayer()) {
+                topTable.refreshPlayArea();
+            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+                leftTable.refreshPlayArea();
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void notifyPlayersHandChanged(int playerID) {
-        if (this.playerID == playerID) {
-            table.refreshHand();
-        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-            rightTable.refreshHand();
-        } else if (null != topTable && playerID == topTable.getPlayer()) {
-            topTable.refreshHand();
-        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-            leftTable.refreshHand();
-        }
+        Thread thread = new Thread(() -> {
+            if (this.playerID == playerID) {
+                table.refreshHand();
+            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+                rightTable.refreshHand();
+            } else if (null != topTable && playerID == topTable.getPlayer()) {
+                topTable.refreshHand();
+            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+                leftTable.refreshHand();
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void notifyHandCardWasFlipped(int playedID, int cardID) {
-        if (this.playerID == playedID) {
-            table.flipCard(cardID+1);
-        }
+        Thread thread = new Thread(() -> {
+            if (this.playerID == playedID) {
+                table.flipCard(cardID + 1);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void notifyPlayersObjectiveChanged(int playerID) {
-        if (this.playerID == playerID) {
-            table.refreshSecretObjective();
-        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-            rightTable.refreshSecretObjective();
-        } else if (null != topTable && playerID == topTable.getPlayer()) {
-            topTable.refreshSecretObjective();
-        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-            leftTable.refreshSecretObjective();
-        }
+        Thread thread = new Thread(() -> {
+            if (this.playerID == playerID) {
+                table.refreshSecretObjective();
+            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+                rightTable.refreshSecretObjective();
+            } else if (null != topTable && playerID == topTable.getPlayer()) {
+                topTable.refreshSecretObjective();
+            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+                leftTable.refreshSecretObjective();
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void notifyCommonObjectivesChanged() {
-        commonTable.refreshCommonObjectives();
+        Thread thread = new Thread(() -> commonTable.refreshCommonObjectives());
+        thread.start();
     }
 
     @Override
     public void notifyTurnChanged() {
-        if (controller.getPlayerTurn() == playerID) {
-            table.setCanPlayCards(true);
-            InnerShadow glow = new InnerShadow();
-            glow.setBlurType(BlurType.GAUSSIAN);
-            glow.setColor(Color.GOLD);
-            glow.setWidth(200);
-            glow.setHeight(200);
-            root.setEffect(glow);
-        } else {
-            table.setCanPlayCards(false);
-            root.setEffect(null);
-        }
+        Platform.runLater(() -> {
+            if (controller.getPlayerTurn() == playerID) {
+                table.setCanPlayCards(true);
+                InnerShadow glow = new InnerShadow();
+                glow.setBlurType(BlurType.GAUSSIAN);
+                glow.setColor(Color.GOLD);
+                glow.setWidth(200);
+                glow.setHeight(200);
+                root.setEffect(glow);
+            } else {
+                table.setCanPlayCards(false);
+                root.setEffect(null);
+            }
+        });
     }
 
     @Override
     public void showWaitingForServerDialog() {
-        TextDialog dialog = new TextDialog("Waiting for Server...", false);
-        showDialog(dialog);
-        controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+        Thread thread = new Thread(() -> {
+            TextDialog dialog = new TextDialog("Waiting for Server...", false);
+            showDialog(dialog);
+            controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+        });
+        thread.start();
     }
 
     @Override
@@ -746,14 +805,15 @@ public class GUIController implements ViewController {
         if (isShowingDialog) {
             hideDialog();
         }
-        Platform.runLater(() -> {
+        Thread thread = new Thread(() -> {
             try {
                 setOtherPlayers(numberOfPlayers);
+                controller.setPlayerStatus(playerID, GameStatus.READY);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         });
-        controller.setPlayerStatus(playerID, GameStatus.READY);
+        thread.start();
     }
 
     @FXML
@@ -768,39 +828,43 @@ public class GUIController implements ViewController {
     }
 
     private void showGlobalMap() {
-        if (!table.getHand().isHidden()) {
-            table.getHand().deselectAllCards(false);
-            table.getHand().hide();
-        }
-        if (table.getSecretObjective().isShowingDetails()) {
-            table.getSecretObjective().rotate();
-        }
+        Platform.runLater(() -> {
+            if (!table.getHand().isHidden()) {
+                table.getHand().deselectAllCards(false);
+                table.getHand().hide();
+            }
+            if (table.getSecretObjective().isShowingDetails()) {
+                table.getSecretObjective().rotate();
+            }
 
-        blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
-        transition.setFromX(currentUIScale);
-        transition.setFromY(currentUIScale);
-        transition.setToX(0.4);
-        transition.setToY(0.4);
-        transition.setOnFinished((e) -> {
-            isShowingGlobalMap = true;
-            unlockInput();
+            blockInput();
+            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
+            transition.setFromX(currentUIScale);
+            transition.setFromY(currentUIScale);
+            transition.setToX(0.4);
+            transition.setToY(0.4);
+            transition.setOnFinished((e) -> {
+                isShowingGlobalMap = true;
+                unlockInput();
+            });
+            transition.play();
         });
-        transition.play();
     }
 
     private void hideGlobalMap() {
-        blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
-        transition.setFromX(0.4);
-        transition.setFromY(0.4);
-        transition.setToX(currentUIScale);
-        transition.setToY(currentUIScale);
-        transition.setOnFinished((e) -> {
-            isShowingGlobalMap = false;
-            unlockInput();
+        Platform.runLater(() -> {
+            blockInput();
+            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
+            transition.setFromX(0.4);
+            transition.setFromY(0.4);
+            transition.setToX(currentUIScale);
+            transition.setToY(currentUIScale);
+            transition.setOnFinished((e) -> {
+                isShowingGlobalMap = false;
+                unlockInput();
+            });
+            transition.play();
         });
-        transition.play();
     }
 
     @FXML
@@ -825,17 +889,21 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {
-        root.setEffect(null);
-        EndGameDialog dialog = new EndGameDialog("The End", false, points, this);
-        Platform.runLater(() -> {
-            showDialog(dialog);
-            dialog.animate();
+        Thread thread = new Thread(() -> {
+            root.setEffect(null);
+            EndGameDialog dialog = new EndGameDialog("The End", false, points, this);
+            Platform.runLater(() -> {
+                showDialog(dialog);
+                dialog.animate();
+            });
         });
+        thread.start();
     }
 
     @Override
     public void notifyNewMessage(ChatMessage message) {
-        chat.addMessage(message);
+        Thread thread = new Thread(() -> chat.addMessage(message));
+        thread.start();
     }
 
     @FXML
@@ -853,28 +921,30 @@ public class GUIController implements ViewController {
     }
 
     public void resizeUI(double scale) {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), uiContainer);
-        transition.setFromX(currentUIScale);
-        transition.setFromY(currentUIScale);
-        transition.setToX(scale);
-        transition.setToY(scale);
-        transition.play();
+        Platform.runLater(() -> {
+            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), uiContainer);
+            transition.setFromX(currentUIScale);
+            transition.setFromY(currentUIScale);
+            transition.setToX(scale);
+            transition.setToY(scale);
+            transition.play();
 
-        TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(currentAnimationSpeed), chatContainer);
-        chatTranslate.setFromX(chatContainer.getTranslateX());
-        chatTranslate.setToX(chatContainer.getTranslateX() + ((currentUIScale-scale)*900));
-        chatTranslate.setFromY(chatContainer.getTranslateY());
-        chatTranslate.setToY(chatContainer.getTranslateY() + ((currentUIScale-scale)*500));
-        chatTranslate.play();
+            TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(currentAnimationSpeed), chatContainer);
+            chatTranslate.setFromX(chatContainer.getTranslateX());
+            chatTranslate.setToX(chatContainer.getTranslateX() + ((currentUIScale - scale) * 900));
+            chatTranslate.setFromY(chatContainer.getTranslateY());
+            chatTranslate.setToY(chatContainer.getTranslateY() + ((currentUIScale - scale) * 500));
+            chatTranslate.play();
 
-        TranslateTransition miniScoreboardTranslate = new TranslateTransition(Duration.millis(currentAnimationSpeed), miniScoreboardContainer);
-        miniScoreboardTranslate.setFromX(miniScoreboardContainer.getTranslateX());
-        miniScoreboardTranslate.setToX(miniScoreboardContainer.getTranslateX() - ((currentUIScale-scale)*900));
-        miniScoreboardTranslate.setFromY(miniScoreboardContainer.getTranslateY());
-        miniScoreboardTranslate.setToY(miniScoreboardContainer.getTranslateY() - ((currentUIScale-scale)*500));
-        miniScoreboardTranslate.play();
+            TranslateTransition miniScoreboardTranslate = new TranslateTransition(Duration.millis(currentAnimationSpeed), miniScoreboardContainer);
+            miniScoreboardTranslate.setFromX(miniScoreboardContainer.getTranslateX());
+            miniScoreboardTranslate.setToX(miniScoreboardContainer.getTranslateX() - ((currentUIScale - scale) * 900));
+            miniScoreboardTranslate.setFromY(miniScoreboardContainer.getTranslateY());
+            miniScoreboardTranslate.setToY(miniScoreboardContainer.getTranslateY() - ((currentUIScale - scale) * 500));
+            miniScoreboardTranslate.play();
 
-        currentUIScale = scale;
+            currentUIScale = scale;
+        });
     }
 
     public double getCurrentUIScale() {

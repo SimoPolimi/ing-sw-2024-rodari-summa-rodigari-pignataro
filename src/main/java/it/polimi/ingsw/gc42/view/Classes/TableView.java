@@ -468,7 +468,7 @@ public class TableView {
         Token token = server.getPlayerToken(playerID);
         if (null != token) {
             setPlayerToken(token);
-            Platform.runLater(() -> controller.refreshScoreBoard());
+            controller.refreshScoreBoard();
         }
     }
 
@@ -476,8 +476,8 @@ public class TableView {
      * Adds the last played Card to the PlayArea
      */
     public void refreshPlayArea() {
-        PlayableCard card = server.getPlayersLastPlayedCard(playerID);
         Platform.runLater(() -> {
+            PlayableCard card = server.getPlayersLastPlayedCard(playerID);
             addToPlayArea(card, card.getX(), card.getY());
         });
     }
@@ -486,34 +486,38 @@ public class TableView {
      * Refreshes the Hand
      */
     public void refreshHand() {
-        Card card1;
-        try {
-            card1= server.getPlayersHandCard(playerID, 0);
-        } catch (IllegalArgumentException e) {
-            card1 = null;
-        }
-        Card card2;
-        try {
-            card2= server.getPlayersHandCard(playerID, 1);
-        } catch (IllegalArgumentException e) {
-            card2 = null;
-        }
-        Card card3;
-        try {
-            card3 = server.getPlayersHandCard(playerID, 2);
-        } catch (IllegalArgumentException e) {
-            card3 = null;
-        }
-        hand.getHandCardView(1).setModelCard(card1);
-        hand.getHandCardView(2).setModelCard(card2);
-        hand.getHandCardView(3).setModelCard(card3);
+        Platform.runLater(() -> {
+            Card card1;
+            try {
+                card1 = server.getPlayersHandCard(playerID, 0);
+            } catch (IllegalArgumentException e) {
+                card1 = null;
+            }
+            Card card2;
+            try {
+                card2 = server.getPlayersHandCard(playerID, 1);
+            } catch (IllegalArgumentException e) {
+                card2 = null;
+            }
+            Card card3;
+            try {
+                card3 = server.getPlayersHandCard(playerID, 2);
+            } catch (IllegalArgumentException e) {
+                card3 = null;
+            }
+            hand.getHandCardView(1).setModelCard(card1);
+            hand.getHandCardView(2).setModelCard(card2);
+            hand.getHandCardView(3).setModelCard(card3);
+        });
     }
 
     /**
      * Refreshes the Secret Objective
      */
     public void refreshSecretObjective() {
-        ObjectiveCard card = server.getSecretObjective(playerID);
-        setSecretObjective(card);
+        Platform.runLater(() -> {
+            ObjectiveCard card = server.getSecretObjective(playerID);
+            setSecretObjective(card);
+        });
     }
 }

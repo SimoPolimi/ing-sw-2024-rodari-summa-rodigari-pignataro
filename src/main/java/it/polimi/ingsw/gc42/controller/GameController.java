@@ -575,6 +575,11 @@ public class GameController implements Serializable, Observable {
                 break;
             case WAITING_FOR_SERVER:
                 currentStatus = GameStatus.READY;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 setupViews();
                 break;
             case READY:

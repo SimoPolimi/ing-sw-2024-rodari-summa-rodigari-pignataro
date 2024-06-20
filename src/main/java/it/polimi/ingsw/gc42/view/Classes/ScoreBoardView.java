@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
@@ -95,70 +96,72 @@ public class ScoreBoardView {
      * @param finalPosition: the position the Token's ImageView has to reach
      */
     private void animate(Token token, int startingPosition, int finalPosition) {
-        ImageView tokenImage = getImageOf(token);
-        if (startingPosition != finalPosition && finalPosition != 0) {
-            // Check if the jump is the last one or if it's just an intermediate one
-            int nextPosition;
-            if (finalPosition - startingPosition == 1) {
-                nextPosition = finalPosition;
+        Platform.runLater(() -> {
+            ImageView tokenImage = getImageOf(token);
+            if (startingPosition != finalPosition && finalPosition != 0) {
+                // Check if the jump is the last one or if it's just an intermediate one
+                int nextPosition;
+                if (finalPosition - startingPosition == 1) {
+                    nextPosition = finalPosition;
+                } else {
+                    nextPosition = startingPosition + 1;
+                }
+
+                // Start to calculate the transition
+                Coordinates startingCoordinates = positions.get(startingPosition);
+                Coordinates finalCoordinates = positions.get(nextPosition);
+                Coordinates halfWayCoordinates = new Coordinates();
+                switch (startingPosition) {
+                    case 0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15, 16, 17 -> {
+                        // Horizontal Jump
+                        halfWayCoordinates.setX((startingCoordinates.getX() + finalCoordinates.getX()) / 2);
+                        halfWayCoordinates.setY(startingCoordinates.getY() - 50);
+                    }
+                    case 6, 10, 14, 18, 21, 22, 27 -> {
+                        // Vertical Jump
+                        halfWayCoordinates.setX(startingCoordinates.getX() - 50);
+                        halfWayCoordinates.setY((startingCoordinates.getY() + finalCoordinates.getY()) / 2);
+                    }
+                    default -> {
+                        // Other Jumps
+                        halfWayCoordinates.setX((startingCoordinates.getX() + finalCoordinates.getX()) / 2);
+                        halfWayCoordinates.setY((startingCoordinates.getY() + finalCoordinates.getY()) / 2);
+                    }
+                }
+
+                // Handles the case when other Tokens are already in that Position when the Position is not final
+                finalCoordinates.setY(finalCoordinates.getY() + getPaddingOf(token));
+
+                TranslateTransition halfJump1 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
+                halfJump1.setFromX(startingCoordinates.getX());
+                halfJump1.setToX(halfWayCoordinates.getX());
+                halfJump1.setFromY(tokenImage.getTranslateY());
+                halfJump1.setToY(halfWayCoordinates.getY());
+
+                TranslateTransition halfJump2 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
+                halfJump2.setFromX(halfWayCoordinates.getX());
+                halfJump2.setToX(finalCoordinates.getX());
+                halfJump2.setFromY(halfWayCoordinates.getY());
+                halfJump2.setToY(finalCoordinates.getY());
+
+                halfJump1.setOnFinished((e) -> halfJump2.play());
+                halfJump2.setOnFinished((e) -> animate(token, nextPosition, finalPosition));
+
+                ScaleTransition zoom = new ScaleTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
+                zoom.setByX(1.2);
+                zoom.setByY(1.2);
+                zoom.setAutoReverse(true);
+                zoom.setCycleCount(2);
+
+                halfJump1.play();
+                zoom.play();
             } else {
-                nextPosition = startingPosition + 1;
-            }
-
-            // Start to calculate the transition
-            Coordinates startingCoordinates = positions.get(startingPosition);
-            Coordinates finalCoordinates = positions.get(nextPosition);
-            Coordinates halfWayCoordinates = new Coordinates();
-            switch (startingPosition) {
-                case 0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15, 16, 17 -> {
-                    // Horizontal Jump
-                    halfWayCoordinates.setX((startingCoordinates.getX() + finalCoordinates.getX()) / 2);
-                    halfWayCoordinates.setY(startingCoordinates.getY() - 50);
-                }
-                case 6, 10, 14, 18, 21, 22, 27 -> {
-                    // Vertical Jump
-                    halfWayCoordinates.setX(startingCoordinates.getX() - 50);
-                    halfWayCoordinates.setY((startingCoordinates.getY() + finalCoordinates.getY()) / 2);
-                }
-                default -> {
-                    // Other Jumps
-                    halfWayCoordinates.setX((startingCoordinates.getX() + finalCoordinates.getX()) / 2);
-                    halfWayCoordinates.setY((startingCoordinates.getY() + finalCoordinates.getY()) / 2);
+                // Animation ended
+                for (Token t : playingTokens) {
+                    getImageOf(t).setVisible(true);
                 }
             }
-
-            // Handles the case when other Tokens are already in that Position when the Position is not final
-            finalCoordinates.setY(finalCoordinates.getY() + getPaddingOf(token));
-
-            TranslateTransition halfJump1 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
-            halfJump1.setFromX(startingCoordinates.getX());
-            halfJump1.setToX(halfWayCoordinates.getX());
-            halfJump1.setFromY(tokenImage.getTranslateY());
-            halfJump1.setToY(halfWayCoordinates.getY());
-
-            TranslateTransition halfJump2 = new TranslateTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
-            halfJump2.setFromX(halfWayCoordinates.getX());
-            halfJump2.setToX(finalCoordinates.getX());
-            halfJump2.setFromY(halfWayCoordinates.getY());
-            halfJump2.setToY(finalCoordinates.getY());
-
-            halfJump1.setOnFinished((e) -> halfJump2.play());
-            halfJump2.setOnFinished((e) -> animate(token, nextPosition, finalPosition));
-
-            ScaleTransition zoom = new ScaleTransition(Duration.millis(JUMP_ANIMATION_DURATION), tokenImage);
-            zoom.setByX(1.2);
-            zoom.setByY(1.2);
-            zoom.setAutoReverse(true);
-            zoom.setCycleCount(2);
-
-            halfJump1.play();
-            zoom.play();
-        } else {
-            // Animation ended
-            for (Token t : playingTokens) {
-                getImageOf(t).setVisible(true);
-            }
-        }
+        });
     }
 
     /**
@@ -167,19 +170,22 @@ public class ScoreBoardView {
      * @param position: an int indicating where it needs to be moved
      */
     public void setTokenInPosition(Token token, int position) {
-        ImageView tokenImage = getImageOf(token);
-        if (tokenImage != null) {
-            tokenImage.setVisible(true);
-        }
+        Thread thread = new Thread(() -> {
+            ImageView tokenImage = getImageOf(token);
+            if (tokenImage != null) {
+                tokenImage.setVisible(true);
+            }
 
-        if (!playingTokens.contains(token)) {
-            playingTokens.add(token);
-        }
+            if (!playingTokens.contains(token)) {
+                playingTokens.add(token);
+            }
 
-        for (ArrayList<Token> positionList : tokensInPosition) {
-            positionList.remove(token);
-        }
-        tokensInPosition.get(position).add(token);
+            for (ArrayList<Token> positionList : tokensInPosition) {
+                positionList.remove(token);
+            }
+            tokensInPosition.get(position).add(token);
+        });
+        thread.start();
     }
 
     /**
