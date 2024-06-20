@@ -519,7 +519,7 @@ public class GameController implements Serializable, Observable {
             try {
                 view.showSecretObjectivesSelectionDialog();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(viewOwners.get(view));
             }
         }
     }
@@ -535,7 +535,7 @@ public class GameController implements Serializable, Observable {
             try {
                 view.showStarterCardSelectionDialog();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(viewOwners.get(view));
             }
         }
     }
@@ -548,7 +548,7 @@ public class GameController implements Serializable, Observable {
             try {
                 view.showTokenSelectionDialog();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(viewOwners.get(view));
             }
         }
     }
@@ -572,11 +572,19 @@ public class GameController implements Serializable, Observable {
     private void checkIfGameCanContinue() {
         int readyPlayers = 0;
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
-            if (game.getPlayer(i).getStatus() == currentStatus) {
+            if (game.getPlayer(i).getStatus() == currentStatus && !game.getPlayer(i).isDisconnected()) {
                 readyPlayers++;
             }
         }
-        if (readyPlayers == game.getNumberOfPlayers()) {
+
+        int players = game.getNumberOfPlayers();
+        for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
+            if (game.getPlayer(i).isDisconnected()) {
+                players--;
+            }
+        }
+
+        if (readyPlayers == players) {
             nextStatus();
         }
     }
@@ -586,7 +594,7 @@ public class GameController implements Serializable, Observable {
             try {
                 view.getReady(getGame().getNumberOfPlayers());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(viewOwners.get(view));
             }
         }
     }
