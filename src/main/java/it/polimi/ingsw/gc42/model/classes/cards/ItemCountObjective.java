@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class ItemCountObjective extends CountObjective{
     // Attributes
-    private Item item;
+    private final Item item;
 
     // Constructor Method
 
@@ -32,14 +32,6 @@ public class ItemCountObjective extends CountObjective{
      */
     public Item getItem() {
         return item;
-    }
-
-    /**
-     * Setter Method for item.
-     * @param item: the item that the Objective is counting.
-     */
-    public void setResource(Item item) {
-        this.item = item;
     }
 
     // Methods
