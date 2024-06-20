@@ -803,7 +803,7 @@ public class GUIController implements ViewController {
 
     @FXML
     public void toggleChat() {
-        if (canReadInput) {
+        if (canReadInput && !isShowingDialog()) {
             chat.toggle();
         }
         if (!chat.isShowing()) {
@@ -857,10 +857,6 @@ public class GUIController implements ViewController {
         transition.setToX(scale);
         transition.setToY(scale);
         transition.play();
-        TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(correntAnimationSpeed), chatContainer);
-        chatTranslate.setFromX(chatContainer.getTranslateX());
-        chatTranslate.setToX(chatContainer.getTranslateX() - ((currentUIScale-scale)*500));
-        chatTranslate.play();
         currentUIScale = scale;
     }
 
