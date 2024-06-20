@@ -64,14 +64,16 @@ public class SocketClient implements NetworkController {
 
     @Override
     public void disconnect() {
+        sendMessage(new PlayerMessage(MessageType.DISCONNECT_PLAYER, gameID, playerID));
+
         // TODO: Implement
-        in.close();
+        /*in.close();
         out.close();
         try {
             server.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     private synchronized void receiveMessage(){

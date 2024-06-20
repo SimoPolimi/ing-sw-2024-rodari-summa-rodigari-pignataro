@@ -34,6 +34,11 @@ class GameControllerTest {
         // New view empty just to test listeners
         controller.addView(new RemoteViewController() {
             @Override
+            public int getOwner() throws RemoteException {
+                return 1;
+            }
+
+            @Override
             public void showSecretObjectivesSelectionDialog() throws RemoteException {}
             @Override
             public void showStarterCardSelectionDialog() throws RemoteException {}
@@ -450,6 +455,11 @@ class GameControllerTest {
         controller.addPlayer(player);
         // New view empty just to test listeners
         controller.addView(new RemoteViewController() {
+            @Override
+            public int getOwner() throws RemoteException {
+                return 1;
+            }
+
             @Override
             public void showSecretObjectivesSelectionDialog() throws RemoteException {}
             @Override

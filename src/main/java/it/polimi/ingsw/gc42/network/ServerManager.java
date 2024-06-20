@@ -71,6 +71,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
         return collection.get(gameID).kickPlayer(player);
     }
 
+    /**
+     * Sets the Player's GameStatus to DISCONNECTED, so that it will be ignored by the Turn System
+     * @param playerID the Player's playerID to disconnect
+     */
+    public void disconnectPlayer(int gameID, int playerID) throws RemoteException {
+        collection.get(gameID).disconnectPlayer(playerID);
+    }
+
     @Override
     public void nextTurn(int gameID) throws RemoteException {
         Thread thread = new Thread(() -> {

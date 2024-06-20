@@ -20,6 +20,11 @@ public class ClientController extends UnicastRemoteObject implements RemoteViewC
     }
 
     @Override
+    public int getOwner() throws RemoteException {
+        return viewController.getOwner();
+    }
+
+    @Override
     public void showSecretObjectivesSelectionDialog() throws RemoteException {
         viewController.showSecretObjectivesSelectionDialog();
     }

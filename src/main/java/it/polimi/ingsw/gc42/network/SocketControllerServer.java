@@ -166,11 +166,19 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                 case BLOCK_NICKNAME:
                     server.blockNickName(((StrResponse) temp).getResponse());
                     break;
+                case DISCONNECT_PLAYER:
+                    server.disconnectPlayer(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
+                    break;
                 case ADD_VIEW:
                     // Creates a Virtual View and hooks it to the specific Game the user is playing
                     server.addView(((PlayerMessage) temp).getGameID(), new RemoteViewController() {
                         // The Virtual View (or Remote View) implements the same methods as a regular View, but inside
                         // of them has the code to SEND MESSAGES via Socket
+
+                        @Override
+                        public int getOwner() throws RemoteException {
+                            return ((PlayerMessage) temp).getPlayerID();
+                        }
 
                         @Override
                         public void showSecretObjectivesSelectionDialog() {

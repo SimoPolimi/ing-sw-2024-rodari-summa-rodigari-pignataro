@@ -20,6 +20,7 @@ public interface RemoteServer extends Remote {
     ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException;
 
 
+    void disconnectPlayer(int gameID, int playerID) throws RemoteException;
 
     boolean kickPlayer(int gameID, Player player) throws RemoteException;
 

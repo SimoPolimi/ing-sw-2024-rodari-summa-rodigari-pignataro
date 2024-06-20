@@ -19,6 +19,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -34,6 +35,8 @@ public class RmiClient implements NetworkController, Serializable {
     private boolean isConnected = false;
     private Player owner;
     private int playerID;
+    private int id;
+    private ClientController viewController;
 
     private Listener handCard1Listener;
     private Listener handCard2Listener;
@@ -120,8 +123,9 @@ public class RmiClient implements NetworkController, Serializable {
     @Override
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
+            this.viewController = viewController;
             Random random = new Random();
-            int id = random.nextInt(100000000);
+            id = random.nextInt(100000000);
             int port;
             // Temporarily creates a Socket with port 0 because it gets assigned a random available port
             ServerSocket serverSocket = null;
@@ -142,9 +146,7 @@ public class RmiClient implements NetworkController, Serializable {
             localRegistry.bind(String.valueOf(id), viewController);
             try {
                 server.lookupClient(gameID, InetAddress.getLocalHost().getHostAddress(), port, String.valueOf(id));
-            } catch (NotBoundException e) {
-                throw new RuntimeException(e);
-            } catch (UnknownHostException e) {
+            } catch (NotBoundException | UnknownHostException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -152,7 +154,18 @@ public class RmiClient implements NetworkController, Serializable {
 
     @Override
     public void disconnect() {
-
+        /*try {
+            registry.unbind(String.valueOf(id));
+            UnicastRemoteObject.unexportObject(viewController, true);
+        } catch (RemoteException | NotBoundException e) {
+            // Don't care
+            e.printStackTrace();
+        }*/
+        try {
+            server.disconnectPlayer(gameID, playerID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

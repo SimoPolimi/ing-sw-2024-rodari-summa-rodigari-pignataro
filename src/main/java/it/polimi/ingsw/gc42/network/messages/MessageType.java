@@ -82,6 +82,8 @@ public enum MessageType {
 
     ADD_VIEW,
 
-    CLIENT_STATE
+    CLIENT_STATE,
+
+    DISCONNECT_PLAYER
 
 }

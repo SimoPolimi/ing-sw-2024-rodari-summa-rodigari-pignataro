@@ -202,48 +202,38 @@ public class GUIController implements ViewController {
     }
 
     private void setOtherPlayers(int numberOfPlayers) throws RemoteException {
-        AtomicBoolean isRightTableEmpty = new AtomicBoolean(true);
-        AtomicBoolean isTopTableEmpty = new AtomicBoolean(true);
-        AtomicBoolean isLeftTableEmpty = new AtomicBoolean(true);
-        ArrayList<Integer> players = new ArrayList<>();
-        for (int i = 1; i <= numberOfPlayers; i++) {
-            if (i != playerID && !players.contains(i)) {
-                players.add(i);
-                if (numberOfPlayers == 2 && isTopTableEmpty.get()) {
-                    int finalI1 = i;
-                    Platform.runLater(() -> {
-                        isTopTableEmpty.set(false);
-                        topTable = new TableView(true, this, controller);
-                        topTable.setPlayer(finalI1);
-                        topPlayerTableContainer.getChildren().add(topTable.getPane());
-                    });
-                } else if (numberOfPlayers > 2 && isRightTableEmpty.get()) {
-                    int finalI = i;
-                    Platform.runLater(() -> {
-                        isRightTableEmpty.set(false);
-                        rightTable = new TableView(true, this, controller);
-                        rightTable.setPlayer(finalI);
-                        rightPlayerTableContainer.getChildren().add(rightTable.getPane());
-                    });
-                } else if (numberOfPlayers == 4 && isTopTableEmpty.get()) {
-                    int finalI2 = i;
-                    Platform.runLater(() -> {
-                        isTopTableEmpty.set(false);
-                        topTable = new TableView(true, this, controller);
-                        topTable.setPlayer(finalI2);
-                        topPlayerTableContainer.getChildren().add(topTable.getPane());
-                    });
-                } else if (numberOfPlayers >= 3 && isLeftTableEmpty.get()){
-                    int finalI3 = i;
-                    Platform.runLater(() -> {
-                        isLeftTableEmpty.set(false);
-                        leftTable = new TableView(true, this, controller);
-                        leftTable.setPlayer(finalI3);
-                        leftPlayerTableContainer.getChildren().add(leftTable.getPane());
-                    });
-                }
-            }
-        }
+        Platform.runLater(() -> {
+            boolean isRightTableEmpty = true;
+            boolean isTopTableEmpty = true;
+            boolean isLeftTableEmpty = true;
+            ArrayList<Integer> players = new ArrayList<>();
+            for (int i = 1; i <= numberOfPlayers; i++) {
+                        if (i != playerID && !players.contains(i)) {
+                            players.add(i);
+                            if (numberOfPlayers == 2 && isTopTableEmpty) {
+                                isTopTableEmpty = false;
+                                topTable = new TableView(true, this, controller);
+                                topTable.setPlayer(i);
+                                topPlayerTableContainer.getChildren().add(topTable.getPane());
+                            } else if (numberOfPlayers > 2 && isRightTableEmpty) {
+                                isRightTableEmpty = false;
+                                rightTable = new TableView(true, this, controller);
+                                rightTable.setPlayer(i);
+                                rightPlayerTableContainer.getChildren().add(rightTable.getPane());
+                            } else if (numberOfPlayers == 4 && isTopTableEmpty) {
+                                isTopTableEmpty = false;
+                                topTable = new TableView(true, this, controller);
+                                topTable.setPlayer(i);
+                                topPlayerTableContainer.getChildren().add(topTable.getPane());
+                            } else if (numberOfPlayers >= 3 && isLeftTableEmpty) {
+                                isLeftTableEmpty = false;
+                                leftTable = new TableView(true, this, controller);
+                                leftTable.setPlayer(i);
+                                leftPlayerTableContainer.getChildren().add(leftTable.getPane());
+                            }
+                        }
+                    }
+                });
         Platform.runLater(this::notifyCommonObjectivesChanged);
         Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 1));
         Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 2));

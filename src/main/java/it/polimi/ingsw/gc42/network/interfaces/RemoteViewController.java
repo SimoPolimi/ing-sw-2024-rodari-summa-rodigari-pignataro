@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc42.network.interfaces;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 
 import java.rmi.Remote;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface RemoteViewController extends Remote {
+    int getOwner() throws RemoteException;
 
     void showSecretObjectivesSelectionDialog() throws RemoteException;
     void showStarterCardSelectionDialog() throws RemoteException;

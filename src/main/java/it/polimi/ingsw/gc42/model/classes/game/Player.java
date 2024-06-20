@@ -33,6 +33,8 @@ public class Player implements Observable, Serializable {
 
     private StarterCard temporaryStarterCard;
 
+    private boolean isDisconnected = false;
+
     // Constructor Methods
 
     /**
@@ -78,6 +80,22 @@ public class Player implements Observable, Serializable {
         this.token = null;
         this.secretObjective = null;
         setStatus(GameStatus.NOT_IN_GAME);
+    }
+
+    /**
+     * Getter Method for isDisconnected
+     * @return a boolean value indicating if the Player is disconnected or still connected
+     */
+    public boolean isDisconnected() {
+        return isDisconnected;
+    }
+
+    /**
+     * Setter Method for isDisconnected
+     * @param disconnected a boolean value indicating if the Player is disconnected or still connected
+     */
+    public void setDisconnected(boolean disconnected) {
+        isDisconnected = disconnected;
     }
 
     /**

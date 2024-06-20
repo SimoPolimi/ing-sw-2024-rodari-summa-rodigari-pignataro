@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -237,6 +238,14 @@ public class GameWindow extends Application {
                         stage.setFullScreen(isFullScreen);
                     }
                 }
+            });
+        });
+
+        stage.setOnCloseRequest((e) -> {
+            e.consume();
+            Platform.runLater(() -> {
+                controller.getNetworkController().disconnect();
+                Platform.exit();
             });
         });
 
