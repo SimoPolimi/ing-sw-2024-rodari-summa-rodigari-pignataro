@@ -334,7 +334,7 @@ public class HandCardView {
             glowEffect.setColor(Color.YELLOW);
             glowEffect.setBlurType(BlurType.GAUSSIAN);
             imageView.setEffect(glowEffect);
-            ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
+            ScaleTransition select1 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), this.imageView);
             select1.setFromX(1);
             select1.setFromY(1);
             select1.setToX(1.3);
@@ -363,7 +363,7 @@ public class HandCardView {
             shadow.setHeight(50);
             shadow.setBlurType(BlurType.GAUSSIAN);
             imageView.setEffect(shadow);
-            ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
+            ScaleTransition deselect2 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), this.imageView);
             deselect2.setFromX(1.3);
             deselect2.setFromY(1.3);
             deselect2.setToX(1);
@@ -383,7 +383,7 @@ public class HandCardView {
      * @param controller: the GUIController that created this HandCardView
      */
     public void hide(int position, GUIController controller) {
-        TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
+        TranslateTransition t = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         t.setByX(-155);
         t.setOnFinished(e -> controller.unlockInput());
 
@@ -391,7 +391,7 @@ public class HandCardView {
             case 1:
                 t.setByY(80);
                 t.play();
-                RotateTransition r1 = new RotateTransition(Duration.millis(350), imageView);
+                RotateTransition r1 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
                 r1.setAxis(Rotate.Z_AXIS);
                 imageView.setRotate(0);
                 r1.setByAngle(-45);
@@ -401,7 +401,7 @@ public class HandCardView {
                 t.setByY(-80);
                 t.play();
 
-                RotateTransition r3 = new RotateTransition(Duration.millis(350), imageView);
+                RotateTransition r3 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
                 r3.setAxis(Rotate.Z_AXIS);
                 imageView.setRotate(0);
                 r3.setByAngle(45);
@@ -418,7 +418,7 @@ public class HandCardView {
      * @param controller: the GUIController that created this HandCardView
      */
     public void show(int position, GUIController controller) {
-        TranslateTransition t = new TranslateTransition(Duration.millis(350), imageView);
+        TranslateTransition t = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         t.setByX(155);
         t.setOnFinished(e -> controller.unlockInput());
 
@@ -426,7 +426,7 @@ public class HandCardView {
             case 1:
                 t.setByY(-80);
                 t.play();
-                RotateTransition r1 = new RotateTransition(Duration.millis(350), imageView);
+                RotateTransition r1 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
                 r1.setAxis(Rotate.Z_AXIS);
                 r1.setByAngle(45);
                 r1.play();
@@ -435,7 +435,7 @@ public class HandCardView {
                 t.setByY(80);
                 t.play();
 
-                RotateTransition r3 = new RotateTransition(Duration.millis(350), imageView);
+                RotateTransition r3 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
                 r3.setAxis(Rotate.Z_AXIS);
                 r3.setByAngle(-45);
                 r3.play();
@@ -451,7 +451,7 @@ public class HandCardView {
      * @param controller: the GUIController that created this HandCardView
      */
     public void visualFlip(GUIController controller) {
-        ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(200), imageView);
+        ScaleTransition jumpHalf1 = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         jumpHalf1.setFromX(1.2);
         jumpHalf1.setFromY(1.2);
         jumpHalf1.setToX(1.5);
@@ -462,9 +462,9 @@ public class HandCardView {
         jumpHalf1.setOnFinished(e -> controller.unlockInput());
         jumpHalf1.play();
 
-        RotateTransition flipCardHalf2 = new RotateTransition(Duration.millis(200), imageView);
+        RotateTransition flipCardHalf2 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
 
-        RotateTransition flipCardHalf1 = new RotateTransition(Duration.millis(200), imageView);
+        RotateTransition flipCardHalf1 = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         flipCardHalf1.setAxis(Rotate.Y_AXIS);
         flipCardHalf1.setOnFinished(event -> {
            imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(modelCard.getShowingImage()))));
@@ -504,7 +504,7 @@ public class HandCardView {
         glowEffect.setColor(Color.ORANGERED);
         glowEffect.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(glowEffect);
-        ScaleTransition select1 = new ScaleTransition(Duration.millis(100), this.imageView);
+        ScaleTransition select1 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), this.imageView);
         select1.setFromX(1);
         select1.setFromY(1);
         select1.setToX(1.3);
@@ -524,7 +524,7 @@ public class HandCardView {
         shadow.setHeight(50);
         shadow.setBlurType(BlurType.GAUSSIAN);
         imageView.setEffect(shadow);
-        ScaleTransition deselect2 = new ScaleTransition(Duration.millis(100), this.imageView);
+        ScaleTransition deselect2 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), this.imageView);
         deselect2.setFromX(1.3);
         deselect2.setFromY(1.3);
         deselect2.setToX(1);
@@ -537,15 +537,15 @@ public class HandCardView {
     /**
      * Visually animates the HandCardView to show it cannot be played
      */
-    public void showError() {
-        RotateTransition transition = new RotateTransition(Duration.millis(50), imageView);
+    public void showError(GUIController controller) {
+        RotateTransition transition = new RotateTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /4), imageView);
         transition.setFromAngle(0);
         transition.setToAngle(30);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.setAxis(Rotate.Z_AXIS);
 
-        RotateTransition transition1 = new RotateTransition(Duration.millis(50), imageView);
+        RotateTransition transition1 = new RotateTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /4), imageView);
         transition1.setFromAngle(0);
         transition1.setToAngle(-30);
         transition1.setAutoReverse(true);

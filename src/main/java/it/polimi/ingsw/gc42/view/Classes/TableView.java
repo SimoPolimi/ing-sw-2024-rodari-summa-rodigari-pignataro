@@ -330,7 +330,7 @@ public class TableView {
                     hand.setPlayingOverlay(cardBeingPlayed, true);
                     showAvailablePlacements();
                 } else {
-                    hand.getHandCardView(cardBeingPlayed).showError();
+                    hand.getHandCardView(cardBeingPlayed).showError(controller);
                     cardBeingPlayed = oldBeingPlayed;
                 }
             } else {
@@ -346,7 +346,7 @@ public class TableView {
      */
     public void placeCard(Coordinates coordinates) {
         setCanPlayCards(false);
-        ScaleTransition transition = new ScaleTransition(Duration.millis(150), hand.getHandCardView(cardBeingPlayed).getImageView());
+        ScaleTransition transition = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), hand.getHandCardView(cardBeingPlayed).getImageView());
         transition.setFromX(1);
         transition.setFromY(1);
         transition.setToX(0);
@@ -429,11 +429,11 @@ public class TableView {
             ScaleTransition t1;
             ScaleTransition t2;
             if (!fastAnimation) {
-                t1 = new ScaleTransition(Duration.millis(250), playArea);
-                t2 = new ScaleTransition(Duration.millis(250), phantomPlayArea);
+                t1 = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), playArea);
+                t2 = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), phantomPlayArea);
             } else {
-                t1 = new ScaleTransition(Duration.millis(100), playArea);
-                t2 = new ScaleTransition(Duration.millis(100), phantomPlayArea);
+                t1 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), playArea);
+                t2 = new ScaleTransition(Duration.millis((double) controller.getCurrentAnimationSpeed() /2), phantomPlayArea);
             }
             t1.setFromX(playAreaScale);
             t2.setFromX(playAreaScale);

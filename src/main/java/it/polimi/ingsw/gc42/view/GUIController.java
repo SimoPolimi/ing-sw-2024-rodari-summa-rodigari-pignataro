@@ -140,6 +140,7 @@ public class GUIController implements ViewController {
     private ChatView chat;
 
     private double currentUIScale = 1;
+    private int correntAnimationSpeed = 250;
 
 
     public void build() {
@@ -319,12 +320,12 @@ public class GUIController implements ViewController {
             dialog.getChildren().add(content.build());
 
             blockInput();
-            ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
+            ScaleTransition transition = new ScaleTransition(Duration.millis(correntAnimationSpeed), dialog);
             transition.setFromX(0);
             transition.setToX(1.1);
             transition.setFromY(0);
             transition.setToY(1.1);
-            transition.setInterpolator(Interpolator.TANGENT(Duration.millis(150), 1));
+            transition.setInterpolator(Interpolator.TANGENT(Duration.millis(correntAnimationSpeed), 1));
             ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), dialog);
             bounceBack.setFromX(1.1);
             bounceBack.setToX(1);
@@ -356,7 +357,7 @@ public class GUIController implements ViewController {
         bounce.setToX(1.1);
         bounce.setFromY(1);
         bounce.setToY(1.1);
-        ScaleTransition transition = new ScaleTransition(Duration.millis(150), dialog);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(correntAnimationSpeed), dialog);
         transition.setFromX(1.1);
         transition.setToX(0);
         transition.setFromY(1.1);
@@ -552,7 +553,7 @@ public class GUIController implements ViewController {
         blockInput();
         isCommonTableDown = true;
 
-        TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(correntAnimationSpeed*2), mainArea);
         transition.setByY((mainArea.getHeight()+500)/2);
         transition.setOnFinished((e) -> {
             unlockInput();
@@ -560,7 +561,7 @@ public class GUIController implements ViewController {
             fullTableButton.setScaleX(0);
             fullTableButton.setScaleY(0);
             fullTableButton.setVisible(true);
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(correntAnimationSpeed), fullTableButton);
             scaleTransition.setFromX(0);
             scaleTransition.setFromY(0);
             scaleTransition.setToX(1);
@@ -575,7 +576,7 @@ public class GUIController implements ViewController {
         if (!isShowingGlobalMap) {
             blockInput();
             isCommonTableDown = false;
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), fullTableButton);
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(correntAnimationSpeed), fullTableButton);
             scaleTransition.setFromX(1);
             scaleTransition.setFromY(1);
             scaleTransition.setToX(0);
@@ -587,7 +588,7 @@ public class GUIController implements ViewController {
             });
             scaleTransition.play();
 
-            TranslateTransition transition = new TranslateTransition(Duration.millis(400), mainArea);
+            TranslateTransition transition = new TranslateTransition(Duration.millis(correntAnimationSpeed*2), mainArea);
             transition.setByY(-(mainArea.getHeight() + 500) / 2);
             transition.setOnFinished((e) -> {
                 unlockInput();
@@ -774,7 +775,7 @@ public class GUIController implements ViewController {
         }
 
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(correntAnimationSpeed), uiContainer);
         transition.setFromX(currentUIScale);
         transition.setFromY(currentUIScale);
         transition.setToX(0.4);
@@ -788,7 +789,7 @@ public class GUIController implements ViewController {
 
     private void hideGlobalMap() {
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(correntAnimationSpeed), uiContainer);
         transition.setFromX(0.4);
         transition.setFromY(0.4);
         transition.setToX(currentUIScale);
@@ -850,13 +851,13 @@ public class GUIController implements ViewController {
     }
 
     public void resizeUI(double scale) {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(250), uiContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(correntAnimationSpeed), uiContainer);
         transition.setFromX(currentUIScale);
         transition.setFromY(currentUIScale);
         transition.setToX(scale);
         transition.setToY(scale);
         transition.play();
-        TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(250), chatContainer);
+        TranslateTransition chatTranslate = new TranslateTransition(Duration.millis(correntAnimationSpeed), chatContainer);
         chatTranslate.setFromX(chatContainer.getTranslateX());
         chatTranslate.setToX(chatContainer.getTranslateX() - ((currentUIScale-scale)*500));
         chatTranslate.play();
@@ -865,5 +866,13 @@ public class GUIController implements ViewController {
 
     public double getCurrentUIScale() {
         return currentUIScale;
+    }
+
+    public int getCurrentAnimationSpeed() {
+        return correntAnimationSpeed;
+    }
+
+    public void setCurrentAnimationSpeed(int speed) {
+        correntAnimationSpeed = speed;
     }
 }

@@ -31,8 +31,11 @@ public class SettingsDialog extends Dialog implements Observable {
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
-    private ImageView currentMode = null;
-    private Text currentModeText = null;
+    private ImageView currentScalingMode = null;
+    private Text currentScalingModeText = null;
+
+    private ImageView currentSpeedMode = null;
+    private Text currentSpeedModeText = null;
 
     /**
      * Constructor Method
@@ -54,12 +57,12 @@ public class SettingsDialog extends Dialog implements Observable {
         text1.setFill(Color.WHITE);
         text1.setFont(Font.font("Tahoma Bold", 18));
 
-        HBox hbox = new HBox();
-        hbox.setSpacing(20);
+        HBox scalingModesContainer = new HBox();
+        scalingModesContainer.setSpacing(20);
 
-        VBox mode1 = new VBox();
-        mode1.setSpacing(10);
-        mode1.setAlignment(Pos.TOP_CENTER);
+        VBox scalingMode1 = new VBox();
+        scalingMode1.setSpacing(10);
+        scalingMode1.setAlignment(Pos.TOP_CENTER);
 
         DropShadow shadow = new DropShadow();
         shadow.setWidth(20);
@@ -73,117 +76,240 @@ public class SettingsDialog extends Dialog implements Observable {
         glowEffect.setColor(Color.YELLOW);
         glowEffect.setBlurType(BlurType.GAUSSIAN);
 
-        ImageView mode1Image = new ImageView();
-        mode1Image.setPreserveRatio(true);
-        mode1Image.setFitWidth(100);
-        mode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_GUI_Icon.png"))));
-        mode1Image.setEffect(shadow);
+        ImageView scalingMode1Image = new ImageView();
+        scalingMode1Image.setPreserveRatio(true);
+        scalingMode1Image.setFitWidth(100);
+        scalingMode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_GUI_Icon.png"))));
+        scalingMode1Image.setEffect(shadow);
 
-        Text mode1Text = new Text("Normal");
-        mode1Text.setFill(Color.WHITE);
-        mode1Text.setFont(Font.font("Tahoma Regular", 15));
+        Text scalingMode1Text = new Text("Normal");
+        scalingMode1Text.setFill(Color.WHITE);
+        scalingMode1Text.setFont(Font.font("Tahoma Regular", 15));
 
-        mode1Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        scalingMode1Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(1);
-                animateSelection(mode1Image, mode1Text);
+                animateSelection("Scaling",scalingMode1Image, scalingMode1Text);
             }
         });
-        mode1Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        scalingMode1Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode1Image.setEffect(glowEffect);
+                scalingMode1Image.setEffect(glowEffect);
             }
         });
-        mode1Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+        scalingMode1Image.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode1Image.setEffect(shadow);
+                scalingMode1Image.setEffect(shadow);
             }
         });
-        mode1Image.setCursor(Cursor.HAND);
+        scalingMode1Image.setCursor(Cursor.HAND);
 
 
 
-        mode1.getChildren().addAll(mode1Image, mode1Text);
+        scalingMode1.getChildren().addAll(scalingMode1Image, scalingMode1Text);
 
-        VBox mode2 = new VBox();
-        mode2.setSpacing(10);
-        mode2.setAlignment(Pos.TOP_CENTER);
+        VBox scalingMode2 = new VBox();
+        scalingMode2.setSpacing(10);
+        scalingMode2.setAlignment(Pos.TOP_CENTER);
 
-        ImageView mode2Image = new ImageView();
-        mode2Image.setPreserveRatio(true);
-        mode2Image.setFitWidth(100);
-        mode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/big_GUI_Icon.png"))));
-        mode2Image.setEffect(shadow);
+        ImageView scalingMode2Image = new ImageView();
+        scalingMode2Image.setPreserveRatio(true);
+        scalingMode2Image.setFitWidth(100);
+        scalingMode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/big_GUI_Icon.png"))));
+        scalingMode2Image.setEffect(shadow);
 
-        Text mode2Text = new Text("Big");
-        mode2Text.setFill(Color.WHITE);
-        mode2Text.setFont(Font.font("Tahoma Regular", 15));
+        Text scalingMode2Text = new Text("Big");
+        scalingMode2Text.setFill(Color.WHITE);
+        scalingMode2Text.setFont(Font.font("Tahoma Regular", 15));
 
-        mode2Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        scalingMode2Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(0.9);
-                animateSelection(mode2Image, mode2Text);
+                animateSelection("Scaling",scalingMode2Image, scalingMode2Text);
             }
         });
-        mode2Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        scalingMode2Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode2Image.setEffect(glowEffect);
+                scalingMode2Image.setEffect(glowEffect);
             }
         });
-        mode2Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+        scalingMode2Image.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode2Image.setEffect(shadow);
+                scalingMode2Image.setEffect(shadow);
             }
         });
-        mode2Image.setCursor(Cursor.HAND);
+        scalingMode2Image.setCursor(Cursor.HAND);
 
 
-        mode2.getChildren().addAll(mode2Image, mode2Text);
+        scalingMode2.getChildren().addAll(scalingMode2Image, scalingMode2Text);
 
-        VBox mode3 = new VBox();
-        mode3.setSpacing(10);
-        mode3.setAlignment(Pos.TOP_CENTER);
+        VBox scalingMode3 = new VBox();
+        scalingMode3.setSpacing(10);
+        scalingMode3.setAlignment(Pos.TOP_CENTER);
 
-        ImageView mode3Image = new ImageView();
-        mode3Image.setPreserveRatio(true);
-        mode3Image.setFitWidth(100);
-        mode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/huge_GUI_Icon.png"))));
-        mode3Image.setEffect(shadow);
+        ImageView scalingMode3Image = new ImageView();
+        scalingMode3Image.setPreserveRatio(true);
+        scalingMode3Image.setFitWidth(100);
+        scalingMode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/huge_GUI_Icon.png"))));
+        scalingMode3Image.setEffect(shadow);
 
-        Text mode3Text = new Text("Huge");
-        mode3Text.setFill(Color.WHITE);
-        mode3Text.setFont(Font.font("Tahoma Regular", 15));
+        Text scalingMode3Text = new Text("Huge");
+        scalingMode3Text.setFill(Color.WHITE);
+        scalingMode3Text.setFont(Font.font("Tahoma Regular", 15));
 
-        mode3Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        scalingMode3Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(0.8);
-                animateSelection(mode3Image, mode3Text);
+                animateSelection("Scaling",scalingMode3Image, scalingMode3Text);
             }
         });
-        mode3Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        scalingMode3Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode3Image.setEffect(glowEffect);
+                scalingMode3Image.setEffect(glowEffect);
             }
         });
-        mode3Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+        scalingMode3Image.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mode3Image.setEffect(shadow);
+                scalingMode3Image.setEffect(shadow);
             }
         });
-        mode3Image.setCursor(Cursor.HAND);
+        scalingMode3Image.setCursor(Cursor.HAND);
 
-        mode3.getChildren().addAll(mode3Image, mode3Text);
+        scalingMode3.getChildren().addAll(scalingMode3Image, scalingMode3Text);
 
-        hbox.getChildren().addAll(mode1, mode2, mode3);
+        scalingModesContainer.getChildren().addAll(scalingMode1, scalingMode2, scalingMode3);
+
+        Text text2 = new Text("Animation Speed:");
+        text2.setFill(Color.WHITE);
+        text2.setFont(Font.font("Tahoma Bold", 18));
+
+        HBox animationSpeedModeContainer = new HBox();
+        animationSpeedModeContainer.setSpacing(20);
+
+        VBox speedMode1 = new VBox();
+        speedMode1.setSpacing(10);
+        speedMode1.setAlignment(Pos.TOP_CENTER);
+
+        ImageView speedMode1Image = new ImageView();
+        speedMode1Image.setPreserveRatio(true);
+        speedMode1Image.setFitWidth(100);
+        speedMode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_GUI_Icon.png"))));
+        speedMode1Image.setEffect(shadow);
+
+        Text speedMode1Text = new Text("Slow");
+        speedMode1Text.setFill(Color.WHITE);
+        speedMode1Text.setFont(Font.font("Tahoma Regular", 15));
+
+        speedMode1Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.setCurrentAnimationSpeed(400);
+                animateSelection("Animation Speed",speedMode1Image, speedMode1Text);
+            }
+        });
+        speedMode1Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode1Image.setEffect(glowEffect);
+            }
+        });
+        speedMode1Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode1Image.setEffect(shadow);
+            }
+        });
+        speedMode1Image.setCursor(Cursor.HAND);
+
+
+
+        speedMode1.getChildren().addAll(speedMode1Image, speedMode1Text);
+
+        VBox speedMode2 = new VBox();
+        speedMode2.setSpacing(10);
+        speedMode2.setAlignment(Pos.TOP_CENTER);
+
+        ImageView speedMode2Image = new ImageView();
+        speedMode2Image.setPreserveRatio(true);
+        speedMode2Image.setFitWidth(100);
+        speedMode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/big_GUI_Icon.png"))));
+        speedMode2Image.setEffect(shadow);
+
+        Text speedMode2Text = new Text("Normal");
+        speedMode2Text.setFill(Color.WHITE);
+        speedMode2Text.setFont(Font.font("Tahoma Regular", 15));
+
+        speedMode2Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.setCurrentAnimationSpeed(250);
+                animateSelection("Animation Speed",speedMode2Image, speedMode2Text);
+            }
+        });
+        speedMode2Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode2Image.setEffect(glowEffect);
+            }
+        });
+        speedMode2Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode2Image.setEffect(shadow);
+            }
+        });
+        speedMode2Image.setCursor(Cursor.HAND);
+
+
+        speedMode2.getChildren().addAll(speedMode2Image, speedMode2Text);
+
+        VBox speedMode3 = new VBox();
+        speedMode3.setSpacing(10);
+        speedMode3.setAlignment(Pos.TOP_CENTER);
+
+        ImageView speedMode3Image = new ImageView();
+        speedMode3Image.setPreserveRatio(true);
+        speedMode3Image.setFitWidth(100);
+        speedMode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/huge_GUI_Icon.png"))));
+        speedMode3Image.setEffect(shadow);
+
+        Text speedMode3Text = new Text("Fast");
+        speedMode3Text.setFill(Color.WHITE);
+        speedMode3Text.setFont(Font.font("Tahoma Regular", 15));
+
+        speedMode3Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.setCurrentAnimationSpeed(100);
+                animateSelection("Animation Speed",speedMode3Image, speedMode3Text);
+            }
+        });
+        speedMode3Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode3Image.setEffect(glowEffect);
+            }
+        });
+        speedMode3Image.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                speedMode3Image.setEffect(shadow);
+            }
+        });
+        speedMode3Image.setCursor(Cursor.HAND);
+
+        speedMode3.getChildren().addAll(speedMode3Image, speedMode3Text);
+
+        animationSpeedModeContainer.getChildren().addAll(speedMode1, speedMode2, speedMode3);
 
         HBox buttonContainer = new HBox();
         buttonContainer.setAlignment(Pos.CENTER);
@@ -204,42 +330,74 @@ public class SettingsDialog extends Dialog implements Observable {
 
         buttonContainer.getChildren().add(closeButton);
 
-        container.getChildren().addAll(text1, hbox, buttonContainer);
+        container.getChildren().addAll(text1, scalingModesContainer, text2, animationSpeedModeContainer, buttonContainer);
 
         if (controller.getCurrentUIScale() == 1.0) {
-            animateSelection(mode1Image, mode1Text);
+            animateSelection("Scaling",scalingMode1Image, scalingMode1Text);
         } else if (controller.getCurrentUIScale() == 0.9) {
-            animateSelection(mode2Image, mode2Text);
+            animateSelection("Scaling",scalingMode2Image, scalingMode2Text);
         } else if (controller.getCurrentUIScale() == 0.8) {
-            animateSelection(mode3Image, mode3Text);
+            animateSelection("Scaling",scalingMode3Image, scalingMode3Text);
+        }
+
+        if (controller.getCurrentAnimationSpeed() == 400) {
+            animateSelection("Animation Speed",speedMode1Image, speedMode1Text);
+        } else if (controller.getCurrentAnimationSpeed() == 250) {
+            animateSelection("Animation Speed",speedMode2Image, speedMode2Text);
+        } else if (controller.getCurrentAnimationSpeed() == 100) {
+            animateSelection("Animation Speed",speedMode3Image, speedMode3Text);
         }
 
         super.container.getChildren().add(container);
         return super.container;
     }
 
-    private void animateSelection(ImageView newMode, Text newModeText) {
-        if (null != currentMode) {
-            ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentMode);
-            zoomOut.setFromX(1.1);
-            zoomOut.setFromY(1.1);
-            zoomOut.setToX(1);
-            zoomOut.setToY(1);
-            zoomOut.play();
+    private void animateSelection(String mode, ImageView newMode, Text newModeText) {
+        if (mode.equals("Scaling")) {
+            if (null != currentScalingMode) {
+                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentScalingMode);
+                zoomOut.setFromX(1.1);
+                zoomOut.setFromY(1.1);
+                zoomOut.setToX(1);
+                zoomOut.setToY(1);
+                zoomOut.play();
 
-            currentModeText.setFill(Color.WHITE);
+                currentScalingModeText.setFill(Color.WHITE);
+            }
+
+            currentScalingMode = newMode;
+            currentScalingModeText = newModeText;
+            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentScalingMode);
+            zoomIn.setFromX(1);
+            zoomIn.setFromY(1);
+            zoomIn.setToX(1.1);
+            zoomIn.setToY(1.1);
+            zoomIn.play();
+
+            currentScalingModeText.setFill(Color.YELLOW);
+        } else if (mode.equals("Animation Speed")) {
+            if (null != currentSpeedMode) {
+                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentSpeedMode);
+                zoomOut.setFromX(1.1);
+                zoomOut.setFromY(1.1);
+                zoomOut.setToX(1);
+                zoomOut.setToY(1);
+                zoomOut.play();
+
+                currentSpeedModeText.setFill(Color.WHITE);
+            }
+
+            currentSpeedMode = newMode;
+            currentSpeedModeText = newModeText;
+            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentSpeedMode);
+            zoomIn.setFromX(1);
+            zoomIn.setFromY(1);
+            zoomIn.setToX(1.1);
+            zoomIn.setToY(1.1);
+            zoomIn.play();
+
+            currentSpeedModeText.setFill(Color.YELLOW);
         }
-
-        currentMode = newMode;
-        currentModeText = newModeText;
-        ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentMode);
-        zoomIn.setFromX(1);
-        zoomIn.setFromY(1);
-        zoomIn.setToX(1.1);
-        zoomIn.setToY(1.1);
-        zoomIn.play();
-
-        currentModeText.setFill(Color.YELLOW);
     }
 
     @Override

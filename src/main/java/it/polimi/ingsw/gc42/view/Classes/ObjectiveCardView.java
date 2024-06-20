@@ -218,9 +218,9 @@ public class ObjectiveCardView {
      * Shown state (horizontal, slightly bigger, all shown on-screen, with Name and Description visible)
      */
     public void rotate() {
-        RotateTransition rotateTransition = new RotateTransition(Duration.millis(350), imageView);
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(350), imageView);
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(350), imageView);
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         if (!isShowingDetails) {
             rotateTransition.setByAngle(-60);
             translateTransition.setByX(-120);
@@ -279,7 +279,7 @@ public class ObjectiveCardView {
      * Visually animates the "Show" feature of "Rotate"
      */
     public void show() {
-        TranslateTransition transition = new TranslateTransition(Duration.millis(250), imageView);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), imageView);
         transition.setByX(-200);
         transition.play();
     }

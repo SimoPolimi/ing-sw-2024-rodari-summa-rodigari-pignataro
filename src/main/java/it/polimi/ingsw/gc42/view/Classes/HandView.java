@@ -344,11 +344,11 @@ public class HandView {
             textCollapse.setText("My Cards");
 
 
-            TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), textCollapse);
             t1.setByY(240);
             t1.play();
 
-            TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), KBCollapseHint);
             t2.setByY(240);
             t2.play();
         }
@@ -368,11 +368,11 @@ public class HandView {
         textNav.setVisible(true);
         textCollapse.setText("Collapse");
 
-        TranslateTransition t1 = new TranslateTransition(Duration.millis(350), textCollapse);
+        TranslateTransition t1 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), textCollapse);
         t1.setByY(-240);
         t1.play();
 
-        TranslateTransition t2 = new TranslateTransition(Duration.millis(350), KBCollapseHint);
+        TranslateTransition t2 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), KBCollapseHint);
         t2.setByY(-240);
         t2.play();
 
@@ -390,9 +390,9 @@ public class HandView {
     public void refresh(Runnable runnable) {
         Platform.runLater(() -> {
             controller.blockInput();
-            TranslateTransition t1 = new TranslateTransition(Duration.millis(150), handCardView1.getImageView());
-            TranslateTransition t2 = new TranslateTransition(Duration.millis(150), handCardView2.getImageView());
-            TranslateTransition t3 = new TranslateTransition(Duration.millis(150), handCardView3.getImageView());
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView1.getImageView());
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView2.getImageView());
+            TranslateTransition t3 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView3.getImageView());
             int distance;
             if (isHidden) {
                 distance = -100;
@@ -418,9 +418,9 @@ public class HandView {
      */
     public void showAfterRefresh() {
         Platform.runLater(() -> {
-            TranslateTransition t1 = new TranslateTransition(Duration.millis(350), handCardView1.getImageView());
-            TranslateTransition t2 = new TranslateTransition(Duration.millis(350), handCardView2.getImageView());
-            TranslateTransition t3 = new TranslateTransition(Duration.millis(350), handCardView3.getImageView());
+            TranslateTransition t1 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView1.getImageView());
+            TranslateTransition t2 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView2.getImageView());
+            TranslateTransition t3 = new TranslateTransition(Duration.millis(controller.getCurrentAnimationSpeed()), handCardView3.getImageView());
             int distance;
             if (isHidden) {
                 distance = 100;
