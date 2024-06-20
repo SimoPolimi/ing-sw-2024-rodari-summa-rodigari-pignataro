@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc42.view.Dialog;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.view.GUIController;
+import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -19,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -28,6 +30,9 @@ public class SettingsDialog extends Dialog implements Observable {
     private final GUIController controller;
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
+
+    private ImageView currentMode = null;
+    private Text currentModeText = null;
 
     /**
      * Constructor Method
@@ -73,10 +78,16 @@ public class SettingsDialog extends Dialog implements Observable {
         mode1Image.setFitWidth(100);
         mode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_GUI_Icon.png"))));
         mode1Image.setEffect(shadow);
+
+        Text mode1Text = new Text("Normal");
+        mode1Text.setFill(Color.WHITE);
+        mode1Text.setFont(Font.font("Tahoma Regular", 15));
+
         mode1Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(1);
+                animateSelection(mode1Image, mode1Text);
             }
         });
         mode1Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -93,9 +104,7 @@ public class SettingsDialog extends Dialog implements Observable {
         });
         mode1Image.setCursor(Cursor.HAND);
 
-        Text mode1Text = new Text("Normal");
-        mode1Text.setFill(Color.WHITE);
-        mode1Text.setFont(Font.font("Tahoma Regular", 15));
+
 
         mode1.getChildren().addAll(mode1Image, mode1Text);
 
@@ -108,10 +117,16 @@ public class SettingsDialog extends Dialog implements Observable {
         mode2Image.setFitWidth(100);
         mode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/big_GUI_Icon.png"))));
         mode2Image.setEffect(shadow);
+
+        Text mode2Text = new Text("Big");
+        mode2Text.setFill(Color.WHITE);
+        mode2Text.setFont(Font.font("Tahoma Regular", 15));
+
         mode2Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(0.9);
+                animateSelection(mode2Image, mode2Text);
             }
         });
         mode2Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -128,9 +143,6 @@ public class SettingsDialog extends Dialog implements Observable {
         });
         mode2Image.setCursor(Cursor.HAND);
 
-        Text mode2Text = new Text("Big");
-        mode2Text.setFill(Color.WHITE);
-        mode2Text.setFont(Font.font("Tahoma Regular", 15));
 
         mode2.getChildren().addAll(mode2Image, mode2Text);
 
@@ -143,10 +155,16 @@ public class SettingsDialog extends Dialog implements Observable {
         mode3Image.setFitWidth(100);
         mode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/huge_GUI_Icon.png"))));
         mode3Image.setEffect(shadow);
+
+        Text mode3Text = new Text("Huge");
+        mode3Text.setFill(Color.WHITE);
+        mode3Text.setFont(Font.font("Tahoma Regular", 15));
+
         mode3Image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.resizeUI(0.8);
+                animateSelection(mode3Image, mode3Text);
             }
         });
         mode3Image.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -162,10 +180,6 @@ public class SettingsDialog extends Dialog implements Observable {
             }
         });
         mode3Image.setCursor(Cursor.HAND);
-
-        Text mode3Text = new Text("Huge");
-        mode3Text.setFill(Color.WHITE);
-        mode3Text.setFont(Font.font("Tahoma Regular", 15));
 
         mode3.getChildren().addAll(mode3Image, mode3Text);
 
@@ -192,8 +206,40 @@ public class SettingsDialog extends Dialog implements Observable {
 
         container.getChildren().addAll(text1, hbox, buttonContainer);
 
+        if (controller.getCurrentUIScale() == 1.0) {
+            animateSelection(mode1Image, mode1Text);
+        } else if (controller.getCurrentUIScale() == 0.9) {
+            animateSelection(mode2Image, mode2Text);
+        } else if (controller.getCurrentUIScale() == 0.8) {
+            animateSelection(mode3Image, mode3Text);
+        }
+
         super.container.getChildren().add(container);
         return super.container;
+    }
+
+    private void animateSelection(ImageView newMode, Text newModeText) {
+        if (null != currentMode) {
+            ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentMode);
+            zoomOut.setFromX(1.1);
+            zoomOut.setFromY(1.1);
+            zoomOut.setToX(1);
+            zoomOut.setToY(1);
+            zoomOut.play();
+
+            currentModeText.setFill(Color.WHITE);
+        }
+
+        currentMode = newMode;
+        currentModeText = newModeText;
+        ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentMode);
+        zoomIn.setFromX(1);
+        zoomIn.setFromY(1);
+        zoomIn.setToX(1.1);
+        zoomIn.setToY(1.1);
+        zoomIn.play();
+
+        currentModeText.setFill(Color.YELLOW);
     }
 
     @Override
