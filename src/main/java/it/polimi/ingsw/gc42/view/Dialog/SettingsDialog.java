@@ -202,7 +202,7 @@ public class SettingsDialog extends Dialog implements Observable {
         ImageView speedMode1Image = new ImageView();
         speedMode1Image.setPreserveRatio(true);
         speedMode1Image.setFitWidth(100);
-        speedMode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_GUI_Icon.png"))));
+        speedMode1Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/slow_Animation_Speed_Icon.png"))));
         speedMode1Image.setEffect(shadow);
 
         Text speedMode1Text = new Text("Slow");
@@ -241,7 +241,7 @@ public class SettingsDialog extends Dialog implements Observable {
         ImageView speedMode2Image = new ImageView();
         speedMode2Image.setPreserveRatio(true);
         speedMode2Image.setFitWidth(100);
-        speedMode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/big_GUI_Icon.png"))));
+        speedMode2Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/normal_Animation_Speed_Icon.png"))));
         speedMode2Image.setEffect(shadow);
 
         Text speedMode2Text = new Text("Normal");
@@ -279,7 +279,7 @@ public class SettingsDialog extends Dialog implements Observable {
         ImageView speedMode3Image = new ImageView();
         speedMode3Image.setPreserveRatio(true);
         speedMode3Image.setFitWidth(100);
-        speedMode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/huge_GUI_Icon.png"))));
+        speedMode3Image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fast_Animation_Speed_Icon.png"))));
         speedMode3Image.setEffect(shadow);
 
         Text speedMode3Text = new Text("Fast");
@@ -355,7 +355,7 @@ public class SettingsDialog extends Dialog implements Observable {
     private void animateSelection(String mode, ImageView newMode, Text newModeText) {
         if (mode.equals("Scaling")) {
             if (null != currentScalingMode) {
-                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentScalingMode);
+                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), currentScalingMode);
                 zoomOut.setFromX(1.1);
                 zoomOut.setFromY(1.1);
                 zoomOut.setToX(1);
@@ -367,7 +367,7 @@ public class SettingsDialog extends Dialog implements Observable {
 
             currentScalingMode = newMode;
             currentScalingModeText = newModeText;
-            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentScalingMode);
+            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), currentScalingMode);
             zoomIn.setFromX(1);
             zoomIn.setFromY(1);
             zoomIn.setToX(1.1);
@@ -377,7 +377,7 @@ public class SettingsDialog extends Dialog implements Observable {
             currentScalingModeText.setFill(Color.YELLOW);
         } else if (mode.equals("Animation Speed")) {
             if (null != currentSpeedMode) {
-                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(250), currentSpeedMode);
+                ScaleTransition zoomOut = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), currentSpeedMode);
                 zoomOut.setFromX(1.1);
                 zoomOut.setFromY(1.1);
                 zoomOut.setToX(1);
@@ -389,7 +389,7 @@ public class SettingsDialog extends Dialog implements Observable {
 
             currentSpeedMode = newMode;
             currentSpeedModeText = newModeText;
-            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(250), currentSpeedMode);
+            ScaleTransition zoomIn = new ScaleTransition(Duration.millis(controller.getCurrentAnimationSpeed()), currentSpeedMode);
             zoomIn.setFromX(1);
             zoomIn.setFromY(1);
             zoomIn.setToX(1.1);
