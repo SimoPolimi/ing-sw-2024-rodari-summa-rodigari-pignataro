@@ -358,11 +358,11 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                                 });
                             }
                         } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
+                            throw new RemoteException();
                         }
                     });
                 } catch (IOException e) {
-                    break; // Server is closed
+                    throw new RemoteException();
                 }
             }
         });
