@@ -63,9 +63,8 @@ public class Deck implements Observable, Serializable {
      *
      * @param type: the CardType that will be contained inside the Deck.
      * @return the initialized Deck, already shuffled.
-     * @throws FileNotFoundException if the data.json file is not found.
      */
-    public static Deck initDeck(CardType type) throws FileNotFoundException {
+    public static Deck initDeck(CardType type) {
         Deck deck = new Deck(type);
         int num;
         List<JsonElement> list;
@@ -363,7 +362,7 @@ public class Deck implements Observable, Serializable {
      * Method from the Observable interface.
      * Adds listener to the ArrayList of Listener objects who are subscribed to the Deck.
      *
-     * @param listener: object containing the lambda function to execute once the Deck is emptied..
+     * @param listener: object containing the lambda function to execute once the Deck is emptied.
      */
     @Override
     public void setListener(Listener listener) {

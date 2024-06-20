@@ -26,31 +26,61 @@ public class GameController implements Serializable, Observable {
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
+    /**
+     * Getter Method for the Game
+     * @return the Game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Getter Method for the Game
+     * @return the Game
+     */
     public Player getPlayer(int index) {
         return game.getPlayer(index);
     }
 
+    /**
+     * Getter Method for the currentStatus
+     * @return the currentStatus
+     */
     public GameStatus getCurrentStatus() {
         return currentStatus;
     }
 
+    /**
+     * Setter Method for the currentStatus
+     * @@param the currentStatus
+     */
     public void setCurrentStatus(GameStatus currentStatus) {
         this.currentStatus = currentStatus;
     }
 
+    /**
+     * Getter Method for the GameController's name
+     * @return the GameController's name
+     * @throws RemoteException if a communication error occurs during the remote operation
+     */
     public String getName() throws RemoteException {
         return name;
     }
 
-    // Used in GameTerminal and gameWindow??
+    /**
+     * Setter Method for the GameController's name
+     * @param name the GameController's name
+     * @throws RemoteException if a communication error occurs during the remote operation
+     */
     public void setName(String name) throws RemoteException {
         this.name = name;
     }
 
+    /**
+     * Constructor Method for the GameController
+     * @param name the GameController's Name
+     * @throws RemoteException if a communication error occurs during the remote operation
+     */
     public GameController(String name) throws RemoteException{
         this.name = name;
         this.game = new Game();
@@ -191,10 +221,18 @@ public class GameController implements Serializable, Observable {
         });
     }
 
+    //TODO: add
+    /**
+     * Sets the currentStatus to READY
+     */
     public void startGame() {
         setCurrentStatus(GameStatus.READY);
     }
 
+    /**
+     * Adds the specified Player to the Game and sets his listeners
+     * @param player the Player to be added to the Game
+     */
     public void addPlayer(Player player) {
         player.setListener(new StatusListener() {
             @Override
@@ -281,10 +319,22 @@ public class GameController implements Serializable, Observable {
         notifyListeners("Number of Players changed");
     }
 
+    /**
+     * Remove the specified Player from the Game
+     * @param player the Player to be removed
+     * @return {@code true} if the Player has been removed correctly
+     */
     public boolean kickPlayer(Player player) {
         return game.kickPlayer(player);
     }
 
+    /**
+     * Passes the turn to the next Player.
+     * Sets the status of the Game corresponding to the Game progress
+     * Sets the status of the Game to "SEMI_LAST_TURN" if the Players have to play their penultimate turns.
+     * Sets the status of the Game to "LAST_TURN" if the Players have to play their last turns.
+     * Sets the status of the Game to "COUNTING_POINTS" to count the points of every Player.
+     */
     public void nextTurn() {
         int turn = game.getPlayerTurn();
         if(getPlayer(turn).isFirst()) {
@@ -302,9 +352,8 @@ public class GameController implements Serializable, Observable {
                     thread.start();
                 }
             }else if (currentStatus.equals(GameStatus.LAST_TURN)){
-                setCurrentStatus(GameStatus.END_GAME);
                 game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
-                currentStatus = GameStatus.COUNTING_POINTS;
+                setCurrentStatus(GameStatus.COUNTING_POINTS);
                 nextStatus();
             }
         }
@@ -327,6 +376,14 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * The specified Player plays the Card at the specified index in the specified coordinates.
+     * Then asks the Player to draw or grab a card from a Deck/Slot if there is still a card in a PlayingDeck slot
+     * @param playerID the index of the Player who plays the Card
+     * @param handCard the index of the Card to be Played
+     * @param x the horizontal coordinate of the Card on the PlayField
+     * @param y the vertical coordinate of the Card on the PlayField
+     */
     public void playCard(int playerID, int handCard, int x, int y) {
         Player player = game.getPlayer(playerID);
         // TODO: test drawing in GameStatus.LAST_TURN
@@ -357,6 +414,11 @@ public class GameController implements Serializable, Observable {
 
     }
 
+    /**
+     * Flips the specified Card of the specified Player
+     * @param playerID the index of Player to flip the Card from
+     * @param cardID the index of the Card to flip
+     */
     public void flipCard(int playerID, int cardID) {
         game.getPlayer(playerID).getHandCard(cardID).flip();
         for (RemoteViewController view: views) {
@@ -424,6 +486,9 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Each Player draws two secret ObjectiveCard to choose from
+     */
     public void drawSecretObjectives() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
             game.getPlayer(i).drawSecretObjectives(game.getObjectivePlayingDeck());
@@ -437,6 +502,9 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Each Player draws the StarterCard and chooses the side of the StarterCard to play
+     */
     public void beginStarterCardChoosing() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
             game.getPlayer(i).drawTemporaryStarterCard(game.getStarterDeck());
@@ -450,6 +518,9 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Starts token selection
+     */
     public void beginTokenChoosing() {
         for (RemoteViewController view : views) {
             try {
@@ -468,6 +539,9 @@ public class GameController implements Serializable, Observable {
         views.remove(view);
     }
 
+    /**
+     * Checks if all the player are in the same Status to go to the next Status
+     */
     private void checkIfGameCanContinue() {
         int readyPlayers = 0;
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {

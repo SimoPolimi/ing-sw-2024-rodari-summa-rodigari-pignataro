@@ -215,8 +215,8 @@ public class GamesListViewController {
      * Notifies all the appropriate Listener inside the List that the User has performed an action.
      * Which Listeners are called changes based on the action.
      * Currently supports:
-     * - NewGameListener: notified if the User chose to create a New Game
-     * - ExistingGameListener: notified if the User chose to join an existing Game.
+     * - NewGameListener: notified if the User chooses to create a New Game
+     * - ExistingGameListener: notified if the User chosoe to join an existing Game.
      * @param context a string specifying which event has been triggered
      */
     public void notifyListeners(String context) {
