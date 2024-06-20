@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

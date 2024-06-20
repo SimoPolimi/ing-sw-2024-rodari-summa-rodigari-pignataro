@@ -73,7 +73,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void nextTurn(int gameID) throws RemoteException {
-        collection.get(gameID).nextTurn();
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).nextTurn();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -83,42 +90,71 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void playCard(int gameID, int playerID,  int cardID, int x, int y) throws RemoteException {
-        collection.get(gameID).playCard(playerID, cardID, x, y);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).playCard(playerID, cardID, x, y);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void flipCard(int gameID, int playerID, int cardiID) throws RemoteException {
-        collection.get(gameID).flipCard(playerID, cardiID);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).flipCard(playerID, cardiID);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void drawCard(int gameID, int playerID, CardType type) throws RemoteException {
-        switch (type) {
-            case RESOURCECARD -> {
-                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck());
+        Thread thread = new Thread(() -> {
+            try {
+
+                switch (type) {
+                    case RESOURCECARD -> {
+                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck());
+                    }
+                    case GOLDCARD -> {
+                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck());
+                    }
+                    case OBJECTIVECARD -> {
+                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck());
+                    }
+                }
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
             }
-            case GOLDCARD -> {
-                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck());
-            }
-            case OBJECTIVECARD -> {
-                collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck());
-            }
-        }
+        });
+        thread.start();
     }
 
     @Override
     public void grabCard(int gameID, int playerID, CardType type, int slot) throws RemoteException {
-        switch (type) {
-            case RESOURCECARD -> {
-                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
+        Thread thread = new Thread(() -> {
+            try {
+                switch (type) {
+                    case RESOURCECARD -> {
+                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
+                    }
+                    case GOLDCARD -> {
+                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
+                    }
+                    case OBJECTIVECARD -> {
+                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
+                    }
+                }
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
             }
-            case GOLDCARD -> {
-                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
-            }
-            case OBJECTIVECARD -> {
-                collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
-            }
-        }
+        });
+        thread.start();
     }
 
     @Override
@@ -128,17 +164,38 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void addView(int gameID, RemoteViewController viewController) throws RemoteException {
-        collection.get(gameID).addView(viewController);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).addView(viewController);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void setPlayerStatus(int gameID, int playerID, GameStatus status) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).setStatus(status);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getPlayer(playerID).setStatus(status);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void setPlayerToken(int gameID, int playerID, Token token) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).setToken(token);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getPlayer(playerID).setToken(token);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -148,7 +205,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void setCurrentStatus(int gameID, GameStatus status) throws RemoteException {
-        collection.get(gameID).setCurrentStatus(status);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).setCurrentStatus(status);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -158,7 +222,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void setName(int gameID, String name) throws RemoteException {
-        collection.get(gameID).setName(name);
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).setName(name);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -178,12 +249,26 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void setPlayerStarterCard(int gameID, int playerID) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).setStarterCard();
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getPlayer(playerID).setStarterCard();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void flipStarterCard(int gameID, int playerID) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).getTemporaryStarterCard().flip();
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getPlayer(playerID).getTemporaryStarterCard().flip();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -196,13 +281,27 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void startGame(int gameID) throws RemoteException {
-        collection.get(gameID).startGame();
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).startGame();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void setPlayerSecretObjective(int gameID, int playerID, int pickedCard) throws RemoteException {
-        collection.get(gameID).getPlayer(playerID).setSecretObjective(collection.get(gameID)
-                .getPlayer(playerID).getTemporaryObjectiveCards().get(pickedCard));
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getPlayer(playerID).setSecretObjective(collection.get(gameID)
+                        .getPlayer(playerID).getTemporaryObjectiveCards().get(pickedCard));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -341,7 +440,14 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void sendMessage(int gameID, int playerID, String message) throws RemoteException {
-        collection.get(gameID).getGame().getChat().sendMessage(new ChatMessage(message, collection.get(gameID).getPlayer(playerID).getNickname()));
+        Thread thread = new Thread(() -> {
+            try {
+                collection.get(gameID).getGame().getChat().sendMessage(new ChatMessage(message, collection.get(gameID).getPlayer(playerID).getNickname()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
     }
 
     @Override
