@@ -306,11 +306,19 @@ public class Player implements Observable, Serializable {
         this.temporaryStarterCard = starter;
     }
 
+    /**
+     * Draws two secret ObjectiveCard for the Player to choose from
+     * @param playingDeck the ObjectiveDeck of the Game
+     */
     public void drawSecretObjectives(PlayingDeck playingDeck) {
         tempObjective1 = (ObjectiveCard) playingDeck.getDeck().draw();
         tempObjective2 = (ObjectiveCard) playingDeck.getDeck().draw();
     }
 
+    /**
+     * Getter Method for the two secret ObjectiveCard for the Player to choose from
+     * @return the two secret ObjectiveCard for the Player to choose from
+     */
     public ArrayList<ObjectiveCard> getTemporaryObjectiveCards() {
         ArrayList<ObjectiveCard> cards = new ArrayList<>();
         cards.add(tempObjective1);
@@ -318,6 +326,10 @@ public class Player implements Observable, Serializable {
         return cards;
     }
 
+    /**
+     * Draws the StarterCard and sets it as temporary to make the Player choose which side to play it
+     * @param starterDeck the StarterCard Deck
+     */
     public void drawTemporaryStarterCard(Deck starterDeck) {
         temporaryStarterCard = (StarterCard) starterDeck.draw();
     }

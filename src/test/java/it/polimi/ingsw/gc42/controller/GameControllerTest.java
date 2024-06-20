@@ -192,8 +192,9 @@ class GameControllerTest {
         assertEquals(player.getPlayField().getLastPlayedCard(), cardToBePlayed);
     }
 
+    // Last turn testing
     @Test
-    void dontGrabCardIfSlotsAreEmpty() throws RemoteException {
+    void dontGrabCardIfSlotsAreEmpty_LastTurn() throws RemoteException {
         // given
         GameController controller = new GameController("test");
         Player player = new Player("bot");
@@ -424,11 +425,12 @@ class GameControllerTest {
             e.printStackTrace();
         }
 
-        // then
-        // No such Card grabbed
+        // when
+        // No such Card grabbed (caught)
         controller.grabCard(player, controller.getGame().getResourcePlayingDeck(), 1);
 
-        // Deck is empty
+        // then
+        // No Card Grabbed
         assertEquals(player.getHandSize(), 2);
         assertEquals(controller.getGame().getResourcePlayingDeck().getDeck().getNumberOfCards(), 0);
         assertNull(controller.getGame().getResourcePlayingDeck().getSlot(1));

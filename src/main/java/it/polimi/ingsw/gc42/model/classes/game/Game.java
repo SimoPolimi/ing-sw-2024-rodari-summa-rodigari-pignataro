@@ -58,7 +58,7 @@ public class Game implements Observable, Serializable {
         this.playerTurn = 1;
     }
 
-
+    // TODO: remove?
     public void endGame() {
         notifyListeners("End Game");
     }
@@ -171,38 +171,79 @@ public class Game implements Observable, Serializable {
         this.starterDeck = starterDeck;
     }
 
+    /**
+     * Checks if the ResourceDeck is empty
+     * @return {@code true} if the ResourceDeck is empty
+     */
     public boolean isResourceDeckEmpty() {
         return isResourceDeckEmpty;
     }
 
+    /**
+     * Setter Method for the boolean that indicates if the ResourceDeck is empty
+     * @param resourceDeckEmpty {@code true} if the ResourceDeck is empty, {@code false} if not
+     */
     public void setResourceDeckEmpty(boolean resourceDeckEmpty) {
         isResourceDeckEmpty = resourceDeckEmpty;
     }
 
+    /**
+     * Checks if the GoldDeck is empty
+     * @return {@code true} if the GoldDeck is empty
+     */
     public boolean isGoldDeckEmpty() {
         return isGoldDeckEmpty;
     }
 
+    /**
+     * Setter Method for the boolean that indicates if the GoldDeck is empty
+     * @param goldDeckEmpty {@code true} if the GoldDeck is empty, {@code false} if not
+     */
     public void setGoldDeckEmpty(boolean goldDeckEmpty) {
         isGoldDeckEmpty = goldDeckEmpty;
     }
 
+    /**
+     * Gets the Player at the specified index (from 1 to 4)
+     * @param index the index of the player (from 1 to 4)
+     * @return the Player at the specified index
+     */
     public Player getPlayer(int index) {
         return players.get(index - 1);
     }
 
+    /**
+     * Checks if a Player has reached 20 points
+     * @return {@code true} a Player has reached 20 points
+     */
     public boolean isPlayerHasReachedTwentyPoints() {
         return playerHasReachedTwentyPoints;
     }
 
+    /**
+     * Setter Method for the boolean that indicates if a Player has reached 20 points
+     * @param playerHasReachedTwentyPoints {@code true} if a Player has reached 20 points, {@code false} if not
+     */
     public void setPlayerHasReachedTwentyPoints(boolean playerHasReachedTwentyPoints) {
         this.playerHasReachedTwentyPoints = playerHasReachedTwentyPoints;
     }
 
+    //TODO: check index
+
+    /**
+     * Gets the index of the Player whose turn it is
+     * @return the index of the Player whose turn it is
+     */
     public int getPlayerTurn() {
         return playerTurn;
     }
 
+    /**
+     * Sets the index of the Player whose turn it is and sets his status to MY_TURN.
+     * Also sets the statuses of other Players to NOT_MY_TURN
+     * @param i the index of the Player whose turn it is
+     * @throws IllegalArgumentException if the Player at that index doesn't exist
+     */
     public void setPlayerTurn(int i) throws IllegalArgumentException {
         if (i >= 1 && i <= players.size()) {
             this.playerTurn = i;
@@ -216,10 +257,18 @@ public class Game implements Observable, Serializable {
         }
     }
 
+    /**
+     * Gets the Player whose turn it is
+     * @return the Player whose turn it is
+     */
     public Player getCurrentPlayer() {
         return getPlayer(getPlayerTurn());
     }
 
+    /**
+     * Gets the number of Players in the Game
+     * @return the number of Players in the Game
+     */
     public int getNumberOfPlayers() {
         return players.size();
     }
@@ -252,10 +301,19 @@ public class Game implements Observable, Serializable {
         this.playerTurn = 1;
     }
 
+    /**
+     * Getter Method for the Chat
+     * @return the Chat
+     */
     public Chat getChat() {
         return chat;
     }
 
+    // TODO: what???
+
+    /**
+     * Sets who is the first Player to play
+     */
     private void setFirstPlayer() {
         if (!players.isEmpty()) {
             int max = 0;
@@ -326,6 +384,11 @@ public class Game implements Observable, Serializable {
         } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
     }
 
+    /**
+     * Gets the index of the Player with the specified nickname
+     * @param nickName the nickname of the Player to be returned
+     * @return the Player with the specified nickname
+     */
     public int getIndexOfPlayer(String nickName) {
         int index = -1;
         for (Player player : players) {
@@ -336,6 +399,7 @@ public class Game implements Observable, Serializable {
         return index + 1;
     }
 
+    // TODO: do
     public ArrayList<HashMap<String, String>> countPoints(){
         ArrayList<HashMap<String, String>> points = new ArrayList<>();
         for (Player player : players) {

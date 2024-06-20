@@ -335,14 +335,6 @@ public class Deck implements Observable, Serializable {
      * @throws NoSuchElementException if there are 0 Cards left inside the Deck
      */
     public Card draw() throws NoSuchElementException {
-        /*try {
-
-        } catch (NoSuchElementException e) {
-            //TODO: Remove after handling
-            e.printStackTrace();
-        }
-        return null;
-    }*/
         Card card = cards.getFirst();
         cards.removeFirst();
         if (cards.isEmpty()) {
