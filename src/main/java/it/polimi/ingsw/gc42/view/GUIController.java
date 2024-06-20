@@ -49,6 +49,8 @@ public class GUIController implements ViewController {
     @FXML
     public AnchorPane uiContainer;
     @FXML
+    public AnchorPane mainAreaContainer;
+    @FXML
     private StackPane root;
     @FXML
     private AnchorPane mainArea;
@@ -775,7 +777,7 @@ public class GUIController implements ViewController {
         }
 
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), uiContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
         transition.setFromX(currentUIScale);
         transition.setFromY(currentUIScale);
         transition.setToX(0.4);
@@ -789,7 +791,7 @@ public class GUIController implements ViewController {
 
     private void hideGlobalMap() {
         blockInput();
-        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), uiContainer);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), mainAreaContainer);
         transition.setFromX(0.4);
         transition.setFromY(0.4);
         transition.setToX(currentUIScale);
