@@ -291,7 +291,7 @@ public class ObjectiveCardView {
         container = new VBox();
         container.setAlignment(Pos.CENTER);
         container.setSpacing(30);
-        AnchorPane.setBottomAnchor(container, 0.0);
+        AnchorPane.setBottomAnchor(container, 200.0);
         AnchorPane.setRightAnchor(container, 0.0);
         AnchorPane.setTopAnchor(container, 0.0);
         if (isPrivacyModeEnabled) {
