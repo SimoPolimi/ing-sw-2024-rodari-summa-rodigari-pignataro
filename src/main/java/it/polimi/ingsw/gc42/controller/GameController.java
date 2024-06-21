@@ -11,7 +11,6 @@ import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
@@ -28,6 +27,9 @@ public class GameController implements Serializable, Observable {
     private final  HashMap<RemoteViewController, Integer> viewOwners = new HashMap<>();
     private GameStatus currentStatus;
     private String name;
+
+    private boolean isStarted = false;
+    private int numberOfDisconnectedPlayers = 0;
 
     private final ArrayList<Listener> listeners = new ArrayList<>();
 
@@ -660,6 +662,7 @@ public class GameController implements Serializable, Observable {
     public void rejoinGame(int playerID) {
         Player player = game.getPlayer(playerID);
         player.setDisconnected(false);
+        numberOfDisconnectedPlayers--;
         player.setStatus(GameStatus.PLAYING);
 
         if (null == player.getToken()) {
@@ -738,11 +741,16 @@ public class GameController implements Serializable, Observable {
                 drawStartingHand();
                 break;
             case PLAYING:
-                game.getChat().sendMessage(new ChatMessage("Game is Starting", "Server"));
-                for (int i = 0; i < game.getNumberOfPlayers(); i++) {
-                    game.getPlayer(i+1).setStatus(GameStatus.NOT_MY_TURN);
+                if (!isStarted) {
+                    game.getChat().sendMessage(new ChatMessage("Game is Starting", "Server"));
+                    isStarted = true;
                 }
-                nextTurn();
+                if (numberOfDisconnectedPlayers < game.getNumberOfPlayers()) {
+                    for (int i = 0; i < game.getNumberOfPlayers(); i++) {
+                        game.getPlayer(i + 1).setStatus(GameStatus.NOT_MY_TURN);
+                    }
+                    nextTurn();
+                }
                 break;
             case COUNTING_POINTS:
                 ArrayList<HashMap<String, String>> points = game.countPoints();
@@ -770,11 +778,14 @@ public class GameController implements Serializable, Observable {
      */
     public void disconnectPlayer(int playerID) {
         game.getPlayer(playerID).setDisconnected(true);
+        numberOfDisconnectedPlayers++;
         for (RemoteViewController view : views) {
             if (viewOwners.get(view) == playerID) {
                 unusedViews.add(view);
             }
         }
+        game.getChat().sendMessage(new ChatMessage(game.getPlayer(playerID).getNickname() + " Disconnected", "Server"));
+
         if (game.getPlayerTurn() == playerID) {
             nextTurn();
         }

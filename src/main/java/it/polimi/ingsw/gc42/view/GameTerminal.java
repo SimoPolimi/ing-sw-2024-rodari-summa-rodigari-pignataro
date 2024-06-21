@@ -47,6 +47,8 @@ public class GameTerminal extends Application implements ViewController {
 
     private final ArrayList<String[][]> playAreas = new ArrayList<>();
 
+    private final ArrayList<Integer> rejoinableGames = new ArrayList<>();
+
     private TerminalCharacters terminalCharacters;
 
     private boolean isShowingGameCreationScreen = false;
@@ -130,6 +132,17 @@ public class GameTerminal extends Application implements ViewController {
             map.put("RIGHT", 1440);
             printingExtremes.add(map);
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (controller != null) {
+                try {
+                    controller.disconnect();
+                    System.out.println("Shutdown hook: Disconnected from network.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
 
         // Ask for TUI Mode
         boolean exitGameModeLoop = false;
@@ -2051,8 +2064,24 @@ public class GameTerminal extends Application implements ViewController {
     private void askToJoinGame(ArrayList<HashMap<String, String>> games) {
         System.out.println("Games available:");
         for (HashMap<String, String> game : games) {
-            int gameID = games.indexOf(game) + 1;
-            System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
+            if (game.get("Status").equals("Waiting for players")) {
+                int gameID = games.indexOf(game) + 1;
+                System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status"));
+
+            } else {
+                int number = Integer.parseInt(game.get("NumberOfDisconnectedPlayers"));
+                if (number != 0) {
+                    boolean exit = false;
+                    for (int j = 0; j < number && !exit; j++) {
+                        if (game.get("DisconnectedPlayer" + j).equals(player.getNickname())) {
+                            int gameID = games.indexOf(game) + 1;
+                            rejoinableGames.add(gameID-1);
+                            System.out.println(gameID + ")" + " " + game.get("Name") + ", " + game.get("NumberOfPlayers") + " players, " + game.get("Status") + " [RE_JOIN]");
+                        }
+                        exit = true;
+                    }
+                }
+            }
         }
         System.out.println("\nPress c to create a new one, or press r to refresh the list!");
         inputHandler.listen(new TerminalListener() {
@@ -2071,12 +2100,20 @@ public class GameTerminal extends Application implements ViewController {
                     try {
                         int gameID = Integer.parseInt(input);
                         controller.pickGame(gameID - 1);
-                        setViewController();
-                        controller.addPlayer(player);
-                        playerID = controller.getIndexOfPlayer(player.getNickname());
-                        controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
-                        System.out.println("Waiting...");
-                        isWaiting = true;
+                        if (rejoinableGames.contains(gameID-1)) {
+                            // Re-joining a Game
+                            playerID = controller.getIndexOfPlayer(player.getNickname());
+                            setViewController();
+                            controller.rejoinGame(controller.getIndexOfPlayer(player.getNickname()));
+                            rebuild();
+                        } else {
+                            controller.addPlayer(player);
+                            playerID = controller.getIndexOfPlayer(player.getNickname());
+                            setViewController();
+                            controller.setPlayerStatus(playerID, GameStatus.WAITING_FOR_SERVER);
+                            System.out.println("Waiting...");
+                            isWaiting = true;
+                        }
                         inputHandler.unlisten(this);
                         chat = new ArrayList<>(controller.getFullChat());
                     } catch (NumberFormatException e) {
@@ -3203,5 +3240,20 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void unlockInput() {
         // Don't need
+    }
+
+    private void rebuild() {
+        int number = controller.getNumberOfPlayers();
+        for (int i = 0; i < number; i++) {
+            ArrayList<PlayableCard> playArea = controller.getPlayersPlayfield(i+1);
+            for (int j = 0; j < playArea.size(); j++) {
+                if (null != playAreas.get(i)) {
+                    playAreas.set(i, updateCardMatrix(playAreas.get(i), playArea.get(j), playArea, i + 1));
+                } else {
+                    playAreas.set(i, createCardMatrix((StarterCard) playArea.getFirst(), i + 1));
+                }
+            }
+        }
+        printPlayer();
     }
 }
