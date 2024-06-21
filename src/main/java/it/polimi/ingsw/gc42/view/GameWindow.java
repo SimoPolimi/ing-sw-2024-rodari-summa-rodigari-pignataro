@@ -6,10 +6,9 @@ import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
+import it.polimi.ingsw.gc42.view.Interfaces.RejoiningListener;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -113,7 +112,17 @@ public class GameWindow extends Application {
             @Override
             public void onEvent() {
                 try {
-                    goToPlayScreen(stage, loginController.getNickName(), false);
+                    goToPlayScreen(stage, loginController.getNickName(), false, false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        gamesListViewController.setListener(new RejoiningListener() {
+            @Override
+            public void onEvent() {
+                try {
+                    goToPlayScreen(stage, player.getNickname(), false, true );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -145,13 +154,12 @@ public class GameWindow extends Application {
             @Override
             public void onEvent() {
                 try {
-                    goToPlayScreen(stage, player.getNickname(), newGameController.getStartGame());
+                    goToPlayScreen(stage, player.getNickname(), newGameController.getStartGame(), false);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-
         stage.show();
     }
 
@@ -164,7 +172,7 @@ public class GameWindow extends Application {
      * @param startGame a boolean value indicating if this method needs to tell the Server to start the Game (if the User created it) or not
      * @throws IOException if the view file can't be found
      */
-    private void goToPlayScreen(Stage stage, String nickName, boolean startGame) throws IOException {
+    private void goToPlayScreen(Stage stage, String nickName, boolean startGame, boolean isRejoining) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         GUIController controller = fxmlLoader.getController();
@@ -178,7 +186,7 @@ public class GameWindow extends Application {
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
 
-        controller.setGameController(gameController, gameController.getIndex());
+        controller.setGameController(gameController, gameController.getIndex(), gameController.getIndexOfPlayer(nickName));
         controller.build();
         controller.setPlayer(gameController.getIndexOfPlayer(nickName));
 
@@ -250,6 +258,10 @@ public class GameWindow extends Application {
         });
 
         stage.show();
-        controller.showWaitingForServerDialog();
+        if (isRejoining) {
+            controller.rebuildUI();
+        } else {
+            controller.showWaitingForServerDialog();
+        }
     }
 }

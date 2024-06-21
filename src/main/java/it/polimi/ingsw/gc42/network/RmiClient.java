@@ -446,6 +446,7 @@ public class RmiClient implements NetworkController, Serializable {
 
     @Override
     public void rejoinGame(int playerID) throws RemoteException {
+        this.playerID = playerID;
         server.rejoinGame(gameID, playerID);
     }
 

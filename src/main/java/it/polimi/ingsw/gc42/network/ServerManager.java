@@ -61,6 +61,21 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
                 case NOT_MY_TURN -> string = "Not My Turn";
             }
             gameInfo.put("Status", string);
+
+            ArrayList<String> disconnectedPlayers = new ArrayList<>();
+            for (int j = 1; j <= game.getGame().getNumberOfPlayers(); j++) {
+                if (game.getPlayer(j).isDisconnected()) {
+                    disconnectedPlayers.add(game.getPlayer(j).getNickname());
+                }
+            }
+
+            int number = disconnectedPlayers.size();
+            gameInfo.put("NumberOfDisconnectedPlayers", String.valueOf(number));
+
+            for (int j = 0; j < disconnectedPlayers.size(); j++) {
+                gameInfo.put("DisconnectedPlayer" + String.valueOf(j), disconnectedPlayers.get(j));
+            }
+
             availableGames.add(gameInfo);
         }
         return availableGames;
@@ -77,6 +92,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
      */
     public void disconnectPlayer(int gameID, int playerID) throws RemoteException {
         collection.get(gameID).disconnectPlayer(playerID);
+        collection.unlockNickname(collection.get(gameID).getPlayer(playerID).getNickname());
     }
 
     /**
@@ -183,14 +199,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public void addView(int gameID, RemoteViewController viewController) throws RemoteException {
-        Thread thread = new Thread(() -> {
-            try {
-                collection.get(gameID).addView(viewController);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        thread.start();
+        collection.get(gameID).addView(viewController);
     }
 
     @Override
@@ -335,7 +344,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
 
     @Override
     public ArrayList<Card> getDeck(int gameID, CardType type) throws RemoteException {
-        ArrayList<String> deckTextures = new ArrayList<>();
         ArrayList<Card> deck = null;
         switch (type) {
             case RESOURCECARD -> deck = collection.get(gameID).getGame().getResourcePlayingDeck().getDeck().getCopy();

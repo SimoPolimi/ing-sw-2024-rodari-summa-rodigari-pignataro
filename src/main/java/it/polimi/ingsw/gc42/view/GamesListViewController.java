@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.view.Interfaces.ExistingGameListener;
 import it.polimi.ingsw.gc42.view.Interfaces.NewGameListener;
+import it.polimi.ingsw.gc42.view.Interfaces.RejoiningListener;
 import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -81,16 +83,22 @@ public class GamesListViewController {
         for (int i = 0; i < availableGames.size(); i++) {
             if (availableGames.get(i).get("Status").equals("Waiting for players")) {
                 Pane newListItem = getNewListItem(availableGames.get(i).get("Name"), availableGames
-                        .get(i).get("NumberOfPlayers"), availableGames.get(i).get("Status"),i);
-                int finalI = i;
-                newListItem.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        pickedGame = finalI;
-                        notifyListeners("Existing Game");
-                    }
-                });
+                        .get(i).get("NumberOfPlayers"), availableGames.get(i).get("Status"),i, false, 0);
                 content.getChildren().add(newListItem);
+            } else {
+                // Checks if the User can re-join in this Game
+                int number = Integer.parseInt(availableGames.get(i).get("NumberOfDisconnectedPlayers"));
+                if (number != 0) {
+                    boolean exit = false;
+                    for (int j = 0; j < number && !exit; j++) {
+                        if (availableGames.get(i).get("DisconnectedPlayer" + String.valueOf(j)).equals(player.getNickname())) {
+                            Pane newListItem = getNewListItem(availableGames.get(i).get("Name"), availableGames
+                                    .get(i).get("NumberOfPlayers"), availableGames.get(i).get("Status"),i, true, server.getIndexOfPlayer(player.getNickname()));
+                            content.getChildren().add(newListItem);
+                        }
+                        exit = true;
+                    }
+                }
             }
         }
 
@@ -121,7 +129,7 @@ public class GamesListViewController {
      * @param gameID the Game's gameID, used to trigger the picking feature appropriately
      * @return the Pane (JavaFx element) containing the UI for this element.
      */
-    private Pane getNewListItem(String gameName, String gameNumber, String gameStatus, int gameID) {
+    private Pane getNewListItem(String gameName, String gameNumber, String gameStatus, int gameID, boolean isRejoining, int playerID) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
         newListItem.setAlignment(Pos.CENTER_LEFT);
@@ -145,18 +153,37 @@ public class GamesListViewController {
         joinButton.setSpacing(15);
         joinButton.setAlignment(Pos.CENTER);
         joinButton.setPrefWidth(50);
-        joinButton.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 5");
         joinButton.setCursor(Cursor.HAND);
-        joinButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                joinGame(gameID);
-            }
-        });
+        joinButton.setPadding(new Insets(0, 5, 0, 5));
 
-        Text connectTxt = new Text("JOIN");
+        Text connectTxt = new Text();
         connectTxt.setFont(Font.font("Tahoma Bold", 11));
         connectTxt.setTextAlignment(TextAlignment.CENTER);
+
+        if (isRejoining) {
+            joinButton.setStyle("-fx-background-color: #2b6cdf; -fx-background-radius: 5");
+            connectTxt.setText("RE-JOIN");
+            connectTxt.setFill(Color.WHITE);
+            joinButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    pickedGame = gameID;
+                    rejoinGame(gameID, playerID);
+                    notifyListeners("Rejoining Game");
+                }
+            });
+        } else {
+            joinButton.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 5");
+            connectTxt.setText("JOIN");
+            joinButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    pickedGame = gameID;
+                    joinGame(gameID);
+                    notifyListeners("Existing Game");
+                }
+            });
+        }
 
         joinButton.getChildren().add(connectTxt);
 
@@ -173,6 +200,15 @@ public class GamesListViewController {
         try {
             server.pickGame(gameID);
             server.addPlayer(player);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void rejoinGame(int gameID, int playerID) {
+        try {
+            server.pickGame(gameID);
+            server.rejoinGame(playerID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -231,6 +267,13 @@ public class GamesListViewController {
             case "Existing Game" -> {
                 for (Listener l: listeners) {
                     if (l instanceof ExistingGameListener) {
+                        l.onEvent();
+                    }
+                }
+            }
+            case "Rejoining Game" -> {
+                for (Listener l: listeners) {
+                    if (l instanceof RejoiningListener) {
                         l.onEvent();
                     }
                 }

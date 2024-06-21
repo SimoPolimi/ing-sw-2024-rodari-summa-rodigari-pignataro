@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;

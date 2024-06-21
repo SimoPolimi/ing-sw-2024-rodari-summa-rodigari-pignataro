@@ -117,6 +117,12 @@ public class TableView {
             blackToken.setVisible(true);
         }
         hand.setPlayer(playerID);
+        ArrayList<PlayableCard> playArea = controller.getNetworkController().getPlayersPlayfield(playerID);
+        if (!playArea.isEmpty()) {
+            for (PlayableCard card: playArea) {
+                addToPlayArea(card, card.getX(), card.getY());
+            }
+        }
     }
 
     /**

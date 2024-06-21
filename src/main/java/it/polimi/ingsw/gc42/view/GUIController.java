@@ -151,9 +151,10 @@ public class GUIController implements ViewController {
         playerTableContainer.getChildren().addAll(table.getPane());
     }
 
-    public void setGameController(NetworkController controller, int gameID) throws RemoteException {
+    public void setGameController(NetworkController controller, int gameID, int playerID) throws RemoteException {
         this.controller = controller;
         this.gameID = gameID;
+        this.playerID = playerID;
         try {
             controller.setViewController(new ClientController(this));
         } catch (AlreadyBoundException e) {
@@ -167,6 +168,37 @@ public class GUIController implements ViewController {
         scoreBoard = new ScoreBoardView(redToken, blueToken, greenToken, yellowToken);
         chat = new ChatView(true, chatContainer, chatBoxContainer, chatTextField, sendButton, chatHintTxt, this);
         root.requestFocus();
+    }
+
+    public void rebuildUI() {
+        // Rebuilds the entire UI when the User is rejoining an on-going Game
+        try {
+            int number = controller.getNumberOfPlayers();
+            setOtherPlayers(number);
+
+            notifyDeckChanged(CardType.RESOURCECARD);
+            notifyDeckChanged(CardType.GOLDCARD);
+            notifyCommonObjectivesChanged();
+
+            ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
+            for (int i = 1; i < number +1; i++) {
+                notifyPlayersHandChanged(i);
+                notifyPlayersTokenChanged(i);
+                notifyPlayersObjectiveChanged(i);
+                Token token = null;
+                switch (info.get(i-1).get("Token")) {
+                    case "Red" -> token = Token.RED;
+                    case "Blue" -> token = Token.BLUE;
+                    case "Green" -> token = Token.GREEN;
+                    case "Yellow" -> token = Token.YELLOW;
+                    default -> {}
+                 }
+                notifyPlayersPointsChanged(token, Integer.parseInt(info.get(i-1).get("Points")));
+            }
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public NetworkController getNetworkController() {
@@ -202,38 +234,36 @@ public class GUIController implements ViewController {
     }
 
     private void setOtherPlayers(int numberOfPlayers) throws RemoteException {
-        Platform.runLater(() -> {
-            boolean isRightTableEmpty = true;
-            boolean isTopTableEmpty = true;
-            boolean isLeftTableEmpty = true;
-            ArrayList<Integer> players = new ArrayList<>();
-            for (int i = 1; i <= numberOfPlayers; i++) {
-                        if (i != playerID && !players.contains(i)) {
-                            players.add(i);
-                            if (numberOfPlayers == 2 && isTopTableEmpty) {
-                                isTopTableEmpty = false;
-                                topTable = new TableView(true, this, controller);
-                                topTable.setPlayer(i);
-                                topPlayerTableContainer.getChildren().add(topTable.getPane());
-                            } else if (numberOfPlayers > 2 && isRightTableEmpty) {
-                                isRightTableEmpty = false;
-                                rightTable = new TableView(true, this, controller);
-                                rightTable.setPlayer(i);
-                                rightPlayerTableContainer.getChildren().add(rightTable.getPane());
-                            } else if (numberOfPlayers == 4 && isTopTableEmpty) {
-                                isTopTableEmpty = false;
-                                topTable = new TableView(true, this, controller);
-                                topTable.setPlayer(i);
-                                topPlayerTableContainer.getChildren().add(topTable.getPane());
-                            } else if (numberOfPlayers >= 3 && isLeftTableEmpty) {
-                                isLeftTableEmpty = false;
-                                leftTable = new TableView(true, this, controller);
-                                leftTable.setPlayer(i);
-                                leftPlayerTableContainer.getChildren().add(leftTable.getPane());
-                            }
-                        }
-                    }
-                });
+        boolean isRightTableEmpty = true;
+        boolean isTopTableEmpty = true;
+        boolean isLeftTableEmpty = true;
+        ArrayList<Integer> players = new ArrayList<>();
+        for (int i = 1; i <= numberOfPlayers; i++) {
+            if (i != playerID && !players.contains(i)) {
+                players.add(i);
+                if (numberOfPlayers == 2 && isTopTableEmpty) {
+                    isTopTableEmpty = false;
+                    topTable = new TableView(true, this, controller);
+                    topTable.setPlayer(i);
+                    Platform.runLater(() -> topPlayerTableContainer.getChildren().add(topTable.getPane()));
+                } else if (numberOfPlayers > 2 && isRightTableEmpty) {
+                    isRightTableEmpty = false;
+                    rightTable = new TableView(true, this, controller);
+                    rightTable.setPlayer(i);
+                    Platform.runLater(() -> rightPlayerTableContainer.getChildren().add(rightTable.getPane()));
+                } else if (numberOfPlayers == 4 && isTopTableEmpty) {
+                    isTopTableEmpty = false;
+                    topTable = new TableView(true, this, controller);
+                    topTable.setPlayer(i);
+                    Platform.runLater(() -> topPlayerTableContainer.getChildren().add(topTable.getPane()));
+                } else if (numberOfPlayers >= 3 && isLeftTableEmpty) {
+                    isLeftTableEmpty = false;
+                    leftTable = new TableView(true, this, controller);
+                    leftTable.setPlayer(i);
+                    Platform.runLater(() -> leftPlayerTableContainer.getChildren().add(leftTable.getPane()));
+                }
+            }
+        }
         Platform.runLater(this::notifyCommonObjectivesChanged);
         Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 1));
         Platform.runLater(() -> notifySlotCardChanged(CardType.RESOURCECARD, 2));
@@ -716,18 +746,15 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyPlayersHandChanged(int playerID) {
-        Thread thread = new Thread(() -> {
-            if (this.playerID == playerID) {
-                table.refreshHand();
-            } else if (null != rightTable && playerID == rightTable.getPlayer()) {
-                rightTable.refreshHand();
-            } else if (null != topTable && playerID == topTable.getPlayer()) {
-                topTable.refreshHand();
-            } else if (null != leftTable && playerID == leftTable.getPlayer()) {
-                leftTable.refreshHand();
-            }
-        });
-        thread.start();
+        if (this.playerID == playerID) {
+            table.refreshHand();
+        } else if (null != rightTable && playerID == rightTable.getPlayer()) {
+            rightTable.refreshHand();
+        } else if (null != topTable && playerID == topTable.getPlayer()) {
+            topTable.refreshHand();
+        } else if (null != leftTable && playerID == leftTable.getPlayer()) {
+            leftTable.refreshHand();
+        }
     }
 
     @Override
