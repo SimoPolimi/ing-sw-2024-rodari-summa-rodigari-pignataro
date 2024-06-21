@@ -11,6 +11,7 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 | CLI  | ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+) |
 | Chat  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
 | Multiple games  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
+| Persistence  | ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+) |
 
 ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+): Done  
 ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+): In progress  
