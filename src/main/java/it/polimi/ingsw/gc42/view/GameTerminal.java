@@ -2034,6 +2034,7 @@ public class GameTerminal extends Application implements ViewController {
 
     private void showAvailableGames() {
         ArrayList<HashMap<String, String>> games = null;
+        rejoinableGames.clear();
         try {
             games = controller.getAvailableGames();
         } catch (RemoteException e) {
