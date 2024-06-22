@@ -67,26 +67,49 @@
 
 
 
+## Functionality
+| Functionality       | Status    |
+|---------------------|---------  |
+| 🛠️ Basic rules      | ✅       |
+| 🛜 RMI              | ✅       |
+| ✉️ Socket           | ✅       |
+| 🎨 GUI              | ✅       |
+| 🖥️ CLI              | ✅       |
+| 💬 Chat ⭐️          | ✅      |
+| 🕹️ Multiple games ⭐️ | ✅     |
+| 🔄 Persistence ⭐️   | ✅      |
+
+
+✅: Done  
+🚧: In progress  
+📝: To do
+
+⭐️: Additional Feature
 
 ## UML
 https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 
-## Functionality
-| Functionality | Status                                                          |
-|---------------|-----------------------------------------------------------------|
-| Basic rules  | ![#ff0000](https://via.placeholder.com/15/00ff00/000000?text=+) |
-| RMI  | ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+) |
-| Socket  | ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+) |
-| GUI  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
-| CLI  | ![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+) |
-| Chat  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
-| Multiple games  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
-| Persistence  | ![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+) |
+## Instructions
 
-![#ffa500](https://via.placeholder.com/15/00ff00/000000?text=+): Done  
-![#ffa500](https://via.placeholder.com/15/ffa500/000000?text=+): In progress  
-![#ffa500](https://via.placeholder.com/15/ff0000/000000?text=+): To do
+### Launching the Game
+To launch the Game, navigate your Terminal to the folder where the file is located, then enter:
+[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
 
+This will launch the Launcher Window, from where you can choose to either play in GUI or TUI.
+
+### Launching the Server
+Server can be launched in 3 different ways:
+1. Open the Launcher Window with the command, then click on "Open Server":
+
+      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
+
+2. Enter the following command to open the same GUI:
+
+      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar+server)](https://git.io/typing-svg)
+
+3. Enter the following command to open a TUI version of Server:
+
+      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar+server_tui)](https://git.io/typing-svg)
 
 ## Screenshots
 Launcher:
