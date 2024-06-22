@@ -93,23 +93,23 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 
 ### Launching the Game
 To launch the Game, navigate your Terminal to the folder where the file is located, then enter:
-[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=14&pause=2000&color=6FCE76&vCenter=true&random=false&width=435&lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
 
 This will launch the Launcher Window, from where you can choose to either play in GUI or TUI.
 
 ### Launching the Server
 Server can be launched in 3 different ways:
-1. Open the Launcher Window with the command, then click on "Open Server":
+1. Open the Launcher Window with the following command , then click on "Open Server":
 
-      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
+    [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=14&pause=2000&color=6FCE76&vCenter=true&random=false&width=160&height=20&lines=java+-jar+GC42.jar)](https://git.io/typing-svg)
 
 2. Enter the following command to open the same GUI:
 
-      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar+server)](https://git.io/typing-svg)
+      [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=14&pause=2000&color=6FCE76&vCenter=true&random=false&width=220&height=20&lines=java+-jar+GC42.jar+server)](https://git.io/typing-svg)
 
 3. Enter the following command to open a TUI version of Server:
 
-      [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=java+-jar+GC42.jar+server_tui)](https://git.io/typing-svg)
+      [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=14&pause=2000&color=6FCE76&vCenter=true&random=false&width=250&height=20&lines=java+-jar+GC42.jar+server_tui)](https://git.io/typing-svg)
 
 ## Screenshots
 Launcher:
