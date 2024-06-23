@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -32,15 +31,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Objects;
 
+/**
+ * This Class handles the GUI version of Server
+ */
 public class Server extends Application {
-    private static String[] args;
-
+    // Attributes
     private ServerNetworkController rmiController;
     private ServerNetworkController socketController;
     private boolean isRunning = false;
     private GameCollection collection;
     private boolean canReadInput = true;
 
+    // JavaFx imports
     @FXML
     private Text rmiIpText;
     @FXML
@@ -67,10 +69,22 @@ public class Server extends Application {
     private Text errorTxt;
 
 
+    /**
+     * Launches the Server
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Starts the GUI
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException if the file can't be found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/server-view.fxml"));
@@ -82,6 +96,11 @@ public class Server extends Application {
         stage.show();
     }
 
+    /**
+     * Toggles the Server between the ON and OFF statuses
+     * @throws IOException if the file can't be found
+     * @throws NotBoundException if it tries to stop a Server that's not running
+     */
     @FXML
     public void toggleServer() throws IOException, NotBoundException {
         errorTxt.setVisible(false);
@@ -163,6 +182,9 @@ public class Server extends Application {
         }
     }
 
+    /**
+     * Copies into the User's clipboard the IP Address
+     */
     @FXML
     public  void copyIPAddressRMI() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiIpCopyIcon);
@@ -175,6 +197,9 @@ public class Server extends Application {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
     }
 
+    /**
+     * Copies into the User's clipboard the Port
+     */
     @FXML
     public  void copyPortRMI() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiPortCopyIcon);
@@ -187,6 +212,9 @@ public class Server extends Application {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
     }
 
+    /**
+     * Copies into the User's clipboard the IP Address
+     */
     @FXML
     public  void copyIPAddressSocket() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketIpCopyIcon);
@@ -199,6 +227,9 @@ public class Server extends Application {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
     }
 
+    /**
+     * Copies into the User's clipboard the Port
+     */
     @FXML
     public  void copyPortSocket() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketPortCopyIcon);
@@ -211,6 +242,10 @@ public class Server extends Application {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
     }
 
+    /**
+     * Refreshes the List of on-going Games
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @FXML
     public void refresh() throws RemoteException {
         VBox content = new VBox();
@@ -245,6 +280,11 @@ public class Server extends Application {
         gamesList.setContent(content);
     }
 
+    /**
+     * Builds the UI for the List component
+     * @param obj the GameController associated to that Game
+     * @return the UI component
+     */
     private Pane getNewListItem(GameController obj) {
         HBox newListItem = new HBox();
         newListItem.setSpacing(20);
@@ -275,6 +315,11 @@ public class Server extends Application {
         return newListItem;
     }
 
+    /**
+     * Translates a GameStatus into a String
+     * @param status the GameStatus to translate
+     * @return the String version of the same GameStatus
+     */
     private String statusToString(GameStatus status) {
         String string = "Unknown";
         switch (status) {

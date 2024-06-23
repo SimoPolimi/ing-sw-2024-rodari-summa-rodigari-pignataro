@@ -1,13 +1,12 @@
 package it.polimi.ingsw.gc42.network;
 
 import it.polimi.ingsw.gc42.controller.GameController;
-import it.polimi.ingsw.gc42.network.interfaces.RemoteCollection;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class GameCollection implements RemoteCollection, Serializable {
+public class GameCollection implements Serializable {
     private final ArrayList<GameController> gameControllers = new ArrayList<>();
     private final ArrayList<String> blockedNicknames = new ArrayList<>();
 
@@ -43,12 +42,10 @@ public class GameCollection implements RemoteCollection, Serializable {
         blockedNicknames.remove(nickname);
     }
 
-    @Override
-    public RemoteCollection getCopy() throws RemoteException {
+    public GameCollection getCopy() throws RemoteException {
         return new GameCollection(gameControllers);
     }
 
-    @Override
     public GameController createNewGame() throws RemoteException {
         add(new GameController(null));
         // Returns the current size: it will become the index of the new GameController, once created.

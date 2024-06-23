@@ -20,6 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * This class is the Controller component of this MVC.
+ * It handles the entire scripting of the Game, as well as Players'disconnecting and reconnecting behaviors, and
+ * acts as a bridge between the Model and the View components.
+ */
 public class GameController implements Serializable, Observable {
     private final Game game;
     private final CopyOnWriteArrayList<RemoteViewController> views = new CopyOnWriteArrayList<>();
@@ -252,7 +257,6 @@ public class GameController implements Serializable, Observable {
         });
     }
 
-    //TODO: add
     /**
      * Sets the currentStatus to READY
      */
@@ -599,6 +603,16 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Registers the User's Client as a RemoteViewController,
+     * a component that will be notified after every game event happens,
+     * allowing the Clients to refresh in real time.
+     * The RemoteViewControllers are stored in a List.
+     * All updates will be sent to every element of that List.
+     * This method also handles the removal of old and unused RemoteViewControllers
+     * when a User rejoins the Game.
+     * @param view the User's Client (RemoteViewController)
+     */
     public void addView(RemoteViewController view) {
         // Removes older views from the same Player
         for (RemoteViewController v : views) {
@@ -647,6 +661,9 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Notifies all Clients that the Game is starting, and it's time to build their UIs
+     */
     private void setupViews() {
         for (RemoteViewController view: views) {
             if (!unusedViews.contains(view)) {
@@ -659,6 +676,13 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Sets the Player as not Disconnected, so that it can be considered by the Turn System.
+     * This method also handles the case where a Player might have disconnected during the onboarding process:
+     * if the Player is missing the Token, or the Secret Objective, or the Starter Card, it gives him one.
+     * If the Player doesn't have a Hand, it automatically draws for him.
+     * @param playerID the Player who is rejoining the match
+     */
     public void rejoinGame(int playerID) {
         Player player = game.getPlayer(playerID);
         player.setDisconnected(false);
@@ -696,7 +720,7 @@ public class GameController implements Serializable, Observable {
     }
 
     /**
-     * Changes the status of the Game
+     * Changes the status of the Game following the Game's scripting.
      */
     private void nextStatus() {
         switch (currentStatus) {
@@ -791,16 +815,28 @@ public class GameController implements Serializable, Observable {
         }
     }
 
+    /**
+     * Adds a Listener in the List, that will be notified when the corresponding event happens.
+     * @param listener the Listener to add in the List
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Removes a Listener from the List.
+     * @param listener the Listener to remove from the List
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Notifies all Listeners that their event has happened
+     * @param context a description of the event
+     */
     @Override
     public void notifyListeners(String context) {
         switch (context) {

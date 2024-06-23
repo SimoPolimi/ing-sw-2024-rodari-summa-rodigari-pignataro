@@ -412,14 +412,8 @@ public class Game implements Observable, Serializable {
                 case YELLOW -> playerPoints.put("Token", "YELLOW");
             }
             int secretObjectivePoints = player.getSecretObjective().getObjective().calculatePoints(player.getPlayField().getPlayedCards());
-            // TODO: Remove
-            System.out.println(player.getNickname() + " Secret Objective: " + secretObjectivePoints);
             int commonObjective1Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(1)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
-            // TODO: Remove
-            System.out.println(player.getNickname() + " Common Objective 1: " + commonObjective1Points);
             int commonObjective2Points = ((ObjectiveCard)objectivePlayingDeck.getSlot(2)).getObjective().calculatePoints(player.getPlayField().getPlayedCards());
-            // TODO: Remove
-            System.out.println(player.getNickname() + " Common Objective 2: " + commonObjective2Points);
             playerPoints.put("InitialPoints", String.valueOf(player.getPoints()));
             playerPoints.put("SecretObjectivePoints", String.valueOf(secretObjectivePoints));
             playerPoints.put("CommonObjective1Points", String.valueOf(commonObjective1Points));
@@ -427,7 +421,6 @@ public class Game implements Observable, Serializable {
             playerPoints.put("TotalPoints", String.valueOf(player.getPoints() + secretObjectivePoints + commonObjective1Points + commonObjective2Points));
             playerPoints.put("IsWinner", String.valueOf(false));
             points.add(playerPoints);
-
 
             // Updated the Player's Points
             player.setPoints(player.getPoints() + secretObjectivePoints + commonObjective1Points + commonObjective2Points);

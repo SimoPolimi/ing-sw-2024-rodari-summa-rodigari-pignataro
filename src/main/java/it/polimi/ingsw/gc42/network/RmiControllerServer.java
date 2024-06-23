@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc42.network;
 
-import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 
 import java.io.IOException;
@@ -13,19 +12,28 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
+/**
+ * This class handles the RMI Server
+ */
 public class RmiControllerServer implements ServerNetworkController, Serializable {
     private String ipAddress;
     private int port = 23689;
-    private ArrayList<Player> users;
     private Runnable onReady;
     private Registry registry;
     private ServerManager server;
     private GameCollection games;
 
-    public RmiControllerServer() throws RemoteException {}
+    /**
+     * Constructor Method
+     */
+    public RmiControllerServer() {}
 
+    /**
+     * Starts the Server
+     * @throws IOException if the file can't be found
+     * @throws AlreadyBoundException if there is already a Server opened on that IP and Port
+     */
     @Override
     public void start() throws IOException, AlreadyBoundException {
         Thread thread = new Thread(() -> {
@@ -38,6 +46,11 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         thread.start();
     }
 
+    /**
+     * Initializes the Connection
+     * @throws IOException if the file can't be found
+     * @throws AlreadyBoundException if there is already a Server opened on that IP and Port
+     */
     private void connect() throws IOException, AlreadyBoundException {
         try {
             registry = LocateRegistry.createRegistry(port);
@@ -53,6 +66,11 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         onReady.run();
     }
 
+    /**
+     * Stop the Server
+     * @throws NotBoundException if there is no Server opened
+     * @throws RemoteException in case of a Connection Error
+     */
     @Override
     public void stop() throws NotBoundException, RemoteException {
         registry.unbind("ServerManager");
@@ -61,25 +79,37 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         System.out.println("Server stopped");
     }
 
+    /**
+     * Setter Method for the List of Games
+     * @param collection the List of Games
+     */
     @Override
     public void setCollection(GameCollection collection) {
         this.games = collection;
     }
 
-    private void registerUser(Player player) {
-        users.add(player);
-    }
-
+    /**
+     * Getter Method for the IP Address
+     * @return the Server IP Address
+     */
     @Override
     public String getIpAddress() {
         return  ipAddress;
     }
 
+    /**
+     * Getter Method for the Port
+     * @return the Port (in String format)
+     */
     @Override
     public String getPort() {
         return Integer.toString(port);
     }
 
+    /**
+     * Receives a Runnable to execute after opening the Server, mainly to trigger UI updates
+     * @param runnable the code to run
+     */
     @Override
     public void setWhenReady(Runnable runnable) {
         this.onReady = runnable;

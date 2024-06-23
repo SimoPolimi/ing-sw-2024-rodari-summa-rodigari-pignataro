@@ -14,12 +14,17 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+/**
+ * This Class handles the Socket Server
+ */
 public class SocketControllerServer implements ServerNetworkController, Serializable {
     private ServerSocket serverSocket;
     private String ipAddress;
@@ -28,12 +33,15 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
     private GameCollection games;
     private ServerManager server;
     final private HashMap<Socket, BlockingDeque<Message>> messagesQueue = new HashMap<>();
-    private Scanner in;
-    private PrintWriter out;
     private HashMap<Socket, ObjectInputStream> inMap = new HashMap<>();
     private HashMap<Socket, ObjectOutputStream> outMap = new HashMap<>();
     private HashMap<Socket, KeepAliveTimer> aliveSockets = new HashMap<>();
 
+    /**
+     * Listens on a Socket and translates the Received Message into the corresponding action
+     * @param socket the Socket to listen
+     * @throws RemoteException in case of a Network Communication Error
+     */
     private synchronized void receiveMessage(Socket socket) throws RemoteException {
         try {
             Message temp = messagesQueue.get(socket).take();
@@ -296,21 +304,38 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
 
     }
 
+    /**
+     * Getter Method for the IP Address
+     * @return the Server IP Address
+     */
     @Override
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * Getter Method for the Port
+     * @return the Port (in String format)
+     */
     @Override
     public String getPort() {
         return String.valueOf(port);
     }
 
+    /**
+     * Receives a Runnable to execute after opening the Server, mainly to trigger UI updates
+     * @param runnable the code to run
+     */
     @Override
     public void setWhenReady(Runnable runnable) {
         this.onReady = runnable;
     }
 
+    /**
+     * Starts the Server
+     * @throws IOException if the file can't be found
+     * @throws AlreadyBoundException if there is already a Server opened on that IP and Port
+     */
     @Override
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
@@ -371,6 +396,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
         });
     }
 
+    /**
+     * Stop the Server
+     */
     @Override
     public void stop() {
         try {
@@ -382,27 +410,26 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
         }
     }
 
+    /**
+     * Setter Method for the List of Games
+     * @param collection the List of Games
+     */
     @Override
     public void setCollection(GameCollection collection) {
         this.games = collection;
     }
 
+    /**
+     * Sends a Message using the Socket Connection
+     * @param socket the Socket to send the message to
+     * @param message the Message to send
+     */
     private synchronized void sendMessage(Socket socket, Message message){
-        //out.println(new Gson().toJson(message));
         try{
             outMap.get(socket).writeObject(message);
             outMap.get(socket).reset();
         }catch (IOException e){
             e.printStackTrace();
         }
-        //out.flush();
     }
-
-    // TODO: Write Socket Methods to send and receive messages.
-    // When a message is received, the same action is executed on server.
-    // When it has to call the addView() Method, a new RemoteViewController is created HERE.
-    // Inside the @Override methods of this new RemoteViewController there will be calls to
-    // SocketControllerServer's methods to send messages to Client.
-    // The newly created RemoteViewController is saved inside the GameController, the same way
-    // RMI does: server.addView(...).
 }

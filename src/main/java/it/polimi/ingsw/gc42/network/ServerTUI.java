@@ -11,23 +11,42 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * This Class handles the TUI version of Server
+ */
 public class ServerTUI extends Application {
+    // Attributes
     private boolean isRunning = false;
     private RmiControllerServer rmiController;
     private SocketControllerServer socketController;
     private GameCollection collection;
 
-
+    /**
+     * Launches the Server
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Triggers the loop
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Codex Naturalis - Server");
         enterLoop();
     }
 
+    /**
+     * Executes the loop
+     * @throws RemoteException
+     */
     private void enterLoop() throws RemoteException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -64,13 +83,12 @@ public class ServerTUI extends Application {
         }
     }
 
+    /**
+     * Starts the Server
+     */
     private void startServer() {
-        try {
-            rmiController = new RmiControllerServer();
-            socketController = new SocketControllerServer();
-        } catch (RemoteException e) {
-            System.err.println("Server is already running!");
-        }
+        rmiController = new RmiControllerServer();
+        socketController = new SocketControllerServer();
 
         rmiController.setCollection(collection);
         socketController.setCollection(collection);
@@ -111,6 +129,9 @@ public class ServerTUI extends Application {
         }
     }
 
+    /**
+     * Stops the Server
+     */
     private void stopServer() {
         try {
             rmiController.stop();

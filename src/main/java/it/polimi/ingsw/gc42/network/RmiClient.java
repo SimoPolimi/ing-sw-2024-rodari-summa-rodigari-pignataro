@@ -23,7 +23,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This Class handles the RMI Client
+ */
 public class RmiClient implements NetworkController, Serializable {
+    // Attributes
     private String ipAddress;
     private int port = 23689;
     private Registry registry;
@@ -36,25 +40,30 @@ public class RmiClient implements NetworkController, Serializable {
     private int id;
     private ClientController viewController;
 
-    private Listener handCard1Listener;
-    private Listener handCard2Listener;
-    private Listener handCard3Listener;
-
-    private ClientController clientController;
-    private transient ArrayList<Listener> viewListeners = new ArrayList<>();
-
+    /**
+     * Constructor Method
+     * @param ipAddress the Client's IP Address
+     */
     public RmiClient(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * Connects to the Server, creating a Socket
+     * @throws RemoteException in case of a Network Communication Error
+     * @throws NotBoundException in case of a Registry Error
+     */
     @Override
     public void connect() throws RemoteException, NotBoundException {
         registry = LocateRegistry.getRegistry(ipAddress, port);
-        //games = (RemoteCollection) registry.lookup("GameControllers");
         server = (RemoteServer) registry.lookup("ServerManager");
         isConnected = true;
     }
 
+    /**
+     * Flips the Player's Temporary Starter Card
+     * @param playerID the Player's playerID
+     */
     @Override
     public void flipStarterCard(int playerID) {
         try {
@@ -64,6 +73,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Decks.
+     * @param type a CardType indicating which Deck to return
+     * @return an ArrayList of Card, containing all the Cards inside the Deck, in the same order
+     */
     @Override
     public ArrayList<Card> getDeck(CardType type) {
         try {
@@ -73,6 +87,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Slots
+     * @param type a CardType indicating which Slots to consider [RESOURCECARD, GOLDCARD]
+     * @param slot an int indicating which Slot to return [1, 2]
+     * @return a copy of the Card inside that Slot
+     */
     @Override
     public Card getSlotCard(CardType type, int slot) {
         try {
@@ -82,6 +102,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's Secret Objective
+     * @param playerID the Player's playerID
+     * @return the Player's ObjectiveCard
+     */
     @Override
     public ObjectiveCard getSecretObjective(int playerID) {
         try {
@@ -91,6 +116,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Current Turn
+     * @return the playerID corresponding to the Player who has the Turn
+     */
     @Override
     public int getPlayerTurn() {
         try {
@@ -100,6 +129,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Setter Method for the Player's Starter Card.
+     * The Starter Card is already inside the Model, in the temporaryStarterCard field.
+     * This method tells the Server to move it from there to the Player's PlayArea in (0, 0).
+     * @param playerID the Player's playerID
+     */
     @Override
     public void setPlayerStarterCard(int playerID) {
         try {
@@ -109,6 +144,14 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Setter Method for the Player's Secret Objective.
+     * The Secret Objective is already stored inside the Model and IS NOT sent in here.
+     * The Player has 2 Temporary Secret Objectives: this method contains either 1 or 2, indicating
+     * which one to keep.
+     * @param playerID the Player's playerID
+     * @param pickedCard an int representing the User's choice [1, 2]
+     */
     @Override
     public void setPlayerSecretObjective(int playerID, int pickedCard) {
         try {
@@ -118,6 +161,13 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Saves the View class on which to execute actions, and sends a message to subscribe
+     * to a specific Game to receive messages from
+     * @param viewController the View class
+     * @throws AlreadyBoundException if the Class is already connected
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
         if (isConnected) {
@@ -150,6 +200,9 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Closes the Socket Connection and sends one last message to the Server
+     */
     @Override
     public void disconnect() {
         /*try {
@@ -166,16 +219,31 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for isConnected
+     * @return a boolean value indicating if it's connected or not
+     */
     @Override
     public boolean isConnected() {
         return isConnected;
     }
 
+    /**
+     * Getter Method for the Player's playerID
+     * @param nickName the Player's Nickname
+     * @return the Player's playerID
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
         return server.getIndexOfPlayer(gameID, nickName);
     }
 
+    /**
+     * Setter Method for the Player's Token
+     * @param playerID the Player's playerID
+     * @param token the Token to set
+     */
     @Override
     public void setPlayerToken(int playerID, Token token) {
         try {
@@ -185,6 +253,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the number of Players inside a Game
+     * @return the number of Players already in that Game
+     */
     @Override
     public int getNumberOfPlayers() {
         try {
@@ -194,6 +266,9 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Sends a message to the Server telling it to start a specific Game
+     */
     @Override
     public void startGame() {
         try {
@@ -203,6 +278,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Setter Method for the Player's GameStatus
+     * @param playerID the Player's playerID
+     * @param status the GameStatus to set
+     */
     @Override
     public void setPlayerStatus(int playerID, GameStatus status) {
         try {
@@ -212,6 +292,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Removes the Player from the Game entirely
+     * @param player the Player's playerID
+     * @return a boolean value indicating if the removal was successful or not
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public boolean kickPlayer(Player player) {
         try {
@@ -221,6 +307,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Triggers a Turn Change
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void nextTurn() {
         try {
@@ -230,6 +320,15 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Plays a Card from a certain Player in a specific set of Coordinates
+     * The Card to play is defined as the index of the Card in the Player's Hand.
+     * The Coordinates need to be in the Model's format
+     * @param handCard the index of the Card inside the Player's Hand [1, 2, 3]
+     * @param x the x Coordinate where the Card will be placed
+     * @param y the y Coordinate where the Card will be placed
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void playCard(int handCard, int x, int y) {
         try {
@@ -239,6 +338,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Flips one of the Player's Cards
+     * @param playerID the Player's playerID
+     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     */
     @Override
     public void flipCard(int playerID, int cardID) {
         try {
@@ -248,6 +352,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Draws a Card from one of the 2 Decks and places it inside the Player's Hand
+     * @param playerID the Player's playerID
+     * @param type a CardType indicating from which Deck to draw [RESOURCECARD, GOLDCARD]
+     */
     @Override
     public void drawCard(int playerID, CardType type) {
         try {
@@ -257,6 +366,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Grabs a Card from one of the 4 Slots and places it inside the Player's Hand
+     * @param playerID the Player's playerID
+     * @param type a CardType indicating from which Slots to grab [RESOURCECARD, GOLDCARD]
+     * @param slot an int indicating which Slot in particular [1, 2]
+     */
     @Override
     public void grabCard(int playerID, CardType type, int slot) {
         try {
@@ -266,6 +381,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Methods for the Temporary Secret Objectives
+     * @param playerID the Player's playerID
+     * @return an ArrayList containing the Players Temporary Secret Objectives
+     */
     @Override
     public ArrayList<ObjectiveCard> getTemporaryObjectiveCards(int playerID) {
         try {
@@ -275,6 +395,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's Temporary Starter Card
+     * @param playerID the Player's playerID
+     * @return the Player's Temporary Starter Card
+     */
     @Override
     public StarterCard getTemporaryStarterCard(int playerID) {
         try {
@@ -284,6 +409,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's GameStatus
+     * @param playerID the Player's playerID
+     * @return the Player's GameStatus
+     */
     @Override
     public GameStatus getPlayerStatus(int playerID) {
         try {
@@ -293,6 +423,16 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's info.
+     * Each Player's info are contained inside an HashMap, and both Keys and Values are String.
+     * The HashMap are contained inside an ArrayList, so that there is an HashMap for each Player.
+     * The data can be retrieved with the following Keys:
+     * - Nickname: the Player's Nickname
+     * - Points: the Player's points
+     * - Token: a String representation of the Player's Token [RED, BLUE, GREEN, YELLOW]
+     * @return the Collection of data
+     */
     @Override
     public ArrayList<HashMap<String, String>> getPlayersInfo() {
         try {
@@ -302,6 +442,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's Hand's size
+     * @param playerID the Player's playerID
+     * @return the number of Cards inside the Player's Hand
+     */
     @Override
     public int getPlayersHandSize(int playerID) {
         try {
@@ -311,6 +456,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * @param playerID the Player's playerID
+     * @return a boolean value indicating if the Player is the first
+     */
     @Override
     public boolean isPlayerFirst(int playerID) {
         try {
@@ -320,6 +469,13 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Available Placements.
+     * Returns an ArrayList of Coordinates, each indicating a position where a Card can be played
+     * inside the Player's PlayArea
+     * @param playerID the Player's playerID
+     * @return an ArrayList of Coordinates
+     */
     @Override
     public ArrayList<Coordinates> getAvailablePlacements(int playerID) {
         try {
@@ -329,6 +485,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     *
+     * @param playerID the Player's playerID
+     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     * @return a boolean value indicating if the Card's cost requirements are satisfied and the Card can be played
+     */
     @Override
     public boolean canCardBePlayed(int playerID, int cardID) {
         try {
@@ -338,6 +500,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's Token
+     * @param playerID the Player's playerID
+     * @return the Player's Token
+     */
     @Override
     public Token getPlayerToken(int playerID) {
         try {
@@ -347,6 +514,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's PlayField
+     * @param playerID the Player's playerID
+     * @return an ArrayList containing all the Cards played by the Player
+     */
     @Override
     public ArrayList<PlayableCard> getPlayersPlayfield(int playerID) {
         try {
@@ -356,6 +528,11 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's last played Card
+     * @param playerID the Player's playerID
+     * @return the Card last played by the Player
+     */
     @Override
     public PlayableCard getPlayersLastPlayedCard(int playerID) {
         try {
@@ -365,6 +542,12 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the Player's Hand's Cards
+     * @param playerID the Player's playerID
+     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     * @return the Card
+     */
     @Override
     public PlayableCard getPlayersHandCard(int playerID, int cardID) {
         try {
@@ -374,6 +557,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Adds a Player into a Game
+     * @param player the Player to add
+     */
     @Override
     public void addPlayer(Player player) {
         try {
@@ -385,6 +572,10 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Setter Method for the Game's GameStatus
+     * @param status the GameStatus to set
+     */
     @Override
     public void setCurrentStatus(GameStatus status) {
         try {
@@ -394,46 +585,107 @@ public class RmiClient implements NetworkController, Serializable {
         }
     }
 
+    /**
+     * Getter Method for the List of Available Games that a Player can join.
+     * The data is returned in an HashMap that uses String as a key and as a value:
+     * all data is written in the String format, including numbers, and all keys are String as well.
+     * Each HashMap contains the data of a single Game, and they are all contained in an ArrayList of
+     * HashMaps, so that one HashMap for every Game can be found.
+     * The data can be retrieved using the following Keys:
+     * - Name: the Game's name
+     * - NumberOfPlayers: the number of Players already inside it
+     * - Status: a String representation of the Game's GameStatus
+     * - NumberOfDisconnectedPlayers: the number of Players in the Game but disconnected,
+     * used to iterate through the next elements
+     * - DisconnectedPlayerX: the Disconnected Players' Nickname, so that the Client can determine if the User
+     * can re-join this Game or not. NOTE: There are multiple of them, starting from DisconnectedPlayer0 all the way to
+     * DisconnectedPlayerN, where N = NumberOfDisconnectedPlayers - 1.
+     * @return the List of Games
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public ArrayList<HashMap<String, String>> getAvailableGames() throws RemoteException {
         return server.getAvailableGames();
     }
 
+    /**
+     * Picks a Game and saves its gameID
+     * @param index the Game's gameID
+     * @throws RemoteException in case of a Network Communication Error
+     */
+    @Override
     public void pickGame(int index) throws RemoteException {
         gameID = index;
     }
 
+    /**
+     * Sends a message to the Server telling it to create a new Game.
+     * Saves the newly obtained gameID
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void getNewGameController() throws RemoteException {
         gameID = server.newGame();
 
     }
 
+    /**
+     * Setter Method for the Game's name
+     * @param name a String containing the Name to set in the Game
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void setName(String name) throws RemoteException {
         server.setName(gameID, name);
     }
 
+    /**
+     * Sends a message in the Game's Chat
+     * @param playerID the Player's playerID
+     * @param message a String containing the Message content
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public void sendMessage(int playerID, String message) throws RemoteException {
         server.sendMessage(gameID, playerID, message);
     }
 
+    /**
+     * Getter Method for the Game's Chat
+     * @return an ArrayList of Message, containing the whole Chat
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public ArrayList<ChatMessage> getFullChat() throws RemoteException {
         return server.getChat(gameID);
     }
 
+    /**
+     * Checks if a Nickname is available
+     * @param nickname a String containing the Nickname
+     * @return a boolean value indicating if the Nickname is available or not
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public boolean checkNickName(String nickname) throws RemoteException {
         return server.checkNickName(nickname);
     }
 
+    /**
+     * Blocks a Nickname, so that nobody else can use it
+     * @param nickname a String containing the Nickname
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public void blockNickName(String nickname) throws RemoteException {
         server.blockNickName(nickname);
     }
 
+    /**
+     * Getter Method for the gameID
+     * @return the gameID
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public int getIndex() throws RemoteException {
         return gameID;
@@ -444,19 +696,14 @@ public class RmiClient implements NetworkController, Serializable {
         return server;
     }
 
+    /**
+     * Sets the Player as NOT DISCONNECTED, allowing it to play again
+     * @param playerID the Player's playerID
+     * @throws RemoteException in case of a Network Communication Error
+     */
     @Override
     public void rejoinGame(int playerID) throws RemoteException {
         this.playerID = playerID;
         server.rejoinGame(gameID, playerID);
-    }
-
-    @Override
-    public void removeListener(int playerID, int cardID, Listener listener) throws RemoteException {
-        viewListeners.remove(listener);
-        switch (cardID) {
-            case 1 -> server.removeCardListener(gameID, playerID, cardID, handCard1Listener);
-            case 2 -> server.removeCardListener(gameID, playerID, cardID, handCard2Listener);
-            case 3 -> server.removeCardListener(gameID, playerID, cardID, handCard3Listener);
-        }
     }
 }
