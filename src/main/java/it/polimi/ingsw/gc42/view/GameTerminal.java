@@ -61,6 +61,11 @@ public class GameTerminal extends Application implements ViewController {
 
     private ArrayList<ChatMessage> chat;
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     /**
      * Formats a String using the Unicode Color codes to print a colored output.
      * @param str the Text that will be printed
