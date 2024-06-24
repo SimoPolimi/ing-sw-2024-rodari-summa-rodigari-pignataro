@@ -703,7 +703,11 @@ public class GameTerminal extends Application implements ViewController {
                     inputHandler.listen(new TerminalListener() {
                         @Override
                         public void onEvent(String input) {
-                            playCard(input);
+                            if (Integer.valueOf(input) == 0) {
+                                actions.add(() -> play());
+                            } else {
+                                playCard(input);
+                            }
                         }
                     });
                 }

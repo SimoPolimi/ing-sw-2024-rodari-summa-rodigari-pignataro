@@ -695,4 +695,9 @@ public class RmiClient implements NetworkController, Serializable {
         this.playerID = playerID;
         server.rejoinGame(gameID, playerID);
     }
+
+    @Override
+    public ObjectiveCard getCommonObjective(int cardID) throws RemoteException {
+        return server.getCommonObjective(gameID, cardID);
+    }
 }

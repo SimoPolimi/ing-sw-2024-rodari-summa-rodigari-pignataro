@@ -115,6 +115,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                 case GET_PLAYER_TURN:
                     sendMessage(socket, new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
                     break;
+                case GET_COMMON_OBJECTIVE:
+                    sendMessage(socket, new ObjectiveCardResponse(MessageType.GET_COMMON_OBJECTIVE, server.getCommonObjective(((GetSlotCardTextureMessage)temp).getGameID(), ((GetSlotCardTextureMessage) temp).getSlot())));
+                    break;
                 case GET_TEMPORARY_OBJECTIVE_CARDS:
                     sendMessage(socket, new ObjCardListResponse(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS, server.getTemporaryObjectiveCards(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));
                     break;

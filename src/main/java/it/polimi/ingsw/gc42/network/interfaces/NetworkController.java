@@ -91,4 +91,5 @@ public interface NetworkController {
     ArrayList<ChatMessage> getFullChat() throws RemoteException;
     boolean checkNickName(String nickname) throws RemoteException;
     void blockNickName(String nickname) throws RemoteException;
+    ObjectiveCard getCommonObjective(int cardID) throws RemoteException;
 }

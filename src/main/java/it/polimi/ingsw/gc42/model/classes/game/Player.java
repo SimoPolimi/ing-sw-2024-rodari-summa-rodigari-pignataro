@@ -390,7 +390,7 @@ public class Player implements Observable, Serializable {
                         points += card.getEarnedPoints();
                     }
                     playField.addCard(card, x, y);
-                    if (card instanceof GoldCard) {
+                    if (card instanceof GoldCard && card.isFrontFacing()) {
                         if (null != ((GoldCard) card).getObjective()) {
                             if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
                                 ((CornerCountObjective) ((GoldCard) card).getObjective()).setCoordinates(new Coordinates(x, y));

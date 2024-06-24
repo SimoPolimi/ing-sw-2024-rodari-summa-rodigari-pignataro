@@ -672,4 +672,10 @@ public class SocketClient implements NetworkController {
     public void rejoinGame(int playerID) {
         sendMessage(new PlayerMessage(MessageType.REJOIN_GAME, gameID, playerID));
     }
+
+    @Override
+    public ObjectiveCard getCommonObjective(int cardID) throws RemoteException {
+        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_COMMON_OBJECTIVE, gameID, CardType.OBJECTIVECARD, cardID));
+        return ((ObjectiveCardResponse) waitResponse(MessageType.GET_COMMON_OBJECTIVE)).getResponse();
+    }
 }
