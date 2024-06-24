@@ -295,7 +295,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     aliveSockets.get(socket).setAlive(ClientState.ALIVE);
                     break;
                 default:
-                    //TODO
+                    //  No action
                     break;
             }
         }catch (InterruptedException e){

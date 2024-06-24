@@ -259,19 +259,31 @@ public class EndGameDialog extends Dialog implements Observable {
     // Observable Methods
 
     // TODO: Javadoc
+
+    /**
+     * Adds the listener to the list of all listeners
+     * @param listener
+     */
     @Override
     public void setListener(Listener listener) {
         listeners.add(listener);
     }
 
-    // TODO: Javadoc
+    /**
+     * Removes the listener from the list
+     * @param listener
+     */
     @Override
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }
 
-    // TODO: Javadoc
+    /**
+     * For every listener in the list of all listeners, execute the onEvent method
+     * @param context
+     */
     @Override
+    // TODO: is context necessary? can the for be parallelized for better responsiveness?
     public void notifyListeners(String context) {
         for (Listener l: listeners) {
             l.onEvent();

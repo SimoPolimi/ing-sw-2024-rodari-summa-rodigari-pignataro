@@ -41,8 +41,5 @@ public interface RemoteObject extends Remote, Observable {
 
         String getName() throws RemoteException;
         void setName(String name) throws RemoteException;
-
-        //TODO: remove after test
-        public String test(int a) throws RemoteException;
 }
 

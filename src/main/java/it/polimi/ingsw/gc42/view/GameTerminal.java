@@ -734,7 +734,6 @@ public class GameTerminal extends Application implements ViewController {
                     System.out.println(color("Invalid coordinate choice! Retry...", UiColors.RED));
                     actions.add(() -> askForCoordinates(cardID));
                 } else {
-                    //TODO: Fix
                     controller.playCard(cardID, availablePlacements.get(Integer.parseInt(input) - 1).getX(), availablePlacements.get(Integer.parseInt(input) - 1).getY());
                 }
             }
