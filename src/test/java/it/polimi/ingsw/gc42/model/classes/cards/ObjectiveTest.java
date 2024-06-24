@@ -224,4 +224,14 @@ public class ObjectiveTest {
         assertEquals(result * objective.getPoints(), objective.calculatePoints(playArea));
     }
 
+    @Test
+    // Test Objective Setters and Getters
+    void testGettersAndSetters() {
+        Objective  objective =  new ItemCountObjective(1, 1, Resource.FEATHER, "A", "A");
+
+        assertEquals(objective.getName(), "A");
+        assertEquals(objective.getPoints(), 1);
+        assertEquals(objective.getDescription(), "A");
+    }
+
 }
