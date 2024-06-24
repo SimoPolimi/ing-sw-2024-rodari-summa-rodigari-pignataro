@@ -184,7 +184,6 @@ class PlayerTest {
         assertThrowsExactly(IllegalActionException.class, () -> player.drawCard(game.getResourcePlayingDeck()));
         assertEquals(game.getResourcePlayingDeck().getDeck().getTopCard(), topCard);
 
-        // TODO: boh
         // Player has 3 Cards
         for (int i = 0; i < 3; i++) {
             assertNotNull(player.getHandCard(i));
@@ -216,29 +215,7 @@ class PlayerTest {
         assertThrowsExactly(NoSuchElementException.class, () -> game.getResourcePlayingDeck().getDeck().draw());
     }
 
-    // TODO: remove comment
-    /*@Test
-    void grabCard() {
-        // given
-        Game game = new Game();
-        Player player = new Player("");
 
-        Card slotCard = game.getResourcePlayingDeck().getSlot(1);
-        // when
-        player.grabCard(game.getResourcePlayingDeck(), 1);
-
-        // then
-        boolean containsTheCard = false;
-        for (int i = 0; i < player.getHandSize(); i++) {
-            if (player.getHandCard(i).equals(slotCard)) {
-                containsTheCard = true;
-            }
-        }
-        assertTrue(containsTheCard);
-        assertNotEquals(game.getResourcePlayingDeck().getSlot(1), slotCard);
-        assertNotEquals(game.getResourcePlayingDeck().getSlot(2), slotCard);
-    }
-*/
     @Test
     void grabWhenFullHand() {
         Game game = new Game();

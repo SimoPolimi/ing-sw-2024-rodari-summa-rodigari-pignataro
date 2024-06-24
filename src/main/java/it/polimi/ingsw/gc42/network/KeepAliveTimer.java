@@ -15,10 +15,10 @@ public class KeepAliveTimer implements Runnable {
         isAlive = state;
     }
 
+    //TODO: remove
     @Override
     public void run() {
         switch (isAlive) {
-            // TODO: implement unresponsiveness handling
             case UNRESPONSIVE -> System.out.println("UNRESPONSIVE");
             case DEAD -> System.out.println("DEAD");
             case EXPECT_ALIVE -> isAlive = ClientState.DEAD;

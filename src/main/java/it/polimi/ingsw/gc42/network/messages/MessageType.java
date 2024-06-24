@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc42.network.messages;
 
 public enum MessageType {
-    //TODO: cehccccck usage
     START_GAME,
     SET_PLAYER_STATUS,
     NEW_GAME,
@@ -20,7 +19,6 @@ public enum MessageType {
     SET_CURRENT_STATUS,
     SEND_MESSAGE,
 
-    // Simo
     GET_AVAILABLE_GAMES,
     GET_DECK,
     GET_PLAYER_TURN,
@@ -47,18 +45,7 @@ public enum MessageType {
     SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG,
     SHOW_STARTER_CARD_SELECTION_DIALOG,
     SHOW_TOKEN_SELECTION_DIALOG,
-    GET_OWNER,
     ASK_TO_DRAW_OR_GRAB,
-
-    // Responses
-    BOOL_RESPONSE,
-    GAME_STATUS_RESPONSE,
-    INT_RESPONSE,
-    LIST_COORD_RESPONSE,
-    LIST_MAP_STR_STR_RESPONSE,
-    PLAYABLE_CARD_RESPONSE,
-    STR_RESPONSE,
-    TOKEN_RESPONSE,
 
     // Notify,
     NOTIFY_GAME_IS_STARTING,

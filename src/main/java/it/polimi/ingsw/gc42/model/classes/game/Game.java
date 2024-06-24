@@ -285,14 +285,6 @@ public class Game implements Observable, Serializable {
         Deck resourceCardDeck = Deck.initDeck(CardType.RESOURCECARD);
         Deck goldCardDeck = Deck.initDeck(CardType.GOLDCARD);
         Deck objectiveCardDeck = Deck.initDeck(CardType.OBJECTIVECARD);
-        // TODO: check if ok
-        /*
-        this.starterDeck = Deck.initDeck(CardType.STARTERCARD);
-        this.resourcePlayingDeck = new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck);
-        this.goldPlayingDeck = new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck);
-        this.objectivePlayingDeck = new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck);
-        */
-        //Using getters and setters for coverage
         setStarterDeck(Deck.initDeck(CardType.STARTERCARD));
         setResourcePlayingDeck(new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck));
         setGoldPlayingDeck(new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck));
@@ -312,7 +304,7 @@ public class Game implements Observable, Serializable {
     // TODO: what???
 
     /**
-     * Sets who is the first Player to play
+     * Sets who is the winning Player, based on points (visual purposes)
      */
     private void setFirstPlayer() {
         if (!players.isEmpty()) {
@@ -379,7 +371,6 @@ public class Game implements Observable, Serializable {
                 } else if (slot == 2) {
                     notifyListeners("Gold 2");
                 }
-                // TODO: exceptions... move to Game?
             } else throw new IllegalArgumentException("There is no such Deck in this Game");
         } else throw new IllegalArgumentException("There is no such slot in this PlayingDeck");
     }
@@ -399,7 +390,6 @@ public class Game implements Observable, Serializable {
         return index + 1;
     }
 
-    // TODO: do
     public ArrayList<HashMap<String, String>> countPoints(){
         ArrayList<HashMap<String, String>> points = new ArrayList<>();
         for (Player player : players) {

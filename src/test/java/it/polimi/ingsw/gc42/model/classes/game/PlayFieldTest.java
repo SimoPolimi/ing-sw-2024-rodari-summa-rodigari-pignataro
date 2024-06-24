@@ -23,12 +23,7 @@ class PlayFieldTest {
 
         // when
         playField.add(Resource.FEATHER);
-        try {
-            playField.remove(Resource.POTION);
-        }catch (RemovingFromZeroException e){
-            // TODO: make with lambda and assertDoesNotThrow
-            e.printStackTrace();
-        }
+        assertDoesNotThrow(()->playField.remove(Resource.POTION));
 
         // then
         assertEquals(playField.getLastPlayedCard(), starterCard);

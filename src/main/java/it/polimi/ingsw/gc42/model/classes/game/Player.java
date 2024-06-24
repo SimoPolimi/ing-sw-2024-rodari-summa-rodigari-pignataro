@@ -432,9 +432,8 @@ public class Player implements Observable, Serializable {
      * Grabs a Card from the specified slot and puts it in the Player's hand
      * @param playingDeck the PlayingDeck associated to the Slots where the Player grabs the Card from
      * @param slot the slot from where the card is grabbed
-     * @throws IllegalActionException
+     * @throws IllegalActionException if the Card can't be grabbed because the Player already has 3 Cards in his hand
      */
-    //TODO: needed exception description in javadoc????
     public void grabCard(PlayingDeck playingDeck, int slot) throws IllegalActionException, IllegalArgumentException {
         if(hand.size() <= 2) {
             if (playingDeck.getSlot(slot) != null) {
@@ -476,10 +475,8 @@ public class Player implements Observable, Serializable {
         }
     }
 
-    // TODO: redo description javadoc
-
     /**
-     * Custom method that replaces size()
+     * Getter Method for the size
      *
      * @return The Hand's size
      */
