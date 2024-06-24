@@ -719,7 +719,7 @@ class GameControllerTest {
             p.getTemporaryStarterCard().flip();
             p.setTemporaryStarterCard(p.getTemporaryStarterCard());
             p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
-            p.setStatus(GameStatus.PLAYING);
+            p.setStatus(GameStatus.READY_TO_PLAY);
         }
 
         // Player reaches 20 Points
@@ -767,7 +767,7 @@ class GameControllerTest {
             p.getTemporaryStarterCard().flip();
             p.setTemporaryStarterCard(p.getTemporaryStarterCard());
             p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
-            p.setStatus(GameStatus.PLAYING);
+            p.setStatus(GameStatus.READY_TO_PLAY);
         }
 
         controller.getGame().setPlayerTurn(1);
@@ -813,7 +813,7 @@ class GameControllerTest {
             p.getTemporaryStarterCard().flip();
             p.setTemporaryStarterCard(p.getTemporaryStarterCard());
             p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
-            p.setStatus(GameStatus.PLAYING);
+            p.setStatus(GameStatus.READY_TO_PLAY);
         }
 
         controller.getGame().setPlayerTurn(1);
