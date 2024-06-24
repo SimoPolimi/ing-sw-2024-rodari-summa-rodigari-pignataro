@@ -43,9 +43,7 @@ public class GameTerminal extends Application implements ViewController {
 
     private final ArrayList<Token> availableToken = new ArrayList<>();
 
-    private final ArrayList<HashMap<String, Integer>> printingExtremes = new ArrayList<>();
-
-    private final ArrayList<String[][]> playAreas = new ArrayList<>();
+    private final ArrayList<PlayAreaTerminal> playAreas = new ArrayList<>();
 
     private final ArrayList<Integer> rejoinableGames = new ArrayList<>();
 
@@ -72,7 +70,7 @@ public class GameTerminal extends Application implements ViewController {
      * @param fg a foreground color (text color) chosen from the UiColors enum
      * @return the formatted String to print in System.out
      */
-    private String color(String str, UiColors fg) {
+    public String color(String str, UiColors fg) {
         return fg.toString() + str + UiColors.RESET;
     }
 
@@ -123,19 +121,17 @@ public class GameTerminal extends Application implements ViewController {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         // Initializes the PlayAreas
-        playAreas.add(null);
-        playAreas.add(null);
-        playAreas.add(null);
-        playAreas.add(null);
+        playAreas.add(new PlayAreaTerminal(this));
+        playAreas.add(new PlayAreaTerminal(this));
+        playAreas.add(new PlayAreaTerminal(this));
+        playAreas.add(new PlayAreaTerminal(this));
 
         // Initializes the Printing Extremes
         for (int i = 0; i < 4; i++) {
-            HashMap<String, Integer> map = new HashMap<>();
-            map.put("UP", 0);
-            map.put("DOWN", 800);
-            map.put("LEFT", 0);
-            map.put("RIGHT", 1440);
-            printingExtremes.add(map);
+            playAreas.get(i).setPrintingExtremes("UP", 0);
+            playAreas.get(i).setPrintingExtremes("DOWN", 800);
+            playAreas.get(i).setPrintingExtremes("LEFT", 0);
+            playAreas.get(i).setPrintingExtremes("RIGHT", 1440);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -457,23 +453,19 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println();
                         returnToMenu();
                         break;
-                    case "9":
-                        printScoreboard(createScoreboard());
-                        returnToMenu();
-                        break;
                     case "10":
-                        printPlayArea(playAreas.get(playerID-1), playerID);
+                        playAreas.get(playerID - 1).printPlayArea(playerID, terminalCharacters);
                         returnToMenu();
                         break;
                     case "11":
                         System.out.println("--- Your Table ---");
-                        printPlayArea(playAreas.get(playerID-1), playerID);
+                        playAreas.get(playerID-1).printPlayArea(playerID, terminalCharacters);
                         System.out.println("--- Others ---");
                         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                         for (int i = 0; i < 4; i++) {
-                            if (i+1 != playerID && null != playAreas.get(i)) {
+                            if (i+1 != playerID && !playAreas.get(i).isInitialized()) {
                                 System.out.println(info.get(i).get("Nickname") + ":");
-                                printPlayArea(playAreas.get(i), i+1);
+                                playAreas.get(i).printPlayArea(i+1, terminalCharacters);
                             }
                         }
                         returnToMenu();
@@ -556,9 +548,9 @@ public class GameTerminal extends Application implements ViewController {
                     terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
                     // Refreshes the PlayAreas
-                    for (String[][] playArea: playAreas) {
-                        if (null != playArea) {
-                            recreatePlayArea(playArea);
+                    for (PlayAreaTerminal playArea: playAreas) {
+                        if (!playArea.isInitialized()) {
+                            playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
 
@@ -575,9 +567,9 @@ public class GameTerminal extends Application implements ViewController {
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
                     returnToMenu();
                     // Refreshes the PlayAreas
-                    for (String[][] playArea: playAreas) {
-                        if (null != playArea) {
-                            recreatePlayArea(playArea);
+                    for (PlayAreaTerminal playArea: playAreas) {
+                        if (!playArea.isInitialized()) {
+                            playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
 
@@ -594,9 +586,9 @@ public class GameTerminal extends Application implements ViewController {
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
                     returnToMenu();
                     // Refreshes the PlayAreas
-                    for (String[][] playArea: playAreas) {
-                        if (null != playArea) {
-                            recreatePlayArea(playArea);
+                    for (PlayAreaTerminal playArea: playAreas) {
+                        if (!playArea.isInitialized()) {
+                            playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
 
@@ -793,10 +785,10 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("--- Choose the side of your starter card ---");
         StarterCard starterCard = controller.getTemporaryStarterCard(playerID);
         System.out.println("Digit f to choose front side");
-        printCard(starterCard);
+        TerminalCard.printCard(starterCard, terminalCharacters);
         starterCard.flip();
         System.out.println("Digit b to choose back side");
-        printCard(starterCard);
+        TerminalCard.printCard(starterCard, terminalCharacters);
 
         inputHandler.listen(new TerminalListener() {
             @Override
@@ -933,8 +925,8 @@ public class GameTerminal extends Application implements ViewController {
             System.out.println("Decks");
             System.out.println("Resource\t\t\tGold");
             for (int line = 1; line < 6; line++) {
-                System.out.println(getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported) +
-                        "\t" + (getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported)));
+                System.out.println(TerminalCard.getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported, terminalCharacters) +
+                        "\t" + (TerminalCard.getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported, terminalCharacters)));
             }
             System.out.println();
             System.out.println("Slots:");
@@ -943,8 +935,8 @@ public class GameTerminal extends Application implements ViewController {
                 card1 = controller.getSlotCard(CardType.RESOURCECARD, slot);
                 card2 = controller.getSlotCard(CardType.GOLDCARD, slot);
                 for (int line = 1; line < 6; line++) {
-                    System.out.println(getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported) +
-                            "\t" + (getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported)));
+                    System.out.println(TerminalCard.getPrintCardLine((PlayableCard) card1, line, isColorTerminalSupported, terminalCharacters) +
+                            "\t" + (TerminalCard.getPrintCardLine((PlayableCard) card2, line, isColorTerminalSupported, terminalCharacters)));
                 }
                 System.out.println();
             }
@@ -1075,15 +1067,17 @@ public class GameTerminal extends Application implements ViewController {
      */
     @Override
     public void notifyPlayersPlayAreaChanged(int playerID) {
-        ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
-        if (null != playAreas.get(playerID - 1)) {
-            playAreas.set(playerID-1, updateCardMatrix(playAreas.get(playerID-1), cards.getLast(), cards, playerID));
-        } else {
-            playAreas.set(playerID-1, createCardMatrix((StarterCard) cards.getFirst(), playerID));
-        }
-        if (this.playerID == playerID) {
-            printPlayArea(playAreas.get(playerID-1), playerID);
-        }
+        actions.add(() -> {
+            ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
+            if (!playAreas.get(playerID - 1).isInitialized()) {
+                playAreas.get(playerID - 1).updateCardMatrix( cards.getLast(), cards, playerID, terminalCharacters);
+            } else {
+                playAreas.get(playerID - 1).createCardMatrix((StarterCard) cards.getFirst(), playerID, terminalCharacters);
+            }
+            if (this.playerID == playerID) {
+                playAreas.get(playerID - 1).printPlayArea(playerID, terminalCharacters);
+            }
+        });
     }
 
     /**
@@ -1140,7 +1134,7 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void notifyCommonObjectivesChanged() {
         for (int i = 0; i < 2; i++) {
-            printCard( (PlayableCard) controller.getSlotCard(CardType.OBJECTIVECARD, i));
+            TerminalCard.printCard( (PlayableCard) controller.getSlotCard(CardType.OBJECTIVECARD, i), terminalCharacters);
         }
     }
 
@@ -1182,785 +1176,6 @@ public class GameTerminal extends Application implements ViewController {
         controller.setPlayerStatus(playerID, GameStatus.READY);
         System.out.println("Getting ready...");
     }
-
-    /**
-     * Creates a formatted String representation of one of the Card's lines.
-     * A Card has 5 lines, because it's printed in 5 different Lines.
-     *
-     * @param card  the Card to print
-     * @param line  an int value (1-5) corresponding to the Line to print
-     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or use that one instead
-     * @return the formatted String, in ASCII art or Emojis based on the Graphics Mode.
-     */
-    private String getPrintCardLine(PlayableCard card, int line, boolean printColors) {
-        String string = "";
-        if (null != card) {
-            if (card.getId() == -1){
-                if (line == 3){
-                    for (int i = 0; i < 3; i++) {
-                        string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-                    }
-                    if (String.valueOf(card.getX()).length() == 1){
-                        string += card.getX() + " ";
-                    }
-                    else{
-                        string += String.valueOf(card.getX());
-                    }
-                    string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-                    if (String.valueOf(card.getY()).length() == 1){
-                        string += card.getY() + " ";
-                    }
-                    else{
-                        string += String.valueOf(card.getY());
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-                    }
-                }
-                else {
-                    for (int i = 0; i < 9; i++) {
-                        string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-                    }
-                }
-            }
-            else {
-                switch (line) {
-                    case 1 -> {
-                        if (0 != card.getEarnedPoints()) {
-                            // This Card has Points, that will be displayed on the texture
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
-                            for (int i = 0; i < 7; i++) {
-                                if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                    string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                                } else if (i == 3 && card.isFrontFacing()) {
-                                    // Print points
-                                    if (printColors) {
-                                        string += color(card.getEarnedPoints() + " ", UiColors.YELLOW);
-                                    } else {
-                                        string += card.getEarnedPoints() + " ";
-                                    }
-                                } else {
-                                    string += getCardColor(card, printColors);
-                                }
-                            }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
-                        } else if (card instanceof GoldCard && null != ((GoldCard) card).getObjective()) {
-                            // This Card has some Points related to a Condition, that will be displayed on the texture
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
-                            for (int i = 0; i < 7; i++) {
-                                if (i == 0 || i == 6) {
-                                    string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                                } else if (i == 2 && card.isFrontFacing()) {
-                                    // Print points
-                                    if (((GoldCard) card).getObjective() instanceof CornerCountObjective) {
-                                        string += terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-                                    } else {
-                                        switch (((ItemCountObjective) ((GoldCard) card).getObjective()).getItem()) {
-                                            case FUNGI ->
-                                                    string += terminalCharacters.getCharacter(Characters.FUNGI, printColors);
-                                            case PLANT ->
-                                                    string += terminalCharacters.getCharacter(Characters.PLANT, printColors);
-                                            case ANIMAL ->
-                                                    string += terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
-                                            case INSECT ->
-                                                    string += terminalCharacters.getCharacter(Characters.INSECT, printColors);
-                                            case POTION ->
-                                                    string += terminalCharacters.getCharacter(Characters.POTION, printColors);
-                                            case FEATHER ->
-                                                    string += terminalCharacters.getCharacter(Characters.FEATHER, printColors);
-                                            case SCROLL ->
-                                                    string += terminalCharacters.getCharacter(Characters.SCROLL, printColors);
-                                            default ->
-                                                    throw new IllegalStateException("Unexpected value: " + ((ItemCountObjective) ((GoldCard) card).getObjective()).getItem());
-                                        }
-                                    }
-                                } else if (i == 4 && card.isFrontFacing()) {
-                                    // Print points
-                                    if (printColors) {
-                                        string += color(((GoldCard) card).getObjective().getPoints() + " ", UiColors.YELLOW);
-                                    } else {
-                                        string += ((GoldCard) card).getObjective().getPoints() + " ";
-                                    }
-                                } else {
-                                    string += getCardColor(card, printColors);
-                                }
-                            }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
-                        } else {
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors);
-                            for (int i = 0; i < 7; i++) {
-                                if ((i == 0 || i == 6) && card instanceof GoldCard) {
-                                    string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                                } else {
-                                    string += getCardColor(card, printColors);
-                                }
-                            }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors);
-                        }
-                    }
-                    case 2, 4 -> {
-                        if (card instanceof GoldCard) {
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                            for (int i = 0; i < 7; i++) {
-                                string += getCardColor(card, printColors);
-                            }
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                        } else {
-                            for (int i = 0; i < 9; i++) {
-                                string += getCardColor(card, printColors);
-                            }
-                        }
-                    }
-                    case 3 -> {
-                        for (int i = 0; i < 3; i++) {
-                            string += getCardColor(card, printColors);
-                        }
-                        if ((!(card instanceof StarterCard) && !card.isFrontFacing()) || (card.isFrontFacing() && card instanceof StarterCard)) {
-                            switch (card.getPermanentResources().size()) {
-                                case 1 -> {
-                                    string += getCardColor(card, printColors) + getItemPrint(card.getPermanentResources().get(0), printColors) + getCardColor(card, printColors);
-                                }
-                                case 2 -> {
-                                    string += getItemPrint(card.getPermanentResources().get(0), printColors) + getCardColor(card, printColors)
-                                            + getItemPrint(card.getPermanentResources().get(1), printColors);
-                                }
-                                case 3 -> {
-                                    string += getItemPrint(card.getPermanentResources().get(0), printColors)
-                                            + getItemPrint(card.getPermanentResources().get(1), printColors)
-                                            + getItemPrint(card.getPermanentResources().get(2), printColors);
-                                }
-                                default -> {
-                                    for (int i = 0; i < 3; i++) {
-                                        string += getCardColor(card, printColors);
-                                    }
-                                }
-                            }
-                        } else {
-                            for (int i = 0; i < 3; i++) {
-                                string += getCardColor(card, printColors);
-                            }
-                        }
-                        for (int i = 0; i < 3; i++) {
-                            string += getCardColor(card, printColors);
-                        }
-                    }
-                    case 5 -> {
-                        string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner(), printColors);
-                        if (card instanceof GoldCard) {
-                            // Read costs
-                            ArrayList<Item> costs = new ArrayList<>();
-                            for (int i = 0; i < ((GoldCard) card).getCost(FUNGI); i++) {
-                                costs.add(FUNGI);
-                            }
-                            for (int i = 0; i < ((GoldCard) card).getCost(PLANT); i++) {
-                                costs.add(PLANT);
-                            }
-                            for (int i = 0; i < ((GoldCard) card).getCost(ANIMAL); i++) {
-                                costs.add(ANIMAL);
-                            }
-                            for (int i = 0; i < ((GoldCard) card).getCost(INSECT); i++) {
-                                costs.add(INSECT);
-                            }
-
-                            if (!card.isFrontFacing()) {
-                                costs = new ArrayList<>();
-                            }
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                            switch (costs.size()) {
-                                case 0 -> {
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-                                }
-                                case 1 -> {
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getItemPrint(costs.getFirst(), printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getCardColor(card, printColors);
-
-                                }
-                                case 2 -> {
-                                    string += getCardColor(card, printColors);
-                                    string += getItemPrint(costs.getFirst(), printColors);
-                                    string += getCardColor(card, printColors);
-                                    string += getItemPrint(costs.get(1), printColors);
-                                    string += getCardColor(card, printColors);
-                                }
-                                case 3 -> {
-                                    string += getCardColor(card, printColors);
-                                    string += getItemPrint(costs.getFirst(), printColors);
-                                    string += getItemPrint(costs.get(1), printColors);
-                                    string += getItemPrint(costs.get(2), printColors);
-                                    string += getCardColor(card, printColors);
-                                }
-                                case 4 -> {
-                                    string += getItemPrint(costs.getFirst(), printColors);
-                                    string += getItemPrint(costs.get(1), printColors);
-                                    string += getItemPrint(costs.get(2), printColors);
-                                    string += getItemPrint(costs.get(3), printColors);
-                                    string += getCardColor(card, printColors);
-                                }
-                                case 5 -> {
-                                    string += getItemPrint(costs.getFirst(), printColors);
-                                    string += getItemPrint(costs.get(1), printColors);
-                                    string += getItemPrint(costs.get(2), printColors);
-                                    string += getItemPrint(costs.get(3), printColors);
-                                    string += getItemPrint(costs.get(4), printColors);
-                                }
-                            }
-                            string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
-                        } else {
-                            for (int i = 0; i < 7; i++) {
-                                string += getCardColor(card, printColors);
-                            }
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors);
-                        }
-                    }
-                }
-            }
-        } else {
-            if (true) {
-                for (int i = 0; i < 20; i++) {
-                    string += " ";
-                }
-            } else {
-                for (int i = 0; i < 15; i++) {
-                    string += " ";
-                }
-            }
-        }
-        return string;
-    }
-
-    /**
-     * Creates a String containing a representation of a Corner, based on its type and the content inside.
-     * @param card the Card that contains the Corner
-     * @param corner the Corner to print
-     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or not
-     * @return the String representation of the Corner, in Unicode characters or Emojis depending on the Graphics Mode.
-     */
-    private String getCornerPrint(PlayableCard card, Corner corner, boolean printColors) {
-        String string = "";
-        if (null != corner) {
-            if (null != corner.getItem()) {
-                string = getItemPrint(corner.getItem(), printColors);
-            } else {
-                string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-            }
-        } else string = getCardColor(card, printColors);
-        return string;
-    }
-
-    /**
-     * Creates a String containing a representation of an Item (KingdomResource or Resource)
-     * @param item the item to print
-     * @param printColors a boolean value indicating if it needs to override the global isColorTerminalSupported or not
-     * @return the String representation of the Item, in Unicode characters or Emojis depending on the Graphics Mode.
-     */
-    private String getItemPrint(Item item, boolean printColors) {
-        String string = "  ";
-        switch (item) {
-            case FUNGI -> string = terminalCharacters.getCharacter(Characters.FUNGI, printColors);
-            case ANIMAL -> string = terminalCharacters.getCharacter(Characters.ANIMAL, printColors);
-            case INSECT -> string = terminalCharacters.getCharacter(Characters.INSECT, printColors);
-            case PLANT -> string = terminalCharacters.getCharacter(Characters.PLANT, printColors);
-            case FEATHER -> string = terminalCharacters.getCharacter(Characters.FEATHER, printColors);
-            case POTION -> string = terminalCharacters.getCharacter(Characters.POTION, printColors);
-            case SCROLL -> string = terminalCharacters.getCharacter(Characters.SCROLL, printColors);
-            default -> {
-                string = "  ";
-            }
-        }
-        return string;
-    }
-
-    /**
-     * Prints a Card in its entirety by printing all the 5 lines the Card is made of.
-     * @param card the Card to print
-     */
-    public void printCard(PlayableCard card) {
-        System.out.println(getPrintCardLine(card, 1, isColorTerminalSupported));
-        System.out.println(getPrintCardLine(card, 2, isColorTerminalSupported));
-        System.out.println(getPrintCardLine(card, 3, isColorTerminalSupported));
-        System.out.println(getPrintCardLine(card, 4, isColorTerminalSupported));
-        System.out.println(getPrintCardLine(card, 5, isColorTerminalSupported));
-    }
-
-    /**
-     * Creates a String containing the "Building Block" of a Card, the character used to visually create the Card when printing it.
-     * @param card the Card to print
-     * @param printColors a boolean value indicating it it needs to override the global isColorTerminalSupported or use that one instead
-     * @return the Unicode Character or Emoji, depending on the Graphics Mode.
-     */
-    private String getCardColor(PlayableCard card, boolean printColors) {
-        String string = "";
-        if (card instanceof ResourceCard || card instanceof GoldCard) {
-            switch (card.getPermanentResources().getFirst()) {
-                case PLANT -> string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE, printColors);
-                case ANIMAL -> string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE, printColors);
-                case FUNGI -> string = terminalCharacters.getCharacter(Characters.RED_SQUARE, printColors);
-                case INSECT -> string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE, printColors);
-                default -> string = "";
-            }
-        } else if (card instanceof StarterCard) {
-            string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-        } else {
-            string = terminalCharacters.getCharacter(Characters.EMPTY_CORNER, printColors);
-        }
-        return string;
-    }
-
-    /**
-     * Converts a Card's Coordinates from the custom 45° angled system used in Model to the standard xy system representation.
-     * @param coordinates the Model's Coordinates
-     * @return a Coordinates object containing the converted values.
-     */
-    private Coordinates convertToAbsoluteCoordinates(Coordinates coordinates) {
-        int x = coordinates.getX() - coordinates.getY();
-        int y = coordinates.getX() + coordinates.getY();
-        return new Coordinates(x, y);
-    }
-
-    /**
-     * Converts the Coordinates to a format specifically tailored to work for the matrices used to represent the PlayArea.
-     * This format uses two offset values, calculated from the matrix's width and height to move the (0,0) position from the
-     * top left corner to the matrix's center, and then allows all the other normalized Coordinates to be converted in matrix's
-     * Coordinates.
-     * IMPORTANT: This method requires normalized Coordinates, as in using the standard xy representation.
-     * Model's Coordinates need to be converted to Absolute Coordinates before being passed here.
-     * @param coordinates the Absolute Coordinates to convert to Matrix's Coordinates
-     * @param matrixSizeX the Matrix's width
-     * @param matrixSizeY the Matrix's height
-     * @return the converted Coordinates
-     */
-    private Coordinates convertMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
-        int shiftX = (matrixSizeX) / 2;
-        int shiftY = (matrixSizeY) / 2;
-        int x = coordinates.getX() + shiftX;
-        int y = shiftY - coordinates.getY();
-        coordinates.setX(x);
-        coordinates.setY(y);
-        return coordinates;
-    }
-
-    /**
-     * Initializes the Matrix used to represent the PlayArea, and puts the StarterCard already in there.
-     * @param starter the Player's Starter Card
-     * @param playerID the Player's playerID, used to initialize its Matrix's printing extremes values
-     * @return the initialized Matrix of String[][]
-     */
-    private String[][] createCardMatrix(StarterCard starter, int playerID){
-        String[][] playArea = new String[800][1440];
-        String line = "";
-        int firstColumn = 716;
-        int firstLine = 398 ;
-        for (int j = 1; j <= 5; j++) {
-            line = getPrintCardLine(starter,j, false);
-            for (int i = 0; i < line.length(); i += 2) {
-                String string = new String(String.valueOf(line.charAt(i)));
-                try {
-                    string += line.charAt(i+1);
-                } catch (IndexOutOfBoundsException e) {
-                    //string += line.charAt(i);
-                }
-                playArea[firstLine][firstColumn] = string;
-                firstColumn++;
-            }
-            firstLine++;
-            firstColumn = 716;
-        }
-      for (int i = 0; i < 800; i++){
-          for (int j = 0; j < 1440; j++){
-              if (playArea[i][j] == null){
-                  playArea[i][j] = "  ";
-              }
-          }
-      }
-        //extreme DX
-        printingExtremes.get(playerID-1).replace("RIGHT", 725);
-        //extreme SX
-        printingExtremes.get(playerID-1).replace("LEFT", 717);
-        //extreme UP
-        printingExtremes.get(playerID-1).replace("UP", 399);
-        //extreme DOWN
-        printingExtremes.get(playerID-1).replace("DOWN", 403);
-        return playArea;
-    }
-
-    /**
-     * Updates the Matrix by adding a Card in a specific position, identified by 3 Matrix's Coordinates
-     * @param matrix the Matrix to update
-     * @param card the Card to add inside the Matrix (PlayArea)
-     * @param firstLine the y Coordinate of the top left Corner of the Card
-     * @param firstColumn the x Coordinate of the top left Corner of the Card
-     * @param centerX the x Coordinate of the center of the Card
-     * @return the updated Matrix
-     */
-    private String[][] addCardToMatrix(String[][] matrix, PlayableCard card, int firstLine, int firstColumn, int centerX){
-        String line = "";
-        for (int j = 1; j <= 5; j++) {
-            line = getPrintCardLine(card,j, false);
-            int i = 0;
-            while (i < line.length()) {
-                if (isAdvancedGraphicsMode) {
-                    // Emoji Mode
-                    String string = new String(String.valueOf(line.charAt(i)));
-                    if (string.equals("🟫")) {
-                        matrix[firstLine][firstColumn] = "🟫";
-                        i--;
-                        firstColumn++;
-                    } else {
-                        string += line.charAt(i + 1);
-                        matrix[firstLine][firstColumn] = string;
-                        firstColumn++;
-                    }
-                    i += 2;
-                } else {
-                    // Character Mode
-                    String string = new String(String.valueOf(line.charAt(i)));
-                    string += line.charAt(i + 1);
-                    matrix[firstLine][firstColumn] = string;
-                    firstColumn++;
-                    i += 2;
-                }
-            }
-            firstLine++;
-            firstColumn = centerX - 4;
-        }
-        return matrix;
-    }
-
-    /**
-     * Calculates the Coordinates where a Card has to be placed inside the Matrix
-     * @param matrix the Matrix to update
-     * @param card the Card to add inside the Matrix
-     * @param cards the Player's PlayField
-     * @param playerID the Player's playerID
-     * @return the updated Matrix
-     */
-    private String[][] updateCardMatrix(String[][] matrix, PlayableCard card, ArrayList<PlayableCard> cards, int playerID){
-        Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
-        Coordinates coordinates1 = convertToAbsoluteCoordinates(card.getCoordinates());
-        //card down sx
-        if(isThereACardIn(card.getX()-1,card.getY(), cards)){
-            int centerX = coordinates.getX() + (8 * Math.abs(coordinates1.getX()));
-            /*if (card.getX() == 0) {
-                centerX = coordinates.getX() + 8;
-            }*/
-            int centerY = coordinates.getY() - (4 * Math.abs(coordinates1.getY()));
-            /*if (card.getY() == 0) {
-                centerY= coordinates.getY() - 4;
-            }*/
-
-            centerX -= coordinates1.getX();
-            centerY+= coordinates1.getY();
-
-            int firstColumn = centerX - 4;
-            int firstLine = centerY -2;
-
-            matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-
-            if (centerX + 4 > printingExtremes.get(playerID-1).get("RIGHT")) {
-                printingExtremes.get(playerID - 1).replace("RIGHT", centerX + 4);
-            }
-            if (centerY - 2 < printingExtremes.get(playerID-1).get("UP")) {
-                printingExtremes.get(playerID - 1).replace("UP", centerY - 2);
-            }
-            return matrix;
-        }
-        //card up dx
-        if(isThereACardIn(card.getX()+1,card.getY(), cards)){
-            int centerX = coordinates.getX() - (8 * Math.abs(coordinates1.getX()));
-            /*if (card.getX() == 0) {
-                centerX = coordinates.getX() - 8;
-            }*/
-            int centerY = coordinates.getY() + (4 * Math.abs(coordinates1.getY()));
-            /*if (card.getY() == 0) {
-                centerY= coordinates.getY() + 4;
-            }*/
-
-            centerX -= coordinates1.getX();
-            centerY+= coordinates1.getY();
-
-            int firstColumn = centerX - 4;
-            int firstLine = centerY - 2;
-            matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-
-            if (centerX - 4 < printingExtremes.get(playerID-1).get("LEFT")) {
-                printingExtremes.get(playerID - 1).replace("LEFT", centerX - 4);
-            }
-            if (centerY + 2 > printingExtremes.get(playerID-1).get("DOWN")) {
-                printingExtremes.get(playerID - 1).replace("DOWN", centerY + 2);
-            }
-            return matrix;
-        }
-        //card up sx
-        if(isThereACardIn(card.getX(),card.getY()+1, cards)){
-            int centerX = coordinates.getX() + (8 * Math.abs(coordinates1.getX()));
-            /*if (card.getX() == 0) {
-                centerX = coordinates.getX() + 8;
-            }*/
-            int centerY = coordinates.getY() + (4 * Math.abs(coordinates1.getY()));
-            /*if (card.getY() == 0) {
-                centerY= coordinates.getY() + 4;
-            }*/
-
-            centerX -= coordinates1.getX();
-            centerY += coordinates1.getY();
-
-            int firstColumn = centerX - 4;
-            int firstLine = centerY - 2;
-            matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-
-            if (centerX + 4 > printingExtremes.get(playerID-1).get("RIGHT")) {
-                printingExtremes.get(playerID - 1).replace("RIGHT", centerX + 4);
-            }
-            if (centerY + 2 > printingExtremes.get(playerID-1).get("DOWN")) {
-                printingExtremes.get(playerID - 1).replace("DOWN", centerY + 2);
-            }
-            return matrix;
-        }
-        //card down dx
-        if(isThereACardIn(card.getX(),card.getY()-1, cards)){
-            int centerX = coordinates.getX() - (8 * Math.abs(coordinates1.getX()));
-            /*if (card.getX() == 0) {
-                centerX = coordinates.getX() - 8;
-            }*/
-            int centerY = coordinates.getY() - (4 * Math.abs(coordinates1.getY()));
-            /*if (card.getY() == 0) {
-                centerY= coordinates.getY() - 4;
-            }*/
-
-            centerX -= coordinates1.getX();
-            centerY += coordinates1.getY();
-
-            int firstColumn = centerX - 4;
-            int firstLine = centerY -2;
-            matrix = addCardToMatrix(matrix,card,firstLine,firstColumn,centerX);
-
-            if (centerX - 4 < printingExtremes.get(playerID-1).get("LEFT")) {
-                printingExtremes.get(playerID - 1).replace("LEFT", centerX - 4);
-            }
-            if (centerY - 2 < printingExtremes.get(playerID-1).get("UP")) {
-                printingExtremes.get(playerID - 1).replace("UP", centerY - 2);
-            }
-            return matrix;
-        }
-        return matrix;
-    }
-
-    /**
-     * Refreshes the entire Matrix (PlayArea), fetching every single String and re-writing all of them.
-     * This is intended to re-generate the Matrix after switching Graphics Mode: in this situation every String, still
-     * formatted for the old Mode, is replaced by the same String but in the new Mode representation.
-     * This works both ways: STANDARD -> FANCY and FANCY -> STANDARD.
-     * This method can also be used to re-generate a Matrix while keeping the same Graphics Mode, in the case of errors.
-     * @param playArea the updated Matrix
-     */
-    private void recreatePlayArea(String[][] playArea) {
-        for (int i = 0; i < playArea.length; i++) {
-            for (int j = 0; j < playArea[i].length; j++) {
-                switch (playArea[i][j]) {
-                    case "ନ ", "🍄" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FUNGI);
-                    case "✿ ", "🌳" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PLANT);
-                    case "♘ ", "🐺" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.ANIMAL);
-                    case "¥ ", "🦋" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.INSECT);
-                    case "∫ ", "📜" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.SCROLL);
-                    case "ϡ ", "🪶" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FEATHER);
-                    case "Ỗ ", "🍷" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.POTION);
-                    case "▤ ", "🟥" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                    case "▥ ", "🟦" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                    case "▦ ", "🟩" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                    case "▧ ", "🟪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                    case "▩ ", "🟨" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                    case "■ ", "⚪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
-                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
-                    case "▢ ", "🟫" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
-
-                }
-            }
-        }
-    }
-
-    /**
-     * Prints a portion of the Matrix (PlayArea).
-     * Printing is limited to a portion because the whole Matrix is too big.
-     * Printing extremes are used to determine where to start and end printing: they are
-     * updated every time a new Card is added inside the Matrix.
-     * Printing extremes leave a few empty Strings around the Cards as a margin.
-     * @param playArea the Matrix to print
-     * @param playerID the Player's playerID associated to this Matrix
-     */
-    private void printPlayArea(String[][] playArea, int playerID){
-        int extremeUP = printingExtremes.get(playerID-1).get("UP");
-        int extremeDOWN = printingExtremes.get(playerID-1).get("DOWN");
-        int extremeLEFT = printingExtremes.get(playerID-1).get("LEFT");
-        int extremeRIGHT = printingExtremes.get(playerID-1).get("RIGHT");
-        for (int i = extremeUP - 5; i <= extremeDOWN + 5; i++){
-            String line = "";
-            for (int j = extremeLEFT - 5; j <= extremeRIGHT + 5; j++){
-                if (!isAdvancedGraphicsMode && isColorTerminalSupported) {
-                    // Enhanced Mode (here colors are injected in the String, because the Matrix doesn't store them
-                    String symbol = "";
-                    switch (playArea[i][j]) {
-                        case "ନ " -> symbol = terminalCharacters.getCharacter(Characters.FUNGI);
-                        case "✿ " -> symbol = terminalCharacters.getCharacter(Characters.PLANT);
-                        case "♘ " -> symbol = terminalCharacters.getCharacter(Characters.ANIMAL);
-                        case "¥ " -> symbol = terminalCharacters.getCharacter(Characters.INSECT);
-                        case "∫ " -> symbol = terminalCharacters.getCharacter(Characters.SCROLL);
-                        case "ϡ " -> symbol = terminalCharacters.getCharacter(Characters.FEATHER);
-                        case "Ỗ " -> symbol = terminalCharacters.getCharacter(Characters.POTION);
-                        case "▤ " -> symbol = terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        case "▥ " -> symbol = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                        case "▦ " -> symbol = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                        case "▧ " -> symbol = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                        case "▩ " -> symbol = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        case "■ " -> symbol = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
-                        case "  " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
-                        case "▢ " -> symbol = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
-                        default -> symbol = playArea[i][j];
-                    }
-                    line += symbol;
-                } else {
-                    // Fancy and Standard Mode (no character modifications required
-                    line += playArea[i][j];
-                }
-            }
-            System.out.println(line);
-        }
-    }
-
-    /**
-     * Initializes the Matrix containing the ScoreBoard
-     * @return the Matrix
-     */
-    private String[][] createScoreboard(){
-        String[][] scoreboard = {
-                {"🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨"},
-                {"🟨","🟪","🟪","🟪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦","🟦","🟦","🟨"},
-                {"🟨","🟪","🦋","🟪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦","🐺","🟦","🟨"},
-                {"🟨","🟪","🟪","🟪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦","🟦","🟦","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","🔶","🟦"," 5","🔶","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","🔶","🔶","🟦"," 4","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦"," 6","🔶","🔶","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪"," 2","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 3","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦"," 7","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦"," 9","🔶","🔶","🔶","🔶","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪"," 2","🟦","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","⚪"," 2","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 2","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","🔶","🟦"," 8","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","🔶","🔶","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶"," 2","🟦","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","🔶","🔶","🔶","🔶","🟦"," 0","🔶","🔶","🔶","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","🔶","🔶","⚪","⚪","⚪","🔶","🔶","🔶","🔶","⚪","⚪","⚪","🔶","🔶","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪"," 2","🟦","🔶","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","🔶"," 2","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 1","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟦"," 9","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪"," 1","🟦","⚪","⚪","⚪","⚪","⚪"," 1","🟦","⚪","⚪","⚪","⚪"," 1","🟦","⚪","⚪","⚪","⚪","⚪"," 1","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 5","🔶","🔶","🔶","🔶","🔶","🟦"," 6","🔶","🔶","🔶","🔶","🟦"," 7","🔶","🔶","🔶","🔶","🔶","🟦"," 8","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪"," 1","🟦","⚪","⚪","⚪","⚪","⚪"," 1","🟦","⚪","⚪","⚪","⚪"," 1","🟦","⚪","⚪","⚪","⚪","⚪"," 1","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 4","🔶","🔶","🔶","🔶","🔶","🟦"," 3","🔶","🔶","🔶","🔶","🟦"," 2","🔶","🔶","🔶","🔶","🔶","🟦"," 1","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 1","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 7","🔶","🔶","🔶","🔶","🔶","🟦"," 8","🔶","🔶","🔶","🔶","🟦"," 9","🔶","🔶","🔶","🔶","🔶","🟦"," 0","⚪","🟨"},
-                {"🟨","⚪","🔶","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟨"},
-                {"🟨","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 0","🟦","⚪","🟨"},
-                {"🟨","⚪","🟦"," 6","🔶","🔶","🔶","🔶","🔶","🟦"," 5","🔶","🔶","🔶","🔶","🟦"," 4","🔶","🔶","🔶","🔶","🔶","🟦"," 3","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🔶","⚪","🟨"},
-                {"🟨","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 0","🟦","⚪","⚪","⚪","⚪","⚪"," 0","🟦","⚪","🔶","⚪","⚪","🟨"},
-                {"🟨","🟥","🟥","🟥","⚪","🟦"," 0","🔶","🔶","🔶","🔶","🔶","🟦"," 1","🔶","🔶","🔶","🔶","🔶","🟦"," 2","🔶","🟩","🟩","🟩","🟨"},
-                {"🟨","🟥","🍄","🟥","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟩","🌳","🟩","🟨"},
-                {"🟨","🟥","🟥","🟥","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","⚪","🟩","🟩","🟩","🟨"},
-                {"🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨","🟨"},
-        };
-        /*
-        "🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨"
-        "🟨🟪🟪🟪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟦🟦🟦🟨"
-        "🟨🟪🦋🟪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟦🐺🟦🟨"
-        "🟨🟪🟪🟪⚪⚪⚪⚪⚪⚪⚪⚪2️⃣🟦⚪⚪⚪⚪⚪⚪⚪⚪🟦🟦🟦🟨"
-        "🟨⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶🔶🟦5️⃣🔶🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪⚪⚪⚪⚪⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪⚪⚪⚪⚪⚪2️⃣🟦⚪⚪⚪⚪⚪⚪⚪⚪2️⃣🟦⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪⚪⚪⚪🔶🔶🟦4️⃣⚪⚪⚪⚪⚪⚪⚪⚪🟦6️⃣🔶🔶⚪⚪⚪⚪🟨"
-        "🟨⚪⚪⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪⚪⚪🟨"
-        "🟨⚪2️⃣🟦⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪2️⃣🟦⚪🟨"
-        "🟨⚪🟦3️⃣⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟦7️⃣⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪2️⃣🟦⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪🟦9️⃣🔶🔶🔶🔶⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪2️⃣🟦⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪⚪2️⃣🟦⚪🟨"
-        "🟨⚪🟦2️⃣⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶🔶🟦8️⃣⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪🔶🔶🔶🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪🔶2️⃣🟦🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪🔶🔶🔶🔶🟦0️🔶🔶🔶🔶⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪🔶⚪⚪⚪🔶🔶⚪⚪⚪🔶🔶🔶🔶⚪⚪⚪🔶🔶⚪⚪⚪⚪⚪🟨"
-        "🟨⚪2️⃣🟦🔶🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶🔶1️⃣🟦⚪🟨"
-        "🟨⚪🟦1️⃣⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟦9️⃣⚪🟨"
-        "🟨⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪1️⃣🟦⚪⚪⚪⚪⚪1️⃣🟦⚪⚪⚪⚪1️⃣🟦⚪⚪⚪⚪⚪1️⃣🟦⚪🟨"
-        "🟨⚪🟦5️⃣🔶🔶🔶🔶🔶🟦6️⃣🔶🔶🔶🔶🟦7️⃣🔶🔶🔶🔶🔶🟦8️⃣⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪1️⃣🟦⚪⚪⚪⚪⚪1️⃣🟦⚪⚪⚪⚪1️⃣🟦⚪⚪⚪⚪⚪1️⃣🟦⚪🟨"
-        "🟨⚪🟦4️⃣🔶🔶🔶🔶🔶🟦3️⃣🔶🔶🔶🔶🟦2️⃣🔶🔶🔶🔶🔶🟦1️⃣⚪🟨"
-        "🟨⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪0️⃣🟦⚪⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪⚪1️⃣🟦⚪🟨"
-        "🟨⚪🟦7️⃣🔶🔶🔶🔶🔶🟦8️⃣🔶🔶🔶🔶🟦9️⃣🔶🔶🔶🔶🔶🟦0️⃣⚪🟨"
-        "🟨⚪🔶⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟨"
-        "🟨⚪0️⃣🟦⚪⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪⚪0️⃣🟦⚪🟨"
-        "🟨⚪🟦6️⃣🔶🔶🔶🔶🔶🟦5️⃣🔶🔶🔶🔶🟦4️⃣🔶🔶🔶🔶🔶🟦3️⃣⚪🟨"
-        "🟨⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🔶⚪🟨"
-        "🟨⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪⚪0️⃣🟦⚪⚪⚪⚪⚪0️⃣🟦⚪🔶⚪⚪🟨"
-        "🟨🟥🟥🟥⚪🟦0️⃣🔶🔶🔶🔶🔶🟦1️⃣🔶🔶🔶🔶🔶🟦2️⃣🔶🟩🟩🟩🟨"
-        "🟨🟥🍄🟥⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟩🌳🟩🟨"
-        "🟨🟥🟥🟥⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪🟩🟩🟩🟨"
-        "🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨"
-        */
-        return scoreboard;
-    }
-
-    /**
-     * Prints the Matrix containing the ScoreBoard
-     * @param scoreboard the Matrix to print
-     */
-    private void printScoreboard(String[][] scoreboard){
-
-        for (int i = 0; i < 41; i++){
-            String string = "";
-            for (int j = 0; j < 26; j++){
-                string += scoreboard[i][j];
-            }
-            System.out.println(string);
-        }
-
-    }
-
-    /**
-     * Checks if a Card is present in a specific set of Coordinates (Model) inside an ArrayList<Card>,
-     * such as a Player's PlayField.
-     * @param x the x Coordinate to check
-     * @param y the y Coordinate to check
-     * @param cards the PlayField to check into
-     * @return a boolean value indicating if those Coordinates belong to any Card or not.
-     */
-    private boolean isThereACardIn(int x, int y, ArrayList<PlayableCard> cards) {
-        for (PlayableCard card : cards) {
-            if (card.getX() == x && card.getY() == y) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Prints the current Player's Ranking, ordered by Points.
      */
@@ -2170,855 +1385,6 @@ public class GameTerminal extends Application implements ViewController {
         });
     }
 
-    /**
-     * Creates and builds a formatted String containing a visual representation of one of the Lines that make up an Objective Card.
-     * Like Playable Cards, Objective Cards are also made of 5 Lines, and the one to return is passed as a parameter.
-     * The String is formatted in ASCII art or with Emojis, based on the Graphics Mode selected.
-     * @param card the Objective Card to print
-     * @param line the Line to print
-     * @return the formatted String
-     */
-    private String printObjectiveLine(ObjectiveCard card, int line) {
-        String string = "";
-        switch (card.getId()) {
-            case 87:
-                switch (line) {
-                    case 1, 5:
-                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
-                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪ 2⚪🟥⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🟥⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🟥⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        break;
-                }
-                break;
-            case 88:
-                switch (line){
-                    case 1, 5:
-                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
-                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪🟩⚪ 2⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🟩⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪🟩⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-
-                }
-                break;
-            case 89:
-                switch (line){
-                    case 1, 5:
-                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
-                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪ 2⚪🟦⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🟦⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🟦⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 90:
-                switch (line){
-                    case 1, 5:
-                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
-                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪🟪⚪ 2⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🟪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪🟪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 91:
-                switch (line){
-                    case 1, 5:
-                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
-                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪🟥⚪ 3⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 3" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪🟥⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪🟩⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 92:
-                switch (line){
-                    case 1, 5:
-                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
-                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪ 3⚪🟩⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 3" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪⚪🟩⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪🟪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 93:
-                switch (line){
-                    case 1, 5:
-                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
-                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪🟥⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪🟦⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🟦⚪ 3⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 3" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 94:
-                switch (line){
-                    case 1,5:
-                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
-                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪🟦⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪⚪🟪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪ 3⚪🟪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 3" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 95:
-                switch (line){
-                    case 1, 5:
-                        // 🟥🟨🟨🟨🟨🟨🟨🟨🟥
-                        string = terminalCharacters.getCharacter(Characters.RED_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🍄⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.FUNGI) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🍄⚪🍄⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.FUNGI) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.FUNGI) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 96:
-                switch (line){
-                    case 1, 5:
-                        // 🟩🟨🟨🟨🟨🟨🟨🟨🟩
-                        string = terminalCharacters.getCharacter(Characters.GREEN_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🌳⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PLANT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🌳⚪🌳⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PLANT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PLANT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 97:
-                switch (line){
-                    case 1, 5:
-                        // 🟦🟨🟨🟨🟨🟨🟨🟨🟦
-                        string = terminalCharacters.getCharacter(Characters.BLUE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🐺⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.ANIMAL) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🐺⚪🐺⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.ANIMAL) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.ANIMAL) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 98:
-                switch (line){
-                    case 1, 5:
-                        // 🟪🟨🟨🟨🟨🟨🟨🟨🟪
-                        string = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪⚪🦋⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.INSECT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪🦋⚪🦋⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.INSECT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.INSECT) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 99:
-                switch (line){
-                    case 1, 5:
-                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 3⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 3" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪📜🍷🪶⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.SCROLL) +
-                                terminalCharacters.getCharacter(Characters.POTION) +
-                                terminalCharacters.getCharacter(Characters.FEATHER) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 100:
-                switch (line){
-                    case 1, 5:
-                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-
-                        break;
-                    case 3:
-                        // 🟨⚪⚪📜⚪📜⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.SCROLL) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.SCROLL) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 101:
-                switch (line){
-                    case 1, 5:
-                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪🍷⚪🍷⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.POTION) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.POTION) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-            case 102:
-                switch (line){
-                    case 1, 5:
-                        // 🟨🟨🟨🟨🟨🟨🟨🟨🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 2:
-                        // 🟨⚪⚪⚪ 2⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                " 2" +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 3:
-                        // 🟨⚪⚪🪶⚪🪶⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.FEATHER) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.FEATHER) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                    case 4:
-                        // 🟨⚪⚪⚪⚪⚪⚪⚪🟨
-                        string = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.WHITE_SQUARE) +
-                                terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                        break;
-                }
-                break;
-        }
-        return string;
-
-    }
 
     /**
      * Prints an entire Objective Card, line by line.
@@ -3026,7 +1392,7 @@ public class GameTerminal extends Application implements ViewController {
      */
     private void printSecretObjective(ObjectiveCard card){
         for (int line = 1; line < 6; line++) {
-            System.out.println(printObjectiveLine(card, line));
+            System.out.println(TerminalCard.printObjectiveLine(card, line, terminalCharacters));
         }
     }
 
@@ -3042,8 +1408,8 @@ public class GameTerminal extends Application implements ViewController {
         ObjectiveCard card2 = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 2);
         // Prints the Cards
         for (int line = 1; line < 6; line++) {
-            System.out.println(printObjectiveLine(card1, line) +
-                    "\t"+printObjectiveLine(card2, line) );
+            System.out.println(TerminalCard.printObjectiveLine(card1, line, terminalCharacters) +
+                    "\t"+ TerminalCard.printObjectiveLine(card2, line, terminalCharacters));
         }
         // Prints the info
         System.out.println("1) " + card1.getObjective().getName());
@@ -3062,9 +1428,9 @@ public class GameTerminal extends Application implements ViewController {
         PlayableCard card2 = controller.getPlayersHandCard(playerID, 1);
         PlayableCard card3 = controller.getPlayersHandCard(playerID, 2);
         for (int line = 1; line < 6; line++){
-            System.out.println(getPrintCardLine(card1, line, isColorTerminalSupported) +
-                    "\t" + getPrintCardLine(card2, line, isColorTerminalSupported) +
-                    "\t" + getPrintCardLine(card3, line, isColorTerminalSupported));
+            System.out.println(TerminalCard.getPrintCardLine(card1, line, isColorTerminalSupported, terminalCharacters) +
+                    "\t" + TerminalCard.getPrintCardLine(card2, line, isColorTerminalSupported, terminalCharacters) +
+                    "\t" + TerminalCard.getPrintCardLine(card3, line, isColorTerminalSupported, terminalCharacters));
         }
     }
 
@@ -3286,35 +1652,45 @@ public class GameTerminal extends Application implements ViewController {
         // Don't need
     }
 
+    public boolean isAdvancedGraphicsMode() {
+        return isAdvancedGraphicsMode;
+    }
+
+    public boolean isColorTerminalSupported() {
+        return isColorTerminalSupported;
+    }
+
+    public TerminalCharacters getTerminalCharacters() {
+        return terminalCharacters;
+    }
+
     private void rebuild() {
         int number = controller.getNumberOfPlayers();
         for (int i = 0; i < number; i++) {
             ArrayList<PlayableCard> playArea = controller.getPlayersPlayfield(i+1);
             for (int j = 0; j < playArea.size(); j++) {
                 if (null != playAreas.get(i)) {
-                    playAreas.set(i, updateCardMatrix(playAreas.get(i), playArea.get(j), playArea, i + 1));
+                    playAreas.get(i).updateCardMatrix(playArea.get(j), playArea, i + 1, terminalCharacters);
                 } else {
-                    playAreas.set(i, createCardMatrix((StarterCard) playArea.getFirst(), i + 1));
+                    playAreas.get(i).createCardMatrix((StarterCard) playArea.getFirst(), i + 1, terminalCharacters);
                 }
             }
         }
         printPlayer();
     }
+    public void availablePlacement(){
+        PlayAreaTerminal temp = new PlayAreaTerminal(this);
+        temp.setPlayArea(playAreas.get(playerID - 1).getCopy());
+        temp.setPrintingExtremes("UP", playAreas.get(playerID-1).getPrintingExtreme("UP"));
+        temp.setPrintingExtremes("DOWN", playAreas.get(playerID-1).getPrintingExtreme("DOWN"));
+        temp.setPrintingExtremes("LEFT", playAreas.get(playerID-1).getPrintingExtreme("LEFT"));
+        temp.setPrintingExtremes("RIGHT", playAreas.get(playerID-1).getPrintingExtreme("RIGHT"));
 
-    private void availablePlacement(){
-        String[][] matrix = new String[800][1440];
-        for (int i = 0; i < 800; i++){
-            for (int j = 0; j < 1440; j++){
-                matrix[i][j] = playAreas.get(playerID - 1)[i][j];
-            }
-        }
-        ArrayList<Coordinates> availablePlacemnts = controller.getAvailablePlacements(playerID);
-        HashMap<String, Integer> printingExtremesSave = (HashMap<String, Integer>) printingExtremes.get(playerID - 1).clone();
+        ArrayList<Coordinates> availablePlacemnts = getNetworkController().getAvailablePlacements(getOwner());
         for (Coordinates c: availablePlacemnts){
             ResourceCard card = new ResourceCard(null,null,true,-1,c.getX(),c.getY(),new ArrayList<>(),0,"/cards/card1Front.png","/cards/card1Back.png",null);
-            matrix = updateCardMatrix(matrix, card, controller.getPlayersPlayfield(playerID),playerID);
+            temp.updateCardMatrix(card, getNetworkController().getPlayersPlayfield(getOwner()), getOwner(), terminalCharacters);
         }
-        printPlayArea(matrix, playerID);
-        printingExtremes.set(playerID - 1, (HashMap<String, Integer>) printingExtremesSave.clone());
+        temp.printPlayArea(getOwner(), terminalCharacters);
     }
 }
