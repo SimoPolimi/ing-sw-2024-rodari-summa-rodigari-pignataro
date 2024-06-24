@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
+import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
@@ -636,5 +637,259 @@ class GameControllerTest {
         assertTrue(isListenerNotified.get("playerTokenNotified"));
         assertTrue(isListenerNotified.get("playerPointsNotified"));
         assertTrue(isListenerNotified.get("playerPlayAreaNotified"));
+    }
+
+    @Test
+    void testGameEndedBecauseOfEmptyDecks() throws RemoteException {
+        // Tests if the Game correctly ends in a situation where both Decks become empty
+        GameController controller = new GameController("Test");
+
+        controller.addPlayer(new Player("Bot1"));
+        controller.addPlayer(new Player("Bot2"));
+        controller.addPlayer(new Player("Bot3"));
+        controller.addPlayer(new Player("Bot4"));
+
+        controller.getPlayer(1).setToken(Token.BLUE);
+        controller.getPlayer(2).setToken(Token.RED);
+        controller.getPlayer(3).setToken(Token.GREEN);
+        controller.getPlayer(4).setToken(Token.YELLOW);
+
+        controller.setCurrentStatus(GameStatus.PLAYING);
+        for (int i = 1; i < 5; i++) {
+            Player p = controller.getPlayer(i);
+            p.drawSecretObjectives(controller.getGame().getObjectivePlayingDeck());
+            p.setSecretObjective(controller.getPlayer(i).getTemporaryObjectiveCards().getFirst());
+            p.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+            p.getTemporaryStarterCard().flip();
+            p.setTemporaryStarterCard(p.getTemporaryStarterCard());
+            p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+            p.setStatus(GameStatus.PLAYING);
+        }
+
+        // Emptying the Decks
+        while (!controller.getGame().isResourceDeckEmpty()) {
+            controller.getGame().getResourcePlayingDeck().getDeck().draw();
+        }
+        while (!controller.getGame().isGoldDeckEmpty()) {
+            controller.getGame().getGoldPlayingDeck().getDeck().draw();
+        }
+
+        // Game should now be in Semi Last Turn
+        assertEquals(GameStatus.SEMI_LAST_TURN, controller.getCurrentStatus());
+
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+
+        // Game should now be in Last Turn
+        assertEquals(GameStatus.LAST_TURN, controller.getCurrentStatus());
+
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+
+        // Game should now be ended
+        assertEquals(GameStatus.END_GAME, controller.getCurrentStatus());
+
+    }
+
+    @Test
+    void testGameEndedBecauseOfPlayerReaching20Points() throws RemoteException {
+        // Tests if the Game correctly ends in a situation where a Player reaches 20 Points
+        GameController controller = new GameController("Test");
+
+        controller.addPlayer(new Player("Bot1"));
+        controller.addPlayer(new Player("Bot2"));
+        controller.addPlayer(new Player("Bot3"));
+        controller.addPlayer(new Player("Bot4"));
+
+        controller.getPlayer(1).setToken(Token.BLUE);
+        controller.getPlayer(2).setToken(Token.RED);
+        controller.getPlayer(3).setToken(Token.GREEN);
+        controller.getPlayer(4).setToken(Token.YELLOW);
+
+        controller.setCurrentStatus(GameStatus.PLAYING);
+        for (int i = 1; i < 5; i++) {
+            Player p = controller.getPlayer(i);
+            p.drawSecretObjectives(controller.getGame().getObjectivePlayingDeck());
+            p.setSecretObjective(controller.getPlayer(i).getTemporaryObjectiveCards().getFirst());
+            p.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+            p.getTemporaryStarterCard().flip();
+            p.setTemporaryStarterCard(p.getTemporaryStarterCard());
+            p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+            p.setStatus(GameStatus.PLAYING);
+        }
+
+        // Player reaches 20 Points
+        controller.getPlayer(1).setPoints(20);
+
+        // Game should now be in Semi Last Turn
+        assertEquals(GameStatus.SEMI_LAST_TURN, controller.getCurrentStatus());
+
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+
+        // Game should now be in Last Turn
+        assertEquals(GameStatus.LAST_TURN, controller.getCurrentStatus());
+
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+
+        // Game should now be ended
+        assertEquals(GameStatus.END_GAME, controller.getCurrentStatus());
+    }
+
+    @Test
+    void disconnectPlayer() throws RemoteException {
+        GameController controller = new GameController("Test");
+        controller.addPlayer(new Player("Bot1"));
+        controller.addPlayer(new Player("Bot2"));
+        controller.addPlayer(new Player("Bot3"));
+        controller.addPlayer(new Player("Bot4"));
+
+        controller.getPlayer(1).setToken(Token.BLUE);
+        controller.getPlayer(2).setToken(Token.RED);
+        controller.getPlayer(3).setToken(Token.GREEN);
+        controller.getPlayer(4).setToken(Token.YELLOW);
+
+        controller.setCurrentStatus(GameStatus.PLAYING);
+        for (int i = 1; i < 5; i++) {
+            Player p = controller.getPlayer(i);
+            p.drawSecretObjectives(controller.getGame().getObjectivePlayingDeck());
+            p.setSecretObjective(controller.getPlayer(i).getTemporaryObjectiveCards().getFirst());
+            p.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+            p.getTemporaryStarterCard().flip();
+            p.setTemporaryStarterCard(p.getTemporaryStarterCard());
+            p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+            p.setStatus(GameStatus.PLAYING);
+        }
+
+        controller.getGame().setPlayerTurn(1);
+
+        // Player 1 disconnects
+        controller.disconnectPlayer(1);
+
+        // Player 1 should be marked as disconnected
+        assertTrue(controller.getPlayer(1).isDisconnected());
+
+        // Turn should now be on Player 2
+        assertEquals(2, controller.getGame().getPlayerTurn());
+
+        // Player 1 should be ignored by Turn System
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        assertEquals(2, controller.getGame().getPlayerTurn());
+
+        // Player 1 should be counted in the number of disconnected players
+        assertEquals(1, controller.getNumberOfDisconnectedPlayers());
+    }
+
+    @Test
+    void rejoin() throws RemoteException {
+        GameController controller = new GameController("Test");
+        controller.addPlayer(new Player("Bot1"));
+        controller.addPlayer(new Player("Bot2"));
+        controller.addPlayer(new Player("Bot3"));
+        controller.addPlayer(new Player("Bot4"));
+
+        controller.getPlayer(1).setToken(Token.BLUE);
+        controller.getPlayer(2).setToken(Token.RED);
+        controller.getPlayer(3).setToken(Token.GREEN);
+        controller.getPlayer(4).setToken(Token.YELLOW);
+
+        controller.setCurrentStatus(GameStatus.PLAYING);
+        for (int i = 1; i < 5; i++) {
+            Player p = controller.getPlayer(i);
+            p.drawSecretObjectives(controller.getGame().getObjectivePlayingDeck());
+            p.setSecretObjective(controller.getPlayer(i).getTemporaryObjectiveCards().getFirst());
+            p.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+            p.getTemporaryStarterCard().flip();
+            p.setTemporaryStarterCard(p.getTemporaryStarterCard());
+            p.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
+            p.setStatus(GameStatus.PLAYING);
+        }
+
+        controller.getGame().setPlayerTurn(1);
+
+        // Player 1 disconnects
+        controller.disconnectPlayer(1);
+
+        // Player 1 should be marked as disconnected
+        assertTrue(controller.getPlayer(1).isDisconnected());
+
+        // Turn should now be on Player 2
+        assertEquals(2, controller.getGame().getPlayerTurn());
+
+        // Player 1 should be ignored by Turn System
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        assertEquals(2, controller.getGame().getPlayerTurn());
+
+        // Player 1 should be counted in the number of disconnected players
+        assertEquals(1, controller.getNumberOfDisconnectedPlayers());
+
+        // Player 1 re-joins the Game
+        controller.rejoinGame(1);
+
+        // Player 1 should not be marked as disconnected anymore
+        assertFalse(controller.getPlayer(1).isDisconnected());
+
+        // Turn still should now be on Player 2
+        assertEquals(2, controller.getGame().getPlayerTurn());
+
+        // Player 1 should not be ignored by Turn System anymore
+        controller.nextTurn();
+        controller.nextTurn();
+        controller.nextTurn();
+        assertEquals(1, controller.getGame().getPlayerTurn());
+    }
+
+    @Test
+    void rejoinWithoutChoices() throws RemoteException {
+        GameController controller = new GameController("Test");
+        controller.addPlayer(new Player("Bot1"));
+        controller.addPlayer(new Player("Bot2"));
+        controller.addPlayer(new Player("Bot3"));
+        controller.addPlayer(new Player("Bot4"));
+
+        // Player 1 disconnects
+        controller.disconnectPlayer(1);
+
+        // Other Players make their choices
+        controller.getPlayer(2).setToken(Token.RED);
+        controller.getPlayer(3).setToken(Token.GREEN);
+        controller.getPlayer(4).setToken(Token.YELLOW);
+
+        controller.setCurrentStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        controller.setStarted(true);
+        for (int i = 2; i < 5; i++) {
+            Player p = controller.getPlayer(i);
+            p.drawSecretObjectives(controller.getGame().getObjectivePlayingDeck());
+            p.setSecretObjective(controller.getPlayer(i).getTemporaryObjectiveCards().getFirst());
+            p.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
+            p.getTemporaryStarterCard().flip();
+            p.setTemporaryStarterCard(p.getTemporaryStarterCard());
+            p.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        }
+        //controller.getPlayer(1).setStatus(GameStatus.PLAYING);
+
+        controller.getGame().setPlayerTurn(2);
+
+        // Player 1 re-joins the Game
+        controller.rejoinGame(1);
+
+        // The Server should have made Player's choices in his behalf
+        assertEquals(Token.BLUE, controller.getPlayer(1).getToken());
+        assertNotNull(controller.getPlayer(1).getSecretObjective());
+        assertEquals(1, controller.getPlayer(1).getPlayField().getPlayedCards().size());
+        assertEquals(3, controller.getPlayer(1).getHandSize());
     }
 }
