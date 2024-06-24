@@ -48,8 +48,9 @@ public class GameController implements Serializable, Observable {
     }
 
     /**
-     * Getter Method for the Game
-     * @return the Game
+     * Getter Method for the Player
+     * @param index the Player's playerID [1 - 4]
+     * @return the corresponding Player
      */
     public Player getPlayer(int index) {
         return game.getPlayer(index);
@@ -87,6 +88,14 @@ public class GameController implements Serializable, Observable {
      */
     public void setName(String name) throws RemoteException {
         this.name = name;
+    }
+
+    /**
+     * Getter Method for the number of Disconnected Players
+     * @return the number of Players who are currently disconnected
+     */
+    public int getNumberOfDisconnectedPlayers() {
+        return numberOfDisconnectedPlayers;
     }
 
     /**
@@ -520,6 +529,7 @@ public class GameController implements Serializable, Observable {
     public void drawStartingHand() {
         for (int i = 1; i <= game.getNumberOfPlayers(); i++) {
             game.getPlayer(i).drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
+            getPlayer(i).setStatus(GameStatus.READY_TO_PLAY);
         }
     }
 
@@ -779,9 +789,11 @@ public class GameController implements Serializable, Observable {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                currentStatus = GameStatus.PLAYING;
+                currentStatus = GameStatus.READY_TO_PLAY;
                 drawStartingHand();
                 break;
+            case READY_TO_PLAY:
+                currentStatus = GameStatus.PLAYING;
             case PLAYING:
                 if (!isStarted) {
                     game.getChat().sendMessage(new ChatMessage("Game is Starting", "Server"));
@@ -831,6 +843,14 @@ public class GameController implements Serializable, Observable {
         if (game.getPlayerTurn() == playerID) {
             nextTurn();
         }
+    }
+
+    /**
+     * Setter Method for isStarted
+     * @param started a boolean value indicating if the Game has started
+     */
+    public void setStarted(boolean started) {
+        isStarted = started;
     }
 
     /**

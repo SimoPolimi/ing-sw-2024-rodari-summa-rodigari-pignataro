@@ -359,7 +359,6 @@ public class Player implements Observable, Serializable {
             drawCard(resource);
             drawCard(resource);
             drawCard(gold);
-            setStatus(GameStatus.PLAYING);
         }catch (IllegalActionException e){
             // TODO: handle exception
             e.printStackTrace();
