@@ -24,7 +24,7 @@ import java.util.concurrent.*;
  * This Class handles the Socket Server
  */
 public class SocketControllerServer implements ServerNetworkController, Serializable {
-    private ServerSocket serverSocket;
+    private transient ServerSocket serverSocket;
     private String ipAddress;
     private final int port = 23690;
     private Runnable onReady;
@@ -107,7 +107,11 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     break;
                 case GET_SLOT_CARD:
                     Card response = server.getSlotCard(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextureMessage) temp).getSlot());
-                    sendMessage(socket, new CardResponse(MessageType.GET_SLOT_CARD, response, response.isFrontFacing()));
+                    boolean isCardFrontFacing = true;
+                    if (null != response) {
+                        isCardFrontFacing = response.isFrontFacing();
+                    }
+                    sendMessage(socket, new CardResponse(MessageType.GET_SLOT_CARD, response, isCardFrontFacing));
                     break;
                 case GET_SECRET_OBJECTIVE:
                     sendMessage(socket, new ObjectiveCardResponse(MessageType.GET_SECRET_OBJECTIVE, server.getSecretObjective(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));

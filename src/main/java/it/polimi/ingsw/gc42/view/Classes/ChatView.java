@@ -214,7 +214,7 @@ public class ChatView {
     private void sendMessage() {
         if (!chatTextField.getText().isEmpty()) {
             try {
-                controller.getNetworkController().sendMessage(controller.getOwner(), chatTextField.getText());
+                controller.getNetworkController().sendChatMessage(controller.getOwner(), chatTextField.getText());
                 chatTextField.clear();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);

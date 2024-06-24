@@ -555,7 +555,7 @@ public class RmiClient implements NetworkController, Serializable {
         try {
             server.addPlayer(gameID, player);
             this.owner = player;
-            playerID = server.getGame(gameID).getIndexOfPlayer(owner.getNickname());
+            playerID = server.getIndexOfPlayer(gameID, owner.getNickname());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -635,7 +635,7 @@ public class RmiClient implements NetworkController, Serializable {
      * @throws RemoteException in case of a Network Connection Error
      */
     @Override
-    public void sendMessage(int playerID, String message) throws RemoteException {
+    public void sendChatMessage(int playerID, String message) throws RemoteException {
         server.sendMessage(gameID, playerID, message);
     }
 

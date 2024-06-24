@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.network.ClientController;
 
 import java.io.IOException;
@@ -87,7 +86,7 @@ public interface NetworkController {
 
     ArrayList<PlayableCard> getPlayersPlayfield(int playerID);
 
-    void sendMessage(int playerID, String message) throws RemoteException;
+    void sendChatMessage(int playerID, String message) throws RemoteException;
     ArrayList<ChatMessage> getFullChat() throws RemoteException;
     boolean checkNickName(String nickname) throws RemoteException;
     void blockNickName(String nickname) throws RemoteException;

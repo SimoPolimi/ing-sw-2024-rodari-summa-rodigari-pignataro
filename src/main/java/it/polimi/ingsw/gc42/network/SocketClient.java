@@ -627,7 +627,7 @@ public class SocketClient implements NetworkController {
      * @throws RemoteException in case of a Network Connection Error
      */
     @Override
-    public void sendMessage(int playerID, String message) throws RemoteException {
+    public void sendChatMessage(int playerID, String message) throws RemoteException {
         sendMessage(new SendMessageMessage(MessageType.SEND_MESSAGE, gameID, playerID, message));
     }
 

@@ -422,7 +422,7 @@ public class GameTerminal extends Application implements ViewController {
                             public void onEvent(String input) {
                                 actions.add(() -> {
                                     try {
-                                        controller.sendMessage(playerID, input);
+                                        controller.sendChatMessage(playerID, input);
                                         returnToMenu();
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
