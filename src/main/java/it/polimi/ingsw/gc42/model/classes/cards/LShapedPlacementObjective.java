@@ -39,21 +39,25 @@ public class LShapedPlacementObjective extends PlacementObjective {
     protected int check(ArrayList<PlayableCard> playArea) {
         int count = 0;
         ArrayList<ArrayList<PlayableCard>> allInlineCouples = new ArrayList<>();
-        for (PlayableCard baseCard : playArea) {
-            if (baseCard.getKingdom() != null && !baseCard.getKingdom().equals(getPrimaryType())) continue;
+        for (int i = 0; i < playArea.size(); i++) {
+            PlayableCard baseCard = playArea.get(i);
+            if (baseCard.getKingdom() == null || !baseCard.getKingdom().equals(getPrimaryType())) continue;
 
             ArrayList<PlayableCard> inlineCouple = new ArrayList<>();
             inlineCouple.add(baseCard);
             boolean validCorner = false;
             boolean validInline = false;
-            for (PlayableCard c : playArea) {
+            for (int j = 0; j < playArea.size(); j++) {
+                PlayableCard c = playArea.get(j);
                 if (c.getX() == baseCard.getX() + positionCornerCard.getXOffset() && c.getY() == baseCard.getY() + positionCornerCard.getYOffset() && null != c.getKingdom() && c.getKingdom().equals(secondaryType)) {
                     validCorner = true;
                     break;
                 }
             }
-            for (PlayableCard c : playArea) {
-                if (c.getX() == baseCard.getX() + positionCornerCard.getInlineOffset() && c.getY() == baseCard.getY() + positionCornerCard.getInlineOffset() && null != c.getKingdom() && c.getKingdom().equals(secondaryType)) {
+            for (int j = 0; j < playArea.size(); j++) {
+                PlayableCard c = playArea.get(j);
+                //System.out.println(c.getX()+" "+c.getY()+" "+c.getKingdom());
+                if (c.getX() == baseCard.getX() + positionCornerCard.getInlineOffset() && c.getY() == baseCard.getY() + positionCornerCard.getInlineOffset() && null != c.getKingdom() && c.getKingdom().equals(primaryType)) {
                     validInline = true;
                     inlineCouple.add(c);
                     break;
@@ -66,8 +70,8 @@ public class LShapedPlacementObjective extends PlacementObjective {
         }
         int overlaps = countOverlap(allInlineCouples);
         if (count != 0 && overlaps != 0) {
-            return count / Math.ceilDiv(overlaps, 2);
-        } else return 0;
+            return count - Math.ceilDiv(overlaps, 2);
+        } else return count;
     }
 
     /**

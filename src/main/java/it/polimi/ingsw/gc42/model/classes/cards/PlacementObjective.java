@@ -8,7 +8,7 @@ package it.polimi.ingsw.gc42.model.classes.cards;
  */
 public abstract class PlacementObjective extends Objective {
     // Attributes
-    private KingdomResource primaryType;
+    protected KingdomResource primaryType;
 
     // Constructor Method
     /**
