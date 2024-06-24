@@ -794,7 +794,7 @@ public class GUIController implements ViewController {
             if (controller.getPlayerTurn() == playerID) {
                 table.setCanPlayCards(true);
                 InnerShadow glow = new InnerShadow();
-                glow.setBlurType(BlurType.GAUSSIAN);
+                glow.setBlurType(BlurType.ONE_PASS_BOX);
                 glow.setColor(Color.GOLD);
                 glow.setWidth(200);
                 glow.setHeight(200);

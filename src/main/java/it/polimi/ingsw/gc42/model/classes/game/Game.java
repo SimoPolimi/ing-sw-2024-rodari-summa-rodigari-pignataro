@@ -55,7 +55,6 @@ public class Game implements Observable, Serializable {
                 checkEndGame();
             }
         });
-        this.playerTurn = 1;
     }
 
     private void checkEndGame() {
@@ -276,8 +275,6 @@ public class Game implements Observable, Serializable {
         setResourcePlayingDeck(new PlayingDeck(resourceCardDeck.draw(), resourceCardDeck.draw(), resourceCardDeck));
         setGoldPlayingDeck(new PlayingDeck(goldCardDeck.draw(), goldCardDeck.draw(), goldCardDeck));
         setObjectivePlayingDeck(new PlayingDeck(objectiveCardDeck.draw(), objectiveCardDeck.draw(), objectiveCardDeck));
-
-        this.playerTurn = 1;
     }
 
     /**

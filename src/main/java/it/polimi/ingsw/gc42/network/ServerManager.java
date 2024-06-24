@@ -46,14 +46,20 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
      * Each HashMap contains the data of a single Game, and they are all contained in an ArrayList of
      * HashMaps, so that one HashMap for every Game can be found.
      * The data can be retrieved using the following Keys:
+     *
      * - Name: the Game's name
+     *
      * - NumberOfPlayers: the number of Players already inside it
+     *
      * - Status: a String representation of the Game's GameStatus
+     *
      * - NumberOfDisconnectedPlayers: the number of Players in the Game but disconnected,
      * used to iterate through the next elements
+     *
      * - DisconnectedPlayerX: the Disconnected Players' Nickname, so that the Client can determine if the User
      * can re-join this Game or not. NOTE: There are multiple of them, starting from DisconnectedPlayer0 all the way to
      * DisconnectedPlayerN, where N = NumberOfDisconnectedPlayers - 1.
+     *
      * @return the List of Games
      * @throws RemoteException in case of a Network Communication Error
      */

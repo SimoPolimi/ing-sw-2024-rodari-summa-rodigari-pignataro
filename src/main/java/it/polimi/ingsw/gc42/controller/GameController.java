@@ -387,52 +387,69 @@ public class GameController implements Serializable, Observable {
      * Sets the status of the Game to "COUNTING_POINTS" to count the points of every Player.
      */
     public void nextTurn() {
-        int turn = game.getPlayerTurn();
-        if(getPlayer(turn).isFirst()) {
-            if(currentStatus.equals(GameStatus.SEMI_LAST_TURN)){
-                setCurrentStatus(GameStatus.LAST_TURN);
-                game.getChat().sendMessage(new ChatMessage("This is the last turn, good luck!", "Server"));
-                for (RemoteViewController view: views) {
+        if (game.getPlayerTurn() == 0) {
+            game.setPlayerTurn(1);
+            for (RemoteViewController view : views) {
+                if (!unusedViews.contains(view)) {
+                    Thread thread = new Thread(() -> {
+                        try {
+                            view.notifyTurnChanged();
+                        } catch (RemoteException e) {
+                            // Disconnect Player
+                            disconnectPlayer(viewOwners.get(view));
+                        }
+                    });
+                    thread.start();
+                }
+            }
+        } else {
+            int turn = game.getPlayerTurn();
+            if (getPlayer(turn).isFirst()) {
+                if (currentStatus.equals(GameStatus.SEMI_LAST_TURN)) {
+                    setCurrentStatus(GameStatus.LAST_TURN);
+                    game.getChat().sendMessage(new ChatMessage("This is the last turn, good luck!", "Server"));
+                    for (RemoteViewController view : views) {
+                        if (!unusedViews.contains(view)) {
+                            Thread thread = new Thread(() -> {
+                                try {
+                                    view.notifyLastTurn();
+                                } catch (RemoteException e) {
+                                    // Disconnect Player
+                                    disconnectPlayer(viewOwners.get(view));
+                                }
+                            });
+                            thread.start();
+                        }
+                    }
+                } else if (currentStatus.equals(GameStatus.LAST_TURN)) {
+                    game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
+                    setCurrentStatus(GameStatus.COUNTING_POINTS);
+                    nextStatus();
+                }
+            }
+
+            if (turn == game.getNumberOfPlayers()) {
+                turn = 1;
+            } else {
+                turn++;
+            }
+            if (game.getPlayer(turn).isDisconnected()) {
+                game.setPlayerTurn(turn);
+                nextTurn();
+            } else {
+                game.setPlayerTurn(turn);
+                for (RemoteViewController view : views) {
                     if (!unusedViews.contains(view)) {
                         Thread thread = new Thread(() -> {
                             try {
-                                view.notifyLastTurn();
-                            } catch (IOException e) {
+                                view.notifyTurnChanged();
+                            } catch (RemoteException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
                         });
                         thread.start();
                     }
-                }
-            }else if (currentStatus.equals(GameStatus.LAST_TURN)){
-                game.getChat().sendMessage(new ChatMessage("Game's over, let's see who is the winner!", "Server"));
-                setCurrentStatus(GameStatus.COUNTING_POINTS);
-                nextStatus();
-            }
-        }
-
-        if (turn == game.getNumberOfPlayers()) {
-            turn = 1;
-        } else {
-            turn++;
-        }
-        if (game.getPlayer(turn).isDisconnected()) {
-            game.setPlayerTurn(turn);
-            nextTurn();
-        } else {
-            game.setPlayerTurn(turn);
-            for (RemoteViewController view : views) {
-                if (!unusedViews.contains(view)) {
-                    Thread thread = new Thread(() -> {
-                        try {
-                            view.notifyTurnChanged();
-                        } catch (IOException e) {
-                            // Disconnect Player
-                            disconnectPlayer(viewOwners.get(view));
-                        }
-                    });
-                    thread.start();
                 }
             }
         }
