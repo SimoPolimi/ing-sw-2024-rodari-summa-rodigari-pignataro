@@ -11,7 +11,7 @@ public class LauncherTUI extends Application {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Codex Naturalis!");
-        boolean exit = true;
+        boolean exit;
         do {
             exit = true;
             System.out.println("Please choose one of the following options:");
@@ -35,9 +35,6 @@ public class LauncherTUI extends Application {
             }
         } while (!exit);
         System.exit(0);
-
-
-        launch(args);
     }
 
     @Override

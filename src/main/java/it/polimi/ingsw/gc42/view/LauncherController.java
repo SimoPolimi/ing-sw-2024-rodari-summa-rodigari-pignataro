@@ -132,9 +132,8 @@ public class LauncherController {
      * Handles the Keyboard's LEFT Key input event.
      * It moves the focus from the currently selected Mode to the previous one.
      * If no mode is selected, or if the first one (GUI) is, it selects the last one (TUI).
-     * @throws Exception
      */
-    public void moveLeft() throws Exception {
+    public void moveLeft() {
         if (selectedMode == 1) {
             selectedMode = 2;
         } else if (selectedMode == 0){
@@ -149,9 +148,8 @@ public class LauncherController {
      * Handles the Keyboard's RIGHT Key input event.
      * It moves the focus from the currently selected Mode to the next one.
      * If no mode is selected, or if the last one (TUI) is, it selects the first one (GUI).
-     * @throws Exception
      */
-    public void moveRight() throws Exception {
+    public void moveRight() {
         if (selectedMode == 2) {
             selectedMode = 1;
         } else {
@@ -182,9 +180,7 @@ public class LauncherController {
      */
     private void updateView() {
         switch (selectedMode) {
-            case 0 -> {
-                deselectAllModes();
-            }
+            case 0 -> deselectAllModes();
             case 1 -> {
                 hoverOnGuiMode();
                 hoverOutOfTuiMode();

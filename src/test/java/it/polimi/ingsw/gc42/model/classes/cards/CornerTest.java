@@ -53,9 +53,6 @@ class CornerTest {
         // Places 4 Cards in the nearby positions, so they cover the StarterCard's corners.
         PlayableCard card2 = (PlayableCard) game.getResourcePlayingDeck().getDeck().draw();
         try {
-            /*player.drawCard(game.getResourcePlayingDeck());
-            player.drawCard(game.getResourcePlayingDeck());
-            player.drawCard(game.getResourcePlayingDeck());*/
 
 
             player.setHandCard(0, card2);

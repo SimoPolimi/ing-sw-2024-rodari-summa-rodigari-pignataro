@@ -91,7 +91,7 @@ public class GamesListViewController {
                 if (number != 0) {
                     boolean exit = false;
                     for (int j = 0; j < number && !exit; j++) {
-                        if (availableGames.get(i).get("DisconnectedPlayer" + String.valueOf(j)).equals(player.getNickname())) {
+                        if (availableGames.get(i).get("DisconnectedPlayer" + j).equals(player.getNickname())) {
                             Pane newListItem = getNewListItem(availableGames.get(i).get("Name"), availableGames
                                     .get(i).get("NumberOfPlayers"), availableGames.get(i).get("Status"),i, true, server.getIndexOfPlayer(player.getNickname()));
                             content.getChildren().add(newListItem);
@@ -250,9 +250,9 @@ public class GamesListViewController {
     /**
      * Notifies all the appropriate Listener inside the List that the User has performed an action.
      * Which Listeners are called changes based on the action.
-     * Currently supports:
+     * Currently, supports:
      * - NewGameListener: notified if the User chooses to create a New Game
-     * - ExistingGameListener: notified if the User chosoe to join an existing Game.
+     * - ExistingGameListener: notified if the User choose to join an existing Game.
      * @param context a string specifying which event has been triggered
      */
     public void notifyListeners(String context) {

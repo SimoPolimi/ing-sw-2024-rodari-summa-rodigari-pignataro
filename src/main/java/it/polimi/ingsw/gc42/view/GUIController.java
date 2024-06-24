@@ -43,7 +43,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GUIController implements ViewController {
     // Imports from the GUI

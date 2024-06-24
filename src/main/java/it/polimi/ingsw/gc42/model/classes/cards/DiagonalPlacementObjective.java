@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc42.model.classes.cards;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Model implementation of a specific type of Condition/Objective, that requires the Cards to be placed
@@ -11,7 +9,7 @@ import java.util.Map;
  */
 public class DiagonalPlacementObjective extends PlacementObjective {
     // Attributes
-    private boolean isLeftToRight;
+    private final boolean isLeftToRight;
 
     // Constructor Method
 
@@ -29,24 +27,6 @@ public class DiagonalPlacementObjective extends PlacementObjective {
     }
 
     // Getters and Setters
-
-    /**
-     * Getter Method for isLeftToRight
-     * @return a boolean indicating if the placement is Top Left to Bottom Right (\) if true, or
-     *                     Top Right to Bottom Left (/) if false.
-     */
-    public boolean isLeftToRight() {
-        return isLeftToRight;
-    }
-
-    /**
-     * Setter Method for isLeftToRight
-     * @param leftToRight: a boolean indicating if the placement is Top Left to Bottom Right (\) if true, or
-     *                   Top Right to Bottom Left (/) if false.
-     */
-    public void setLeftToRight(boolean leftToRight) {
-        isLeftToRight = leftToRight;
-    }
 
     // Methods
 

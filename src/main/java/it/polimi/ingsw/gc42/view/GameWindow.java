@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -75,7 +74,7 @@ public class GameWindow extends Application {
 
     /**
      * Launches the Application
-     * @param args
+     * @param args needed to run
      */
     public static void main(String[] args) {
         launch(args);
@@ -179,8 +178,6 @@ public class GameWindow extends Application {
         NetworkController gameController = loginController.getNetworkController();
         stage.setScene(scene);
         stage.setResizable(true);
-        //stage.setMinHeight(670);
-        //stage.setMinWidth(800);
         stage.centerOnScreen();
         stage.setMaximized(true);
         stage.setMinHeight(stage.getHeight());
@@ -203,24 +200,12 @@ public class GameWindow extends Application {
                         }
                         controller.onFKeyPressed();
                     }
-                    case DOWN -> {
-                        controller.moveDown();
-                    }
-                    case UP -> {
-                        controller.moveUp();
-                    }
-                    case E -> {
-                        controller.toggleHand();
-                    }
-                    case O -> {
-                        controller.flipObjective();
-                    }
-                    case LEFT -> {
-                        controller.moveLeft();
-                    }
-                    case RIGHT -> {
-                        controller.moveRight();
-                    }
+                    case DOWN -> controller.moveDown();
+                    case UP -> controller.moveUp();
+                    case E -> controller.toggleHand();
+                    case O -> controller.flipObjective();
+                    case LEFT -> controller.moveLeft();
+                    case RIGHT -> controller.moveRight();
                     case ENTER -> {
                         if (controller.isShowingDialog()) {
                             controller.onDialogKeyboardPressed("ENTER");
@@ -228,15 +213,9 @@ public class GameWindow extends Application {
                             controller.onEnterPressed();
                         }
                     }
-                    case T -> {
-                        controller.toggleCommonTable();
-                    }
-                    case M -> {
-                        controller.toggleGlobalMap();
-                    }
-                    case C -> {
-                        controller.toggleChat();
-                    }
+                    case T -> controller.toggleCommonTable();
+                    case M -> controller.toggleGlobalMap();
+                    case C -> controller.toggleChat();
                 }
             }
             scene.setOnKeyReleased(e1 -> {

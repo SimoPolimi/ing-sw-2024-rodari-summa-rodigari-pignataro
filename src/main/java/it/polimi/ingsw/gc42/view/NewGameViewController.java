@@ -71,9 +71,8 @@ public class NewGameViewController implements Observable, ViewController {
      * Setter Method for the NetworkController
      * @param controller the NetworkController used for communications
      * @param gameID the gameID associated to the newly created Game
-     * @throws RemoteException if there is a connection error
      */
-    public void setServer(NetworkController controller, int gameID) throws RemoteException {
+    public void setServer(NetworkController controller, int gameID) {
         this.controller = controller;
         this.gameID = gameID;
         gameNameTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
@@ -105,7 +104,7 @@ public class NewGameViewController implements Observable, ViewController {
             controller.setViewController( new ClientController(this));
             controller.addPlayer(player);
             refresh();
-        } catch (RemoteException e) {
+        } catch (RemoteException ignored) {
 
         } catch (AlreadyBoundException e) {
             throw new RuntimeException(e);

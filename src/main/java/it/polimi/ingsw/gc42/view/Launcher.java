@@ -59,9 +59,7 @@ public class Launcher extends Application {
                         throw new RuntimeException(ex);
                     }
                 }
-                case ESCAPE -> {
-                    controller.exit();
-                }
+                case ESCAPE -> controller.exit();
             }
         });
 

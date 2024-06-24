@@ -2,19 +2,14 @@ package it.polimi.ingsw.gc42.controller;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalActionException;
 import it.polimi.ingsw.gc42.model.exceptions.IllegalPlacementException;
 import it.polimi.ingsw.gc42.model.exceptions.PlacementConditionNotMetException;
 import it.polimi.ingsw.gc42.model.interfaces.*;
-import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
-import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
-import it.polimi.ingsw.gc42.view.NewGameViewController;
-import javafx.event.ActionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
@@ -115,7 +110,7 @@ class GameControllerTest {
         Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
-        Card topCard = null;
+        Card topCard;
 
         // This way only player (bot1) draws
         try{
