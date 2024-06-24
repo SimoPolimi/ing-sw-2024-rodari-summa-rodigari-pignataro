@@ -14,6 +14,7 @@ import it.polimi.ingsw.gc42.view.Interfaces.DeckViewListener;
 import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyDeckChanged(CardType.RESOURCECARD);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -136,7 +137,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyDeckChanged(CardType.GOLDCARD);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -154,7 +155,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifySlotCardChanged(CardType.RESOURCECARD, 1);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -172,7 +173,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifySlotCardChanged(CardType.RESOURCECARD, 2);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -190,7 +191,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifySlotCardChanged(CardType.GOLDCARD, 1);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -208,7 +209,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifySlotCardChanged(CardType.GOLDCARD, 2);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -226,7 +227,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyCommonObjectivesChanged();
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -245,7 +246,7 @@ public class GameController implements Serializable, Observable {
                             try {
                                 ChatMessage message = game.getChat().getLastChatMessage();
                                 view.notifyNewMessage(message);
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -283,7 +284,7 @@ public class GameController implements Serializable, Observable {
                     Thread thread = new Thread(() -> {
                         try {
                             view.notifyPlayersHandChanged(game.getIndexOfPlayer(player.getNickname()));
-                        } catch (RemoteException e) {
+                        } catch (IOException e) {
                             // Disconnect Player
                             disconnectPlayer(viewOwners.get(view));
                         }
@@ -301,7 +302,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyPlayersObjectiveChanged(game.getIndexOfPlayer(player.getNickname()));
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -319,7 +320,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyPlayersTokenChanged(game.getIndexOfPlayer(player.getNickname()));
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -337,7 +338,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyPlayersPointsChanged(player.getToken(), player.getPoints());
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -355,7 +356,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyPlayersPlayAreaChanged(game.getIndexOfPlayer(player.getNickname()));
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -396,7 +397,7 @@ public class GameController implements Serializable, Observable {
                         Thread thread = new Thread(() -> {
                             try {
                                 view.notifyLastTurn();
-                            } catch (RemoteException e) {
+                            } catch (IOException e) {
                                 // Disconnect Player
                                 disconnectPlayer(viewOwners.get(view));
                             }
@@ -426,7 +427,7 @@ public class GameController implements Serializable, Observable {
                     Thread thread = new Thread(() -> {
                         try {
                             view.notifyTurnChanged();
-                        } catch (RemoteException e) {
+                        } catch (IOException e) {
                             // Disconnect Player
                             disconnectPlayer(viewOwners.get(view));
                         }
@@ -471,7 +472,7 @@ public class GameController implements Serializable, Observable {
         } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
             // TODO: Handle exception
             e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -488,7 +489,7 @@ public class GameController implements Serializable, Observable {
             if (!unusedViews.contains(view)) {
                 try {
                     view.notifyHandCardWasFlipped(playerID, cardID);
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     // Disconnect Player
                     disconnectPlayer(viewOwners.get(view));
                 }
@@ -563,7 +564,7 @@ public class GameController implements Serializable, Observable {
             if (!unusedViews.contains(view)) {
                 try {
                     view.showSecretObjectivesSelectionDialog();
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     disconnectPlayer(viewOwners.get(view));
                 }
             }
@@ -581,7 +582,7 @@ public class GameController implements Serializable, Observable {
             if (!unusedViews.contains(view)) {
                 try {
                     view.showStarterCardSelectionDialog();
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     disconnectPlayer(viewOwners.get(view));
                 }
             }
@@ -596,7 +597,7 @@ public class GameController implements Serializable, Observable {
             if (!unusedViews.contains(view)) {
                 try {
                     view.showTokenSelectionDialog();
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     disconnectPlayer(viewOwners.get(view));
                 }
             }
@@ -622,7 +623,7 @@ public class GameController implements Serializable, Observable {
                     views.remove(v);
                     unusedViews.add(v);
                 }
-            } catch (RemoteException e) {
+            } catch (IOException e) {
                 // Ignore
             }
         }
@@ -633,7 +634,7 @@ public class GameController implements Serializable, Observable {
         // Removes the old mapping (if present) and adds the new one
         try {
             viewOwners.put(view, view.getOwner());
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -669,7 +670,7 @@ public class GameController implements Serializable, Observable {
             if (!unusedViews.contains(view)) {
                 try {
                     view.getReady(getGame().getNumberOfPlayers());
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     disconnectPlayer(viewOwners.get(view));
                 }
             }
@@ -782,7 +783,7 @@ public class GameController implements Serializable, Observable {
                     if (!unusedViews.contains(view)) {
                     try {
                         view.notifyEndGame(points);
-                    } catch (RemoteException e) {
+                    } catch (IOException e) {
                         // Disconnect Player
                         disconnectPlayer(viewOwners.get(view));
                     }
@@ -845,7 +846,7 @@ public class GameController implements Serializable, Observable {
                     if (!unusedViews.contains(v)) {
                         try {
                             v.notifyNumberOfPlayersChanged();
-                        } catch (RemoteException e) {
+                        } catch (IOException e) {
                             // Disconnect Player
                             disconnectPlayer(viewOwners.get(v));
                         }
