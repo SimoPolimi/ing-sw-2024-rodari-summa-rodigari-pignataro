@@ -69,14 +69,6 @@ public abstract class PlayableCard extends Card {
     }
 
     /**
-     * Setter method for earnedPoints
-     * @param earnedPoints: the number of points earned by the player when placing the Card
-     */
-    public void setEarnedPoints(int earnedPoints) {
-        this.earnedPoints = earnedPoints;
-    }
-
-    /**
      * Getter Method for coordinates
      * @return a Coordinate Object containing both the x and y values
      */
@@ -116,15 +108,6 @@ public abstract class PlayableCard extends Card {
     }
 
     /**
-     * Setter Method for frontSide
-     *
-     * @param frontSide: group of Corners that make the front Side of the card
-     */
-    public void setFrontSide(CardSide frontSide) {
-        this.frontSide = frontSide;
-    }
-
-    /**
      * Getter Method for backSide
      *
      * @return backSide: Side shown on the back of the Card
@@ -133,14 +116,6 @@ public abstract class PlayableCard extends Card {
         return backSide;
     }
 
-    /**
-     * Setter Method for backSide
-     *
-     * @param backSide: group of Corners that make the back Side of the card
-     */
-    public void setBackSide(CardSide backSide) {
-        this.backSide = backSide;
-    }
 
     /**
      * Getter method for x

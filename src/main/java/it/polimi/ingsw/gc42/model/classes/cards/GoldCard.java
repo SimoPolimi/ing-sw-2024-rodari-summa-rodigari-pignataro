@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class GoldCard extends PlayableCard{
     // Attributes
     private final HashMap<Item, Integer> costs = new HashMap<>();
-    private Objective objective;
+    private final Objective objective;
 
     // Constructor Methods
     /**
@@ -103,14 +103,6 @@ public class GoldCard extends PlayableCard{
      */
     public Objective getObjective() {
         return objective;
-    }
-
-    /**
-     * Setter Method for objective
-     * @param objective: reference to the Objective used for the earned points calculation (null if none)
-     */
-    public void setObjective(Objective objective) {
-        this.objective = objective;
     }
 
     // Methods
