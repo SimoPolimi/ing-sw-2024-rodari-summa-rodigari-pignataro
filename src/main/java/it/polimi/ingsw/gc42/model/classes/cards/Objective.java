@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public abstract class Objective implements Serializable {
     // Attributes
-    private int points;
-    private String name;
-    private String description;
+    private final int points;
+    private final String name;
+    private final String description;
 
     // Constructor Method
     /**
@@ -36,14 +36,6 @@ public abstract class Objective implements Serializable {
     }
 
     /**
-     * Setter Method for points.
-     * @param points: the number of points the Objective gives every time the Condition is met.
-     */
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    /**
      * Getter Method for name.
      * @return a String containing the name of the Objective, used to display it in the GUI.
      */
@@ -52,27 +44,11 @@ public abstract class Objective implements Serializable {
     }
 
     /**
-     * Setter Method for name.
-     * @param name: a String containing the name of the Objective, used to display it in the GUI.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Getter Method for description.
      * @return a String containing the description of the Objective, used to display it in the GUI.
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * Setter Method for description.
-     * @param description: a String containing the description of the Objective, used to display it in the GUI.
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     // Methods
