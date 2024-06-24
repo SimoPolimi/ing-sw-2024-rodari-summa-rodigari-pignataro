@@ -121,6 +121,8 @@ class GameControllerTest {
         }
         topCard = controller.getGame().getResourcePlayingDeck().getDeck().getTopCard();
         // when
+        controller.getGame().setPlayerTurn(1);
+
         controller.drawCard(controller.getGame().getCurrentPlayer(), controller.getGame().getResourcePlayingDeck());
 
         // then
@@ -184,6 +186,7 @@ class GameControllerTest {
         player.setStarterCard();
         player.drawStartingHand(controller.getGame().getResourcePlayingDeck(), controller.getGame().getGoldPlayingDeck());
         Card cardToBePlayed = player.getHandCard(0);
+        controller.getGame().setPlayerTurn(1);
 
         // when
         controller.playCard(controller.getGame().getIndexOfPlayer("bot"), 1, 0, 1);
@@ -214,6 +217,7 @@ class GameControllerTest {
         controller.getGame().getGoldPlayingDeck().setSlot(null, 1);
         controller.getGame().getGoldPlayingDeck().setSlot(null, 2);
 
+        controller.getGame().setPlayerTurn(1);
         // when
         controller.playCard(controller.getGame().getIndexOfPlayer("bot"), 1, 0, 1);
 
@@ -319,6 +323,9 @@ class GameControllerTest {
         controller.addPlayer(player);
         controller.addPlayer(player2);
 
+        controller.getGame().setPlayerTurn(1);
+
+
         // This way only player (bot1) draws
         try{
             player.drawCard(controller.getGame().getResourcePlayingDeck());
@@ -357,6 +364,8 @@ class GameControllerTest {
         }
         Player player = new Player("bot");
         controller.getGame().addPlayer(player);
+        controller.getGame().setPlayerTurn(1);
+
 
         // when
         controller.grabCard(player, controller.getGame().getResourcePlayingDeck(), 1);
@@ -378,6 +387,7 @@ class GameControllerTest {
         }
         Player player = new Player("bot");
         controller.getGame().addPlayer(player);
+        controller.getGame().setPlayerTurn(1);
 
         // when
         controller.grabCard(player, controller.getGame().getGoldPlayingDeck(), 1);
@@ -403,6 +413,8 @@ class GameControllerTest {
 
         // when
         // LAST_TURN
+        controller.getGame().setPlayerTurn(1);
+
         try{
             for (int i = 0; i < 2; i++) {
                 player.drawCard(controller.getGame().getResourcePlayingDeck());
