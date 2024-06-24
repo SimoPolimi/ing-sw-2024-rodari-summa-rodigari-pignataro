@@ -23,7 +23,7 @@ public class ServerTUI extends Application {
 
     /**
      * Launches the Server
-     * @param args
+     * @param args needed to run
      */
     public static void main(String[] args) {
         launch(args);
@@ -35,17 +35,17 @@ public class ServerTUI extends Application {
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
-     * @throws Exception
+     * @throws RemoteException in case of network communication error
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws RemoteException {
         System.out.println("Codex Naturalis - Server");
         enterLoop();
     }
 
     /**
      * Executes the loop
-     * @throws RemoteException
+     * @throws RemoteException in case of network communication error
      */
     private void enterLoop() throws RemoteException {
         Scanner scanner = new Scanner(System.in);
@@ -93,18 +93,13 @@ public class ServerTUI extends Application {
         rmiController.setCollection(collection);
         socketController.setCollection(collection);
 
-        AtomicBoolean isRmiReady = new AtomicBoolean(false);
-        AtomicBoolean isSocketReady = new AtomicBoolean(false);
-
         rmiController.setWhenReady(() -> {
             System.out.println("RMI Ready!");
             System.out.println("IP Address: " + rmiController.getIpAddress());
-            isRmiReady.set(true);
         });
         socketController.setWhenReady(() -> {
             System.out.println("Socket Ready!");
             System.out.println("IP Address: " + socketController.getIpAddress());
-            isSocketReady.set(true);
         });
 
         try {

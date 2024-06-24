@@ -30,7 +30,7 @@ class GameControllerTest {
     void generalTesting() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
         // New view empty just to test listeners
         controller.addView(new RemoteViewController() {
             @Override
@@ -110,9 +110,9 @@ class GameControllerTest {
     void drawCard() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
         // Other player to test the change of turn
-        Player player2 = new Player("bot2", false, 0, null, null, controller.getGame());
+        Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
         Card topCard = null;
@@ -249,8 +249,8 @@ class GameControllerTest {
     void drawStartingHand() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
-        Player player2 = new Player("bot2", false, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
+        Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
 
@@ -280,8 +280,8 @@ class GameControllerTest {
     void drawSecretObjectives() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
-        Player player2 = new Player("bot2", false, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
+        Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
 
@@ -299,8 +299,8 @@ class GameControllerTest {
     void beginStarterCardChoosing() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
-        Player player2 = new Player("bot2", false, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
+        Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
 
@@ -318,9 +318,9 @@ class GameControllerTest {
     void grabCard() throws RemoteException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
         // Other player to test the change of turn
-        Player player2 = new Player("bot2", false, 0, null, null, controller.getGame());
+        Player player2 = new Player("bot2", false, 0, null, null);
         controller.addPlayer(player);
         controller.addPlayer(player2);
 
@@ -451,7 +451,7 @@ class GameControllerTest {
     void listenerTest() throws RemoteException, IllegalActionException {
         // given
         GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null, controller.getGame());
+        Player player = new Player("bot1", true, 0, null, null);
         controller.addPlayer(player);
         // New view empty just to test listeners
         controller.addView(new RemoteViewController() {

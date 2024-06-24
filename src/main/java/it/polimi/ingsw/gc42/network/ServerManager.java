@@ -96,7 +96,7 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
             gameInfo.put("NumberOfDisconnectedPlayers", String.valueOf(number));
 
             for (int j = 0; j < disconnectedPlayers.size(); j++) {
-                gameInfo.put("DisconnectedPlayer" + String.valueOf(j), disconnectedPlayers.get(j));
+                gameInfo.put("DisconnectedPlayer" + j, disconnectedPlayers.get(j));
             }
 
             availableGames.add(gameInfo);
@@ -220,15 +220,9 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
             try {
 
                 switch (type) {
-                    case RESOURCECARD -> {
-                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck());
-                    }
-                    case GOLDCARD -> {
-                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck());
-                    }
-                    case OBJECTIVECARD -> {
-                        collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck());
-                    }
+                    case RESOURCECARD -> collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck());
+                    case GOLDCARD -> collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck());
+                    case OBJECTIVECARD -> collection.get(gameID).drawCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck());
                 }
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -250,15 +244,9 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
         Thread thread = new Thread(() -> {
             try {
                 switch (type) {
-                    case RESOURCECARD -> {
-                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
-                    }
-                    case GOLDCARD -> {
-                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
-                    }
-                    case OBJECTIVECARD -> {
-                        collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
-                    }
+                    case RESOURCECARD -> collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getResourcePlayingDeck(), slot);
+                    case GOLDCARD -> collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getGoldPlayingDeck(), slot);
+                    case OBJECTIVECARD -> collection.get(gameID).grabCard(collection.get(gameID).getPlayer(playerID), collection.get(gameID).getGame().getObjectivePlayingDeck(), slot);
                 }
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -554,15 +542,9 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     public Card getSlotCard(int gameID, CardType type, int slot) throws RemoteException {
         Card card = null;
         switch (type) {
-            case RESOURCECARD -> {
-                card = collection.get(gameID).getGame().getResourcePlayingDeck().getSlot(slot);
-            }
-            case GOLDCARD -> {
-                card = collection.get(gameID).getGame().getGoldPlayingDeck().getSlot(slot);
-            }
-            case OBJECTIVECARD -> {
-                card = collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
-            }
+            case RESOURCECARD -> card = collection.get(gameID).getGame().getResourcePlayingDeck().getSlot(slot);
+            case GOLDCARD -> card = collection.get(gameID).getGame().getGoldPlayingDeck().getSlot(slot);
+            case OBJECTIVECARD -> card = collection.get(gameID).getGame().getObjectivePlayingDeck().getSlot(slot);
         }
         return card;
     }

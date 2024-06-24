@@ -15,11 +15,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
@@ -28,14 +26,13 @@ import java.util.concurrent.*;
 public class SocketControllerServer implements ServerNetworkController, Serializable {
     private ServerSocket serverSocket;
     private String ipAddress;
-    private int port = 23690;
+    private final int port = 23690;
     private Runnable onReady;
     private GameCollection games;
     private ServerManager server;
     final private HashMap<Socket, BlockingDeque<Message>> messagesQueue = new HashMap<>();
-    private HashMap<Socket, ObjectInputStream> inMap = new HashMap<>();
-    private HashMap<Socket, ObjectOutputStream> outMap = new HashMap<>();
-    private HashMap<Socket, KeepAliveTimer> aliveSockets = new HashMap<>();
+    private final HashMap<Socket, ObjectInputStream> inMap = new HashMap<>();
+    private final HashMap<Socket, ObjectOutputStream> outMap = new HashMap<>();
 
     /**
      * Listens on a Socket and translates the Received Message into the corresponding action
@@ -291,9 +288,6 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                             sendMessage(socket, new ChatMessageMessage(MessageType.NOTIFY_NEW_MESSAGE, message));
                         }
                     });
-                case CLIENT_STATE:
-                    aliveSockets.get(socket).setAlive(ClientState.ALIVE);
-                    break;
                 default:
                     //  No action
                     break;
@@ -334,7 +328,6 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
     /**
      * Starts the Server
      * @throws IOException if the file can't be found
-     * @throws AlreadyBoundException if there is already a Server opened on that IP and Port
      */
     @Override
     public void start() throws IOException {
@@ -366,9 +359,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                             inMap.put(socket, new ObjectInputStream(socket.getInputStream()));
                             outMap.put(socket, new ObjectOutputStream(socket.getOutputStream()));
                             outMap.get(socket).flush();
-                            aliveSockets.put(socket, new KeepAliveTimer());
                             ScheduledExecutorService checkAlive = Executors.newSingleThreadScheduledExecutor();
-                            checkAlive.scheduleAtFixedRate(aliveSockets.get(socket), 5, 1, TimeUnit.SECONDS);
                             while (true) {
                                 Message message = (Message) inMap.get(socket).readObject();
                                 // By creating a thread it is possible to receive and translate a new message

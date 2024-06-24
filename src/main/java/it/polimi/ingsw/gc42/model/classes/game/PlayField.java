@@ -8,9 +8,7 @@ import it.polimi.ingsw.gc42.model.interfaces.Observable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Implement PlayField
@@ -46,11 +44,10 @@ public class PlayField implements Observable, Serializable {
 
     /**
      * Getter method for playedCards
-     * @return the ArrayList that stores the plauer's played Cards
+     * @return the ArrayList that stores the Player's played Cards
      */
     public ArrayList<PlayableCard> getPlayedCards() {
-        ArrayList<PlayableCard> copy = new ArrayList<>(playedCards);
-        return copy;
+        return new ArrayList<>(playedCards);
     }
 
     /**
@@ -164,37 +161,37 @@ public class PlayField implements Observable, Serializable {
      */
     public ArrayList<Coordinates> getAvailablePlacements() {
         ArrayList<Coordinates> placements = new ArrayList<>();
-        ArrayList<Coordinates> illegalPlacementes = new ArrayList<>();
+        ArrayList<Coordinates> illegalPlacements = new ArrayList<>();
         for (PlayableCard card : playedCards) {
             if (null != card.getShowingSide().getTopLeftCorner()
                     && !isThereACardIn(card.getX(), card.getY()+1)) {
                 placements.add(new Coordinates(card.getX(), card.getY() + 1));
             } else {
-                illegalPlacementes.add(new Coordinates(card.getX(), card.getY()+1));
+                illegalPlacements.add(new Coordinates(card.getX(), card.getY()+1));
             }
             if (null != card.getShowingSide().getTopRightCorner()
                     && !isThereACardIn(card.getX()+1, card.getY())) {
                 placements.add(new Coordinates(card.getX()+1, card.getY()));
             } else {
-                illegalPlacementes.add(new Coordinates(card.getX()+1, card.getY()));
+                illegalPlacements.add(new Coordinates(card.getX()+1, card.getY()));
             }
             if (null != card.getShowingSide().getBottomLeftCorner()
                     && !isThereACardIn(card.getX()-1, card.getY())) {
                 placements.add(new Coordinates(card.getX()-1, card.getY()));
             } else {
-                illegalPlacementes.add(new Coordinates(card.getX()-1, card.getY()));
+                illegalPlacements.add(new Coordinates(card.getX()-1, card.getY()));
             }
             if (null != card.getShowingSide().getBottomRightCorner()
                     && !isThereACardIn(card.getX(), card.getY()-1)) {
                 placements.add(new Coordinates(card.getX(), card.getY()-1));
             } else {
-                illegalPlacementes.add(new Coordinates(card.getX(), card.getY()-1));
+                illegalPlacements.add(new Coordinates(card.getX(), card.getY()-1));
             }
         }
         if (placements.isEmpty()) {
             placements.add(new Coordinates(0, 0));
         }
-        return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacementes);
+        return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacements);
     }
 
     // TODO: check param javadoc

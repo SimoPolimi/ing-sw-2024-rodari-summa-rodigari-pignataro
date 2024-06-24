@@ -69,8 +69,6 @@ public enum MessageType {
 
     ADD_VIEW,
 
-    CLIENT_STATE,
-
     DISCONNECT_PLAYER,
     REJOIN_GAME
 

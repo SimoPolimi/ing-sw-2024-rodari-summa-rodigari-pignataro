@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
-import it.polimi.ingsw.gc42.model.interfaces.*;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 
@@ -28,8 +27,8 @@ import java.util.Random;
  */
 public class RmiClient implements NetworkController, Serializable {
     // Attributes
-    private String ipAddress;
-    private int port = 23689;
+    private final String ipAddress;
+    private final int port = 23689;
     private Registry registry;
     private Registry localRegistry;
     private RemoteServer server;
@@ -176,7 +175,7 @@ public class RmiClient implements NetworkController, Serializable {
             id = random.nextInt(100000000);
             int port;
             // Temporarily creates a Socket with port 0 because it gets assigned a random available port
-            ServerSocket serverSocket = null;
+            ServerSocket serverSocket;
             try {
                 serverSocket = new ServerSocket(0);
             } catch (IOException e) {
@@ -205,13 +204,6 @@ public class RmiClient implements NetworkController, Serializable {
      */
     @Override
     public void disconnect() {
-        /*try {
-            registry.unbind(String.valueOf(id));
-            UnicastRemoteObject.unexportObject(viewController, true);
-        } catch (RemoteException | NotBoundException e) {
-            // Don't care
-            e.printStackTrace();
-        }*/
         try {
             server.disconnectPlayer(gameID, playerID);
         } catch (RemoteException e) {
@@ -296,7 +288,6 @@ public class RmiClient implements NetworkController, Serializable {
      * Removes the Player from the Game entirely
      * @param player the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public boolean kickPlayer(Player player) {
@@ -309,7 +300,6 @@ public class RmiClient implements NetworkController, Serializable {
 
     /**
      * Triggers a Turn Change
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public void nextTurn() {
@@ -327,7 +317,6 @@ public class RmiClient implements NetworkController, Serializable {
      * @param handCard the index of the Card inside the Player's Hand [1, 2, 3]
      * @param x the x Coordinate where the Card will be placed
      * @param y the y Coordinate where the Card will be placed
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public void playCard(int handCard, int x, int y) {

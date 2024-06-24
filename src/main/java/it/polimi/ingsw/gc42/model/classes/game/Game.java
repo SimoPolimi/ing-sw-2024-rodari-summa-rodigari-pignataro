@@ -58,11 +58,6 @@ public class Game implements Observable, Serializable {
         this.playerTurn = 1;
     }
 
-    // TODO: remove?
-    public void endGame() {
-        notifyListeners("End Game");
-    }
-
     private void checkEndGame() {
         if ((isResourceDeckEmpty && isGoldDeckEmpty) || playerHasReachedTwentyPoints) {
             notifyListeners("Semi Last Turn");
@@ -213,14 +208,6 @@ public class Game implements Observable, Serializable {
     }
 
     /**
-     * Checks if a Player has reached 20 points
-     * @return {@code true} a Player has reached 20 points
-     */
-    public boolean isPlayerHasReachedTwentyPoints() {
-        return playerHasReachedTwentyPoints;
-    }
-
-    /**
      * Setter Method for the boolean that indicates if a Player has reached 20 points
      * @param playerHasReachedTwentyPoints {@code true} if a Player has reached 20 points, {@code false} if not
      */
@@ -315,11 +302,7 @@ public class Game implements Observable, Serializable {
                 }
             }
             for (int i = 0; i < players.size(); i++) {
-                if (i == max) {
-                    players.get(i).setFirst(true);
-                } else {
-                    players.get(i).setFirst(false);
-                }
+                players.get(i).setFirst(i == max);
             }
         }
     }
@@ -349,7 +332,7 @@ public class Game implements Observable, Serializable {
                 }
                 if (slot == 1) {
                     notifyListeners("Resource 1");
-                } else if (slot == 2) {
+                } else {
                     notifyListeners("Resource 2");
                 }
             } else if (playingDeck.getDeck().getCardType().equals(CardType.GOLDCARD)) {
@@ -368,7 +351,7 @@ public class Game implements Observable, Serializable {
                 }
                 if (slot == 1) {
                     notifyListeners("Gold 1");
-                } else if (slot == 2) {
+                } else {
                     notifyListeners("Gold 2");
                 }
             } else throw new IllegalArgumentException("There is no such Deck in this Game");

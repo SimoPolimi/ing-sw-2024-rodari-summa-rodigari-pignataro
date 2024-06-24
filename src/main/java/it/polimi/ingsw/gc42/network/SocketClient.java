@@ -19,7 +19,6 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
@@ -27,18 +26,17 @@ import java.util.concurrent.*;
  */
 public class SocketClient implements NetworkController {
     // Attributes
-    private String ipAddress;
-    private int port = 23690;
+    private final String ipAddress;
+    private final int port = 23690;
     private int gameID;
     private boolean isConnected = false;
     private int playerID;
     private Player owner;
     private Socket server;
-    private Scanner in;
     private PrintWriter out;
     private ObjectInputStream streamIn;
     private ObjectOutputStream streamOut;
-    private BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
+    private final BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
     private boolean alreadySetRemoteView = false;
     private boolean alive = true;
 
@@ -63,10 +61,6 @@ public class SocketClient implements NetworkController {
         streamOut = new ObjectOutputStream(server.getOutputStream());
         streamOut.flush();
         streamIn = new ObjectInputStream(server.getInputStream());
-        ScheduledExecutorService sendAlive = Executors.newScheduledThreadPool(2);
-        sendAlive.scheduleAtFixedRate(() -> sendMessage(new ClientStateMessage(MessageType.CLIENT_STATE, ClientState.ALIVE)), 0, 500, TimeUnit.MILLISECONDS);
-        // TODO: implement unresponsiveness handling
-        sendAlive.scheduleAtFixedRate(() -> {if (alive) alive = false; else System.out.println("BBBBBB")/*send UNRESPONSIVE*/;}, 10, 5, TimeUnit.SECONDS);
         receiveMessage();
 
     }
@@ -77,15 +71,6 @@ public class SocketClient implements NetworkController {
     @Override
     public void disconnect() {
         sendMessage(new PlayerMessage(MessageType.DISCONNECT_PLAYER, gameID, playerID));
-
-        // TODO: Implement
-        /*in.close();
-        out.close();
-        try {
-            server.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     /**
@@ -148,7 +133,6 @@ public class SocketClient implements NetworkController {
      * Getter Method for the Player's PlayField
      * @param playerID the Player's playerID
      * @return an ArrayList containing all the Cards played by the Player
-     * @throws RemoteException in case of a Network Connection Error
      */
     @Override
     public ArrayList<PlayableCard> getPlayersPlayfield(int playerID) {
@@ -186,7 +170,6 @@ public class SocketClient implements NetworkController {
         }catch (IOException e) {
             e.printStackTrace();
         }
-        if (message.getType() != MessageType.CLIENT_STATE) alive = true;
     }
 
     /**
@@ -219,7 +202,6 @@ public class SocketClient implements NetworkController {
     /**
      * Adds a Player into a Game
      * @param player the Player to add
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public void addPlayer(Player player) {
@@ -233,7 +215,6 @@ public class SocketClient implements NetworkController {
      * Removes the Player from the Game entirely
      * @param player the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public boolean kickPlayer(Player player) {
@@ -243,7 +224,6 @@ public class SocketClient implements NetworkController {
 
     /**
      * Triggers a Turn Change
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public void nextTurn() {
@@ -257,7 +237,6 @@ public class SocketClient implements NetworkController {
      * @param handCard the index of the Card inside the Player's Hand [1, 2, 3]
      * @param x the x Coordinate where the Card will be placed
      * @param y the y Coordinate where the Card will be placed
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
     public void playCard(int handCard, int x, int y) {
@@ -688,10 +667,9 @@ public class SocketClient implements NetworkController {
     /**
      * Sets the Player as NOT DISCONNECTED, allowing it to play again
      * @param playerID the Player's playerID
-     * @throws RemoteException in case of a Network Communication Error
      */
     @Override
-    public void rejoinGame(int playerID) throws RemoteException {
+    public void rejoinGame(int playerID) {
         sendMessage(new PlayerMessage(MessageType.REJOIN_GAME, gameID, playerID));
     }
 }

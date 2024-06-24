@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class LShapedPlacementObjective extends PlacementObjective {
     // Attributes
-    private KingdomResource secondaryType;
-    private LPlacementOffset positionCornerCard;
+    private final KingdomResource secondaryType;
+    private final LPlacementOffset positionCornerCard;
 
     // Constructor Method
     /**
@@ -25,40 +25,6 @@ public class LShapedPlacementObjective extends PlacementObjective {
                                      LPlacementOffset positionCornerCard, String name, String description) {
         super(points,name, description, primaryType);
         this.secondaryType = secondaryType;
-        this.positionCornerCard = positionCornerCard;
-    }
-
-    // Getters and Setters
-
-    /**
-     * Getter Method for secondaryType.
-     * @return the KingdomResource indicating the color of the third Card required for the Objective.
-     */
-    public KingdomResource getSecondaryType() {
-        return secondaryType;
-    }
-
-    /**
-     * Setter Method for secondaryType.
-     * @param secondaryType: the KingdomResource indicating the color of the third Card required for the Objective.
-     */
-    public void setSecondaryType(KingdomResource secondaryType) {
-        this.secondaryType = secondaryType;
-    }
-
-    /**
-     * Getter Method for positionedCornerCard.
-     * @return the CornerPosition indicating where the third Card is positioned.
-     */
-    public LPlacementOffset getPositionCornerCard() {
-        return positionCornerCard;
-    }
-
-    /**
-     * Setter Method for positionedCornerCard.
-     * @param positionCornerCard: the CornerPosition indicating where the third Card is positioned.
-     */
-    public void setPositionCornerCard(LPlacementOffset positionCornerCard) {
         this.positionCornerCard = positionCornerCard;
     }
 

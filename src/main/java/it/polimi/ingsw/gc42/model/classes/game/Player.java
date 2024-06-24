@@ -44,9 +44,8 @@ public class Player implements Observable, Serializable {
      * @param points the points of the Player
      * @param token the token of the Player
      * @param objectiveCard the objectiveCard of the Player
-     * @param game the game in which the Player is in
      */
-    public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard, Game game) {
+    public Player(String nickname, boolean isFirst, int points, Token token, ObjectiveCard objectiveCard) {
         this.nickname = nickname;
         this.isFirst = isFirst;
         this.points = points;
@@ -194,7 +193,7 @@ public class Player implements Observable, Serializable {
     /**
      * Implement method setter for secretObjective
      *
-     * @param objectiveCard The ObjectiveCard to be setted
+     * @param objectiveCard The ObjectiveCard to be set
      */
     public void setSecretObjective(ObjectiveCard objectiveCard) {
         this.secretObjective = objectiveCard;
@@ -318,7 +317,7 @@ public class Player implements Observable, Serializable {
     /**
      * Setter Method for temporaryStarterCard.
      * For tests purposes.
-     * @param starter
+     * @param starter the StarterCard to be set
      */
     public void setTemporaryStarterCard(StarterCard starter) {
         this.temporaryStarterCard = starter;

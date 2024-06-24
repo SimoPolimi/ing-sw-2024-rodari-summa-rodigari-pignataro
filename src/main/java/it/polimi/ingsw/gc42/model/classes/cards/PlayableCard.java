@@ -7,7 +7,7 @@ public abstract class PlayableCard extends Card {
     private CardSide frontSide;
     private CardSide backSide;
     private final Coordinates coordinates = new Coordinates();
-    private KingdomResource kingdom;
+    private final KingdomResource kingdom;
     private final ArrayList<Item> permanentResources = new ArrayList<>();
     private int earnedPoints;
 

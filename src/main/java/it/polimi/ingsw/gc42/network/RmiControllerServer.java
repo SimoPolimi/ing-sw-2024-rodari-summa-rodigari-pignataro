@@ -18,7 +18,7 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class RmiControllerServer implements ServerNetworkController, Serializable {
     private String ipAddress;
-    private int port = 23689;
+    private final int port = 23689;
     private Runnable onReady;
     private Registry registry;
     private ServerManager server;

@@ -71,7 +71,7 @@ public class Server extends Application {
 
     /**
      * Launches the Server
-     * @param args
+     * @param args needed to run
      */
     public static void main(String[] args) {
         launch(args);
@@ -243,7 +243,7 @@ public class Server extends Application {
     }
 
     /**
-     * Refreshes the List of on-going Games
+     * Refreshes the List of ongoing Games
      * @throws RemoteException in case of a Network Communication Error
      */
     @FXML
@@ -256,7 +256,7 @@ public class Server extends Application {
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER);
 
-            String string = "";
+            String string;
             if (isRunning) {
                 string = "No available games: nobody is playing on this server";
             } else {
@@ -323,12 +323,8 @@ public class Server extends Application {
     private String statusToString(GameStatus status) {
         String string = "Unknown";
         switch (status) {
-            case WAITING_FOR_PLAYERS -> {
-                string = "Waiting for players";
-            }
-            case PLAYING -> {
-                string = "Playing";
-            }
+            case WAITING_FOR_PLAYERS -> string = "Waiting for players";
+            case PLAYING -> string = "Playing";
         }
         return string;
     }

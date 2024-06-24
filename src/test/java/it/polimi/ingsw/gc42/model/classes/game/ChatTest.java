@@ -18,12 +18,13 @@ class ChatTest {
         // For coverage
         message.setSender(player.getNickname());
         message.setText("test");
-        message.setDateTime(LocalDateTime.now());
+        LocalDateTime date = LocalDateTime.now();
+        message.setDateTime(date);
         chat.sendMessage(message);
 
         assertEquals(chat.getLastChatMessage().getText(), "test");
         assertEquals(chat.getLastChatMessage().getSender(), player.getNickname());
-        assertEquals(chat.getLastChatMessage().getDateTime(), LocalDateTime.now());
+        assertEquals(chat.getLastChatMessage().getDateTime(), date);
         assertDoesNotThrow(() -> chat.getChatMessage(chat.getChatSize() - 1));
     }
 

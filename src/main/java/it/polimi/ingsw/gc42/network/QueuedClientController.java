@@ -11,10 +11,10 @@ import java.rmi.RemoteException;
  * This class acts as a Container for a GameTerminal, a specific type of ViewController.
  * This is needed because GameTerminal can't handle methods in real time, but needs to receive them in a queue,
  * so that they can be handled appropriately inside.
- * This class translates all the methods in Runnables, and adds them in the GameTerminal's queue.
+ * This class translates all the methods in Runnable, and adds them in the GameTerminal's queue.
  */
 public class QueuedClientController extends ClientController {
-    private GameTerminal terminal;
+    private final GameTerminal terminal;
 
     /**
      * Constructor Method
@@ -64,7 +64,7 @@ public class QueuedClientController extends ClientController {
     }
 
     /**
-     * Tells the Client that the Game is starting and it's time to build the UI
+     * Tells the Client that the Game is starting, and it's time to build the UI
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override

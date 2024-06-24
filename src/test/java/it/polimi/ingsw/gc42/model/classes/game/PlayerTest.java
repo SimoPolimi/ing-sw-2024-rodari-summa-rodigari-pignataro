@@ -21,7 +21,8 @@ class PlayerTest {
     void generalTesting(){
         // given
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
         String nickname = "pippo";
         Token token = Token.BLUE;
         int points = 20;
@@ -58,7 +59,8 @@ class PlayerTest {
     void drawSecretObjectives() {
         // given
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
 
         // when
         player.drawSecretObjectives(game.getObjectivePlayingDeck());
@@ -73,7 +75,8 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
 
         // when
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
@@ -101,7 +104,8 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
         player.drawStartingHand(game.getResourcePlayingDeck(), game.getGoldPlayingDeck());
         player.drawTemporaryStarterCard(game.getStarterDeck());
         player.setStarterCard();
@@ -133,7 +137,8 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
         Card topCard = null;
         try {
             player.drawCard(game.getResourcePlayingDeck());
@@ -169,7 +174,8 @@ class PlayerTest {
         // given
         // new game because it initializes the decks
         Game game = new Game();
-        Player player = new Player(null, true, 0, null, null, game);
+        Player player = new Player(null, true, 0, null, null);
+        game.addPlayer(player);
         Card topCard;
         try {
             player.drawCard(game.getResourcePlayingDeck());

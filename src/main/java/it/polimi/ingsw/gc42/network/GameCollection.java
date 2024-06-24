@@ -28,28 +28,22 @@ public class GameCollection implements Serializable {
         return gameControllers.get(index);
     }
 
-    public boolean isNickNameAvailable(String nickname) throws RemoteException {
+    public boolean isNickNameAvailable(String nickname) {
         if (!nickname.equals("Server")) {
             return !blockedNicknames.contains(nickname);
         } else return false;
     }
 
-    public void blockNickname(String nickname) throws RemoteException {
+    public void blockNickname(String nickname) {
         blockedNicknames.add(nickname);
     }
 
-    public void unlockNickname(String nickname) throws RemoteException {
+    public void unlockNickname(String nickname) {
         blockedNicknames.remove(nickname);
     }
 
     public GameCollection getCopy() throws RemoteException {
         return new GameCollection(gameControllers);
-    }
-
-    public GameController createNewGame() throws RemoteException {
-        add(new GameController(null));
-        // Returns the current size: it will become the index of the new GameController, once created.
-        return gameControllers.getLast();
     }
 
     public void remove(GameController gameController) throws RemoteException {
