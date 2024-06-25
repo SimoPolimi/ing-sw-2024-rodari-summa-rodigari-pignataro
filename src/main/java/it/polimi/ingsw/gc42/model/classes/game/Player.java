@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * Player class. It implements the Observable class
  */
 public class Player implements Observable, Serializable {
-
     // Attributes
     private final ArrayList<Listener> listeners = new ArrayList<>();
     private String nickname;

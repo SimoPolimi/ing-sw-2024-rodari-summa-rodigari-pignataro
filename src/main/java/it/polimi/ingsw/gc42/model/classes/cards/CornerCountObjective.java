@@ -48,16 +48,16 @@ public class CornerCountObjective extends CountObjective{
         int y = coordinates.getY();
         int points = 0;
         for(PlayableCard c : playArea) {
-            if(c.getX() == x+1 && c.getY() == y && c.getShowingSide().getBottomLeftCorner() != null && c.getShowingSide().getBottomLeftCorner().isCovered()) {
+            if(c.getX() == x+1 && c.getY() == y && c.getShowingSide().bottomLeftCorner() != null && c.getShowingSide().bottomLeftCorner().isCovered()) {
                 points++;
             }
-            if(c.getX() == x && c.getY() == y+1 && c.getShowingSide().getBottomRightCorner() != null && c.getShowingSide().getBottomRightCorner().isCovered()) {
+            if(c.getX() == x && c.getY() == y+1 && c.getShowingSide().bottomRightCorner() != null && c.getShowingSide().bottomRightCorner().isCovered()) {
                 points++;
             }
-            if(c.getX() == x-1 && c.getY() == y && c.getShowingSide().getTopRightCorner() != null && c.getShowingSide().getTopRightCorner().isCovered()) {
+            if(c.getX() == x-1 && c.getY() == y && c.getShowingSide().topRightCorner() != null && c.getShowingSide().topRightCorner().isCovered()) {
                 points++;
             }
-            if(c.getX() == x && c.getY() == y-1 && c.getShowingSide().getTopLeftCorner() != null && c.getShowingSide().getTopLeftCorner().isCovered()) {
+            if(c.getX() == x && c.getY() == y-1 && c.getShowingSide().topLeftCorner() != null && c.getShowingSide().topLeftCorner().isCovered()) {
                 points++;
             }
         }

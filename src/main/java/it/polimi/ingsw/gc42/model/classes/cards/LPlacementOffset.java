@@ -9,16 +9,16 @@ public enum LPlacementOffset {
     BOTTOM_LEFT(-1, 0, 1),
     BOTTOM_RIGHT(0,-1, 1);
 
-    private final int xoffset;
-    private final int yoffset;
+    private final int xOffset;
+    private final int yOffset;
     private final int inlineOffset;
-    LPlacementOffset(int xoffset, int yoffset, int inlineOffset) {
-        this.xoffset = xoffset;
-        this.yoffset = yoffset;
+    LPlacementOffset(int xOffset, int yOffset, int inlineOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
         this.inlineOffset = inlineOffset;
     }
 
-    public int getXOffset() { return xoffset; }
-    public int getYOffset() { return yoffset; }
+    public int getXOffset() { return xOffset; }
+    public int getYOffset() { return yOffset; }
     public int getInlineOffset() { return inlineOffset; }
 }

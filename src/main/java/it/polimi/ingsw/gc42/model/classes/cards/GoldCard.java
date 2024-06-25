@@ -141,21 +141,21 @@ public class GoldCard extends PlayableCard{
                         }
                     }
                 }
-                if (null != card.getShowingSide().getTopLeftCorner() && !card.getShowingSide().getTopLeftCorner().isCovered()
-                        && null != card.getShowingSide().getTopLeftCorner().getItem()) {
-                    increaseValue(playedItems, card.getShowingSide().getTopLeftCorner().getItem());
+                if (null != card.getShowingSide().topLeftCorner() && !card.getShowingSide().topLeftCorner().isCovered()
+                        && null != card.getShowingSide().topLeftCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().topLeftCorner().getItem());
                 }
-                if (null != card.getShowingSide().getTopRightCorner() && !card.getShowingSide().getTopRightCorner().isCovered()
-                        && null != card.getShowingSide().getTopRightCorner().getItem()) {
-                    increaseValue(playedItems, card.getShowingSide().getTopRightCorner().getItem());
+                if (null != card.getShowingSide().topRightCorner() && !card.getShowingSide().topRightCorner().isCovered()
+                        && null != card.getShowingSide().topRightCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().topRightCorner().getItem());
                 }
-                if (null != card.getShowingSide().getBottomLeftCorner() && !card.getShowingSide().getBottomLeftCorner().isCovered()
-                        && null != card.getShowingSide().getBottomLeftCorner().getItem()) {
-                    increaseValue(playedItems, card.getShowingSide().getBottomLeftCorner().getItem());
+                if (null != card.getShowingSide().bottomLeftCorner() && !card.getShowingSide().bottomLeftCorner().isCovered()
+                        && null != card.getShowingSide().bottomLeftCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().bottomLeftCorner().getItem());
                 }
-                if (null != card.getShowingSide().getBottomRightCorner() && !card.getShowingSide().getBottomRightCorner().isCovered()
-                        && null != card.getShowingSide().getBottomRightCorner().getItem()) {
-                    increaseValue(playedItems, card.getShowingSide().getBottomRightCorner().getItem());
+                if (null != card.getShowingSide().bottomRightCorner() && !card.getShowingSide().bottomRightCorner().isCovered()
+                        && null != card.getShowingSide().bottomRightCorner().getItem()) {
+                    increaseValue(playedItems, card.getShowingSide().bottomRightCorner().getItem());
                 }
             }
             boolean canBePlaced = true;

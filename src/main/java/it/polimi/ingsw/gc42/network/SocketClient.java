@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
-import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
 import it.polimi.ingsw.gc42.network.messages.*;
 import it.polimi.ingsw.gc42.network.messages.responses.*;
 
@@ -213,11 +212,11 @@ public class SocketClient implements NetworkController {
 
     /**
      * Removes the Player from the Game entirely
-     * @param player the Player's playerID
+     * @param playerID the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
      */
     @Override
-    public boolean kickPlayer(Player player) {
+    public boolean kickPlayer(int playerID) {
         sendMessage(new GameMessage(MessageType.KICK_PLAYER, gameID));
         return false;
     }
@@ -323,7 +322,7 @@ public class SocketClient implements NetworkController {
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override
-    public void getNewGameController() throws RemoteException {
+    public void createNewGame() throws RemoteException {
         sendMessage(new Message(MessageType.NEW_GAME));
         gameID = ((IntResponse) waitResponse(MessageType.NEW_GAME)).getResponse();
     }
@@ -334,15 +333,8 @@ public class SocketClient implements NetworkController {
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override
-    public int getIndex() throws RemoteException {
+    public int getGameID() throws RemoteException {
         return gameID;
-    }
-
-    @Override
-    public RemoteServer getServer() throws RemoteException {
-        out.println("D");
-        out.flush();
-        return new ServerManager(port);
     }
 
     /**
@@ -363,7 +355,7 @@ public class SocketClient implements NetworkController {
      */
     @Override
     public int getIndexOfPlayer(String nickName) throws RemoteException {
-        sendMessage(new GetNameMessage(MessageType.GET_INDEX_OF_PLAYER, gameID, nickName));
+        sendMessage(new GetPlayerIDMessage(MessageType.GET_INDEX_OF_PLAYER, gameID, nickName));
         return ((IntResponse) waitResponse(MessageType.GET_INDEX_OF_PLAYER)).getResponse();
     }
 
@@ -375,14 +367,6 @@ public class SocketClient implements NetworkController {
     public int getNumberOfPlayers() {
         sendMessage(new GameMessage(MessageType.GET_NUMBER_OF_PLAYERS, gameID));
         return ((IntResponse) waitResponse(MessageType.GET_NUMBER_OF_PLAYERS)).getResponse();
-    }
-
-    /**
-     * Sends a message to the Server telling it to start a specific Game
-     */
-    @Override
-    public void startGame() {
-        sendMessage(new GameMessage(MessageType.START_GAME, gameID));
     }
 
     /**
@@ -445,7 +429,7 @@ public class SocketClient implements NetworkController {
      */
     @Override
     public ArrayList<Card> getDeck(CardType type) {
-        sendMessage(new GetDeckTexturesMessage(MessageType.GET_DECK, gameID, type));
+        sendMessage(new GetDeckMessage(MessageType.GET_DECK, gameID, type));
         return ((DeckResponse) waitResponse(MessageType.GET_DECK)).getResponse();
     }
 
@@ -457,7 +441,7 @@ public class SocketClient implements NetworkController {
      */
     @Override
     public Card getSlotCard(CardType type, int slot) {
-        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_SLOT_CARD, gameID, type, slot));
+        sendMessage(new GetSlotCardMessage(MessageType.GET_SLOT_CARD, gameID, type, slot));
         return ((CardResponse) waitResponse(MessageType.GET_SLOT_CARD)).getResponse();
     }
 
@@ -673,9 +657,15 @@ public class SocketClient implements NetworkController {
         sendMessage(new PlayerMessage(MessageType.REJOIN_GAME, gameID, playerID));
     }
 
+    /**
+     * Getter Method for the Common Objectives
+     * @param cardID an int indicating which Card [1, 2]
+     * @return the Objective Card
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public ObjectiveCard getCommonObjective(int cardID) throws RemoteException {
-        sendMessage(new GetSlotCardTextureMessage(MessageType.GET_COMMON_OBJECTIVE, gameID, CardType.OBJECTIVECARD, cardID));
+        sendMessage(new GetSlotCardMessage(MessageType.GET_COMMON_OBJECTIVE, gameID, CardType.OBJECTIVECARD, cardID));
         return ((ObjectiveCardResponse) waitResponse(MessageType.GET_COMMON_OBJECTIVE)).getResponse();
     }
 }

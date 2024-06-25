@@ -143,14 +143,14 @@ public class PlayField implements Observable, Serializable {
      */
     private void coverNearbyCorners(int x, int y) {
         for (PlayableCard card : playedCards) {
-            if (card.getX() == x + 1 && card.getY() == y && null != card.getShowingSide().getBottomLeftCorner()) {
-                card.getShowingSide().getBottomLeftCorner().setCovered(true);
-            } else if (card.getX() == x && card.getY() == y + 1 && null != card.getShowingSide().getBottomRightCorner()) {
-                card.getShowingSide().getBottomRightCorner().setCovered(true);
-            } else if (card.getX() == x - 1 && card.getY() == y && null != card.getShowingSide().getTopRightCorner()) {
-                card.getShowingSide().getTopRightCorner().setCovered(true);
-            } else if (card.getX() == x && card.getY() == y - 1 && null != card.getShowingSide().getTopLeftCorner()) {
-                card.getShowingSide().getTopLeftCorner().setCovered(true);
+            if (card.getX() == x + 1 && card.getY() == y && null != card.getShowingSide().bottomLeftCorner()) {
+                card.getShowingSide().bottomLeftCorner().setCovered(true);
+            } else if (card.getX() == x && card.getY() == y + 1 && null != card.getShowingSide().bottomRightCorner()) {
+                card.getShowingSide().bottomRightCorner().setCovered(true);
+            } else if (card.getX() == x - 1 && card.getY() == y && null != card.getShowingSide().topRightCorner()) {
+                card.getShowingSide().topRightCorner().setCovered(true);
+            } else if (card.getX() == x && card.getY() == y - 1 && null != card.getShowingSide().topLeftCorner()) {
+                card.getShowingSide().topLeftCorner().setCovered(true);
             }
         }
     }
@@ -163,25 +163,25 @@ public class PlayField implements Observable, Serializable {
         ArrayList<Coordinates> placements = new ArrayList<>();
         ArrayList<Coordinates> illegalPlacements = new ArrayList<>();
         for (PlayableCard card : playedCards) {
-            if (null != card.getShowingSide().getTopLeftCorner()
+            if (null != card.getShowingSide().topLeftCorner()
                     && !isThereACardIn(card.getX(), card.getY()+1)) {
                 placements.add(new Coordinates(card.getX(), card.getY() + 1));
             } else {
                 illegalPlacements.add(new Coordinates(card.getX(), card.getY()+1));
             }
-            if (null != card.getShowingSide().getTopRightCorner()
+            if (null != card.getShowingSide().topRightCorner()
                     && !isThereACardIn(card.getX()+1, card.getY())) {
                 placements.add(new Coordinates(card.getX()+1, card.getY()));
             } else {
                 illegalPlacements.add(new Coordinates(card.getX()+1, card.getY()));
             }
-            if (null != card.getShowingSide().getBottomLeftCorner()
+            if (null != card.getShowingSide().bottomLeftCorner()
                     && !isThereACardIn(card.getX()-1, card.getY())) {
                 placements.add(new Coordinates(card.getX()-1, card.getY()));
             } else {
                 illegalPlacements.add(new Coordinates(card.getX()-1, card.getY()));
             }
-            if (null != card.getShowingSide().getBottomRightCorner()
+            if (null != card.getShowingSide().bottomRightCorner()
                     && !isThereACardIn(card.getX(), card.getY()-1)) {
                 placements.add(new Coordinates(card.getX(), card.getY()-1));
             } else {

@@ -14,7 +14,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +47,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     sendMessage(socket, new IntResponse(MessageType.ADD_PLAYER, server.getIndexOfPlayer(((AddPlayerMessage) temp).getGameID(), (((AddPlayerMessage) temp).getPlayer().getNickname()))));
                     break;
                 case KICK_PLAYER:
-                    server.kickPlayer(((KickPlayerMessage) temp).getGameID(), ((KickPlayerMessage) temp).getPlayer());
+                    server.kickPlayer(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
                 case NEXT_TURN:
                     server.nextTurn(((GameMessage) temp).getGameID());
@@ -79,7 +78,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     server.setName(((SetNameMessage) temp).getGameID(), ((SetNameMessage) temp).getName());
                     break;
                 case GET_INDEX_OF_PLAYER:
-                    sendMessage(socket, new IntResponse(MessageType.GET_INDEX_OF_PLAYER, server.getIndexOfPlayer(((GetNameMessage) temp).getGameID(), ((GetNameMessage) temp).getName())));
+                    sendMessage(socket, new IntResponse(MessageType.GET_INDEX_OF_PLAYER, server.getIndexOfPlayer(((GetPlayerIDMessage) temp).getGameID(), ((GetPlayerIDMessage) temp).getName())));
                      break;
                 case GET_NUMBER_OF_PLAYERS:
                     sendMessage(socket, new IntResponse(MessageType.GET_NUMBER_OF_PLAYERS, server.getNumberOfPlayers(((GameMessage) temp).getGameID())));
@@ -103,10 +102,10 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     server.flipStarterCard(((PlayerMessage) temp).getGameID(), ((PlayerMessage) temp).getPlayerID());
                     break;
                 case GET_DECK:
-                    sendMessage(socket, new DeckResponse(MessageType.GET_DECK, server.getDeck(((GetDeckTexturesMessage) temp).getGameID(), ((GetDeckTexturesMessage) temp).getCardType())));
+                    sendMessage(socket, new DeckResponse(MessageType.GET_DECK, server.getDeck(((GetDeckMessage) temp).getGameID(), ((GetDeckMessage) temp).getCardType())));
                     break;
                 case GET_SLOT_CARD:
-                    Card response = server.getSlotCard(((GetSlotCardTextureMessage) temp).getGameID(), ((GetSlotCardTextureMessage) temp).getCardType(), ((GetSlotCardTextureMessage) temp).getSlot());
+                    Card response = server.getSlotCard(((GetSlotCardMessage) temp).getGameID(), ((GetSlotCardMessage) temp).getCardType(), ((GetSlotCardMessage) temp).getSlot());
                     boolean isCardFrontFacing = true;
                     if (null != response) {
                         isCardFrontFacing = response.isFrontFacing();
@@ -120,7 +119,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                     sendMessage(socket, new IntResponse(MessageType.GET_PLAYER_TURN, server.getPlayerTurn(((GameMessage) temp).getGameID())));
                     break;
                 case GET_COMMON_OBJECTIVE:
-                    sendMessage(socket, new ObjectiveCardResponse(MessageType.GET_COMMON_OBJECTIVE, server.getCommonObjective(((GetSlotCardTextureMessage)temp).getGameID(), ((GetSlotCardTextureMessage) temp).getSlot())));
+                    sendMessage(socket, new ObjectiveCardResponse(MessageType.GET_COMMON_OBJECTIVE, server.getCommonObjective(((GetSlotCardMessage)temp).getGameID(), ((GetSlotCardMessage) temp).getSlot())));
                     break;
                 case GET_TEMPORARY_OBJECTIVE_CARDS:
                     sendMessage(socket, new ObjCardListResponse(MessageType.GET_TEMPORARY_OBJECTIVE_CARDS, server.getTemporaryObjectiveCards(((PlayerMessage)temp).getGameID(), ((PlayerMessage)temp).getPlayerID())));

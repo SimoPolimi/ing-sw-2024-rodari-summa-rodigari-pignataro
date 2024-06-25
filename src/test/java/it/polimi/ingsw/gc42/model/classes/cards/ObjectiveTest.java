@@ -20,24 +20,24 @@ public class ObjectiveTest {
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
             playArea.add(card);
-            if (card.getShowingSide().getTopLeftCorner() != null &&
-                    !card.getShowingSide().getTopLeftCorner().isCovered() &&
-                    (card.getShowingSide().getTopLeftCorner()).getItem() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().topLeftCorner() != null &&
+                    !card.getShowingSide().topLeftCorner().isCovered() &&
+                    (card.getShowingSide().topLeftCorner()).getItem() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getTopRightCorner() != null &&
-                    !card.getShowingSide().getTopRightCorner().isCovered() &&
-                    (card.getShowingSide().getTopRightCorner()).getItem() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().topRightCorner() != null &&
+                    !card.getShowingSide().topRightCorner().isCovered() &&
+                    (card.getShowingSide().topRightCorner()).getItem() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getBottomLeftCorner() != null &&
-                    !card.getShowingSide().getBottomLeftCorner().isCovered() &&
-                    (card.getShowingSide().getBottomLeftCorner()).getItem() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().bottomLeftCorner() != null &&
+                    !card.getShowingSide().bottomLeftCorner().isCovered() &&
+                    (card.getShowingSide().bottomLeftCorner()).getItem() == KingdomResource.FUNGI) {
                 count++;
             }
-            if (card.getShowingSide().getBottomRightCorner() != null &&
-                    !card.getShowingSide().getBottomRightCorner().isCovered() &&
-                    (card.getShowingSide().getBottomRightCorner()).getItem() == KingdomResource.FUNGI) {
+            if (card.getShowingSide().bottomRightCorner() != null &&
+                    !card.getShowingSide().bottomRightCorner().isCovered() &&
+                    (card.getShowingSide().bottomRightCorner()).getItem() == KingdomResource.FUNGI) {
                 count++;
             }
             if (!card.isFrontFacing() && card.getPermanentResources().getFirst() == KingdomResource.FUNGI) {
@@ -145,20 +145,20 @@ public class ObjectiveTest {
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
             playArea.add(card);
-            if (card.getShowingSide().getTopLeftCorner() != null
-                    && (card.getShowingSide().getTopLeftCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().topLeftCorner() != null
+                    && (card.getShowingSide().topLeftCorner()).getItem() == Resource.FEATHER) {
                 count++;
             }
-            if (card.getShowingSide().getTopRightCorner() != null
-                    && (card.getShowingSide().getTopRightCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().topRightCorner() != null
+                    && (card.getShowingSide().topRightCorner()).getItem() == Resource.FEATHER) {
                 count++;
             }
-            if (card.getShowingSide().getBottomLeftCorner() != null
-                    && (card.getShowingSide().getBottomLeftCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().bottomLeftCorner() != null
+                    && (card.getShowingSide().bottomLeftCorner()).getItem() == Resource.FEATHER) {
                 count++;
             }
-            if (card.getShowingSide().getBottomRightCorner() != null
-                    && (card.getShowingSide().getBottomRightCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().bottomRightCorner() != null
+                    && (card.getShowingSide().bottomRightCorner()).getItem() == Resource.FEATHER) {
                 count++;
             }
         }
@@ -178,39 +178,39 @@ public class ObjectiveTest {
         for (int i = 0; i < num; i++) {
             ResourceCard card = (ResourceCard) game.getResourcePlayingDeck().getDeck().draw();
             playArea.add(card);
-            if (card.getShowingSide().getTopLeftCorner() != null) {
-                if ((card.getShowingSide().getTopLeftCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().topLeftCorner() != null) {
+                if ((card.getShowingSide().topLeftCorner()).getItem() == Resource.FEATHER) {
                     feathers++;
-                } else if ((card.getShowingSide().getTopLeftCorner()).getItem() == Resource.POTION) {
+                } else if ((card.getShowingSide().topLeftCorner()).getItem() == Resource.POTION) {
                     potions++;
-                } else if ((card.getShowingSide().getTopLeftCorner()).getItem() == Resource.SCROLL) {
+                } else if ((card.getShowingSide().topLeftCorner()).getItem() == Resource.SCROLL) {
                     scrolls++;
                 }
             }
-            if (card.getShowingSide().getTopRightCorner() != null) {
-                if ((card.getShowingSide().getTopRightCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().topRightCorner() != null) {
+                if ((card.getShowingSide().topRightCorner()).getItem() == Resource.FEATHER) {
                     feathers++;
-                } else if ((card.getShowingSide().getTopRightCorner()).getItem() == Resource.POTION) {
+                } else if ((card.getShowingSide().topRightCorner()).getItem() == Resource.POTION) {
                     potions++;
-                } else if ((card.getShowingSide().getTopRightCorner()).getItem() == Resource.SCROLL) {
+                } else if ((card.getShowingSide().topRightCorner()).getItem() == Resource.SCROLL) {
                     scrolls++;
                 }
             }
-            if (card.getShowingSide().getBottomLeftCorner() != null) {
-                if ((card.getShowingSide().getBottomLeftCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().bottomLeftCorner() != null) {
+                if ((card.getShowingSide().bottomLeftCorner()).getItem() == Resource.FEATHER) {
                     feathers++;
-                } else if ((card.getShowingSide().getBottomLeftCorner()).getItem() == Resource.POTION) {
+                } else if ((card.getShowingSide().bottomLeftCorner()).getItem() == Resource.POTION) {
                     potions++;
-                } else if ((card.getShowingSide().getBottomLeftCorner()).getItem() == Resource.SCROLL) {
+                } else if ((card.getShowingSide().bottomLeftCorner()).getItem() == Resource.SCROLL) {
                     scrolls++;
                 }
             }
-            if (card.getShowingSide().getBottomRightCorner() != null) {
-                if ((card.getShowingSide().getBottomRightCorner()).getItem() == Resource.FEATHER) {
+            if (card.getShowingSide().bottomRightCorner() != null) {
+                if ((card.getShowingSide().bottomRightCorner()).getItem() == Resource.FEATHER) {
                     feathers++;
-                } else if ((card.getShowingSide().getBottomRightCorner()).getItem() == Resource.POTION) {
+                } else if ((card.getShowingSide().bottomRightCorner()).getItem() == Resource.POTION) {
                     potions++;
-                } else if ((card.getShowingSide().getBottomRightCorner()).getItem() == Resource.SCROLL) {
+                } else if ((card.getShowingSide().bottomRightCorner()).getItem() == Resource.SCROLL) {
                     scrolls++;
                 }
             }

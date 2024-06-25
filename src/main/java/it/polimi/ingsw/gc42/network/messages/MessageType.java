@@ -1,5 +1,8 @@
 package it.polimi.ingsw.gc42.network.messages;
 
+/**
+ * Enumeration of all possible Messages that can be sent through Socket
+ */
 public enum MessageType {
     START_GAME,
     SET_PLAYER_STATUS,

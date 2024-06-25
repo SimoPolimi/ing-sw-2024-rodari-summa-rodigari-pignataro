@@ -56,7 +56,7 @@ public class TerminalCard {
                     case 1 -> {
                         if (0 != card.getEarnedPoints()) {
                             // This Card has Points, that will be displayed on the texture
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors, terminalCharacters);
+                            string = getCornerPrint(card, card.getShowingSide().topLeftCorner(), printColors, terminalCharacters);
                             for (int i = 0; i < 7; i++) {
                                 if ((i == 0 || i == 6) && card instanceof GoldCard) {
                                     string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
@@ -71,10 +71,10 @@ public class TerminalCard {
                                     string += getCardColor(card, printColors, terminalCharacters);
                                 }
                             }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors, terminalCharacters);
+                            string += getCornerPrint(card, card.getShowingSide().topRightCorner(), printColors, terminalCharacters);
                         } else if (card instanceof GoldCard && null != ((GoldCard) card).getObjective()) {
                             // This Card has some Points related to a Condition, that will be displayed on the texture
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors, terminalCharacters);
+                            string = getCornerPrint(card, card.getShowingSide().topLeftCorner(), printColors, terminalCharacters);
                             for (int i = 0; i < 7; i++) {
                                 if (i == 0 || i == 6) {
                                     string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
@@ -113,9 +113,9 @@ public class TerminalCard {
                                     string += getCardColor(card, printColors, terminalCharacters);
                                 }
                             }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors, terminalCharacters);
+                            string += getCornerPrint(card, card.getShowingSide().topRightCorner(), printColors, terminalCharacters);
                         } else {
-                            string = getCornerPrint(card, card.getShowingSide().getTopLeftCorner(), printColors, terminalCharacters);
+                            string = getCornerPrint(card, card.getShowingSide().topLeftCorner(), printColors, terminalCharacters);
                             for (int i = 0; i < 7; i++) {
                                 if ((i == 0 || i == 6) && card instanceof GoldCard) {
                                     string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
@@ -123,7 +123,7 @@ public class TerminalCard {
                                     string += getCardColor(card, printColors, terminalCharacters);
                                 }
                             }
-                            string += getCornerPrint(card, card.getShowingSide().getTopRightCorner(), printColors, terminalCharacters);
+                            string += getCornerPrint(card, card.getShowingSide().topRightCorner(), printColors, terminalCharacters);
                         }
                     }
                     case 2, 4 -> {
@@ -173,7 +173,7 @@ public class TerminalCard {
                         }
                     }
                     case 5 -> {
-                        string = getCornerPrint(card, card.getShowingSide().getBottomLeftCorner(), printColors, terminalCharacters);
+                        string = getCornerPrint(card, card.getShowingSide().bottomLeftCorner(), printColors, terminalCharacters);
                         if (card instanceof GoldCard) {
                             // Read costs
                             ArrayList<Item> costs = new ArrayList<>();
@@ -240,12 +240,12 @@ public class TerminalCard {
                                 }
                             }
                             string += terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, printColors);
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors, terminalCharacters);
+                            string += getCornerPrint(card, card.getShowingSide().bottomRightCorner(), printColors, terminalCharacters);
                         } else {
                             for (int i = 0; i < 7; i++) {
                                 string += getCardColor(card, printColors, terminalCharacters);
                             }
-                            string += getCornerPrint(card, card.getShowingSide().getBottomRightCorner(), printColors, terminalCharacters);
+                            string += getCornerPrint(card, card.getShowingSide().bottomRightCorner(), printColors, terminalCharacters);
                         }
                     }
                 }
@@ -291,13 +291,22 @@ public class TerminalCard {
      * Prints a Card in its entirety by printing all the 5 lines the Card is made of.
      * @param card the Card to print
      */
-    public static void printCard(PlayableCard card, TerminalCharacters terminalCharacters) {
-        System.out.println(getPrintCardLine(card, 1, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
-        System.out.println(getPrintCardLine(card, 2, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
-        System.out.println(getPrintCardLine(card, 3, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
-        System.out.println(getPrintCardLine(card, 4, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
-        System.out.println(getPrintCardLine(card, 5, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+    public static void printCard(Card card, TerminalCharacters terminalCharacters) {
+        if (card instanceof ObjectiveCard) {
+            System.out.println(printObjectiveLine((ObjectiveCard) card, 1, terminalCharacters));
+            System.out.println(printObjectiveLine((ObjectiveCard) card, 2, terminalCharacters));
+            System.out.println(printObjectiveLine((ObjectiveCard) card, 3, terminalCharacters));
+            System.out.println(printObjectiveLine((ObjectiveCard) card, 4, terminalCharacters));
+            System.out.println(printObjectiveLine((ObjectiveCard) card, 5, terminalCharacters));
+        } else {
+            System.out.println(getPrintCardLine((PlayableCard) card, 1, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+            System.out.println(getPrintCardLine((PlayableCard) card, 2, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+            System.out.println(getPrintCardLine((PlayableCard) card, 3, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+            System.out.println(getPrintCardLine((PlayableCard) card, 4, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+            System.out.println(getPrintCardLine((PlayableCard) card, 5, terminalCharacters.isColorTerminalSupported(), terminalCharacters));
+        }
     }
+
     /**
      * Creates a String containing a representation of a Corner, based on its type and the content inside.
      * @param card the Card that contains the Corner

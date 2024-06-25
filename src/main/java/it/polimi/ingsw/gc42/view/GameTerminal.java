@@ -22,9 +22,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-import static it.polimi.ingsw.gc42.model.classes.cards.KingdomResource.*;
-import static it.polimi.ingsw.gc42.model.classes.cards.Resource.*;
-
 /**
  * This class handles the whole TUI behavior and output system.
  * All the TUI is contained inside this class.
@@ -240,7 +237,7 @@ public class GameTerminal extends Application implements ViewController {
                 public void onEvent(String input) {
                     if (input.equals("c")) {
                         try {
-                            controller.getNewGameController();
+                            controller.createNewGame();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -286,7 +283,7 @@ public class GameTerminal extends Application implements ViewController {
             });
         } else {
             try {
-                controller.getNewGameController();
+                controller.createNewGame();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -1134,7 +1131,11 @@ public class GameTerminal extends Application implements ViewController {
     @Override
     public void notifyCommonObjectivesChanged() {
         for (int i = 0; i < 2; i++) {
-            TerminalCard.printCard( (PlayableCard) controller.getSlotCard(CardType.OBJECTIVECARD, i), terminalCharacters);
+            try {
+                TerminalCard.printCard(  controller.getCommonObjective( i), terminalCharacters);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

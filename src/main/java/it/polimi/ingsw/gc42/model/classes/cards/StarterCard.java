@@ -43,7 +43,4 @@ public class StarterCard extends PlayableCard{
     public boolean canBePlaced(ArrayList<PlayableCard> playedCards) {
         return true;
     }
-
-    // Getter and Setter
-
 }

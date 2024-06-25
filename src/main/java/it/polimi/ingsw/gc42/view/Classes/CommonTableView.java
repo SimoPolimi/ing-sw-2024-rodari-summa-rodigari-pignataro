@@ -555,11 +555,20 @@ public class CommonTableView {
      * Visually updates both the Common Objectives CardView slots.
      */
     public void refreshCommonObjectives() {
-        ObjectiveCard card = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 1);
+        ObjectiveCard card;
+        try {
+            card = controller.getCommonObjective( 1);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         commonObjective1.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
         objName1.setText(card.getObjective().getName());
         objDescr1.setText(card.getObjective().getDescription());
-        card = (ObjectiveCard) controller.getSlotCard(CardType.OBJECTIVECARD, 2);
+        try {
+            card = controller.getCommonObjective(2);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         commonObjective2.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getFrontImage()))));
         objName2.setText((card.getObjective().getName()));
         objDescr2.setText((card.getObjective().getDescription()));

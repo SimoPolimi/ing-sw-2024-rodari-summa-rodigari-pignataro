@@ -214,8 +214,6 @@ public class Game implements Observable, Serializable {
         this.playerHasReachedTwentyPoints = playerHasReachedTwentyPoints;
     }
 
-    //TODO: check index
-
     /**
      * Gets the index of the Player whose turn it is
      * @return the index of the Player whose turn it is
@@ -284,8 +282,6 @@ public class Game implements Observable, Serializable {
     public Chat getChat() {
         return chat;
     }
-
-    // TODO: what???
 
     /**
      * Sets who is the winning Player, based on points (visual purposes)

@@ -59,11 +59,11 @@ public interface RemoteServer extends Remote {
     /**
      * Removes the Player from the Game entirely
      * @param gameID the Game's gameID
-     * @param player the Player's playerID
+     * @param playerID the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
      * @throws RemoteException in case of a Network Communication Error
      */
-    boolean kickPlayer(int gameID, Player player) throws RemoteException;
+    boolean kickPlayer(int gameID, int playerID) throws RemoteException;
 
     /**
      * Triggers a Turn Change

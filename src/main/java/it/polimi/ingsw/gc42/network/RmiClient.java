@@ -48,7 +48,7 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     /**
-     * Connects to the Server, creating a Socket
+     * Connects to the Server, doing a lookup inside the Server's RmiRegistry
      * @throws RemoteException in case of a Network Communication Error
      * @throws NotBoundException in case of a Registry Error
      */
@@ -200,7 +200,7 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     /**
-     * Closes the Socket Connection and sends one last message to the Server
+     * Closes the RMI Connection and sends one last message to the Server
      */
     @Override
     public void disconnect() {
@@ -259,18 +259,6 @@ public class RmiClient implements NetworkController, Serializable {
     }
 
     /**
-     * Sends a message to the Server telling it to start a specific Game
-     */
-    @Override
-    public void startGame() {
-        try {
-            server.startGame(gameID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Setter Method for the Player's GameStatus
      * @param playerID the Player's playerID
      * @param status the GameStatus to set
@@ -286,13 +274,13 @@ public class RmiClient implements NetworkController, Serializable {
 
     /**
      * Removes the Player from the Game entirely
-     * @param player the Player's playerID
+     * @param playerID the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
      */
     @Override
-    public boolean kickPlayer(Player player) {
+    public boolean kickPlayer(int playerID) {
         try {
-            return server.kickPlayer(gameID, player);
+            return server.kickPlayer(gameID, playerID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -613,7 +601,7 @@ public class RmiClient implements NetworkController, Serializable {
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override
-    public void getNewGameController() throws RemoteException {
+    public void createNewGame() throws RemoteException {
         gameID = server.newGame();
 
     }
@@ -676,13 +664,8 @@ public class RmiClient implements NetworkController, Serializable {
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override
-    public int getIndex() throws RemoteException {
+    public int getGameID() throws RemoteException {
         return gameID;
-    }
-
-    @Override
-    public RemoteServer getServer() throws RemoteException {
-        return server;
     }
 
     /**
@@ -696,6 +679,12 @@ public class RmiClient implements NetworkController, Serializable {
         server.rejoinGame(gameID, playerID);
     }
 
+    /**
+     * Getter Method for the Common Objectives
+     * @param cardID an int indicating which Card [1, 2]
+     * @return the Objective Card
+     * @throws RemoteException in case of a Network Connection Error
+     */
     @Override
     public ObjectiveCard getCommonObjective(int cardID) throws RemoteException {
         return server.getCommonObjective(gameID, cardID);

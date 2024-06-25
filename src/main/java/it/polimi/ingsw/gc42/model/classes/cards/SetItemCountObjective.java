@@ -37,25 +37,25 @@ public class SetItemCountObjective extends CountObjective{
         items.put(Resource.POTION, 0);
         items.put(Resource.SCROLL, 0);
         for (PlayableCard card : playArea) {
-            if (card.getShowingSide().getTopLeftCorner() != null && card.getShowingSide().getTopLeftCorner().getItem() instanceof Resource
-                    && !card.getShowingSide().getTopLeftCorner().isCovered()) {
-                items.put((card.getShowingSide().getTopLeftCorner()).getItem(),
-                        items.get((card.getShowingSide().getTopLeftCorner()).getItem()) + 1);
+            if (card.getShowingSide().topLeftCorner() != null && card.getShowingSide().topLeftCorner().getItem() instanceof Resource
+                    && !card.getShowingSide().topLeftCorner().isCovered()) {
+                items.put((card.getShowingSide().topLeftCorner()).getItem(),
+                        items.get((card.getShowingSide().topLeftCorner()).getItem()) + 1);
             }
-            if (card.getShowingSide().getTopRightCorner() != null && card.getShowingSide().getTopRightCorner().getItem() instanceof Resource
-                    && !card.getShowingSide().getTopRightCorner().isCovered()) {
-                items.put((card.getShowingSide().getTopRightCorner()).getItem(),
-                        items.get((card.getShowingSide().getTopRightCorner()).getItem()) + 1);
+            if (card.getShowingSide().topRightCorner() != null && card.getShowingSide().topRightCorner().getItem() instanceof Resource
+                    && !card.getShowingSide().topRightCorner().isCovered()) {
+                items.put((card.getShowingSide().topRightCorner()).getItem(),
+                        items.get((card.getShowingSide().topRightCorner()).getItem()) + 1);
             }
-            if (card.getShowingSide().getBottomLeftCorner() != null && card.getShowingSide().getBottomLeftCorner().getItem() instanceof Resource
-                    && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
-                items.put((card.getShowingSide().getBottomLeftCorner()).getItem(),
-                        items.get((card.getShowingSide().getBottomLeftCorner()).getItem()) + 1);
+            if (card.getShowingSide().bottomLeftCorner() != null && card.getShowingSide().bottomLeftCorner().getItem() instanceof Resource
+                    && !card.getShowingSide().bottomLeftCorner().isCovered()) {
+                items.put((card.getShowingSide().bottomLeftCorner()).getItem(),
+                        items.get((card.getShowingSide().bottomLeftCorner()).getItem()) + 1);
             }
-            if (card.getShowingSide().getBottomRightCorner() != null && card.getShowingSide().getBottomRightCorner().getItem() instanceof Resource
-                    && !card.getShowingSide().getBottomRightCorner().isCovered()) {
-                items.put((card.getShowingSide().getBottomRightCorner()).getItem(),
-                        items.get((card.getShowingSide().getBottomRightCorner()).getItem()) + 1);
+            if (card.getShowingSide().bottomRightCorner() != null && card.getShowingSide().bottomRightCorner().getItem() instanceof Resource
+                    && !card.getShowingSide().bottomRightCorner().isCovered()) {
+                items.put((card.getShowingSide().bottomRightCorner()).getItem(),
+                        items.get((card.getShowingSide().bottomRightCorner()).getItem()) + 1);
             }
         }
         return (int) Math.floor((Collections.min(items.values()).doubleValue() / items.size()));

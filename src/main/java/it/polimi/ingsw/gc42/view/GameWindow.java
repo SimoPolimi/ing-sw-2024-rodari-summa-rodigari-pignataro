@@ -145,8 +145,8 @@ public class GameWindow extends Application {
 
         NewGameViewController newGameController = newGameLoader.getController();
         NetworkController network = loginController.getNetworkController();
-        network.getNewGameController();
-        newGameController.setServer(network, network.getIndex());
+        network.createNewGame();
+        newGameController.setServer(network, network.getGameID());
         newGameController.setPlayer(player);
 
         newGameController.setListener(new NewGameListener() {
@@ -183,7 +183,7 @@ public class GameWindow extends Application {
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
 
-        controller.setGameController(gameController, gameController.getIndex(), gameController.getIndexOfPlayer(nickName));
+        controller.setGameController(gameController, gameController.getGameID(), gameController.getIndexOfPlayer(nickName));
         controller.build();
         controller.setPlayer(gameController.getIndexOfPlayer(nickName));
 

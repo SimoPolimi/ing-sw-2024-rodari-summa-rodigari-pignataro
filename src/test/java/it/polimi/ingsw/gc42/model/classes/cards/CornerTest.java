@@ -33,16 +33,16 @@ class CornerTest {
         PlayableCard card = (PlayableCard) game.getStarterDeck().draw();
         card.flip();
         int coveredCornersAtFirst = 0;
-        if (card.getShowingSide().getTopLeftCorner().isCovered()) {
+        if (card.getShowingSide().topLeftCorner().isCovered()) {
             coveredCornersAtFirst++;
         }
-        if (card.getShowingSide().getTopRightCorner().isCovered()) {
+        if (card.getShowingSide().topRightCorner().isCovered()) {
             coveredCornersAtFirst++;
         }
-        if (card.getShowingSide().getBottomLeftCorner().isCovered()) {
+        if (card.getShowingSide().bottomLeftCorner().isCovered()) {
             coveredCornersAtFirst++;
         }
-        if (card.getShowingSide().getBottomRightCorner().isCovered()) {
+        if (card.getShowingSide().bottomRightCorner().isCovered()) {
             coveredCornersAtFirst++;
         }
         assertEquals(0, coveredCornersAtFirst);
@@ -78,16 +78,16 @@ class CornerTest {
 
         // Checks if all the 4 Corners are now covered in that same Starter Card
         int coveredCornersAtLast = 0;
-        if (card.getShowingSide().getTopLeftCorner().isCovered()) {
+        if (card.getShowingSide().topLeftCorner().isCovered()) {
             coveredCornersAtLast++;
         }
-        if (card.getShowingSide().getTopRightCorner().isCovered()) {
+        if (card.getShowingSide().topRightCorner().isCovered()) {
             coveredCornersAtLast++;
         }
-        if (card.getShowingSide().getBottomLeftCorner().isCovered()) {
+        if (card.getShowingSide().bottomLeftCorner().isCovered()) {
             coveredCornersAtLast++;
         }
-        if (card.getShowingSide().getBottomRightCorner().isCovered()) {
+        if (card.getShowingSide().bottomRightCorner().isCovered()) {
             coveredCornersAtLast++;
         }
         assertEquals(4, coveredCornersAtLast);

@@ -45,24 +45,24 @@ public class ItemCountObjective extends CountObjective{
     protected int check(ArrayList<PlayableCard> playArea) {
         int count = 0;
         for (PlayableCard card: playArea) {
-            if ((card.getShowingSide().getTopLeftCorner() != null &&
-                    (card.getShowingSide().getTopLeftCorner()).getItem() == item
-                    && !card.getShowingSide().getTopLeftCorner().isCovered())) {
+            if ((card.getShowingSide().topLeftCorner() != null &&
+                    (card.getShowingSide().topLeftCorner()).getItem() == item
+                    && !card.getShowingSide().topLeftCorner().isCovered())) {
                 count++;
             }
-            if (card.getShowingSide().getTopRightCorner() != null &&
-                    (card.getShowingSide().getTopRightCorner()).getItem() == item
-                    && !card.getShowingSide().getTopRightCorner().isCovered()) {
+            if (card.getShowingSide().topRightCorner() != null &&
+                    (card.getShowingSide().topRightCorner()).getItem() == item
+                    && !card.getShowingSide().topRightCorner().isCovered()) {
                 count++;
             }
-            if (card.getShowingSide().getBottomLeftCorner() != null
-                    && (card.getShowingSide().getBottomLeftCorner()).getItem() == item
-                    && !card.getShowingSide().getBottomLeftCorner().isCovered()) {
+            if (card.getShowingSide().bottomLeftCorner() != null
+                    && (card.getShowingSide().bottomLeftCorner()).getItem() == item
+                    && !card.getShowingSide().bottomLeftCorner().isCovered()) {
                 count++;
             }
-            if (card.getShowingSide().getBottomRightCorner() != null
-                    && (card.getShowingSide().getBottomRightCorner()).getItem() == item
-                    && !card.getShowingSide().getBottomRightCorner().isCovered()) {
+            if (card.getShowingSide().bottomRightCorner() != null
+                    && (card.getShowingSide().bottomRightCorner()).getItem() == item
+                    && !card.getShowingSide().bottomRightCorner().isCovered()) {
                 count++;
             }
             if (!card.isFrontFacing() && card instanceof GoldCard && card.getPermanentResources().getFirst().equals(item)) {
