@@ -89,6 +89,10 @@
 ## UML
 https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 
+## Test coverage
+<img src ="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/4139c442-a90d-4ca6-a274-981200fb9271">
+
+
 ## Instructions
 
 ### Launching the Game
