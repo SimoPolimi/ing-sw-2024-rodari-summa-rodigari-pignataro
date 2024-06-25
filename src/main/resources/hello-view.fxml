@@ -340,5 +340,12 @@
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
             </padding>
         </VBox>
+        <VBox fx:id="turnIndicator" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false" translateY="400" mouseTransparent="true" disable="false">
+            <children>
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+        </VBox>
     </children>
 </StackPane>

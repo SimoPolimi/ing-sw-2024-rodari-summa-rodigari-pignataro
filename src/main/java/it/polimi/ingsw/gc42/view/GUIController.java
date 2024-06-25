@@ -51,6 +51,8 @@ public class GUIController implements ViewController {
     @FXML
     public AnchorPane mainAreaContainer;
     @FXML
+    public VBox turnIndicator;
+    @FXML
     private StackPane root;
     @FXML
     private AnchorPane mainArea;
@@ -662,6 +664,8 @@ public class GUIController implements ViewController {
         setPlayerCanDrawOrGrab(true);
         if (!isCommonTableDown) {
             bringCommonTableDown();
+            TextDialog textDialog = new TextDialog("Draw or Grab a Card", false);
+            setTurnIndicator(textDialog);
         }
     }
 
@@ -793,15 +797,11 @@ public class GUIController implements ViewController {
         Platform.runLater(() -> {
             if (controller.getPlayerTurn() == playerID) {
                 table.setCanPlayCards(true);
-                InnerShadow glow = new InnerShadow();
-                glow.setBlurType(BlurType.ONE_PASS_BOX);
-                glow.setColor(Color.GOLD);
-                glow.setWidth(200);
-                glow.setHeight(200);
-                root.setEffect(glow);
+                TextDialog turnDialog = new TextDialog("It's your Turn!", false);
+                setTurnIndicator(turnDialog);
             } else {
                 table.setCanPlayCards(false);
-                root.setEffect(null);
+                removeTurnIndicator();
             }
         });
     }
@@ -973,5 +973,58 @@ public class GUIController implements ViewController {
 
     public void setCurrentAnimationSpeed(int speed) {
         currentAnimationSpeed = speed;
+    }
+
+    private void setTurnIndicator(Dialog content) {
+        Platform.runLater(() -> {
+            boolean isEdit = !turnIndicator.getChildren().isEmpty();
+            turnIndicator.getChildren().clear();
+            turnIndicator.getChildren().add(content.build());
+
+            blockInput();
+            ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), turnIndicator);
+            if (isEdit) {
+                transition.setFromX(1);
+                transition.setFromY(1);
+            } else {
+                transition.setFromX(0);
+                transition.setFromY(0);
+            }
+            transition.setToX(1.1);
+            transition.setToY(1.1);
+            transition.setInterpolator(Interpolator.TANGENT(Duration.millis(currentAnimationSpeed), 1));
+            ScaleTransition bounceBack = new ScaleTransition(Duration.millis(80), turnIndicator);
+            bounceBack.setFromX(1.1);
+            bounceBack.setToX(1);
+            bounceBack.setFromY(1.1);
+            bounceBack.setToY(1);
+
+            transition.setOnFinished(e -> bounceBack.play());
+            bounceBack.setOnFinished(e -> unlockInput());
+            turnIndicator.setVisible(true);
+            transition.play();
+        });
+    }
+
+    private void removeTurnIndicator() {
+        blockInput();
+        ScaleTransition bounce = new ScaleTransition(Duration.millis(80), turnIndicator);
+        bounce.setFromX(1);
+        bounce.setToX(1.1);
+        bounce.setFromY(1);
+        bounce.setToY(1.1);
+        ScaleTransition transition = new ScaleTransition(Duration.millis(currentAnimationSpeed), turnIndicator);
+        transition.setFromX(1.1);
+        transition.setToX(0);
+        transition.setFromY(1.1);
+        transition.setToY(0);
+
+        bounce.setOnFinished(e -> transition.play());
+        transition.setOnFinished(e -> {
+            turnIndicator.setVisible(false);
+            turnIndicator.getChildren().clear();
+            unlockInput();
+        });
+        bounce.play();
     }
 }
