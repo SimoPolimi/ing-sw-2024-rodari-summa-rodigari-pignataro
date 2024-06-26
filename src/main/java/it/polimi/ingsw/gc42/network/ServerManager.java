@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc42.controller.GameController;
 import it.polimi.ingsw.gc42.controller.GameStatus;
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
-import it.polimi.ingsw.gc42.model.classes.game.Game;
 import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteServer;
@@ -28,16 +27,10 @@ import java.util.HashMap;
  */
 public class ServerManager extends UnicastRemoteObject implements RemoteServer, Serializable {
     private GameCollection collection;
-    int port;
 
-    /**
-     * Constructor Method
-     * @param port the Port it's opened into
-     * @throws RemoteException in case of a Network Connection Error
-     */
-    protected ServerManager(int port) throws RemoteException {
-        this.port = port;
+    protected ServerManager() throws RemoteException {
     }
+
 
     /**
      * Getter Method for the List of Available Games that a Player can join.
@@ -262,17 +255,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     }
 
     /**
-     * Getter Method for Game
-     * @param gameID the Game's gameID
-     * @return the Game
-     * @throws RemoteException in case of a Network Communication Error
-     */
-    @Override
-    public Game getGame(int gameID) throws RemoteException {
-        return collection.get(gameID).getGame();
-    }
-
-    /**
      * Subscribes the Client inside a Game, so that it will automatically be notified when any event happens
      * @param gameID the Game's GameID
      * @param viewController the Client's RemoteViewController
@@ -388,18 +370,6 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     @Override
     public int getNumberOfPlayers(int gameID) throws RemoteException {
         return collection.get(gameID).getGame().getNumberOfPlayers();
-    }
-
-    /**
-     * Getter Method for a Player
-     * @param gameID the Game's gameID
-     * @param index the Player's playerID
-     * @return the Player
-     * @throws RemoteException in case of a Network Communication Error
-     */
-    @Override
-    public Player getPlayer(int gameID, int index) throws RemoteException {
-        return collection.get(gameID).getPlayer(index);
     }
 
     /**

@@ -9,7 +9,6 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This Class handles the TUI version of Server

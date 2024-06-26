@@ -1,6 +1,7 @@
-package it.polimi.ingsw.gc42.network.messages;
+package it.polimi.ingsw.gc42.network.messages.GameMessages;
 
 import it.polimi.ingsw.gc42.model.classes.cards.CardType;
+import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 /**
  * Implementation of a Socket Message used to request a Slot Card

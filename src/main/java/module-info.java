@@ -39,4 +39,6 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.network.interfaces to javafx.fxml;
     opens it.polimi.ingsw.gc42.network.messages to java.base;
     opens it.polimi.ingsw.gc42.view;
+    opens it.polimi.ingsw.gc42.network.messages.GameMessages to java.base;
+    opens it.polimi.ingsw.gc42.network.messages.PlayerMessages to java.base;
 }

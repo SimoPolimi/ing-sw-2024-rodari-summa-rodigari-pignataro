@@ -186,7 +186,7 @@ public class Server extends Application {
      * Copies into the User's clipboard the IP Address
      */
     @FXML
-    public  void copyIPAddressRMI() {
+    public void copyIPAddressRMI() {
         ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiIpCopyIcon);
         transition.setByX(-0.2);
         transition.setByY(-0.2);

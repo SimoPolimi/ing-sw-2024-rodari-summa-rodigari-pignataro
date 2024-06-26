@@ -57,7 +57,7 @@ public class RmiControllerServer implements ServerNetworkController, Serializabl
         } catch (ExportException e) {
             registry = LocateRegistry.getRegistry(port);
         }
-        server = new ServerManager(port);
+        server = new ServerManager();
         // Puts the shared GameCollection inside the ServerManager
         server.setCollection(games);
         registry.rebind("ServerManager", server);

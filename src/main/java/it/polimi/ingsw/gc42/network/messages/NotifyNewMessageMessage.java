@@ -5,19 +5,19 @@ import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 /**
  * Implementation of a Socket Message used to send a ChatMessage to the Client (notify)
  */
-public class ChatMessageMessage extends Message {
+public class NotifyNewMessageMessage extends Message {
     // Attributes
-    private final ChatMessage response;
+    private final ChatMessage message;
 
     /**
      * Constructor Method
      * @param type the Message's type of content
-     * @param response the ChatMessage to send
+     * @param message the ChatMessage to send
      */
     // Constructor Method
-    public ChatMessageMessage(MessageType type, ChatMessage response) {
+    public NotifyNewMessageMessage(MessageType type, ChatMessage message) {
         super(type);
-        this.response = response;
+        this.message = message;
     }
 
     // Getters and Setters
@@ -26,7 +26,7 @@ public class ChatMessageMessage extends Message {
      * Getter Method for the Content
      * @return the ChatMessage
      */
-    public ChatMessage getResponse() {
-        return response;
+    public ChatMessage getMessage() {
+        return message;
     }
 }

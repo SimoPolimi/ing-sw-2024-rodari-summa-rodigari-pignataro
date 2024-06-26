@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.RemoteViewController;
 import it.polimi.ingsw.gc42.network.interfaces.ServerNetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
+import it.polimi.ingsw.gc42.network.messages.GameMessages.*;
+import it.polimi.ingsw.gc42.network.messages.PlayerMessages.*;
 import it.polimi.ingsw.gc42.network.messages.responses.*;
 
 import java.io.*;
@@ -23,7 +25,7 @@ import java.util.concurrent.*;
  * This Class handles the Socket Server
  */
 public class SocketControllerServer implements ServerNetworkController, Serializable {
-    private transient ServerSocket serverSocket;
+    private ServerSocket serverSocket;
     private String ipAddress;
     private final int port = 23690;
     private Runnable onReady;
@@ -291,7 +293,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
 
                         @Override
                         public void notifyNewMessage(ChatMessage message) throws RemoteException {
-                            sendMessage(socket, new ChatMessageMessage(MessageType.NOTIFY_NEW_MESSAGE, message));
+                            sendMessage(socket, new NotifyNewMessageMessage(MessageType.NOTIFY_NEW_MESSAGE, message));
                         }
                     });
                 default:
@@ -343,7 +345,7 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
         System.out.println("Server socket created");
 
         // Creates its own ServerManager
-        server = new ServerManager(port);
+        server = new ServerManager();
         // Puts the shared GameCollection inside the ServerManager
         server.setCollection(games);
 

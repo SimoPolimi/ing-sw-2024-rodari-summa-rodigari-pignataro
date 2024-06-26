@@ -1,7 +1,6 @@
-package it.polimi.ingsw.gc42.network.messages.responses;
+package it.polimi.ingsw.gc42.network.messages.PlayerMessages;
 
 import it.polimi.ingsw.gc42.network.messages.MessageType;
-import it.polimi.ingsw.gc42.network.messages.PlayerMessage;
 
 /**
  * Implementation of a Socket Message used to send Chat Messages

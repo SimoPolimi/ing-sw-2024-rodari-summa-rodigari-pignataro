@@ -474,7 +474,6 @@ public class GameController implements Serializable, Observable {
      */
     public void playCard(int playerID, int handCard, int x, int y) {
         Player player = game.getPlayer(playerID);
-        // TODO: test drawing in GameStatus.LAST_TURN
         try {
             if(player.equals(game.getCurrentPlayer())) {
                 player.playCard(handCard, x, y);

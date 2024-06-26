@@ -1,6 +1,7 @@
-package it.polimi.ingsw.gc42.network.messages;
+package it.polimi.ingsw.gc42.network.messages.PlayerMessages;
 
 import it.polimi.ingsw.gc42.model.classes.game.Token;
+import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 /**
  * Implementation of a Socket Message used to set a Player's Token

@@ -7,12 +7,13 @@ import it.polimi.ingsw.gc42.model.classes.game.Player;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.network.messages.*;
+import it.polimi.ingsw.gc42.network.messages.GameMessages.*;
+import it.polimi.ingsw.gc42.network.messages.PlayerMessages.*;
 import it.polimi.ingsw.gc42.network.messages.responses.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
@@ -32,12 +33,10 @@ public class SocketClient implements NetworkController {
     private int playerID;
     private Player owner;
     private Socket server;
-    private PrintWriter out;
     private ObjectInputStream streamIn;
     private ObjectOutputStream streamOut;
     private final BlockingDeque<Message> queue = new LinkedBlockingDeque<>();
     private boolean alreadySetRemoteView = false;
-    private boolean alive = true;
 
     private ClientController clientController;
 
@@ -122,7 +121,7 @@ public class SocketClient implements NetworkController {
             case GET_READY -> clientController.getReady(((IntResponse) message).getResponse());
             case NOTIFY_LAST_TURN -> clientController.notifyLastTurn();
             case NOTIFY_END_GAME -> clientController.notifyEndGame(((ListMapStrStrResponse) message).getResponse());
-            case NOTIFY_NEW_MESSAGE -> clientController.notifyNewMessage(((ChatMessageMessage) message).getResponse());
+            case NOTIFY_NEW_MESSAGE -> clientController.notifyNewMessage(((NotifyNewMessageMessage) message).getMessage());
             // Response from server
             default -> queue.add(message);
         }

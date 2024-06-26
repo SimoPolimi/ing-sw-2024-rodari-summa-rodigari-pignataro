@@ -1,4 +1,6 @@
-package it.polimi.ingsw.gc42.network.messages;
+package it.polimi.ingsw.gc42.network.messages.GameMessages;
+
+import it.polimi.ingsw.gc42.network.messages.MessageType;
 
 /**
  * Implementation of a Socket Message used to request one Player's playerID

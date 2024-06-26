@@ -114,14 +114,6 @@ public interface RemoteServer extends Remote {
     void grabCard(int gameID, int playerID, CardType type, int slot) throws RemoteException;
 
     /**
-     * Getter Method for Game
-     * @param gameID the Game's gameID
-     * @return the Game
-     * @throws RemoteException in case of a Network Communication Error
-     */
-    Game getGame(int gameID) throws RemoteException;
-
-    /**
      * Subscribes the Client inside a Game, so that it will automatically be notified when any event happens
      * @param gameID the Game's GameID
      * @param viewController the Client's RemoteViewController
@@ -169,14 +161,6 @@ public interface RemoteServer extends Remote {
      */
     int getNumberOfPlayers(int gameID) throws RemoteException;
 
-    /**
-     * Getter Method for a Player
-     * @param gameID the Game's gameID
-     * @param index the Player's playerID
-     * @return the Player
-     * @throws RemoteException in case of a Network Communication Error
-     */
-    Player getPlayer(int gameID, int index) throws RemoteException;
 
     /**
      * Sends a message to the Server telling it to create a new Game
