@@ -428,18 +428,26 @@ public class GameTerminal extends Application implements ViewController {
                         exit = true;
                         break;
                     case "i":
-                        System.out.println("Inventory");
-                        System.out.println("Kingdom resource");
-                        // Missing methods, will add later
-                        // TODO: Add methods
-                        /*System.out.println(("Animal:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.ANIMAL)));
-                        System.out.println(("Plant:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.PLANT)));
-                        System.out.println(("Fungi:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.FUNGI)));
-                        System.out.println(("Insect:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(KingdomResource.INSECT)));
-                        System.out.println("Resource");
-                        System.out.println(("Feather:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.FEATHER)));
-                        System.out.println(("Potion:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.POTION)));
-                        System.out.println(("Scroll:" + controller.getGame().getCurrentPlayer().getPlayField().getNumberOf(Resource.SCROLL)));*/
+                        actions.add(() -> {
+                            ArrayList<HashMap<String, String>> inventory = null;
+                            try {
+                                inventory = controller.getInventory();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            if (null != inventory) {
+                                System.out.println("Inventory");
+                                System.out.println((terminalCharacters.getCharacter(Characters.FUNGI) + ": " + inventory.get(playerID - 1).get("FUNGI")));
+                                System.out.println((terminalCharacters.getCharacter(Characters.PLANT) + ": " + inventory.get(playerID - 1).get("PLANT")));
+                                System.out.println((terminalCharacters.getCharacter(Characters.ANIMAL) + ": " + inventory.get(playerID - 1).get("ANIMAL")));
+                                System.out.println((terminalCharacters.getCharacter(Characters.INSECT) + ": " + inventory.get(playerID - 1).get("INSECT")));
+                                System.out.println("-----------");
+                                System.out.println((terminalCharacters.getCharacter(Characters.FEATHER) + ": " + inventory.get(playerID - 1).get("FEATHER")));
+                                System.out.println((terminalCharacters.getCharacter(Characters.POTION) + ": " + inventory.get(playerID - 1).get("POTION")));
+                                System.out.println((terminalCharacters.getCharacter(Characters.SCROLL) + ": " + inventory.get(playerID - 1).get("SCROLL")));
+                            } else System.err.println("Network Error!");
+                            returnToMenu();
+                        });
                         break;
                     case "7":
                         showRanking();
