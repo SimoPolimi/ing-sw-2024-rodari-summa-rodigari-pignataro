@@ -3,8 +3,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-shade/
-
 ### IntelliJ IDEA ###
 .idea/
 *.iws
