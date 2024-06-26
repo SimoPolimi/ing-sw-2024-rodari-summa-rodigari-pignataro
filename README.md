@@ -192,43 +192,25 @@ Then, press ```Play``` to see a list of all the available matches, and choose to
 
 
 #### TUI
-From the Launcher, select ```Textual Mode``` to open the Terminal User Interface.
-Alternatively, TUI can be directly launched directly from Terminal, or from the Terminal's Launcher (see Instructions).
-Once there, you will be asked to pick one of the 3 Graphics Modes supported by TUI:
-- Fancy: uses the full Unicode charset to display the UI using unique characters, colors and emojis.
-  Not all Terminals support this mode: please make sure you can see the full Card in the beginning, otherwise choose another Mode.
-  The test Card should look like this:
-  
-  ```
-  🍄🟥🟥🟨🟨🟨🟩🟩🌳
-  🟥🟥🟨🟨⚪🟨🟨🟩🟩
-  🟨⚪🟨🍷📜🪶🟨⚪🟨
-  🟪🟪🟨🟨⚪🟨🟨🟦🟦
-  🦋🟪🟪🟨🟨🟨🟦🟦🐺
-  ```
-- Enhanced: uses the standard charset, to be more widely compatible, but adds a bit of personality using colors.
-  Most Terminals out there should support the Unicode colors, so it's highly likely that this Mode works correctly, but if you have problems visualizing the test Card, please consider using the Mode that works best.
-The test Card should look like this, but with the same colors as Fancy Mode:
+From the Launcher, select ```Textual Mode``` to open the Terminal User Interface. Alternatively, TUI can be directly launched directly from Terminal, or from the Terminal's Launcher (see Instructions). Once there, you will be asked to pick one of the 3 Graphics Modes supported by TUI:
 
-  ```
-  ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿
-  ▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦
-  ▩ ■ ▩ Ỗ  ∫  ϡ ▩ ■ ▩
-  ▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥
-  ¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘
-  ```
-  
-- Standard Mode: uses the standard charset without any colors or additional feature.
-  This ensures it will be compatible with virtually any Terminal and font out there.
-  The Test Card for this Mode looks exactly like the one for Enhanced Mode, but with no colors, so like this:
 
-   ```
-  ନ ▤ ▤ ▩ ▩ ▩ ▦ ▦ ✿
-  ▤ ▤ ▩ ▩ ■ ▩ ▩ ▦ ▦
-  ▩ ■ ▩ Ỗ  ∫  ϡ ▩ ■ ▩
-  ▧ ▧ ▩ ▩ ■ ▩ ▩ ▥ ▥
-  ¥ ▧ ▧ ▩ ▩ ▩ ▥ ▥ ♘
-  ```
+<img align="right" width="120" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/020c3c06-7774-4cba-8642-95d36cd993c3" alt="Fancy Mode">
+
+- **Fancy Mode**
+  Uses the full Unicode charset to display the UI using unique characters, colors and emojis. Not all Terminals support this mode: please make sure you can see the full Card in the beginning, otherwise choose another Mode.
+
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/f7c9fd57-1fdd-4ea4-837b-e0a9b48e919f" alt="Enhanced Mode">
+  
+- **Enhanced Mode**
+  Uses the standard charset, to be more widely compatible, but adds a bit of personality using colors. Most Terminals out there should support the Unicode colors, so it's highly likely that this Mode works correctly, but if you have problems visualizing the test Card, please consider using the Mode that works best.
+  
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/965591d0-2e0b-4a70-be5c-e7ece3208d29" alt="Standard Mode">
+  
+- **Standard Mode**
+  Uses the standard charset without any colors or additional feature. This ensures it will be compatible with virtually any Terminal and font out there. The Test Card for this Mode looks exactly like the one for Enhanced Mode, but with no colors.
+  
+
 
 After choosing the Graphics Mode, TUI will guide you through the initial onboarding process, asking to choose between RMI and Socket, to pick a Nickname, and finally to either join an existing Game or create a new one yourself.
 
