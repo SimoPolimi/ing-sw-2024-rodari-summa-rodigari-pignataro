@@ -97,7 +97,7 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
     <th>Progress</th>
   </tr>
   <tr>
-    <td rowspan="4" align="center" style="font-weight:bold">Model</td>
+    <td rowspan="2" align="center" style="font-weight:bold">Model</td>
     <td align="center">Class</td>
     <td align="center"><img src="https://geps.dev/progress/85?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Model Class Progress"></td>
   </tr>
@@ -106,15 +106,7 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
     <td align="center"><img src="https://geps.dev/progress/94?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Model Method Progress"></td>
   </tr>
   <tr>
-    <td align="center">Lines</td>
-    <td align="center"><img src="https://geps.dev/progress/93?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Model Lines Progress"></td>
-  </tr>
-  <tr>
-    <td align="center">Branch</td>
-    <td align="center"><img src="https://geps.dev/progress/80?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Model Branch Progress"></td>
-  </tr>
-  <tr>
-    <td rowspan="4" align="center" style="font-weight:bold">Controller</td>
+    <td rowspan="2" align="center" style="font-weight:bold">Controller</td>
     <td align="center">Class</td>
     <td align="center"><img src="https://geps.dev/progress/100?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Class Progress"></td>
   </tr>
@@ -123,19 +115,12 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
     <td align="center"><img src="https://geps.dev/progress/92?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Method Progress"></td>
   </tr>
   <tr>
-    <td align="center">Lines</td>
-    <td align="center"><img src="https://geps.dev/progress/75?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Lines Progress"></td>
-  </tr>
-  <tr>
-    <td align="center">Branch</td>
-    <td align="center"><img src="https://geps.dev/progress/70?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Branch Progress"></td>
-  </tr>
-  <tr>
     <td colspan="3" align="center">
       <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/687d9adb-28ae-45e7-a869-dcebfe72534b" alt="Diagram Image">
     </td>
   </tr>
 </table>
+
 
 
 
@@ -195,7 +180,7 @@ Then, press ```Play``` to see a list of all the available matches, and choose to
 From the Launcher, select ```Textual Mode``` to open the Terminal User Interface. Alternatively, TUI can be directly launched directly from Terminal, or from the Terminal's Launcher (see Instructions). Once there, you will be asked to pick one of the 3 Graphics Modes supported by TUI:
 
 
-<img align="right" width="120" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/020c3c06-7774-4cba-8642-95d36cd993c3" alt="Fancy Mode">
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/020c3c06-7774-4cba-8642-95d36cd993c3" alt="Fancy Mode">
 
 - **Fancy Mode**
   Uses the full Unicode charset to display the UI using unique characters, colors and emojis. Not all Terminals support this mode: please make sure you can see the full Card in the beginning, otherwise choose another Mode.
