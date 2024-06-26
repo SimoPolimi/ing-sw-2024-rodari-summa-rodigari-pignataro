@@ -22,7 +22,7 @@ public interface RemoteServer extends Remote {
 
     /**
      * Getter Method for the List of Available Games that a Player can join.
-     * The data is returned in an HashMap that uses String as a key and as a value:
+     * The data is returned in a HashMap that uses String as a key, and as a value:
      * all data is written in the String format, including numbers, and all keys are String as well.
      * Each HashMap contains the data of a single Game, and they are all contained in an ArrayList of
      * HashMaps, so that one HashMap for every Game can be found.
@@ -33,7 +33,7 @@ public interface RemoteServer extends Remote {
      * - NumberOfDisconnectedPlayers: the number of Players in the Game but disconnected,
      * used to iterate through the next elements
      * - DisconnectedPlayerX: the Disconnected Players' Nickname, so that the Client can determine if the User
-     * can re-join this Game or not. NOTE: There are multiple of them, starting from DisconnectedPlayer0 all the way to
+     * can re-join this Game or not. NOTE: There is multiple of them, starting from DisconnectedPlayer0 all the way to
      * DisconnectedPlayerN, where N = NumberOfDisconnectedPlayers - 1.
      * @return the List of Games
      * @throws RemoteException in case of a Network Communication Error
@@ -437,4 +437,15 @@ public interface RemoteServer extends Remote {
      * @throws RemoteException in case of a Network Connection Error
      */
     void blockNickName(String nickname) throws RemoteException;
+
+    /**
+     * Getter Method for all Player's played Items.
+     * These Items are stored inside a HashMap of Strings, using the following keys:
+     * FUNGI, PLANT, ANIMAL, INSECT, POTION, FEATHER, SCROLLS.
+     * The numeric values are stored in String form too.
+     * There is 1 HashMap for each Player: they are all contained in an ArrayList
+     * @return the List of data
+     * @throws RemoteException in case of a Network Communication Error
+     */
+    ArrayList<HashMap<String, String>> getInventory(int gameID) throws RemoteException;
 }

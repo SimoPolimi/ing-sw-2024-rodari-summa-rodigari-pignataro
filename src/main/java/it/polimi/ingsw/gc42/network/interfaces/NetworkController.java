@@ -362,4 +362,15 @@ public interface NetworkController {
      * @throws RemoteException in case of a Network Connection Error
      */
     ObjectiveCard getCommonObjective(int cardID) throws RemoteException;
+
+    /**
+     * Getter Method for all Player's played Items.
+     * These Items are stored inside a HashMap of Strings, using the following keys:
+     * FUNGI, PLANT, ANIMAL, INSECT, POTION, FEATHER, SCROLLS.
+     * The numeric values are stored in String form too.
+     * There is 1 HashMap for each Player: they are all contained in an ArrayList
+     * @return the List of data
+     * @throws RemoteException in case of a Network Communication Error
+     */
+    ArrayList<HashMap<String, String>> getInventory() throws RemoteException;
 }

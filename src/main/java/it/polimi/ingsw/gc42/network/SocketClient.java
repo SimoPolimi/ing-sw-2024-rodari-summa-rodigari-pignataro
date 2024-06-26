@@ -42,6 +42,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Constructor Method
+     *
      * @param ipAddress the Client's IP Address
      */
     public SocketClient(String ipAddress) {
@@ -50,6 +51,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Connects to the Server, creating a Socket
+     *
      * @throws IOException in case of a Network Communication Error
      */
     @Override
@@ -74,7 +76,7 @@ public class SocketClient implements NetworkController {
     /**
      * Translates a Message into an action to execute on the View
      */
-    private synchronized void receiveMessage(){
+    private synchronized void receiveMessage() {
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
         pool.submit(() -> {
             while (true) {
@@ -97,31 +99,41 @@ public class SocketClient implements NetworkController {
 
     /**
      * Translates the Message
+     *
      * @param message the Message to translate
      * @throws RemoteException in case of a Network Communication Error
      */
     private void translate(Message message) throws RemoteException {
-        switch (message.getType()){
+        switch (message.getType()) {
             case SHOW_SECRET_OBJECTIVES_SELECTION_DIALOG -> clientController.showSecretObjectivesSelectionDialog();
             case SHOW_STARTER_CARD_SELECTION_DIALOG -> clientController.showStarterCardSelectionDialog();
             case SHOW_TOKEN_SELECTION_DIALOG -> clientController.showTokenSelectionDialog();
             case ASK_TO_DRAW_OR_GRAB -> clientController.askToDrawOrGrab(((PlayerMessage) message).getPlayerID());
             case NOTIFY_GAME_IS_STARTING -> clientController.notifyGameIsStarting();
-            case NOTIFY_DECK_CHANGED -> clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
-            case NOTIFY_SLOT_CARD_CHANGED -> clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
-            case NOTIFY_PLAYERS_POINTS_CHANGED -> clientController.notifyPlayersPointsChanged(((PlayersPointsChangedMessage) message).getToken(), ((PlayersPointsChangedMessage) message).getNewPoints());
+            case NOTIFY_DECK_CHANGED ->
+                    clientController.notifyDeckChanged(((DeckChangedMessage) message).getCardType());
+            case NOTIFY_SLOT_CARD_CHANGED ->
+                    clientController.notifySlotCardChanged(((SlotCardMessage) message).getCardType(), ((SlotCardMessage) message).getSlot());
+            case NOTIFY_PLAYERS_POINTS_CHANGED ->
+                    clientController.notifyPlayersPointsChanged(((PlayersPointsChangedMessage) message).getToken(), ((PlayersPointsChangedMessage) message).getNewPoints());
             case NOTIFY_NUMBER_OF_PLAYERS_CHANGED -> clientController.notifyNumberOfPlayersChanged();
-            case NOTIFY_PLAYERS_TOKEN_CHANGED -> clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
-            case NOTIFY_PLAYERS_PLAY_AREA_CHANGED -> clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());
-            case NOTIFY_PLAYERS_HAND_CHANGED -> clientController.notifyPlayersHandChanged(((PlayerMessage) message).getPlayerID());
-            case NOTIFY_HAND_CARD_WAS_FLIPPED -> clientController.notifyHandCardWasFlipped(((FlipCardMessage) message).getPlayerID(), ((FlipCardMessage) message).getCardID());
-            case NOTIFY_PLAYERS_OBJECTIVE_CHANGED -> clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_PLAYERS_TOKEN_CHANGED ->
+                    clientController.notifyPlayersTokenChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_PLAYERS_PLAY_AREA_CHANGED ->
+                    clientController.notifyPlayersPlayAreaChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_PLAYERS_HAND_CHANGED ->
+                    clientController.notifyPlayersHandChanged(((PlayerMessage) message).getPlayerID());
+            case NOTIFY_HAND_CARD_WAS_FLIPPED ->
+                    clientController.notifyHandCardWasFlipped(((FlipCardMessage) message).getPlayerID(), ((FlipCardMessage) message).getCardID());
+            case NOTIFY_PLAYERS_OBJECTIVE_CHANGED ->
+                    clientController.notifyPlayersObjectiveChanged(((PlayerMessage) message).getPlayerID());
             case NOTIFY_COMMON_OBJECTIVES_CHANGED -> clientController.notifyCommonObjectivesChanged();
             case NOTIFY_TURN_CHANGED -> clientController.notifyTurnChanged();
             case GET_READY -> clientController.getReady(((IntResponse) message).getResponse());
             case NOTIFY_LAST_TURN -> clientController.notifyLastTurn();
             case NOTIFY_END_GAME -> clientController.notifyEndGame(((ListMapStrStrResponse) message).getResponse());
-            case NOTIFY_NEW_MESSAGE -> clientController.notifyNewMessage(((NotifyNewMessageMessage) message).getMessage());
+            case NOTIFY_NEW_MESSAGE ->
+                    clientController.notifyNewMessage(((NotifyNewMessageMessage) message).getMessage());
             // Response from server
             default -> queue.add(message);
         }
@@ -129,6 +141,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's PlayField
+     *
      * @param playerID the Player's playerID
      * @return an ArrayList containing all the Cards played by the Player
      */
@@ -140,18 +153,19 @@ public class SocketClient implements NetworkController {
 
     /**
      * Waits for a response after a GET message
+     *
      * @param messageType the Get MessageType to wait for
      * @return the Message containing the response
      */
     private synchronized Message waitResponse(MessageType messageType) {
         Message temp = null;
-        try{
+        try {
             temp = queue.take();
-            while (!temp.getType().equals(messageType)){
+            while (!temp.getType().equals(messageType)) {
                 queue.addLast(temp);
                 temp = queue.take();
             }
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return temp;
@@ -159,19 +173,21 @@ public class SocketClient implements NetworkController {
 
     /**
      * Sends a Message to the Server through the Socket Connection
+     *
      * @param message the Message to send
      */
     public synchronized void sendMessage(Message message) {
-        try{
+        try {
             streamOut.writeObject(message);
             streamOut.reset();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Getter Method for isConnected
+     *
      * @return a boolean value indicating if it's connected or not
      */
     @Override
@@ -182,9 +198,10 @@ public class SocketClient implements NetworkController {
     /**
      * Saves the View class on which to execute actions, and sends a message to subscribe
      * to a specific Game to receive messages from
+     *
      * @param viewController the View class
      * @throws AlreadyBoundException if the Class is already connected
-     * @throws RemoteException in case of a Network Communication Error
+     * @throws RemoteException       in case of a Network Communication Error
      */
     @Override
     public void setViewController(ClientController viewController) throws AlreadyBoundException, RemoteException {
@@ -199,6 +216,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Adds a Player into a Game
+     *
      * @param player the Player to add
      */
     @Override
@@ -211,6 +229,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Removes the Player from the Game entirely
+     *
      * @param playerID the Player's playerID
      * @return a boolean value indicating if the removal was successful or not
      */
@@ -232,9 +251,10 @@ public class SocketClient implements NetworkController {
      * Plays a Card from a certain Player in a specific set of Coordinates
      * The Card to play is defined as the index of the Card in the Player's Hand.
      * The Coordinates need to be in the Model's format
+     *
      * @param handCard the index of the Card inside the Player's Hand [1, 2, 3]
-     * @param x the x Coordinate where the Card will be placed
-     * @param y the y Coordinate where the Card will be placed
+     * @param x        the x Coordinate where the Card will be placed
+     * @param y        the y Coordinate where the Card will be placed
      */
     @Override
     public void playCard(int handCard, int x, int y) {
@@ -243,8 +263,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Flips one of the Player's Cards
+     *
      * @param playerID the Player's playerID
-     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     * @param cardID   the index of the Card inside the Player's Hand [0, 1, 2]
      */
     @Override
     public void flipCard(int playerID, int cardID) {
@@ -253,8 +274,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Draws a Card from one of the 2 Decks and places it inside the Player's Hand
+     *
      * @param playerID the Player's playerID
-     * @param type a CardType indicating from which Deck to draw [RESOURCECARD, GOLDCARD]
+     * @param type     a CardType indicating from which Deck to draw [RESOURCECARD, GOLDCARD]
      */
     @Override
     public void drawCard(int playerID, CardType type) {
@@ -263,9 +285,10 @@ public class SocketClient implements NetworkController {
 
     /**
      * Grabs a Card from one of the 4 Slots and places it inside the Player's Hand
+     *
      * @param playerID the Player's playerID
-     * @param type a CardType indicating from which Slots to grab [RESOURCECARD, GOLDCARD]
-     * @param slot an int indicating which Slot in particular [1, 2]
+     * @param type     a CardType indicating from which Slots to grab [RESOURCECARD, GOLDCARD]
+     * @param slot     an int indicating which Slot in particular [1, 2]
      */
     @Override
     public void grabCard(int playerID, CardType type, int slot) {
@@ -274,6 +297,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Setter Method for the Game's GameStatus
+     *
      * @param status the GameStatus to set
      */
     @Override
@@ -296,6 +320,7 @@ public class SocketClient implements NetworkController {
      * - DisconnectedPlayerX: the Disconnected Players' Nickname, so that the Client can determine if the User
      * can re-join this Game or not. NOTE: There are multiple of them, starting from DisconnectedPlayer0 all the way to
      * DisconnectedPlayerN, where N = NumberOfDisconnectedPlayers - 1.
+     *
      * @return the List of Games
      * @throws RemoteException in case of a Network Communication Error
      */
@@ -307,6 +332,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Picks a Game and saves its gameID
+     *
      * @param index the Game's gameID
      * @throws RemoteException in case of a Network Communication Error
      */
@@ -318,6 +344,7 @@ public class SocketClient implements NetworkController {
     /**
      * Sends a message to the Server telling it to create a new Game.
      * Saves the newly obtained gameID
+     *
      * @throws RemoteException in case of a Network Communication Error
      */
     @Override
@@ -328,6 +355,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the gameID
+     *
      * @return the gameID
      * @throws RemoteException in case of a Network Communication Error
      */
@@ -338,6 +366,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Setter Method for the Game's name
+     *
      * @param name a String containing the Name to set in the Game
      * @throws RemoteException in case of a Network Communication Error
      */
@@ -348,6 +377,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's playerID
+     *
      * @param nickName the Player's Nickname
      * @return the Player's playerID
      * @throws RemoteException in case of a Network Connection Error
@@ -360,6 +390,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the number of Players inside a Game
+     *
      * @return the number of Players already in that Game
      */
     @Override
@@ -370,8 +401,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Setter Method for the Player's GameStatus
+     *
      * @param playerID the Player's playerID
-     * @param status the GameStatus to set
+     * @param status   the GameStatus to set
      */
     @Override
     public void setPlayerStatus(int playerID, GameStatus status) {
@@ -380,8 +412,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Setter Method for the Player's Token
+     *
      * @param playerID the Player's playerID
-     * @param token the Token to set
+     * @param token    the Token to set
      */
     @Override
     public void setPlayerToken(int playerID, Token token) {
@@ -393,7 +426,8 @@ public class SocketClient implements NetworkController {
      * The Secret Objective is already stored inside the Model and IS NOT sent in here.
      * The Player has 2 Temporary Secret Objectives: this method contains either 1 or 2, indicating
      * which one to keep.
-     * @param playerID the Player's playerID
+     *
+     * @param playerID   the Player's playerID
      * @param pickedCard an int representing the User's choice [1, 2]
      */
     @Override
@@ -405,6 +439,7 @@ public class SocketClient implements NetworkController {
      * Setter Method for the Player's Starter Card.
      * The Starter Card is already inside the Model, in the temporaryStarterCard field.
      * This method tells the Server to move it from there to the Player's PlayArea in (0, 0).
+     *
      * @param playerID the Player's playerID
      */
     @Override
@@ -414,6 +449,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Flips the Player's Temporary Starter Card
+     *
      * @param playerID the Player's playerID
      */
     @Override
@@ -423,6 +459,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Decks.
+     *
      * @param type a CardType indicating which Deck to return
      * @return an ArrayList of Card, containing all the Cards inside the Deck, in the same order
      */
@@ -434,6 +471,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Slots
+     *
      * @param type a CardType indicating which Slots to consider [RESOURCECARD, GOLDCARD]
      * @param slot an int indicating which Slot to return [1, 2]
      * @return a copy of the Card inside that Slot
@@ -446,6 +484,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's Secret Objective
+     *
      * @param playerID the Player's playerID
      * @return the Player's ObjectiveCard
      */
@@ -457,6 +496,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Current Turn
+     *
      * @return the playerID corresponding to the Player who has the Turn
      */
     @Override
@@ -467,6 +507,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Methods for the Temporary Secret Objectives
+     *
      * @param playerID the Player's playerID
      * @return an ArrayList containing the Players Temporary Secret Objectives
      */
@@ -478,6 +519,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's Temporary Starter Card
+     *
      * @param playerID the Player's playerID
      * @return the Player's Temporary Starter Card
      */
@@ -489,6 +531,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's GameStatus
+     *
      * @param playerID the Player's playerID
      * @return the Player's GameStatus
      */
@@ -506,6 +549,7 @@ public class SocketClient implements NetworkController {
      * - Nickname: the Player's Nickname
      * - Points: the Player's points
      * - Token: a String representation of the Player's Token [RED, BLUE, GREEN, YELLOW]
+     *
      * @return the Collection of data
      */
     @Override
@@ -516,6 +560,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's Hand's size
+     *
      * @param playerID the Player's playerID
      * @return the number of Cards inside the Player's Hand
      */
@@ -539,6 +584,7 @@ public class SocketClient implements NetworkController {
      * Getter Method for the Available Placements.
      * Returns an ArrayList of Coordinates, each indicating a position where a Card can be played
      * inside the Player's PlayArea
+     *
      * @param playerID the Player's playerID
      * @return an ArrayList of Coordinates
      */
@@ -549,9 +595,8 @@ public class SocketClient implements NetworkController {
     }
 
     /**
-     *
      * @param playerID the Player's playerID
-     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     * @param cardID   the index of the Card inside the Player's Hand [0, 1, 2]
      * @return a boolean value indicating if the Card's cost requirements are satisfied and the Card can be played
      */
     @Override
@@ -562,6 +607,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's Token
+     *
      * @param playerID the Player's playerID
      * @return the Player's Token
      */
@@ -573,6 +619,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's last played Card
+     *
      * @param playerID the Player's playerID
      * @return the Card last played by the Player
      */
@@ -593,8 +640,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Player's Hand's Cards
+     *
      * @param playerID the Player's playerID
-     * @param cardID the index of the Card inside the Player's Hand [0, 1, 2]
+     * @param cardID   the index of the Card inside the Player's Hand [0, 1, 2]
      * @return the Card
      */
     @Override
@@ -605,8 +653,9 @@ public class SocketClient implements NetworkController {
 
     /**
      * Sends a message in the Game's Chat
+     *
      * @param playerID the Player's playerID
-     * @param message a String containing the Message content
+     * @param message  a String containing the Message content
      * @throws RemoteException in case of a Network Connection Error
      */
     @Override
@@ -616,6 +665,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Game's Chat
+     *
      * @return an ArrayList of Message, containing the whole Chat
      * @throws RemoteException in case of a Network Connection Error
      */
@@ -627,6 +677,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Checks if a Nickname is available
+     *
      * @param nickname a String containing the Nickname
      * @return a boolean value indicating if the Nickname is available or not
      * @throws RemoteException in case of a Network Connection Error
@@ -639,6 +690,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Blocks a Nickname, so that nobody else can use it
+     *
      * @param nickname a String containing the Nickname
      * @throws RemoteException in case of a Network Connection Error
      */
@@ -649,6 +701,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Sets the Player as NOT DISCONNECTED, allowing it to play again
+     *
      * @param playerID the Player's playerID
      */
     @Override
@@ -658,6 +711,7 @@ public class SocketClient implements NetworkController {
 
     /**
      * Getter Method for the Common Objectives
+     *
      * @param cardID an int indicating which Card [1, 2]
      * @return the Objective Card
      * @throws RemoteException in case of a Network Connection Error
@@ -666,5 +720,21 @@ public class SocketClient implements NetworkController {
     public ObjectiveCard getCommonObjective(int cardID) throws RemoteException {
         sendMessage(new GetSlotCardMessage(MessageType.GET_COMMON_OBJECTIVE, gameID, CardType.OBJECTIVECARD, cardID));
         return ((ObjectiveCardResponse) waitResponse(MessageType.GET_COMMON_OBJECTIVE)).getResponse();
+    }
+
+    /**
+     * Getter Method for all Player's played Items.
+     * These Items are stored inside a HashMap of Strings, using the following keys:
+     * FUNGI, PLANT, ANIMAL, INSECT, POTION, FEATHER, SCROLLS.
+     * The numeric values are stored in String form too.
+     * There is 1 HashMap for each Player: they are all contained in an ArrayList
+     *
+     * @return the List of data
+     * @throws RemoteException in case of a Network Communication Error
+     */
+    @Override
+    public ArrayList<HashMap<String, String>> getInventory() throws RemoteException {
+        sendMessage(new GameMessage(MessageType.GET_INVENTORY, gameID));
+        return ((ListMapStrStrResponse) waitResponse(MessageType.GET_INVENTORY)).getResponse();
     }
 }

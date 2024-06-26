@@ -781,4 +781,31 @@ public class ServerManager extends UnicastRemoteObject implements RemoteServer, 
     public void blockNickName(String nickname) throws RemoteException {
         collection.blockNickname(nickname);
     }
+
+    /**
+     * Getter Method for all Player's played Items.
+     * These Items are stored inside a HashMap of Strings, using the following keys:
+     * FUNGI, PLANT, ANIMAL, INSECT, POTION, FEATHER, SCROLL.
+     * The numeric values are stored in String form too.
+     * There is 1 HashMap for each Player: they are all contained in an ArrayList
+     * @return the List of data
+     * @throws RemoteException in case of a Network Communication Error
+     */
+    @Override
+    public ArrayList<HashMap<String, String>> getInventory(int gameID) throws RemoteException {
+        ArrayList<HashMap<String, String>> inventory = new ArrayList<>();
+        for (int i = 1; i <= collection.get(gameID).getGame().getNumberOfPlayers(); i++) {
+            Player player = collection.get(gameID).getPlayer(i);
+            HashMap<String, String> map = new HashMap<>();
+            map.put("FUNGI", String.valueOf(player.getPlayField().getNumberOf(KingdomResource.FUNGI)));
+            map.put("ANIMAL", String.valueOf(player.getPlayField().getNumberOf(KingdomResource.ANIMAL)));
+            map.put("PLANT", String.valueOf(player.getPlayField().getNumberOf(KingdomResource.PLANT)));
+            map.put("INSECT", String.valueOf(player.getPlayField().getNumberOf(KingdomResource.INSECT)));
+            map.put("POTION", String.valueOf(player.getPlayField().getNumberOf(Resource.POTION)));
+            map.put("SCROLL", String.valueOf(player.getPlayField().getNumberOf(Resource.SCROLL)));
+            map.put("FEATHER", String.valueOf(player.getPlayField().getNumberOf(Resource.FEATHER)));
+            inventory.add(map);
+        }
+        return inventory;
+    }
 }

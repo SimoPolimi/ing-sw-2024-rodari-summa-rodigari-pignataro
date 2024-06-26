@@ -94,7 +94,7 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
   <tr>
     <th>Section</th>
     <th>Type</th>
-    <th>Progress</th>
+    <th>Coverage</th>
   </tr>
   <tr>
     <td rowspan="2" align="center" style="font-weight:bold">Model</td>

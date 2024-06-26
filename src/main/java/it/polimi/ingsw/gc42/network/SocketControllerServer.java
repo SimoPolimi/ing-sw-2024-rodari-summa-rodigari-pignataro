@@ -150,6 +150,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
                 case GET_PLAYER_TOKEN:
                     sendMessage(socket, new TokenResponse(MessageType.GET_PLAYER_TOKEN, server.getPlayerToken(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())))));
                     break;
+                case GET_INVENTORY:
+                    sendMessage(socket, new ListMapStrStrResponse(MessageType.GET_INVENTORY, server.getInventory(((GameMessage) temp).getGameID())));
+                    break;
                 case GET_PLAYERS_LAST_PLAYED_CARD:
                     PlayableCard card = server.getPlayersLastPlayedCard(((PlayerMessage) temp).getGameID(), ((((PlayerMessage) temp).getPlayerID())));
                             sendMessage(socket, new PlayableCardResponse(MessageType.GET_PLAYERS_LAST_PLAYED_CARD, card, card.getX(), card.getY(), card.isFrontFacing()));
