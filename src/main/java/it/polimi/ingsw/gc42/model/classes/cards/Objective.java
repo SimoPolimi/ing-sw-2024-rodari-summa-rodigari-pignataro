@@ -18,6 +18,7 @@ public abstract class Objective implements Serializable {
      * Constructor Method
      * @param points: the number of points the Objective gives every time the Condition is met.
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
+     * @param name the objective's name
      */
     public Objective(int points,String name, String description) {
         this.points = points;

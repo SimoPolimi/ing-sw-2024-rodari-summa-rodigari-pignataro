@@ -57,7 +57,6 @@ public class PlayAreaTerminal {
      * Initializes the Matrix used to represent the PlayArea, and puts the StarterCard already in there.
      * @param starter the Player's Starter Card
      * @param playerID the Player's playerID, used to initialize its Matrix's printing extremes values
-     * @return the initialized Matrix of String[][]
      */
     public void createCardMatrix(StarterCard starter, int playerID, TerminalCharacters terminalCharacters){
         String[][] playArea = new String[800][1440];
@@ -141,11 +140,10 @@ public class PlayAreaTerminal {
     }
 
     /**
-     * Calculates the Coordinates where a Card has to be placed inside the Matrix
+     * Calculates the Coordinates where a Card has to be placed inside the playArea, then updates the Matrix
      * @param card the Card to add inside the Matrix
      * @param cards the Player's PlayField
      * @param playerID the Player's playerID
-     * @return the updated Matrix
      */
     public void updateCardMatrix(PlayableCard card, ArrayList<PlayableCard> cards, int playerID, TerminalCharacters terminalCharacters){
         Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);

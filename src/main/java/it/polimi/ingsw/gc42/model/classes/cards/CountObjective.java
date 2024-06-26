@@ -15,6 +15,7 @@ public abstract class CountObjective extends Objective {
      * Constructor Method
      * @param points: the number of points the Objective gives every time the Condition is met.
      * @param number: the number of times the thing has to be counted fot the Condition to be satisfied once.
+     * @param name the objective's name
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
      */
     public CountObjective(int points, int number, String name, String description) {

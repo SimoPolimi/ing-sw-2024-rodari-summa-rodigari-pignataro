@@ -16,6 +16,7 @@ public abstract class PlacementObjective extends Objective {
      * @param points: the number of points the Objective gives every time the Condition is met.
      * @param description: a String containing the description of the Objective, used to display it in the GUI.
      * @param primaryType: the KingdomResource indicating the color of the Cards required for the Objective.
+     * @param name the objective's name.
      */
     public PlacementObjective(int points, String name, String description, KingdomResource primaryType) {
         super(points, name, description);

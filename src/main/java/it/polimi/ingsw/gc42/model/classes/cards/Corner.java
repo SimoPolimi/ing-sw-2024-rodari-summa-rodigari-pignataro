@@ -17,7 +17,7 @@ public class Corner implements Serializable {
     /**
      * Constructor Method with the Item inside the Corner (KingdomResource or Resource)
      *
-     * @param item the Item Inside the Corner
+     * @param item the Item inside the Corner
      */
     public Corner(Item item) {
         this.item = item;
@@ -29,9 +29,10 @@ public class Corner implements Serializable {
      * USE ONLY if you really need to specify the isCovered status.
      * OTHERWISE USE the default constructor.
      *
-     * @param isCovered: boolean that shows if that Corner is covered or if it's shown.
+     * @param isCovered  boolean that shows if that Corner is covered or if it's shown.
      *                   Only shown or un-covered Corners are used to calculate points and determine if a certain
      *                   objective is met or not. Covered Corners are ignored
+     * @param item the Item inside the Corner
      */
     public Corner(Item item, boolean isCovered) {
         this.item = item;
@@ -62,7 +63,7 @@ public class Corner implements Serializable {
 
     /**
      * Setter Method for item
-     * @param item, the Resource or Kingdom to put inside the Corner
+     * @param item the Resource or Kingdom to put inside the Corner
      */
     public void setItem(Item item) {
         this.item = item;

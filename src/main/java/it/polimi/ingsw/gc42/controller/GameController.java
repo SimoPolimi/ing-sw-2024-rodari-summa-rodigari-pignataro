@@ -66,7 +66,7 @@ public class GameController implements Serializable, Observable {
 
     /**
      * Setter Method for the currentStatus
-     * @@param the currentStatus
+     * @param currentStatus Current status of the Game
      */
     public void setCurrentStatus(GameStatus currentStatus) {
         this.currentStatus = currentStatus;

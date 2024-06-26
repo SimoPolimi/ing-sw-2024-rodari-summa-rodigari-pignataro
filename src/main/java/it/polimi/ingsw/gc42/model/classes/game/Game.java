@@ -264,6 +264,7 @@ public class Game implements Observable, Serializable {
      * Every PlayingDeck contains a Deck and two cards placed in Slot1 and Slot2, showing their Front Side.
      * Those 2 Cards are already drawn and positioned into their Slots.
      * Starter Cards are contained in StarterDeck, they don't have a PlayingDeck.
+     * @throws FileNotFoundException The file containing the cards' info is not found
      */
     public void initPlayingDecks() throws FileNotFoundException {
         Deck resourceCardDeck = Deck.initDeck(CardType.RESOURCECARD);

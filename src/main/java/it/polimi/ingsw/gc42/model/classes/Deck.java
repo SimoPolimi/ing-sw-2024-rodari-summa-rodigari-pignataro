@@ -255,7 +255,7 @@ public class Deck implements Observable, Serializable {
             case "forEachScroll" -> new ItemCountObjective(points, 1, Resource.SCROLL, name, description);
             case "forEachPotion" -> new ItemCountObjective(points, 1, Resource.POTION, name, description);
             case "forEachFeather" -> new ItemCountObjective(points, 1, Resource.FEATHER, name, description);
-            case "forEachCorner" -> new CornerCountObjective(points, 1, null, name, description);
+            case "forEachCorner" -> new CornerCountObjective(points, 1, name, description);
             case "diagonalPlacingRed" ->
                     new DiagonalPlacementObjective(points, KingdomResource.FUNGI, isLeftToRight, name, description);
             case "diagonalPlacingGreen" ->

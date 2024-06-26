@@ -19,6 +19,7 @@ public class DiagonalPlacementObjective extends PlacementObjective {
      * @param primaryType: the KingdomResource indicating the color of the Cards required for the Objective.
      * @param isLeftToRight: a boolean indicating if the placement is Top Left to Bottom Right (\) if true, or
      *                     Top Right to Bottom Left (/) if false.
+     * @param name the objective's name.
      * @param description: a String containing the Description of the Objective, displayed in the GUI.
      */
     public DiagonalPlacementObjective(int points, KingdomResource primaryType, boolean isLeftToRight, String name, String description) {

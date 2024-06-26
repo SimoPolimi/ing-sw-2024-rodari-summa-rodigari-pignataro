@@ -31,7 +31,7 @@ public class CardResponse extends Message {
 
     /**
      * Getter Method for the boolean value indicating if the Card is front facing
-     * @return
+     * @return isFrontFacing
      */
     public boolean isFrontFacing() {
         return isFrontFacing;

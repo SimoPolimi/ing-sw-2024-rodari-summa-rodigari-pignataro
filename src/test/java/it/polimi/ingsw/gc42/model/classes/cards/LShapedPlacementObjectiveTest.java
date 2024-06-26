@@ -70,17 +70,8 @@ class LShapedPlacementObjectiveTest {
 
         try {
             field.addCard(fungi.removeFirst(), 1, 0);
-            for (PlayableCard c : field.getPlayedCards()) {
-                System.out.println(c.getX()+" "+c.getY()+" "+c.getKingdom());
-            }
             field.addCard(fungi.removeFirst(), 0, -1);
-            for (PlayableCard c : field.getPlayedCards()) {
-                System.out.println(c.getX()+" "+c.getY()+" "+c.getKingdom());
-            }
             field.addCard(plant.removeFirst(), 0, -2);
-            for (PlayableCard c : field.getPlayedCards()) {
-                System.out.println(c.getX()+" "+c.getY()+" "+c.getKingdom());
-            }
             field.addCard(fungi.getFirst(), -1, -2);
             field.addCard(plant.getFirst(), -1, -3);
         } catch (IllegalPlacementException e) {

@@ -7,7 +7,10 @@ import java.io.Serializable;
  * A CardSide contains the four corners displayed on the side of a Card.
  * Each Corner can be either a KingdomCorner, a ResourceCorner, an EmptyCorner or null, in case there is no Corner.
  *
- * @param topLeftCorner Attributes
+ * @param topLeftCorner Corner in the upper left vertex of the CardSide
+ * @param bottomLeftCorner Corner in the lower left vertex of the CardSide
+ * @param topRightCorner Corner in the upper right vertex of the CardSide
+ * @param bottomRightCorner Corner in the lower right vertex of the CardSide
  */
 public record CardSide(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner,
                        Corner bottomRightCorner) implements Serializable {
