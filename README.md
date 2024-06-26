@@ -90,7 +90,53 @@
 https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
 
 ## Test coverage
-<img src ="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/687d9adb-28ae-45e7-a869-dcebfe72534b">
+<table>
+  <tr>
+    <th>Section</th>
+    <th>Type</th>
+    <th>Progress</th>
+  </tr>
+  <tr>
+    <td rowspan="4" align="center" style="font-weight:bold">Model</td>
+    <td align="center">Class</td>
+    <td align="center"><img src="https://geps.dev/progress/85?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Model Class Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Method</td>
+    <td align="center"><img src="https://geps.dev/progress/94?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Model Method Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Lines</td>
+    <td align="center"><img src="https://geps.dev/progress/93?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Model Lines Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Branch</td>
+    <td align="center"><img src="https://geps.dev/progress/80?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Model Branch Progress"></td>
+  </tr>
+  <tr>
+    <td rowspan="4" align="center" style="font-weight:bold">Controller</td>
+    <td align="center">Class</td>
+    <td align="center"><img src="https://geps.dev/progress/100?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Controller Class Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Method</td>
+    <td align="center"><img src="https://geps.dev/progress/92?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Controller Method Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Lines</td>
+    <td align="center"><img src="https://geps.dev/progress/75?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Controller Lines Progress"></td>
+  </tr>
+  <tr>
+    <td align="center">Branch</td>
+    <td align="center"><img src="https://geps.dev/progress/70?dangerColor=800000&warningColor=ff9900&successColor=006600" alt="Controller Branch Progress"></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">
+      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/687d9adb-28ae-45e7-a869-dcebfe72534b" alt="Diagram Image">
+    </td>
+  </tr>
+</table>
+
 
 
 
