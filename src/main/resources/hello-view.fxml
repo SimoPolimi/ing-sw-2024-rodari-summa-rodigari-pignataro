@@ -17,10 +17,6 @@
                         <children>
                             <AnchorPane fx:id="mainArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                                 <children>
-                                    <AnchorPane fx:id="rightPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="270" translateX="1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                                    <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1500" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                                    <AnchorPane fx:id="leftPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="90" translateX="-1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                                    <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                                     <StackPane fx:id="commonTableContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="-600" StackPane.alignment="TOP_CENTER">
                                         <children>
                                             <ImageView fitWidth="1300" preserveRatio="true" translateY="-120.0">
@@ -235,6 +231,10 @@
                                             </VBox>
                                         </children>
                                     </StackPane>
+                                    <AnchorPane fx:id="rightPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="270" translateX="1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                                    <AnchorPane fx:id="topPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="180" translateY="-1500" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                                    <AnchorPane fx:id="leftPlayerTableContainer" disable="true" maxHeight="1080" maxWidth="1700" rotate="90" translateX="-1300" translateY="-800" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                                    <AnchorPane fx:id="playerTableContainer" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                                 </children>
                             </AnchorPane>
                         </children>
