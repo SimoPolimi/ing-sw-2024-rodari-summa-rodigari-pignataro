@@ -120,6 +120,20 @@ public class GUIController implements ViewController {
     private Button sendButton;
     @FXML
     private Text chatHintTxt;
+    @FXML
+    private Text fungiPoints;
+    @FXML
+    private Text plantPoints;
+    @FXML
+    private Text animalPoints;
+    @FXML
+    private Text insectPoints;
+    @FXML
+    private Text potionPoints;
+    @FXML
+    private Text featherPoints;
+    @FXML
+    private Text scrollPoints;
 
     // Attributes
     private Dialog showingDialog;
@@ -736,6 +750,7 @@ public class GUIController implements ViewController {
         Thread thread = new Thread(() -> {
             if (this.playerID == playerID) {
                 table.refreshPlayArea();
+                refreshInventory();
             } else if (null != rightTable && playerID == rightTable.getPlayer()) {
                 rightTable.refreshPlayArea();
             } else if (null != topTable && playerID == topTable.getPlayer()) {
@@ -1026,5 +1041,22 @@ public class GUIController implements ViewController {
             unlockInput();
         });
         bounce.play();
+    }
+
+    private void refreshInventory() {
+        try {
+            ArrayList<HashMap<String, String>> inventory = controller.getInventory();
+            Platform.runLater(() -> {
+                fungiPoints.setText(inventory.get(playerID-1).get("FUNGI"));
+                plantPoints.setText(inventory.get(playerID-1).get("PLANT"));
+                animalPoints.setText(inventory.get(playerID-1).get("ANIMAL"));
+                insectPoints.setText(inventory.get(playerID-1).get("INSECT"));
+                potionPoints.setText(inventory.get(playerID-1).get("POTION"));
+                featherPoints.setText(inventory.get(playerID-1).get("FEATHER"));
+                scrollPoints.setText(inventory.get(playerID-1).get("SCROLL"));
+            });
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -239,7 +239,7 @@
                             </AnchorPane>
                         </children>
                     </AnchorPane>
-                    <VBox fx:id="settingsContainer" maxHeight="100" maxWidth="100" onMouseClicked="#toggleSettingsDialog" AnchorPane.leftAnchor="50" AnchorPane.bottomAnchor="50">
+                    <VBox fx:id="settingsContainer" maxHeight="100" maxWidth="100" onMouseClicked="#toggleSettingsDialog" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50">
                         <children>
                             <ImageView fitWidth="100" preserveRatio="true">
                                 <image>
@@ -252,10 +252,10 @@
                         </cursor>
                     </VBox>
 
-                    <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505" onMouseClicked="#toggleChat" AnchorPane.rightAnchor="-490" AnchorPane.bottomAnchor="20">
-                        <ImageView fx:id="chatBackground" preserveRatio="true" fitHeight="565">
+                    <StackPane fx:id="chatContainer" maxHeight="545" maxWidth="505" onMouseClicked="#toggleChat" AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="-490">
+                        <ImageView fx:id="chatBackground" fitHeight="565" preserveRatio="true">
                             <image>
-                                <Image url="@chat_background.png"/>
+                                <Image url="@chat_background.png" />
                             </image>
                         </ImageView>
                         <VBox fx:id="chatHintContainer" alignment="CENTER" spacing="10" translateX="-300">
@@ -320,18 +320,123 @@
                             <Insets left="10.0" right="10.0" />
                         </padding>
                     </VBox>
+
+                    <VBox fx:id="inventoryContainer" alignment="CENTER_LEFT" maxHeight="130.0" maxWidth="200" prefHeight="100.0" prefWidth="50.0" spacing="5" style="-fx-background-color: #343434aa;" AnchorPane.RightAnchor="5" AnchorPane.topAnchor="5">
+                        <children>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@fungi_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="fungiPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@plant_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="plantPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@animal_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="animalPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@insect_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="insectPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@potion_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="potionPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@feather_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="featherPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                <children>
+                                    <ImageView fitWidth="15.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@scroll_icon.png" />
+                                        </image>
+                                    </ImageView>
+                                    <Text fx:id="scrollPoints" fill="white" text="0">
+                                        <font>
+                                            <Font name="Tahoma Bold" size="10" />
+                                        </font>
+                                    </Text>
+                                </children>
+                            </HBox>
+                        </children>
+                        <padding>
+                            <Insets left="10.0" right="10.0" />
+                        </padding>
+                    </VBox>
+                    <ImageView fx:id="fullTableButton" fitWidth="150" onMouseClicked="#toggleGlobalMap" preserveRatio="true" visible="false" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="15">
+                        <image>
+                            <Image url="@fullTableIcon.png" />
+                        </image>
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </ImageView>
                 </children>
             </AnchorPane>
-
         </StackPane>
-        <ImageView fx:id="fullTableButton" fitWidth="150" onMouseClicked="#toggleGlobalMap" preserveRatio="true" translateX="850" translateY="-400" visible="false">
-            <image>
-                <Image url="@fullTableIcon.png" />
-            </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-        </ImageView>
         <VBox fx:id="dialog" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false">
             <children>
 
@@ -340,7 +445,7 @@
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
             </padding>
         </VBox>
-        <VBox fx:id="turnIndicator" alignment="CENTER" blendMode="SRC_ATOP" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" visible="false" translateY="400" mouseTransparent="true" disable="false">
+        <VBox fx:id="turnIndicator" alignment="CENTER" blendMode="SRC_ATOP" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" style="-fx-background-color: #575858CC; -fx-background-radius: 30;" translateY="400" visible="false">
             <children>
             </children>
             <padding>
