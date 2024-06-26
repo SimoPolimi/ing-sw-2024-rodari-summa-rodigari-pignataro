@@ -9,6 +9,8 @@ it.polimi.ingsw.gc42.model.interfaces
 it.polimi.ingsw.gc42.network
 it.polimi.ingsw.gc42.network.interfaces
 it.polimi.ingsw.gc42.network.messages
+it.polimi.ingsw.gc42.network.messages.GameMessages
+it.polimi.ingsw.gc42.network.messages.PlayerMessages
 it.polimi.ingsw.gc42.network.messages.responses
 it.polimi.ingsw.gc42.view
 it.polimi.ingsw.gc42.view.Classes
