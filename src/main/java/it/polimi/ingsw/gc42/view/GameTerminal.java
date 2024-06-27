@@ -346,6 +346,9 @@ public class GameTerminal extends Application implements ViewController {
     private void play() {
         System.out.print("\n\n\n");
         printPlayer();
+        System.out.println("-------------------");
+        showRanking();
+        System.out.println("-------------------");
         printMenu();
         printHandCards();
         inputHandler.listen(new TerminalListener() {
@@ -415,16 +418,13 @@ public class GameTerminal extends Application implements ViewController {
                                 actions.add(() -> {
                                     try {
                                         controller.sendChatMessage(playerID, input);
-                                        returnToMenu();
+                                        actions.add(GameTerminal.this::play);
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
                                 });
                             }
                         });
-                        break;
-                    case "6":
-                        exit = true;
                         break;
                     case "i":
                         actions.add(() -> {
@@ -448,36 +448,36 @@ public class GameTerminal extends Application implements ViewController {
                             returnToMenu();
                         });
                         break;
-                    case "7":
+                    case "6":
                         showRanking();
                         returnToMenu();
                         break;
-                    case "8":
+                    case "7":
                         printCommonObjectives();
                         System.out.println();
                         returnToMenu();
                         break;
-                    case "10":
-                        playAreas.get(playerID - 1).printPlayArea(playerID, terminalCharacters);
+                    case "8":
+                        playAreas.get(playerID - 1).printPlayArea(terminalCharacters);
                         returnToMenu();
                         break;
-                    case "11":
+                    case "9":
                         System.out.println("--- Your Table ---");
-                        playAreas.get(playerID-1).printPlayArea(playerID, terminalCharacters);
+                        playAreas.get(playerID-1).printPlayArea(terminalCharacters);
                         System.out.println("--- Others ---");
                         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                         for (int i = 0; i < 4; i++) {
                             if (i+1 != playerID && !playAreas.get(i).isInitialized()) {
                                 System.out.println(info.get(i).get("Nickname") + ":");
-                                playAreas.get(i).printPlayArea(i+1, terminalCharacters);
+                                playAreas.get(i).printPlayArea(terminalCharacters);
                             }
                         }
                         returnToMenu();
                         break;
-                    case "12":
+                    case "10":
                         askForGraphicsMode();
                         break;
-                    case "13":
+                    case "11":
                         if (!terminalCharacters.isAdvancedGraphicsMode()) {
                             System.out.println(terminalCharacters.getCharacter(Characters.FUNGI) + " -> Fungi kingdom icon");
                             System.out.println(terminalCharacters.getCharacter(Characters.PLANT) + " -> Plant kingdom icon");
@@ -500,6 +500,8 @@ public class GameTerminal extends Application implements ViewController {
                             System.out.println(color("Unknown command", UiColors.RED));
                         }
                         break;
+                    case "e":
+                        System.exit(0);
                     default:
                         System.out.println(color("Unknown command", UiColors.RED));
                         actions.add(() -> play());
@@ -640,16 +642,15 @@ public class GameTerminal extends Application implements ViewController {
         System.out.println("3) Show your Secret Objective");
         System.out.println("4) Show chat");
         System.out.println("5) Send a message");
-        System.out.println("6) Exit");
-        System.out.println("7) Show ranking");
-        System.out.println("8) Show the Common Objectives");
-        System.out.println("9) Show Scoreboard");
-        System.out.println("10) Print your Table");
-        System.out.println("11) Print all Tables");
-        System.out.println("12) Change Graphics Mode");
+        System.out.println("6) Show ranking");
+        System.out.println("7) Show the Common Objectives");
+        System.out.println("8) Print your Table");
+        System.out.println("9) Print all Tables");
+        System.out.println("10) Change Graphics Mode");
         if (!isAdvancedGraphicsMode) {
-            System.out.println("13) Show a legend with character descriptions");
+            System.out.println("11) Show a legend with character descriptions");
         }
+        System.out.println("e) Exit");
         System.out.println("Digit a number to select the action.");
         System.out.println();
     }
@@ -971,11 +972,9 @@ public class GameTerminal extends Application implements ViewController {
         }
     }
 
-    // Not needed
-    //TODO: Remove
     @Override
     public void notifyGameIsStarting() {
-
+        // Not needed
     }
 
     @Override
@@ -990,14 +989,9 @@ public class GameTerminal extends Application implements ViewController {
         // Slots are only shown when needed.
     }
 
-    /**
-     * Shows the updated Ranking of all Player's points
-     * @param token the Token of the Player who updated its Points.
-     * @param newPoints the updated Points' value
-     */
     @Override
     public void notifyPlayersPointsChanged(Token token, int newPoints) {
-        actions.add(this::showRanking);
+        // Not needed, showing the points everytime is too much
     }
 
     /**
@@ -1074,12 +1068,12 @@ public class GameTerminal extends Application implements ViewController {
         actions.add(() -> {
             ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
             if (!playAreas.get(playerID - 1).isInitialized()) {
-                playAreas.get(playerID - 1).updateCardMatrix( cards.getLast(), cards, playerID, terminalCharacters);
+                playAreas.get(playerID - 1).updateCardMatrix( cards.getLast(), cards,  terminalCharacters);
             } else {
-                playAreas.get(playerID - 1).createCardMatrix((StarterCard) cards.getFirst(), playerID, terminalCharacters);
+                playAreas.get(playerID - 1).createCardMatrix((StarterCard) cards.getFirst(),  terminalCharacters);
             }
             if (this.playerID == playerID) {
-                playAreas.get(playerID - 1).printPlayArea(playerID, terminalCharacters);
+                playAreas.get(playerID - 1).printPlayArea(terminalCharacters);
             }
         });
     }
@@ -1158,6 +1152,7 @@ public class GameTerminal extends Application implements ViewController {
             actions.add(this::play);
         } else {
             this.isYourTurn = false;
+            actions.add(this::showRanking);
         }
 
     }
@@ -1672,20 +1667,27 @@ public class GameTerminal extends Application implements ViewController {
         return terminalCharacters;
     }
 
+    /**
+     * Rebuilds the matrices after rejoining the Game
+     */
     private void rebuild() {
         int number = controller.getNumberOfPlayers();
         for (int i = 0; i < number; i++) {
             ArrayList<PlayableCard> playArea = controller.getPlayersPlayfield(i+1);
             for (int j = 0; j < playArea.size(); j++) {
                 if (null != playAreas.get(i)) {
-                    playAreas.get(i).updateCardMatrix(playArea.get(j), playArea, i + 1, terminalCharacters);
+                    playAreas.get(i).updateCardMatrix(playArea.get(j), playArea, terminalCharacters);
                 } else {
-                    playAreas.get(i).createCardMatrix((StarterCard) playArea.getFirst(), i + 1, terminalCharacters);
+                    playAreas.get(i).createCardMatrix((StarterCard) playArea.getFirst(),  terminalCharacters);
                 }
             }
         }
         printPlayer();
     }
+
+    /**
+     * Shows the Available Placements where a Card can be played
+     */
     public void availablePlacement(){
         PlayAreaTerminal temp = new PlayAreaTerminal(this);
         temp.setPlayArea(playAreas.get(playerID - 1).getCopy());
@@ -1697,8 +1699,8 @@ public class GameTerminal extends Application implements ViewController {
         ArrayList<Coordinates> availablePlacemnts = getNetworkController().getAvailablePlacements(getOwner());
         for (Coordinates c: availablePlacemnts){
             ResourceCard card = new ResourceCard(null,null,true,-1,c.getX(),c.getY(),new ArrayList<>(),0,"/cards/card1Front.png","/cards/card1Back.png",null);
-            temp.updateCardMatrix(card, getNetworkController().getPlayersPlayfield(getOwner()), getOwner(), terminalCharacters);
+            temp.updateCardMatrix(card, getNetworkController().getPlayersPlayfield(getOwner()), terminalCharacters);
         }
-        temp.printPlayArea(getOwner(), terminalCharacters);
+        temp.printPlayArea(terminalCharacters);
     }
 }

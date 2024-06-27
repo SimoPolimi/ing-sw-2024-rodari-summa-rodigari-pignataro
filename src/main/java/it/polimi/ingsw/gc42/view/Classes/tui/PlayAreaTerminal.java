@@ -9,15 +9,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayAreaTerminal {
-    private HashMap<String, Integer> printingExtremes = new HashMap<>();
+    private final HashMap<String, Integer> printingExtremes = new HashMap<>();
     private String[][] playArea;
     private final GameTerminal terminal;
+
+    /**
+     * Constructor Method
+     * @param terminal the GameTerminal that created it
+     */
     public PlayAreaTerminal(GameTerminal terminal) {
         this.terminal = terminal;
     }
+
+    /**
+     * Setter Method for the printing extremes
+     * @param key the extreme to set [UP, DOWN, RIGHT, LEFT]
+     * @param value the numeric value to set
+     */
     public void setPrintingExtremes(String key, int value){
         printingExtremes.put(key, value);
     }
+
     /**
      * Converts a Card's Coordinates from the custom 45° angled system used in Model to the standard xy system representation.
      * @param coordinates the Model's Coordinates
@@ -41,7 +53,7 @@ public class PlayAreaTerminal {
      * @param matrixSizeY the Matrix's height
      * @return the converted Coordinates
      */
-    private Coordinates convertMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
+    private Coordinates convertToMatrixCoordinates(Coordinates coordinates, int matrixSizeX, int matrixSizeY) {
         int shiftX = (matrixSizeX) / 2;
         int shiftY = (matrixSizeY) / 2;
         int x = coordinates.getX() + shiftX;
@@ -54,9 +66,8 @@ public class PlayAreaTerminal {
     /**
      * Initializes the Matrix used to represent the PlayArea, and puts the StarterCard already in there.
      * @param starter the Player's Starter Card
-     * @param playerID the Player's playerID, used to initialize its Matrix's printing extremes values
      */
-    public void createCardMatrix(StarterCard starter, int playerID, TerminalCharacters terminalCharacters){
+    public void createCardMatrix(StarterCard starter, TerminalCharacters terminalCharacters){
         String[][] playArea = new String[800][1440];
         String line = "";
         int firstColumn = 716;
@@ -96,14 +107,12 @@ public class PlayAreaTerminal {
 
     /**
      * Updates the Matrix by adding a Card in a specific position, identified by 3 Matrix's Coordinates
-     * @param matrix the Matrix to update
      * @param card the Card to add inside the Matrix (PlayArea)
      * @param firstLine the y Coordinate of the top left Corner of the Card
      * @param firstColumn the x Coordinate of the top left Corner of the Card
      * @param centerX the x Coordinate of the center of the Card
-     * @return the updated Matrix
      */
-    public String[][] addCardToMatrix(String[][] matrix, PlayableCard card, int firstLine, int firstColumn, int centerX, TerminalCharacters terminalCharacters){
+    public void addCardToMatrix(PlayableCard card, int firstLine, int firstColumn, int centerX, TerminalCharacters terminalCharacters){
         String line = "";
         for (int j = 1; j <= 5; j++) {
             line = TerminalCard.getPrintCardLine(card,j, false, terminalCharacters);
@@ -113,12 +122,12 @@ public class PlayAreaTerminal {
                     // Emoji Mode
                     String string = new String(String.valueOf(line.charAt(i)));
                     if (string.equals("🟫")) {
-                        matrix[firstLine][firstColumn] = "🟫";
+                        playArea[firstLine][firstColumn] = "🟫";
                         i--;
                         firstColumn++;
                     } else {
                         string += line.charAt(i + 1);
-                        matrix[firstLine][firstColumn] = string;
+                        playArea[firstLine][firstColumn] = string;
                         firstColumn++;
                     }
                     i += 2;
@@ -126,7 +135,7 @@ public class PlayAreaTerminal {
                     // Character Mode
                     String string = new String(String.valueOf(line.charAt(i)));
                     string += line.charAt(i + 1);
-                    matrix[firstLine][firstColumn] = string;
+                    playArea[firstLine][firstColumn] = string;
                     firstColumn++;
                     i += 2;
                 }
@@ -134,17 +143,15 @@ public class PlayAreaTerminal {
             firstLine++;
             firstColumn = centerX - 4;
         }
-        return matrix;
     }
 
     /**
      * Calculates the Coordinates where a Card has to be placed inside the playArea, then updates the Matrix
      * @param card the Card to add inside the Matrix
      * @param cards the Player's PlayField
-     * @param playerID the Player's playerID
      */
-    public void updateCardMatrix(PlayableCard card, ArrayList<PlayableCard> cards, int playerID, TerminalCharacters terminalCharacters){
-        Coordinates coordinates = convertMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
+    public void updateCardMatrix(PlayableCard card, ArrayList<PlayableCard> cards, TerminalCharacters terminalCharacters){
+        Coordinates coordinates = convertToMatrixCoordinates(convertToAbsoluteCoordinates(card.getCoordinates()), 1440,800);
         Coordinates coordinates1 = convertToAbsoluteCoordinates(card.getCoordinates());
         //card down sx
         if(isThereACardIn(card.getX()-1,card.getY(), cards)){
@@ -163,7 +170,7 @@ public class PlayAreaTerminal {
             int firstColumn = centerX - 4;
             int firstLine = centerY -2;
 
-            playArea = addCardToMatrix(playArea,card,firstLine,firstColumn,centerX, terminalCharacters);
+            addCardToMatrix(card,firstLine,firstColumn,centerX, terminalCharacters);
 
             if (centerX + 4 > printingExtremes.get("RIGHT")) {
                 printingExtremes.replace("RIGHT", centerX + 4);
@@ -188,7 +195,7 @@ public class PlayAreaTerminal {
 
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
-            playArea = addCardToMatrix(playArea,card,firstLine,firstColumn,centerX, terminalCharacters);
+            addCardToMatrix(card,firstLine,firstColumn,centerX, terminalCharacters);
 
             if (centerX - 4 < printingExtremes.get("LEFT")) {
                 printingExtremes.replace("LEFT", centerX - 4);
@@ -213,7 +220,7 @@ public class PlayAreaTerminal {
 
             int firstColumn = centerX - 4;
             int firstLine = centerY - 2;
-            playArea = addCardToMatrix(playArea,card,firstLine,firstColumn,centerX, terminalCharacters);
+            addCardToMatrix(card,firstLine,firstColumn,centerX, terminalCharacters);
 
             if (centerX + 4 > printingExtremes.get("RIGHT")) {
                 printingExtremes.replace("RIGHT", centerX + 4);
@@ -238,7 +245,7 @@ public class PlayAreaTerminal {
 
             int firstColumn = centerX - 4;
             int firstLine = centerY -2;
-            playArea = addCardToMatrix(playArea,card,firstLine,firstColumn,centerX, terminalCharacters);
+            addCardToMatrix(card,firstLine,firstColumn,centerX, terminalCharacters);
 
             if (centerX - 4 < printingExtremes.get("LEFT")) {
                 printingExtremes.replace("LEFT", centerX - 4);
@@ -287,9 +294,8 @@ public class PlayAreaTerminal {
      * Printing extremes are used to determine where to start and end printing: they are
      * updated every time a new Card is added inside the Matrix.
      * Printing extremes leave a few empty Strings around the Cards as a margin.
-     * @param playerID the Player's playerID associated to this Matrix
      */
-    public void printPlayArea(int playerID, TerminalCharacters terminalCharacters){
+    public void printPlayArea(TerminalCharacters terminalCharacters){
         int extremeUP = printingExtremes.get("UP");
         int extremeDOWN = printingExtremes.get("DOWN");
         int extremeLEFT = printingExtremes.get("LEFT");
