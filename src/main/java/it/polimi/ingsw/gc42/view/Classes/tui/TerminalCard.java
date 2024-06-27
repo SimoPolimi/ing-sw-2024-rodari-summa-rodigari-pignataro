@@ -1,8 +1,6 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
-import it.polimi.ingsw.gc42.view.Classes.Characters;
-import it.polimi.ingsw.gc42.view.Classes.TerminalCharacters;
 
 import java.util.ArrayList;
 

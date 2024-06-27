@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view.Classes;
+package it.polimi.ingsw.gc42.view.Classes.gui;
 
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
 import it.polimi.ingsw.gc42.view.GUIController;

@@ -5,12 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /**
- * Model implementation of a specific type of Condition/Objective, that requires to count the number of sets of different
+ * Model implementation of a specific type of Condition/Objective that requires to count the number of sets of different
  * Resource items inside the Corners of the Cards inside the Play Area that are visible.
  */
 public class SetItemCountObjective extends CountObjective{
-
-    //TODO: Update as in UML
 
     // Constructor Method
     /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view.Classes;
+package it.polimi.ingsw.gc42.view.Classes.gui;
 
 import it.polimi.ingsw.gc42.model.classes.cards.*;
 import it.polimi.ingsw.gc42.model.classes.game.Token;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view.Classes;
+package it.polimi.ingsw.gc42.view.Classes.gui;
 
 import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
@@ -37,7 +37,6 @@ public class ChatView {
     private final ArrayList<ChatMessage> messages = new ArrayList<>();
 
     private boolean isShowing = false;
-    private boolean unreadMessagesAvailable = false;
 
     private static final int ANIMATION_DURATION = 350;
     public static final int ANIMATION_LENGTH = 490;

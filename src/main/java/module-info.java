@@ -41,4 +41,8 @@ module it.polimi.ingsw.gc42 {
     opens it.polimi.ingsw.gc42.view;
     opens it.polimi.ingsw.gc42.network.messages.GameMessages to java.base;
     opens it.polimi.ingsw.gc42.network.messages.PlayerMessages to java.base;
+    exports it.polimi.ingsw.gc42.view.Classes.gui;
+    opens it.polimi.ingsw.gc42.view.Classes.gui to javafx.fxml;
+    exports it.polimi.ingsw.gc42.view.Classes.tui;
+    opens it.polimi.ingsw.gc42.view.Classes.tui;
 }

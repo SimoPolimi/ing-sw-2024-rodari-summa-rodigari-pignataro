@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc42.model.classes.cards.Card;
 import it.polimi.ingsw.gc42.model.interfaces.Listener;
 import it.polimi.ingsw.gc42.model.interfaces.Observable;
 import it.polimi.ingsw.gc42.view.GUIController;
-import it.polimi.ingsw.gc42.view.Classes.HandCardView;
+import it.polimi.ingsw.gc42.view.Classes.gui.HandCardView;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

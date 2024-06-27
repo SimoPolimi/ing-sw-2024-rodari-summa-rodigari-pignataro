@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc42.model.classes.game.ChatMessage;
 import it.polimi.ingsw.gc42.model.classes.game.Token;
 import it.polimi.ingsw.gc42.network.ClientController;
 import it.polimi.ingsw.gc42.network.interfaces.NetworkController;
-import it.polimi.ingsw.gc42.view.Classes.*;
+import it.polimi.ingsw.gc42.view.Classes.gui.*;
 import it.polimi.ingsw.gc42.view.Dialog.*;
 import it.polimi.ingsw.gc42.view.Interfaces.CardPickerListener;
 import it.polimi.ingsw.gc42.view.Interfaces.ViewController;
@@ -22,16 +22,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BlurType;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -139,18 +136,18 @@ public class GUIController implements ViewController {
     private Dialog showingDialog;
     private NetworkController controller;
     private int gameID;
+    private int playerID;
+    private String playerNickname;
     private boolean canReadInput = true;
     private boolean isShowingDialog = false;
     private final ArrayList<Dialog> dialogQueue = new ArrayList<>();
     private boolean isCommonTableDown = false;
-    private TableView table;
     private boolean playerCanDrawOrGrab = false;
     private boolean isShowingGlobalMap = false;
-    private CommonTableView commonTable;
-    private int playerID;
-    private String playerNickname;
 
+    private CommonTableView commonTable;
     private TableView rightTable = null;
+    private TableView table;
     private TableView topTable = null;
     private TableView leftTable = null;
 
@@ -914,8 +911,7 @@ public class GUIController implements ViewController {
 
     @Override
     public void notifyLastTurn() throws RemoteException {
-        // TODO: Implement
-        System.out.println("Last Turn!");
+        setTurnIndicator(new TextDialog("Last Turn", false));
     }
 
     @Override

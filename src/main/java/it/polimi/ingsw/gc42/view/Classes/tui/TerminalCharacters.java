@@ -1,6 +1,4 @@
-package it.polimi.ingsw.gc42.view.Classes;
-
-import it.polimi.ingsw.gc42.view.UiColors;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 /**
  * This class contains all the supported Characters that can be printed in TUI, along with their String representations.

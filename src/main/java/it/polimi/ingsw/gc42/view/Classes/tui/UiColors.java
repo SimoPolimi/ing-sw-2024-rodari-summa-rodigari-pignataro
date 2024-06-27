@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 /**
  * This enum contains all the Unicode Colors that can be used to print in different colors in the Terminal

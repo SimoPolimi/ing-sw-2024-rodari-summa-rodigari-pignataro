@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc42.view.Classes;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 /**
  * Enumeration of all possible Characters that can be printed in TUI to represent game objects

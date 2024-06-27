@@ -1,11 +1,9 @@
-package it.polimi.ingsw.gc42.view;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 import it.polimi.ingsw.gc42.model.classes.cards.Coordinates;
 import it.polimi.ingsw.gc42.model.classes.cards.PlayableCard;
-import it.polimi.ingsw.gc42.model.classes.cards.ResourceCard;
 import it.polimi.ingsw.gc42.model.classes.cards.StarterCard;
-import it.polimi.ingsw.gc42.view.Classes.Characters;
-import it.polimi.ingsw.gc42.view.Classes.TerminalCharacters;
+import it.polimi.ingsw.gc42.view.GameTerminal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
