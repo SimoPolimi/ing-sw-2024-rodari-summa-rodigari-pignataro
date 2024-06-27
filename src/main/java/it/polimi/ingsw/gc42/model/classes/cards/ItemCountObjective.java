@@ -71,6 +71,13 @@ public class ItemCountObjective extends CountObjective{
             if (!card.isFrontFacing() && card instanceof ResourceCard && card.getPermanentResources().getFirst().equals(item)) {
                 count++;
             }
+            if (card.isFrontFacing() && card instanceof StarterCard) {
+                for (Item i: card.getPermanentResources()) {
+                    if (i == item) {
+                        count++;
+                    }
+                }
+            }
         }
         return Math.floorDiv(count, getNumber());
     }
