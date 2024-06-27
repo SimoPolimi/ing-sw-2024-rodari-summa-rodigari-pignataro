@@ -28,7 +28,6 @@ import java.util.concurrent.*;
  */
 public class GameTerminal extends Application implements ViewController {
     // Attributes
-    private boolean exit = false;
     private boolean isAdvancedGraphicsMode = true;
     private boolean isColorTerminalSupported = true;
     private NetworkController controller;

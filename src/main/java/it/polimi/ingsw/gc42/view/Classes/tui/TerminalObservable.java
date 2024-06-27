@@ -1,6 +1,4 @@
-package it.polimi.ingsw.gc42.network;
-
-import it.polimi.ingsw.gc42.model.interfaces.Listener;
+package it.polimi.ingsw.gc42.view.Classes.tui;
 
 public interface TerminalObservable {
     void listen(TerminalListener listener);
