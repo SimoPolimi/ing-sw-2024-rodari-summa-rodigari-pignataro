@@ -112,11 +112,11 @@ https://app.diagrams.net/#G1dcMa2u13bxq3Lekv3L7a3EEPEJiu2Qfz
   </tr>
   <tr>
     <td align="center">Method</td>
-    <td align="center"><img src="https://geps.dev/progress/92?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Method Progress"></td>
+    <td align="center"><img src="https://geps.dev/progress/93?dangerColor=800000&warningColor=ff9900&successColor=18ab3f" alt="Controller Method Progress"></td>
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/687d9adb-28ae-45e7-a869-dcebfe72534b" alt="Diagram Image">
+      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/4b24db91-ecb7-4815-a5ac-c719c590dba5" alt="Diagram Image">
     </td>
   </tr>
 </table>
