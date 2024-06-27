@@ -308,8 +308,7 @@ public class Player implements Observable, Serializable {
     public void setStarterCard() {
         try {
             playCard(-1, 0, 0);
-        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
-            e.printStackTrace();
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException ignore) {
         }
     }
 
@@ -358,9 +357,7 @@ public class Player implements Observable, Serializable {
             drawCard(resource);
             drawCard(resource);
             drawCard(gold);
-        }catch (IllegalActionException e){
-            // TODO: handle exception
-            e.printStackTrace();
+        }catch (IllegalActionException ignore){
         }
     }
 

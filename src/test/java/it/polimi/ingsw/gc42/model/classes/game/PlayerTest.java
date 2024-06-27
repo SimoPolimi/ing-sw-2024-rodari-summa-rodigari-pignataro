@@ -27,10 +27,8 @@ class PlayerTest {
         Token token = Token.BLUE;
         int points = 20;
         boolean isFirst = true;
-        // TODO: redo with mechanics???
         ObjectiveCard objectiveCard = new ObjectiveCard(0, null, null, null);
         GameStatus status = GameStatus.READY;
-        // TODO: error if i do new StarterCard and ArrayList is null
         StarterCard starterCard = (StarterCard) game.getStarterDeck().draw();
 
         // given
