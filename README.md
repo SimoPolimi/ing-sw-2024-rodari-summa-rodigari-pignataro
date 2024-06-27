@@ -209,6 +209,8 @@ After choosing the Graphics Mode, TUI will guide you through the initial onboard
 ![Common_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e6e4538-b2d4-4329-8de2-d2fcfb269a16)
 ![Full_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/d4269405-7218-4f3d-a2de-76fa642157a6)
 ![Table_Chat_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/a319e4a4-bdaa-4c20-97c1-a05ae093a4c8)
+![Winner_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/569d4a12-4c64-4b10-8017-04d34532c942)
+
 
 ### TUI
 
@@ -219,6 +221,8 @@ After choosing the Graphics Mode, TUI will guide you through the initial onboard
 ![Objective_Starter_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/725ff799-e71e-4c1a-877a-27674c75ffaf)
 ![Full_Table_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6896d8aa-05c3-4b2d-8942-0d3779942667)
 ![Full_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6d08024d-1677-414d-9cce-77a1237ac986)
-
+![Play_Card_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7c74a741-298a-4431-a91a-aec6d95d810d)
 ![Play_Card_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/f4f64c32-06e9-490c-8e18-233f7b1fde0e)
+![Common_Table_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/8746b30d-4ed2-4928-b9b0-11b3fdf92cd3)
 ![Common_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/fdf75d54-19ab-4e9f-a030-167785de844d)
+![Winner_TUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/26a3522d-5481-4092-adc5-37a66b80393b)
