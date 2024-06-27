@@ -28,26 +28,26 @@
                                 </Text>
                             </children>
                         </HBox>
-                        <VBox fx:id="rmiInfo" alignment="TOP_LEFT" spacing="10">
+                        <VBox spacing="10">
                             <children>
-                                <Text fx:id="rmiTitle" text="RMI:" textAlignment="LEFT">
+                                <Text text="Info:">
                                     <font>
                                         <Font name="Tahoma Bold" size="20" />
                                     </font>
                                 </Text>
-                                <HBox fx:id="rmiIpContainer" spacing="10">
+                                <HBox spacing="10">
                                     <children>
-                                        <Text fx:id="rmiIpTitleText" text="IP Address: " underline="true">
+                                        <Text text="IP Address: " underline="true">
                                             <font>
                                                 <Font name="Tahoma Regular" size="15" />
                                             </font>
                                         </Text>
-                                        <Text fx:id="rmiIpText" visible="false">
+                                        <Text fx:id="ipText" visible="false">
                                             <font>
                                                 <Font name="Tahoma Regular" size="15" />
                                             </font>
                                         </Text>
-                                        <ImageView fx:id="rmiIpCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddressRMI" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <ImageView fx:id="ipCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddress" pickOnBounds="true" preserveRatio="true" visible="false">
                                             <image>
                                                 <Image url="@copyIcon.png" />
                                             </image>
@@ -57,79 +57,37 @@
                                         </ImageView>
                                     </children>
                                 </HBox>
-                                <HBox fx:id="rmiPortContainer" spacing="10">
-                                    <children>
-                                        <Text fx:id="rmiPortTitleText" text="Port: " underline="true">
-                                            <font>
-                                                <Font name="Tahoma Regular" size="15" />
-                                            </font>
-                                        </Text>
-                                        <Text fx:id="rmiPortText" visible="false">
-                                            <font>
-                                                <Font name="Tahoma Regular" size="15" />
-                                            </font>
-                                        </Text>
-                                        <ImageView fx:id="rmiPortCopyIcon" fitWidth="15" onMouseClicked="#copyPortRMI" pickOnBounds="true" preserveRatio="true" visible="false">
-                                            <image>
-                                                <Image url="@copyIcon.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                        <VBox fx:id="socketInfo" alignment="TOP_LEFT" spacing="10">
-                            <children>
-                                <Text fx:id="socketTitle" text="Socket:" textAlignment="LEFT">
+                                <Text text="Status:">
                                     <font>
                                         <Font name="Tahoma Bold" size="20" />
                                     </font>
                                 </Text>
-                                <HBox fx:id="socketIpContainer" spacing="10">
+                                <HBox spacing="10">
                                     <children>
-                                        <Text fx:id="socketIpTitleText" text="IP Address: " underline="true">
+                                        <Text text="RMI:">
                                             <font>
                                                 <Font name="Tahoma Regular" size="15" />
                                             </font>
                                         </Text>
-                                        <Text fx:id="socketIpText" visible="false">
+                                        <Text fx:id="rmiStatus" text="Not running" fill="red">
                                             <font>
-                                                <Font name="Tahoma Regular" size="15" />
+                                                <Font name="Tahoma Bold" size="15" />
                                             </font>
                                         </Text>
-                                        <ImageView fx:id="socketIpCopyIcon" fitWidth="15" onMouseClicked="#copyIPAddressSocket" pickOnBounds="true" preserveRatio="true" visible="false">
-                                            <image>
-                                                <Image url="@copyIcon.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
                                     </children>
                                 </HBox>
-                                <HBox fx:id="socketPortContainer" spacing="10">
+                                <HBox spacing="10">
                                     <children>
-                                        <Text fx:id="socketPortTitleText" text="Port: " underline="true">
+                                        <Text text="Socket:">
                                             <font>
                                                 <Font name="Tahoma Regular" size="15" />
                                             </font>
                                         </Text>
-                                        <Text fx:id="socketPortText" visible="false">
+                                        <Text fx:id="socketStatus" text="Not running" fill="red">
                                             <font>
-                                                <Font name="Tahoma Regular" size="15" />
+                                                <Font name="Tahoma Bold" size="15" />
                                             </font>
                                         </Text>
-                                        <ImageView fx:id="socketPortCopyIcon" fitWidth="15" onMouseClicked="#copyPortSocket" pickOnBounds="true" preserveRatio="true" visible="false">
-                                            <image>
-                                                <Image url="@copyIcon.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
                                     </children>
                                 </HBox>
                         <Text fx:id="errorTxt" fill="RED" text="Server is already running!" textAlignment="CENTER" underline="true" visible="false">
@@ -167,6 +125,9 @@
                                     </effect>
                                 </VBox>
                             </children>
+                     <VBox.margin>
+                        <Insets top="160.0" />
+                     </VBox.margin>
                         </VBox>
                     </children>
                 </VBox>

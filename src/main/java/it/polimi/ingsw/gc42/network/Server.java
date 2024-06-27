@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -35,6 +36,7 @@ import java.util.Objects;
  * This Class handles the GUI version of Server
  */
 public class Server extends Application {
+
     // Attributes
     private ServerNetworkController rmiController;
     private ServerNetworkController socketController;
@@ -44,29 +46,21 @@ public class Server extends Application {
 
     // JavaFx imports
     @FXML
-    private Text rmiIpText;
-    @FXML
-    private Text rmiPortText;
-    @FXML
-    private Text socketIpText;
-    @FXML
-    private Text socketPortText;
+    private Text ipText;
     @FXML
     private VBox startButton;
     @FXML
     private Text startTxt;
     @FXML
-    private ImageView rmiIpCopyIcon;
-    @FXML
-    private ImageView rmiPortCopyIcon;
-    @FXML
-    private ImageView socketIpCopyIcon;
-    @FXML
-    private ImageView socketPortCopyIcon;
+    private ImageView ipCopyIcon;
     @FXML
     private ScrollPane gamesList;
     @FXML
     private Text errorTxt;
+    @FXML
+    private Text socketStatus;
+    @FXML
+    private Text rmiStatus;
 
 
     /**
@@ -126,26 +120,18 @@ public class Server extends Application {
                 rmiController.setWhenReady(new Runnable() {
                     @Override
                     public void run() {
-                        rmiIpText.setText(rmiController.getIpAddress());
-                        rmiIpText.setVisible(true);
-                        rmiIpCopyIcon.setVisible(true);
-                        rmiPortText.setText(rmiController.getPort());
-                        rmiPortText.setVisible(true);
-                        rmiPortCopyIcon.setVisible(true);
+                        ipText.setText(rmiController.getIpAddress());
+                        ipText.setVisible(true);
+                        ipCopyIcon.setVisible(true);
+                        rmiStatus.setText("Running");
+                        rmiStatus.setFill(Color.GREEN);
                     }
                 });
                 // Creates the Socket Network Controller
                 socketController = new SocketControllerServer();
-                socketController.setWhenReady(new Runnable() {
-                    @Override
-                    public void run() {
-                        socketIpText.setText(socketController.getIpAddress());
-                        socketIpText.setVisible(true);
-                        socketIpCopyIcon.setVisible(true);
-                        socketPortText.setText(socketController.getPort());
-                        socketPortText.setVisible(true);
-                        socketPortCopyIcon.setVisible(true);
-                    }
+                socketController.setWhenReady(() -> {
+                    socketStatus.setText("Running");
+                    socketStatus.setFill(Color.GREEN);
                 });
                 // Passes THE SAME GameCollection to both: any edit made by one will be visible
                 // to the other
@@ -164,19 +150,17 @@ public class Server extends Application {
                 // Closes the RMI Connection
                 startButton.setStyle("-fx-background-color: green; -fx-background-radius: 15");
                 startTxt.setText("Start");
-                rmiIpText.setVisible(false);
-                rmiIpCopyIcon.setVisible(false);
-                rmiPortText.setVisible(false);
-                rmiPortCopyIcon.setVisible(false);
+                ipText.setVisible(false);
+                ipCopyIcon.setVisible(false);
+                rmiStatus.setText("Not running");
+                rmiStatus.setFill(Color.RED);
                 rmiController.stop();
                 // Closes the Socket Connection
-                socketIpText.setVisible(false);
-                socketIpCopyIcon.setVisible(false);
-                socketPortText.setVisible(false);
-                socketPortCopyIcon.setVisible(false);
                 socketController.stop();
                 collection.empty();
                 isRunning = false;
+                socketStatus.setText("Not running");
+                socketStatus.setFill(Color.RED);
             }
             refresh();
         }
@@ -186,8 +170,8 @@ public class Server extends Application {
      * Copies into the User's clipboard the IP Address
      */
     @FXML
-    public void copyIPAddressRMI() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiIpCopyIcon);
+    public  void copyIPAddress() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(100), ipCopyIcon);
         transition.setByX(-0.2);
         transition.setByY(-0.2);
         transition.setAutoReverse(true);
@@ -195,51 +179,6 @@ public class Server extends Application {
         transition.play();
         StringSelection ip = new StringSelection(rmiController.getIpAddress());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
-    }
-
-    /**
-     * Copies into the User's clipboard the Port
-     */
-    @FXML
-    public  void copyPortRMI() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), rmiPortCopyIcon);
-        transition.setByX(-0.2);
-        transition.setByY(-0.2);
-        transition.setAutoReverse(true);
-        transition.setCycleCount(2);
-        transition.play();
-        StringSelection port = new StringSelection(rmiController.getPort());
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
-    }
-
-    /**
-     * Copies into the User's clipboard the IP Address
-     */
-    @FXML
-    public  void copyIPAddressSocket() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketIpCopyIcon);
-        transition.setByX(-0.2);
-        transition.setByY(-0.2);
-        transition.setAutoReverse(true);
-        transition.setCycleCount(2);
-        transition.play();
-        StringSelection ip = new StringSelection(socketController.getIpAddress());
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ip,null);
-    }
-
-    /**
-     * Copies into the User's clipboard the Port
-     */
-    @FXML
-    public  void copyPortSocket() {
-        ScaleTransition transition = new ScaleTransition(Duration.millis(100), socketPortCopyIcon);
-        transition.setByX(-0.2);
-        transition.setByY(-0.2);
-        transition.setAutoReverse(true);
-        transition.setCycleCount(2);
-        transition.play();
-        StringSelection port = new StringSelection(socketController.getPort());
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(port,null);
     }
 
     /**

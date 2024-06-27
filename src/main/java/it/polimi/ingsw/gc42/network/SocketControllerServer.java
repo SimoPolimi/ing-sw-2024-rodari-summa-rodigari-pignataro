@@ -353,7 +353,9 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
         server.setCollection(games);
 
         // Executes the GUI refresh Code to show the IP and Port in Server's GUI
-        onReady.run();
+        if (null != onReady) {
+            onReady.run();
+        }
 
         // Listens on its port for new connections
         ExecutorService pool = Executors.newCachedThreadPool(); // Create a thread pool to handle the message flow between the server and every client
