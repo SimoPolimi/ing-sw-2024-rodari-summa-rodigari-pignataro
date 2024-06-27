@@ -23,77 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameControllerTest {
 
     @Test
-    void generalTesting() throws RemoteException {
-        // given
-        GameController controller = new GameController("test");
-        Player player = new Player("bot1", true, 0, null, null);
-        // New view empty just to test listeners
-        controller.addView(new RemoteViewController() {
-            @Override
-            public int getOwner() throws RemoteException {
-                return 1;
-            }
-
-            @Override
-            public void showSecretObjectivesSelectionDialog() throws RemoteException {}
-            @Override
-            public void showStarterCardSelectionDialog() throws RemoteException {}
-            @Override
-            public void showTokenSelectionDialog() throws RemoteException {}
-            @Override
-            public void askToDrawOrGrab(int playerID) throws RemoteException {}
-            @Override
-            public void notifyGameIsStarting() throws RemoteException {}
-            @Override
-            public void notifyDeckChanged(CardType type) throws RemoteException {}
-            @Override
-            public void notifySlotCardChanged(CardType type, int slot) throws RemoteException {}
-            @Override
-            public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {}
-            @Override
-            public void notifyNumberOfPlayersChanged() throws RemoteException {}
-            @Override
-            public void notifyPlayersTokenChanged(int playerID) throws RemoteException {}
-            @Override
-            public void notifyPlayersPlayAreaChanged(int playerID) throws RemoteException {}
-            @Override
-            public void notifyPlayersHandChanged(int playerID) throws RemoteException {}
-            @Override
-            public void notifyHandCardWasFlipped(int playedID, int cardID) throws RemoteException {}
-            @Override
-            public void notifyPlayersObjectiveChanged(int playerID) throws RemoteException {}
-            @Override
-            public void notifyCommonObjectivesChanged() throws RemoteException {}
-            @Override
-            public void notifyTurnChanged() throws RemoteException {}
-            @Override
-            public void getReady(int numberOfPlayers) throws RemoteException {}
-            @Override
-            public void notifyLastTurn() throws RemoteException {}
-            @Override
-            public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {}
-            @Override
-            public void notifyNewMessage(ChatMessage message) throws RemoteException {}
-        });
-        //TODO: check if ok
-
-        // nextStatus coverage
-        controller.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
-        controller.addPlayer(player);
-        player.setStatus(GameStatus.WAITING_FOR_SERVER);
-        player.setStatus(GameStatus.READY);
-        player.setStatus(GameStatus.READY_TO_CHOOSE_TOKEN);
-        player.setToken(Token.BLUE);
-        player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
-        player.setSecretObjective((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
-        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
-        player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
-        player.setStatus(GameStatus.PLAYING);
-        player.setStatus(GameStatus.END_GAME);
-
-    }
-
-    @Test
     void nameIsSet() throws RemoteException {
         GameController controller = new GameController("test");
         assertEquals(controller.getName(), "test");
@@ -289,7 +218,7 @@ class GameControllerTest {
         controller.drawSecretObjectives();
 
         // then
-        // TODO: add more things to check?
+        // Every player drew their secret ObjectiveCards to choose from
         for(int i=0; i<controller.getGame().getNumberOfPlayers(); i++){
             assertEquals(controller.getPlayer(i+1).getTemporaryObjectiveCards().size(), 2);
         }
@@ -308,7 +237,7 @@ class GameControllerTest {
         controller.beginStarterCardChoosing();
 
         // then
-        // TODO: add more things to check?
+        // Every Player drew their StarterCard
         for(int i=0; i<controller.getGame().getNumberOfPlayers(); i++){
             assertNotNull(controller.getPlayer(i+1).getTemporaryStarterCard());
         }
@@ -618,7 +547,6 @@ class GameControllerTest {
         player.drawCard(controller.getGame().getResourcePlayingDeck());
         player.setSecretObjective((ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
         player.setToken(Token.BLUE);
-        // TODO: calling other methods?
         player.setPoints(10);
         player.drawTemporaryStarterCard(controller.getGame().getStarterDeck());
         player.setStarterCard();
@@ -891,5 +819,92 @@ class GameControllerTest {
         assertNotNull(controller.getPlayer(1).getSecretObjective());
         assertEquals(1, controller.getPlayer(1).getPlayField().getPlayedCards().size());
         assertEquals(3, controller.getPlayer(1).getHandSize());
+    }
+
+    @Test
+    void statusTest() throws RemoteException {
+        // given
+        GameController controller = new GameController("test");
+        Player player = new Player("bot1", true, 0, Token.BLUE, (ObjectiveCard) controller.getGame().getObjectivePlayingDeck().getDeck().draw());
+        // New view empty just to test listeners
+        controller.addView(new RemoteViewController() {
+            @Override
+            public int getOwner() throws RemoteException {
+                return 1;
+            }
+
+            @Override
+            public void showSecretObjectivesSelectionDialog() throws RemoteException {}
+            @Override
+            public void showStarterCardSelectionDialog() throws RemoteException {}
+            @Override
+            public void showTokenSelectionDialog() throws RemoteException {}
+            @Override
+            public void askToDrawOrGrab(int playerID) throws RemoteException {}
+            @Override
+            public void notifyGameIsStarting() throws RemoteException {}
+            @Override
+            public void notifyDeckChanged(CardType type) throws RemoteException {}
+            @Override
+            public void notifySlotCardChanged(CardType type, int slot) throws RemoteException {}
+            @Override
+            public void notifyPlayersPointsChanged(Token token, int newPoints) throws RemoteException {}
+            @Override
+            public void notifyNumberOfPlayersChanged() throws RemoteException {}
+            @Override
+            public void notifyPlayersTokenChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersPlayAreaChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyPlayersHandChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyHandCardWasFlipped(int playedID, int cardID) throws RemoteException {}
+            @Override
+            public void notifyPlayersObjectiveChanged(int playerID) throws RemoteException {}
+            @Override
+            public void notifyCommonObjectivesChanged() throws RemoteException {}
+            @Override
+            public void notifyTurnChanged() throws RemoteException {}
+            @Override
+            public void getReady(int numberOfPlayers) throws RemoteException {}
+            @Override
+            public void notifyLastTurn() throws RemoteException {}
+            @Override
+            public void notifyEndGame(ArrayList<HashMap<String, String>> points) throws RemoteException {}
+            @Override
+            public void notifyNewMessage(ChatMessage message) throws RemoteException {}
+        });
+
+        // nextStatus test
+        controller.setCurrentStatus(GameStatus.WAITING_FOR_SERVER);
+        assertEquals(controller.getCurrentStatus(), GameStatus.WAITING_FOR_SERVER);
+
+        controller.addPlayer(player);
+        player.setStatus(GameStatus.WAITING_FOR_SERVER);
+        assertEquals(controller.getCurrentStatus(), GameStatus.READY);
+
+        player.setStatus(GameStatus.READY);
+        assertEquals(controller.getCurrentStatus(), GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+
+        player.setStatus(GameStatus.READY_TO_CHOOSE_SECRET_OBJECTIVE);
+        assertEquals(controller.getCurrentStatus(), GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+
+        player.setStatus(GameStatus.READY_TO_CHOOSE_STARTER_CARD);
+        assertEquals(controller.getCurrentStatus(), GameStatus.READY_TO_DRAW_STARTING_HAND);
+
+        player.setStatus(GameStatus.READY_TO_DRAW_STARTING_HAND);
+        assertEquals(controller.getCurrentStatus(), GameStatus.PLAYING);
+
+        player.setStatus(GameStatus.PLAYING);
+        assertEquals(controller.getCurrentStatus(), GameStatus.PLAYING);
+
+        // Semi_last_turn, Player is first -> Last_turn
+        controller.setCurrentStatus(GameStatus.SEMI_LAST_TURN);
+        controller.nextTurn();
+        assertEquals(controller.getCurrentStatus(), GameStatus.LAST_TURN);
+
+        // Last_turn, Player is First -> Counting points and End_game
+        controller.nextTurn();
+        assertEquals(controller.getCurrentStatus(), GameStatus.END_GAME);
     }
 }
