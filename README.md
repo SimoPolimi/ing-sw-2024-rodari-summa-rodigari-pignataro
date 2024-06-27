@@ -197,31 +197,28 @@ From the Launcher, select ```Textual Mode``` to open the Terminal User Interface
 After choosing the Graphics Mode, TUI will guide you through the initial onboarding process, asking to choose between RMI and Socket, to pick a Nickname, and finally to either join an existing Game or create a new one yourself.
 
 ## Screenshots
-Launcher:
+### GUI
 
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/e9148572-66b7-41d3-a799-b409fcbeb64f">
+![Launcher_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/efad9379-774a-45d9-b589-d3e0db9efa30)
+![Login_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/26cde21a-4c58-4fca-a05f-a22b3cecb0f5)
+![Token_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e29337e-b9c3-49db-bc89-c5b46edef06e)
+![Objective_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/4566cf19-7530-49c6-9723-ea3de8bd6be7)
+![Starter_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/58e73526-de4d-468e-b6db-609fc80f5ecd)
+![Player_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/28f73ba8-aafc-48e5-8242-1651c5e7e428)
+![Player_Table_GUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/3b229ad3-2b58-423b-aa16-af401841cf08)
+![Common_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e6e4538-b2d4-4329-8de2-d2fcfb269a16)
+![Full_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/d4269405-7218-4f3d-a2de-76fa642157a6)
+![Table_Chat_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/a319e4a4-bdaa-4c20-97c1-a05ae093a4c8)
 
-Login Screen:
+### TUI
 
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/2d23ffd1-e85d-4fc0-a89e-59a33b27e560">
+![TUI_Graphics_Mode](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/837201b9-6877-4729-b791-5c3f3333b5e4)
+![Token_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e2d9cf7-4c8f-4136-862b-1853229fba0f)
+![Token_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/87af74b5-bbe0-4f94-aca7-338f6295391d)
+![Objective_Starter_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/9a14c9b6-5217-487b-ab13-929888ed9f5a)
+![Objective_Starter_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/725ff799-e71e-4c1a-877a-27674c75ffaf)
+![Full_Table_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6896d8aa-05c3-4b2d-8942-0d3779942667)
+![Full_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6d08024d-1677-414d-9cce-77a1237ac986)
 
-New Game Creation Screen:
-
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/881a281b-9b86-4b93-9f88-3429550a555c">
-
-Server:
-
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/274400a2-c2d3-444a-af3c-0612f0df1015">
-
-Main Player's table:
-
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/fa3e9ae0-8bb7-4fe5-ad2f-9d767c99be06">
-
-
-Common table:
-
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/72abc57c-430a-4922-a63b-c1c1c828eefd">
-
-Full Table:
-
-<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/683bffaf-32a9-472e-9cd0-da01a2163fdc">
+![Play_Card_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/f4f64c32-06e9-490c-8e18-233f7b1fde0e)
+![Common_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/fdf75d54-19ab-4e9f-a030-167785de844d)
