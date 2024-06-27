@@ -955,12 +955,54 @@ public class GameTerminal extends Application implements ViewController {
                 @Override
                 public void onEvent(String input) {
                     switch (input) {
-                        case "gr" -> controller.drawCard(playerID, CardType.RESOURCECARD);
-                        case "gg" -> controller.drawCard(playerID, CardType.GOLDCARD);
-                        case "1r" -> controller.grabCard(playerID, CardType.RESOURCECARD, 1);
-                        case "1g" -> controller.grabCard(playerID, CardType.GOLDCARD, 1);
-                        case "2r" -> controller.grabCard(playerID, CardType.RESOURCECARD, 2);
-                        case "2g" -> controller.grabCard(playerID, CardType.GOLDCARD, 2);
+                        case "gr" -> {
+                            if (!controller.getDeck(CardType.RESOURCECARD).isEmpty()) {
+                                controller.drawCard(playerID, CardType.RESOURCECARD);
+                            } else {
+                                System.err.println("Resource Deck is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
+                        case "gg" -> {
+                            if (!controller.getDeck(CardType.GOLDCARD).isEmpty()) {
+                                controller.drawCard(playerID, CardType.GOLDCARD);
+                            } else {
+                                System.err.println("Gold Deck is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
+                        case "1r" -> {
+                            if (null != controller.getSlotCard(CardType.RESOURCECARD, 1)) {
+                                controller.grabCard(playerID, CardType.RESOURCECARD, 1);
+                            } else {
+                                System.err.println("Resource Slot 1 is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
+                        case "1g" -> {
+                            if (null != controller.getSlotCard(CardType.GOLDCARD, 1)) {
+                                controller.grabCard(playerID, CardType.GOLDCARD, 1);
+                            } else {
+                                System.err.println("Gold Slot 1 is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
+                        case "2r" -> {
+                            if (null != controller.getSlotCard(CardType.RESOURCECARD, 2)) {
+                                controller.grabCard(playerID, CardType.RESOURCECARD, 2);
+                            } else {
+                                System.err.println("Resource Slot 2 is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
+                        case "2g" -> {
+                            if (null != controller.getSlotCard(CardType.GOLDCARD, 2)) {
+                                controller.grabCard(playerID, CardType.GOLDCARD, 2);
+                            } else {
+                                System.err.println("Gold Slot 2 is empty!");
+                                actions.add(() -> askToDrawOrGrab());
+                            }
+                        }
                         default -> {
                             System.err.println("Invalid input!");
                             actions.add(() -> askToDrawOrGrab());

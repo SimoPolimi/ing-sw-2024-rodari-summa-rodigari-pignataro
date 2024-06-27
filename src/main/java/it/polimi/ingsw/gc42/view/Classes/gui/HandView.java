@@ -45,7 +45,7 @@ public class HandView {
     private Text textNav;
     private ImageView KBCollapseHint;
     private Text textCollapse;
-    GUIController controller;
+    private GUIController controller;
     private boolean isHidden;
     private boolean isPrivacyModeEnabled;
     private VBox container;
