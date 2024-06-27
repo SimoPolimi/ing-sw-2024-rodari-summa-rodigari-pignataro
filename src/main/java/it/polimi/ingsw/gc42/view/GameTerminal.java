@@ -1442,7 +1442,6 @@ public class GameTerminal extends Application implements ViewController {
      */
     @Override
     public void notifyLastTurn() throws RemoteException {
-        // TODO: Implement
     }
 
     /**
