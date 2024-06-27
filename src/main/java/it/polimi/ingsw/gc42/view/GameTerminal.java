@@ -919,11 +919,17 @@ public class GameTerminal extends Application implements ViewController {
     public void askToDrawOrGrab() {
         if (isYourTurn) {
             System.out.println("Choose what you want to draw or grab:");
-            Card card1, card2;
-            card1 = controller.getDeck(CardType.RESOURCECARD).getFirst();
-            card2 = controller.getDeck(CardType.GOLDCARD).getFirst();
-            card1.flip();
-            card2.flip();
+            Card card1 = null, card2 = null;
+            ArrayList<Card> deck = controller.getDeck(CardType.RESOURCECARD);
+            if (!deck.isEmpty()) {
+                card1 = controller.getDeck(CardType.RESOURCECARD).getFirst();
+                card1.flip();
+            }
+            deck = controller.getDeck(CardType.GOLDCARD);
+            if (!deck.isEmpty()) {
+                card2 = controller.getDeck(CardType.GOLDCARD).getFirst();
+                card2.flip();
+            }
             System.out.println("Decks");
             System.out.println("Resource\t\t\tGold");
             for (int line = 1; line < 6; line++) {
