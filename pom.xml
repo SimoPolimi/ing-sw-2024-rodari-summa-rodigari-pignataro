@@ -20,13 +20,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21</version>
-            <classifier>linux</classifier> <!-- Linux -->
+            <classifier>win</classifier> <!-- Windows -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21</version>
-            <classifier>win</classifier> <!-- Windows -->
+            <classifier>linux</classifier> <!-- Linux -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -40,13 +40,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21</version>
-            <classifier>linux</classifier> <!-- Linux -->
+            <classifier>win</classifier> <!-- Windows -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21</version>
-            <classifier>win</classifier> <!-- Windows -->
+            <classifier>linux</classifier> <!-- Linux -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -60,13 +60,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>21</version>
-            <classifier>linux</classifier> <!-- Linux -->
+            <classifier>win</classifier> <!-- Windows -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>21</version>
-            <classifier>win</classifier> <!-- Windows -->
+            <classifier>linux</classifier> <!-- Linux -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -80,13 +80,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>21</version>
-            <classifier>linux</classifier> <!-- Linux -->
+            <classifier>win</classifier> <!-- Windows -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>21</version>
-            <classifier>win</classifier> <!-- Windows -->
+            <classifier>linux</classifier> <!-- Linux -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
