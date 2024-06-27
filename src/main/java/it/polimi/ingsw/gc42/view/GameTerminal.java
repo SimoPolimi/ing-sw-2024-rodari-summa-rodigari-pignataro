@@ -1228,25 +1228,41 @@ public class GameTerminal extends Application implements ViewController {
      * Prints the current Player's Ranking, ordered by Points.
      */
     public void showRanking() {
-        ArrayList<HashMap<String, String>> playersList = new ArrayList<>();
+        int number = controller.getNumberOfPlayers();
+        ArrayList<Player> notOrderedPlayers = new ArrayList<>();
+        ArrayList<HashMap<String, String>> allPlayers = controller.getPlayersInfo();
+        for (HashMap<String, String> player : allPlayers) {
+            Player newPlayer = new Player(player.get("Nickname"));
+            newPlayer.setPoints(Integer.parseInt(player.get("Points")));
+            Token token = null;
+            switch (player.get("Token")) {
+                case "Blue" -> token = Token.BLUE;
+                case "Red" -> token = Token.RED;
+                case "Yellow" -> token = Token.YELLOW;
+                case "Green" -> token = Token.GREEN;
+            }
+            newPlayer.setToken(token);
+            notOrderedPlayers.add(newPlayer);
+        }
+        ArrayList<Player> players = new ArrayList<>();
         ArrayList<Integer> alreadySeen = new ArrayList<>();
         // Players are ordered by their points
-        int numberOfPlayers = controller.getNumberOfPlayers();
-        ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
-        while (alreadySeen.size() != numberOfPlayers) {
-            int currentMax = 1;
-            for (int i = 0; i < numberOfPlayers; i++) {
-                if (Integer.parseInt(info.get(i).get("Points")) >= Integer.parseInt(info.get(currentMax).get("Points")) && !alreadySeen.contains(i)) {
+        while (alreadySeen.size() != number) {
+            int currentMax = 0;
+            int currentMaxPoints = 0;
+            for (int i = 0; i < number; i++) {
+                if (notOrderedPlayers.get(i).getPoints() >= currentMaxPoints && !alreadySeen.contains(i)) {
                     currentMax = i;
+                    currentMaxPoints = notOrderedPlayers.get(i).getPoints();
                 }
             }
-            playersList.add(info.get(currentMax));
+            players.add(notOrderedPlayers.get(currentMax));
             alreadySeen.add(currentMax);
         }
 
         System.out.println("Ranking");
-        for (int i = 0; i < numberOfPlayers; i++)
-            System.out.println(i + 1 + ") " + playersList.get(i).get("Nickname") + ": " + playersList.get(i).get("Points"));
+        for (int i = 0; i < players.size(); i++)
+            System.out.println(i + 1 + ") " + players.get(i).getNickname() + ": " + players.get(i).getPoints());
     }
 
     /**
