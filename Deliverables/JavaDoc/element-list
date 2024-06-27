@@ -14,6 +14,8 @@ it.polimi.ingsw.gc42.network.messages.PlayerMessages
 it.polimi.ingsw.gc42.network.messages.responses
 it.polimi.ingsw.gc42.view
 it.polimi.ingsw.gc42.view.Classes
+it.polimi.ingsw.gc42.view.Classes.gui
+it.polimi.ingsw.gc42.view.Classes.tui
 it.polimi.ingsw.gc42.view.Dialog
 it.polimi.ingsw.gc42.view.Exceptions
 it.polimi.ingsw.gc42.view.Interfaces
