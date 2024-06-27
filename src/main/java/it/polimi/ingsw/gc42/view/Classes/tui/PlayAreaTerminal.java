@@ -267,21 +267,21 @@ public class PlayAreaTerminal {
         for (int i = 0; i < playArea.length; i++) {
             for (int j = 0; j < playArea[i].length; j++) {
                 switch (playArea[i][j]) {
-                    case "ନ ", "🍄" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FUNGI);
-                    case "✿ ", "🌳" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PLANT);
-                    case "♘ ", "🐺" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.ANIMAL);
-                    case "¥ ", "🦋" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.INSECT);
-                    case "∫ ", "📜" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.SCROLL);
-                    case "ϡ ", "🪶" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FEATHER);
-                    case "Ỗ ", "🍷" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.POTION);
-                    case "▤ ", "🟥" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.RED_SQUARE);
-                    case "▥ ", "🟦" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLUE_SQUARE);
-                    case "▦ ", "🟩" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.GREEN_SQUARE);
-                    case "▧ ", "🟪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE);
-                    case "▩ ", "🟨" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE);
-                    case "■ ", "⚪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.WHITE_SQUARE);
-                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_SPACE);
-                    case "▢ ", "🟫" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_CORNER);
+                    case "ନ ", "🍄" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FUNGI, false);
+                    case "✿ ", "🌳" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PLANT, false);
+                    case "♘ ", "🐺" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.ANIMAL, false);
+                    case "¥ ", "🦋" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.INSECT, false);
+                    case "∫ ", "📜" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.SCROLL, false);
+                    case "ϡ ", "🪶" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.FEATHER, false);
+                    case "Ỗ ", "🍷" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.POTION, false);
+                    case "▤ ", "🟥" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.RED_SQUARE, false);
+                    case "▥ ", "🟦" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.BLUE_SQUARE, false);
+                    case "▦ ", "🟩" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.GREEN_SQUARE, false);
+                    case "▧ ", "🟪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.PURPLE_SQUARE, false);
+                    case "▩ ", "🟨" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.YELLOW_SQUARE, false);
+                    case "■ ", "⚪" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.WHITE_SQUARE, false);
+                    case "  ", "⬛" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_SPACE, false);
+                    case "▢ ", "🟫" -> playArea[i][j] = terminalCharacters.getCharacter(Characters.EMPTY_CORNER, false);
 
                 }
             }
@@ -367,7 +367,7 @@ public class PlayAreaTerminal {
         return printingExtremes.get(key);
     }
 
-    public boolean isInitialized() {
+    public boolean isEmpty() {
         return null == playArea;
     }
 }

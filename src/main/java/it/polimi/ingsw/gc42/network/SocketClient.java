@@ -82,7 +82,6 @@ public class SocketClient implements NetworkController {
             while (true) {
                 try {
                     Message message = (Message) streamIn.readObject();
-                    System.out.println(message);
                     pool.submit(() -> {
                         try {
                             translate(message);

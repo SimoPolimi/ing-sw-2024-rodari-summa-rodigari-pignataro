@@ -466,7 +466,7 @@ public class GameTerminal extends Application implements ViewController {
                         System.out.println("--- Others ---");
                         ArrayList<HashMap<String, String>> info = controller.getPlayersInfo();
                         for (int i = 0; i < 4; i++) {
-                            if (i+1 != playerID && !playAreas.get(i).isInitialized()) {
+                            if (i+1 != playerID && !playAreas.get(i).isEmpty()) {
                                 System.out.println(info.get(i).get("Nickname") + ":");
                                 playAreas.get(i).printPlayArea(terminalCharacters);
                             }
@@ -554,7 +554,7 @@ public class GameTerminal extends Application implements ViewController {
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
                     // Refreshes the PlayAreas
                     for (PlayAreaTerminal playArea: playAreas) {
-                        if (!playArea.isInitialized()) {
+                        if (!playArea.isEmpty()) {
                             playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
@@ -570,10 +570,9 @@ public class GameTerminal extends Application implements ViewController {
                     isColorTerminalSupported = true;
                     terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
-                    returnToMenu();
                     // Refreshes the PlayAreas
                     for (PlayAreaTerminal playArea: playAreas) {
-                        if (!playArea.isInitialized()) {
+                        if (!playArea.isEmpty()) {
                             playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
@@ -589,10 +588,9 @@ public class GameTerminal extends Application implements ViewController {
                     isColorTerminalSupported = false;
                     terminalCharacters.setAdvancedGraphicsMode(isAdvancedGraphicsMode);
                     terminalCharacters.setColorTerminalSupported(isColorTerminalSupported);
-                    returnToMenu();
                     // Refreshes the PlayAreas
                     for (PlayAreaTerminal playArea: playAreas) {
-                        if (!playArea.isInitialized()) {
+                        if (!playArea.isEmpty()) {
                             playArea.recreatePlayArea(terminalCharacters);
                         }
                     }
@@ -1108,7 +1106,7 @@ public class GameTerminal extends Application implements ViewController {
     public void notifyPlayersPlayAreaChanged(int playerID) {
         actions.add(() -> {
             ArrayList<PlayableCard> cards = controller.getPlayersPlayfield(playerID);
-            if (!playAreas.get(playerID - 1).isInitialized()) {
+            if (!playAreas.get(playerID - 1).isEmpty()) {
                 playAreas.get(playerID - 1).updateCardMatrix( cards.getLast(), cards,  terminalCharacters);
             } else {
                 playAreas.get(playerID - 1).createCardMatrix((StarterCard) cards.getFirst(),  terminalCharacters);

@@ -363,7 +363,6 @@ public class SocketControllerServer implements ServerNetworkController, Serializ
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
-                    System.out.println("Received a connection");
                     pool.submit(() -> {
                         try {
                             //in = new Scanner(socket.getInputStream());
