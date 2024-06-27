@@ -148,7 +148,6 @@ public class Deck implements Observable, Serializable {
                     Item res1 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().getFirst().getAsJsonPrimitive().getAsString());
                     Item res2;
                     Item res3;
-                    //TODO: Remove and make better
                     if (permanentResourceNumber > 1) {
                         res2 = getKingdom(list.get(i).getAsJsonObject().get("FrontSide").getAsJsonObject().get("PermanentResource").getAsJsonArray().asList().get(1).getAsJsonPrimitive().getAsString());
                         if (permanentResourceNumber == 3) {

@@ -235,7 +235,6 @@ public class PlayField implements Observable, Serializable {
         return removeIllegalPlacements(removeDuplicatePlacements(placements), illegalPlacements);
     }
 
-    // TODO: check param javadoc
     /**
      * Removes the duplicates from the specified ArrayList
      * @param placements the placements ArrayList
@@ -255,7 +254,6 @@ public class PlayField implements Observable, Serializable {
         return placements;
     }
 
-    // TODO: check param javadoc
     /**
      * Removes the Coordinates where a PlayableCard can't be played from the specified ArrayList
      * @param placements the placements ArrayList

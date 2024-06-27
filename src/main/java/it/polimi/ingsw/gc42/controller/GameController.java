@@ -494,9 +494,8 @@ public class GameController implements Serializable, Observable {
                 }
 
             }else throw new IllegalActionException();
-        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException e) {
-            // TODO: Handle exception
-            e.printStackTrace();
+        } catch (IllegalPlacementException | PlacementConditionNotMetException | IllegalActionException ignore) {
+            // Could print dialog (not implemented)
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -568,8 +567,8 @@ public class GameController implements Serializable, Observable {
                 try{
                     player.grabCard(playingDeck, slot);
                     game.putDown(playingDeck, slot);
-                }catch (IllegalArgumentException e){
-                    // TODO: implement dialog
+                }catch (IllegalArgumentException ignore){
+                    // Could implement dialog (not implemented)
                     // Last turn and zero Cards on the table... don't grab
                 }
                 nextTurn();
