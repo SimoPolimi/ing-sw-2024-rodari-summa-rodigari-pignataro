@@ -113,7 +113,7 @@
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/4b24db91-ecb7-4815-a5ac-c719c590dba5" alt="Diagram Image">
+      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/8d18f666-e615-4832-85a3-f1bfd57e7fd5" alt="Diagram Image">
     </td>
   </tr>
 </table>
