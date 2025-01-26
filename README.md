@@ -192,8 +192,8 @@ After choosing the Graphics Mode, TUI will guide you through the initial onboard
 ### GUI
 
 <div align="center">
-  <img height="400" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Launcher.png" alt="Launcher GUI">
-  <img height="400" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Login_GUI.png" alt="Login GUI">
+  <img width="290" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Launcher.png" alt="Launcher GUI">
+  <img width="600" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Login_GUI.png" alt="Login GUI">
 </div>
 <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Tokens_GUI.png" alt="Token Selector in GUI">
 <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Secret_Objective_GUI.png" alt="Secret Objective Selector in GUI">
