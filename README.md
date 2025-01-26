@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src = "https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/8062557e-70be-47f1-aac0-f393496d6ff2" alt="CodexNaturalis" width="200"></a>
+  <img src = "https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Logo.png" alt="CodexNaturalis" width="200"></a>
   <br>
   <span style="font-family: 'Lucida Handwriting', cursive; font-size: 2em;">Codex Naturalis</span>
   <br>
@@ -8,62 +8,54 @@
 
 ## Contributors
 
-<table>
+<div align="center">
+  <table style="width: 100%; border-collapse: collapse;">
   <tr>
-    <td align="center">
-        <div style="width: 100px; height: 100px; border-radius: 15%; overflow: hidden;">
-          <img src="https://github.com/SimoPolimi.png" width="100px" alt="SimoPolimi"/>
-        </div>
-        <a href="https://github.com/SimoPolimi">
-            <div style="margin-top: 2px; font-size: 1.2em;">
-            <sub><b>SimoPolimi</b></sub>
-            </div>
-        </a>
-        <div style="margin-top: 0; color: grey; font-size: 0.8em;">
-          <sub><b>Simone Rodari</b></sub>
-        </div>
+    <td style="text-align: center; padding: 10px;">
+      <img src="https://github.com/SimoPolimi.png" width="100" style="border-radius: 50%;">
     </td>
-    <td align="center">
-        <div style="width: 100px; height: 100px; border-radius: 15%; overflow: hidden;">
-            <img src="https://github.com/SummaCristian.png" width="100px;" alt="SummaCristian"/>
-        </div>
-        <a href="https://github.com/SummaCristian">
-        <div style="margin-top: 2px; font-size: 1.2em;">
-          <sub><b>SummaCristian</b></sub>
-        </div>
-      </a>
-        <div style="margin-top: 0; color: grey; font-size: 0.8em;">
-          <sub><b>Cristian Summa</b></sub>
-        </div>
+    <td style="text-align: center; padding: 10px;">
+      <b><a href="https://github.com/SimoPolimi" style="text-decoration: none; color: black;">SimoPolimi</a></b>
     </td>
-    <td align="center">
-        <div style="width: 100px; height: 100px; border-radius: 15%; overflow: hidden;">
-            <img src="https://github.com/gabrielepignataro.png" width="100px;" alt="gabrielepignataro"/>
-        </div>
-        <a href="https://github.com/gabrielepignataro">
-        <div style="margin-top: 2px; font-size: 1.2em;">
-          <sub><b>gabrielepignataro</b></sub>
-        </div>
-      </a>
-        <div style="margin-top: 0; color: grey; font-size: 0.8em;">
-          <sub><b>Gabriele Pignataro</b></sub>
-        </div>
-    </td>
-    <td align="center">
-        <div style="width: 100px; height: 100px; border-radius: 15%; overflow: hidden;">
-            <img src="https://github.com/Mailp99.png" width="100px;" alt="Mailp99"/>
-        </div>
-        <a href="https://github.com/Mailp99">
-        <div style="margin-top: 2px; font-size: 1.2em;">
-          <sub><b>Mailp99</b></sub>
-        </div>
-      </a>
-        <div style="margin-top: 0; color: grey; font-size: 0.8em;">
-          <sub><b>Mathias Rodigari</b></sub>
-        </div>
+    <td style="text-align: center; padding: 10px;">
+      Simone Rodari
     </td>
   </tr>
-</table>
+  <tr>
+    <td style="text-align: center; padding: 10px;">
+      <img src="https://github.com/SummaCristian.png" width="100" style="border-radius: 50%;">
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <b><a href="https://github.com/SummaCristian" style="text-decoration: none; color: black;">SummaCristian</a></b>
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      Cristian Summa
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding: 10px;">
+      <img src="https://github.com/gabrielepignataro.png" width="100" style="border-radius: 50%;">
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <b><a href="https://github.com/gabrielepignataro" style="text-decoration: none; color: black;">gabrielepignataro</a></b>
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      Gabriele Pignataro
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding: 10px;">
+      <img src="https://github.com/Mailp99.png" width="100" style="border-radius: 50%;">
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <b><a href="https://github.com/Mailp99" style="text-decoration: none; color: black;">Mailp99</a></b>
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      Mathias Rodigari
+    </td>
+  </tr>
+  </table>
+</div>
 
 
 
@@ -75,9 +67,9 @@
 | ✉️ Socket           | ✅       |
 | 🎨 GUI              | ✅       |
 | 🖥️ CLI              | ✅       |
-| 💬 Chat ⭐️          | ✅      |
+| 💬 Chat ⭐️          | 🚧      |
 | 🕹️ Multiple games ⭐️ | ✅     |
-| 🔄 Persistence ⭐️   | ✅      |
+| 🔄 Persistence ⭐️   | 🚧      |
 
 
 ✅: Done  
@@ -113,7 +105,7 @@
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160779720/8d18f666-e615-4832-85a3-f1bfd57e7fd5" alt="Diagram Image">
+      <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Coverage.png" alt="Diagram Image">
     </td>
   </tr>
 </table>
@@ -177,17 +169,17 @@ Then, press ```Play``` to see a list of all the available matches, and choose to
 From the Launcher, select ```Textual Mode``` to open the Terminal User Interface. Alternatively, TUI can be directly launched directly from Terminal, or from the Terminal's Launcher (see Instructions). Once there, you will be asked to pick one of the 3 Graphics Modes supported by TUI:
 
 
-<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/020c3c06-7774-4cba-8642-95d36cd993c3" alt="Fancy Mode">
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Fancy_Mode.png" alt="Fancy Mode">
 
 - **Fancy Mode**
   Uses the full Unicode charset to display the UI using unique characters, colors and emojis. Not all Terminals support this mode: please make sure you can see the full Card in the beginning, otherwise choose another Mode.
 
-<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/f7c9fd57-1fdd-4ea4-837b-e0a9b48e919f" alt="Enhanced Mode">
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Enhanced_Mode.png" alt="Enhanced Mode">
   
 - **Enhanced Mode**
   Uses the standard charset, to be more widely compatible, but adds a bit of personality using colors. Most Terminals out there should support the Unicode colors, so it's highly likely that this Mode works correctly, but if you have problems visualizing the test Card, please consider using the Mode that works best.
   
-<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/965591d0-2e0b-4a70-be5c-e7ece3208d29" alt="Standard Mode">
+<img align="right" width="130" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Standard_Mode.png" alt="Standard Mode">
   
 - **Standard Mode**
   Uses the standard charset without any colors or additional feature. This ensures it will be compatible with virtually any Terminal and font out there. The Test Card for this Mode looks exactly like the one for Enhanced Mode, but with no colors.
@@ -199,30 +191,31 @@ After choosing the Graphics Mode, TUI will guide you through the initial onboard
 ## Screenshots
 ### GUI
 
-![Launcher_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/efad9379-774a-45d9-b589-d3e0db9efa30)
-![Login_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/26cde21a-4c58-4fca-a05f-a22b3cecb0f5)
-![Token_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e29337e-b9c3-49db-bc89-c5b46edef06e)
-![Objective_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/4566cf19-7530-49c6-9723-ea3de8bd6be7)
-![Starter_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/58e73526-de4d-468e-b6db-609fc80f5ecd)
-![Player_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/28f73ba8-aafc-48e5-8242-1651c5e7e428)
-![Player_Table_GUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/3b229ad3-2b58-423b-aa16-af401841cf08)
-![Common_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e6e4538-b2d4-4329-8de2-d2fcfb269a16)
-![Full_Table_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/d4269405-7218-4f3d-a2de-76fa642157a6)
-![Table_Chat_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/a319e4a4-bdaa-4c20-97c1-a05ae093a4c8)
-![Winner_GUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/569d4a12-4c64-4b10-8017-04d34532c942)
-
+<div align="center">
+  <img height="450" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Launcher.png" alt="Launcher GUI">
+  <img height="450" src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Login_GUI.png" alt="Login GUI">
+</div>
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Tokens_GUI.png" alt="Token Selector in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Secret_Objective_GUI.png" alt="Secret Objective Selector in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Starter_Card_GUI.png" alt="Starter Card Selector in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Table_GUI.png" alt="Player's Table in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Play_Card_GUI.png" alt="Player playing a Card in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Common_Table_GUI.png" alt="Common Table in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Full_Table_GUI.png" alt="Full Table or GLobal View in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Chat_GUI.png" alt="Chat in GUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/End_Game_GUI.png" alt="End Game in GUI">
 
 ### TUI
 
-![TUI_Graphics_Mode](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/837201b9-6877-4729-b791-5c3f3333b5e4)
-![Token_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7e2d9cf7-4c8f-4136-862b-1853229fba0f)
-![Token_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/87af74b5-bbe0-4f94-aca7-338f6295391d)
-![Objective_Starter_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/9a14c9b6-5217-487b-ab13-929888ed9f5a)
-![Objective_Starter_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/725ff799-e71e-4c1a-877a-27674c75ffaf)
-![Full_Table_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6896d8aa-05c3-4b2d-8942-0d3779942667)
-![Full_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/6d08024d-1677-414d-9cce-77a1237ac986)
-![Play_Card_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/7c74a741-298a-4431-a91a-aec6d95d810d)
-![Play_Card_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/f4f64c32-06e9-490c-8e18-233f7b1fde0e)
-![Common_Table_TUI_1](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/8746b30d-4ed2-4928-b9b0-11b3fdf92cd3)
-![Common_Table_TUI_2](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/fdf75d54-19ab-4e9f-a030-167785de844d)
-![Winner_TUI](https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/assets/160849789/26a3522d-5481-4092-adc5-37a66b80393b)
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Game_Mode_TUI.png" alt="Graphics Mode Selector in TUI">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Tokens_TUI_Fancy.png" alt="Tokens Selector in TUI in Fancy Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Tokens_TUI_Enhanced.png" alt="TOkens Selector in TUI in Enhanced Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Secret_Objective_Starter_Card_TUI_Fancy.png" alt="Secret Objective and Starter Card Selectors in TUI in Fancy Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Secret_Objective_Starter_Card_TUI_Enhanced.png" alt="Secret Objective and Starter Card Selectors in TUI in Enhanced Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Full_Table_TUI_Fancy.png" alt="Full Table View in TUI in Fancy Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Full_Table_TUI_Enhanced.png" alt="Full Table View in TUI in Enhanced Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Play_Card_TUI_Fancy.png" alt="Player playing a Card in TUI in Fancy Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Play_Card_TUI_Enhanced.png" alt="Player playing a Card in TUI in Enhanced Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Draw_Grab_TUI_Fancy.png" alt="Common Table actions in TUI in Fancy Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/Draw_Grab_TUI_Enhanced.png" alt="Common Table actions in TUI in Enhanced Mode">
+<img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/End_Game_TUI.png" alt="End Game in TUI">
