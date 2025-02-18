@@ -67,14 +67,14 @@
 | ✉️ Socket           | ✅       |
 | 🎨 GUI              | ✅       |
 | 🖥️ CLI              | ✅       |
-| 💬 Chat ⭐️          | 🚧      |
+| 💬 Chat ⭐️          | ☑️      |
 | 🕹️ Multiple games ⭐️ | ✅     |
-| 🔄 Persistence ⭐️   | 🚧      |
+| 🔄 Persistence ⭐️   | ☑️      |
 
 
-✅: Done  
-🚧: In progress  
-📝: To do
+✅: Completely Done  
+☑️: Partially Done  
+❌: Not Done
 
 ⭐️: Additional Feature
 
@@ -221,7 +221,22 @@ After choosing the Graphics Mode, TUI will guide you through the initial onboard
 <img src="https://github.com/SimoPolimi/ing-sw-2024-rodari-summa-rodigari-pignataro/blob/main/Screenshots/End_Game_TUI.png" alt="End Game in TUI">
 
 ## Disclaimer
+### 🇮🇹
+
 Codex Naturalis è un gioco da tavolo sviluppato ed edito da Cranio Creations Srl.
+
 I contenuti grafici di questo progetto riconducibili al prodotto editoriale da tavolo sono utilizzati previa approvazione di Cranio Creations Srl a solo scopo didattico.
+
 È vietata la distribuzione, la copia o la riproduzione dei contenuti e immagini in qualsiasi forma al di fuori del progetto, così come la redistribuzione e la pubblicazione dei contenuti e immagini a fini diversi da quello sopracitato. 
+
 È inoltre vietato l'utilizzo commerciale di suddetti contenuti.
+
+### 🇬🇧
+
+Codex Naturalis is a board game developed and published by Cranio Creations Srl.
+
+The graphic content of this project attributable to the tabletop publishing product is used with prior approval of Cranio Creations Srl for educational purposes only.
+
+It is prohibited to distribute, copy or reproduce of the contents and images in any form outside the project, as well as the redistribution and publication of the contents and images for purposes other than the aforementioned. 
+
+Commercial use of said content is also prohibited.
